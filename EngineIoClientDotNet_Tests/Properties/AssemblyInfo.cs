@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("EngineIoClientDotNet")]
-[assembly: AssemblyDescription("Engine.IO Client Library for .Net")]
+[assembly: AssemblyTitle("EngineIoClientDotNet_Tests")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Quobject")]
-[assembly: AssemblyProduct("EngineIoClientDotNet")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("EngineIoClientDotNet_Tests")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("a95e75cd-35e6-4e88-9e22-631e3fd01546")]
+[assembly: Guid("d6a1db47-b9b5-40fe-9d66-bd130bb32881")]
 
 // Version information for an assembly consists of the following four values:
 //
