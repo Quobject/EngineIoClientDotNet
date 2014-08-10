@@ -14,45 +14,6 @@ namespace Quobject.EngineIoClientDotNet.Modules
     public class UTF8
     {
 
-        //
-        // Try using UTF8Encoding http://msdn.microsoft.com/en-us/library/system.text.utf8encoding(v=vs.110).aspx
-        //
-
-
-        //public static string Encode(string str)
-        //{
-        //    var utf8ThrowException = new UTF8Encoding(false, true);
-        //    var chars = str.ToCharArray();
-        //    var bytes = utf8ThrowException.GetBytes(chars);
-
-        //    //byte[] bytes = Encoding.UTF8.GetBytes(str);
-
-        //    //string hex = BitConverter.ToString(bytes);
-        //    //return hex;
-        //    var stringBuilder = new StringBuilder();
-        //    foreach (var b in bytes)
-        //    {
-        //        stringBuilder.AppendFormat("{0}", b);
-        //    }
-        //    return stringBuilder.ToString();
-        //}
-
-        //public static string Decode(string byteString)
-        //{
-        //    byte[] bytes = Encoding.UTF8.GetBytes(byteString);
-
-
-        //    var stringBuilder = new StringBuilder();
-        //    foreach (var b in bytes)
-        //    {
-        //        stringBuilder.AppendFormat("{0}", b);
-        //    }
-        //    return stringBuilder.ToString();
-
-
-        //}
-
-
         private static List<int> byteArray;
         private static int byteCount;
         private static int byteIndex;
@@ -73,7 +34,108 @@ namespace Quobject.EngineIoClientDotNet.Modules
             return byteString.ToString();
         }
 
+        public static string Decode(string byteString)
+        {
+            byteArray = Ucs2Decode(byteString);
+            byteCount = byteArray.Count;
+            byteIndex = 0;
 
+            var codePoints = new List<int>();
+            int tmp;
+            while ((tmp = DecodeSymbol()) != -1)
+            {
+                codePoints.Add(tmp);
+            }
+            return Ucs2Encode(codePoints);
+        }
+
+        private static int DecodeSymbol()
+        {
+            int byte1;
+            int byte2;
+            int byte3;
+            int byte4;
+            int codePoint;
+
+            if (byteIndex > byteCount)
+            {
+                throw new UTF8Exception("Invalid byte index");
+            }
+
+            if (byteIndex == byteCount)
+            {
+                return -1;
+            }
+
+            byte1 = byteArray[byteIndex] & 0xFF;
+            byteIndex++;
+
+            if ((byte1 & 0x80) == 0)
+            {
+                return byte1;
+            }
+
+            if ((byte1 & 0xE0) == 0xC0)
+            {
+                byte2 = ReadContinuationByte();
+                codePoint = ((byte1 & 0x1F) << 6) | byte2;
+                if (codePoint >= 0x80)
+                {
+                    return codePoint;
+                }
+                else
+                {
+                    throw new UTF8Exception("Invalid continuation byte");
+                }
+            }
+
+            if ((byte1 & 0xF0) == 0xE0)
+            {
+                byte2 = ReadContinuationByte();
+                byte3 = ReadContinuationByte();
+                codePoint = ((byte1 & 0x0F) << 12) | (byte2 << 6) | byte3;
+                if (codePoint >= 0x0800)
+                {
+                    return codePoint;
+                }
+                else
+                {
+                    throw new UTF8Exception("Invalid continuation byte");
+                }
+            }
+
+            if ((byte1 & 0xF8) == 0xF0)
+            {
+                byte2 = ReadContinuationByte();
+                byte3 = ReadContinuationByte();
+                byte4 = ReadContinuationByte();
+                codePoint = ((byte1 & 0x0F) << 0x12) | (byte2 << 0x0C) | (byte3 << 0x06) | byte4;
+                if (codePoint >= 0x010000 && codePoint <= 0x10FFFF)
+                {
+                    return codePoint;
+                }
+            }
+
+            throw new UTF8Exception("Invalid continuation byte");
+        }
+
+        private static int ReadContinuationByte()
+        {
+            if (byteIndex >= byteCount)
+            {
+                throw new UTF8Exception("Invalid byte index");
+            }
+
+            int continuationByte = byteArray[byteIndex] & 0xFF;
+            byteIndex++;
+
+            if ((continuationByte & 0xC0) == 0x80)
+            {
+                return continuationByte & 0x3F;
+            }
+
+            throw new UTF8Exception("Invalid continuation byte");
+        }
 
 
         private static string EncodeCodePoint(int codePoint)
@@ -112,10 +174,7 @@ namespace Quobject.EngineIoClientDotNet.Modules
             return (char)(((codePoint >> shift) & 0x3F) | 0x80);
         }
 
-        public static string Decode(string Encoded)
-        {
-            throw new NotImplementedException();
-        }
+
 
         private static List<int> Ucs2Decode(string str)
         {
