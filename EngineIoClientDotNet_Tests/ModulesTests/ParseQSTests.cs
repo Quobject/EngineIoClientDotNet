@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using Xunit;
 
 
-namespace Quobject.EngineIoClientDotNet_Tests.Modules_Tests
+namespace Quobject.EngineIoClientDotNet_Tests.ModulesTests
 {
-    public class ParseQS_Tests
+    public class ParseQsTests
     {
         //should parse a querystring and return an object
         [Fact]

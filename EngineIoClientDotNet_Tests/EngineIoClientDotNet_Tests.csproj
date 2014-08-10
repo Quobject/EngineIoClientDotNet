@@ -42,8 +42,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
-    <Compile Include="Modules_Tests\ParseQS_Tests.cs" />
+    <Compile Include="ModulesTests\UTF8Tests.cs" />
+    <Compile Include="ModulesTests\ParseQSTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
