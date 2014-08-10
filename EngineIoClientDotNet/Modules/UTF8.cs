@@ -13,9 +13,51 @@ namespace Quobject.EngineIoClientDotNet.Modules
     /// </remarks>
     public class UTF8
     {
+
+        //
+        // Try using UTF8Encoding http://msdn.microsoft.com/en-us/library/system.text.utf8encoding(v=vs.110).aspx
+        //
+
+
+        //public static string Encode(string str)
+        //{
+        //    var utf8ThrowException = new UTF8Encoding(false, true);
+        //    var chars = str.ToCharArray();
+        //    var bytes = utf8ThrowException.GetBytes(chars);
+
+        //    //byte[] bytes = Encoding.UTF8.GetBytes(str);
+
+        //    //string hex = BitConverter.ToString(bytes);
+        //    //return hex;
+        //    var stringBuilder = new StringBuilder();
+        //    foreach (var b in bytes)
+        //    {
+        //        stringBuilder.AppendFormat("{0}", b);
+        //    }
+        //    return stringBuilder.ToString();
+        //}
+
+        //public static string Decode(string byteString)
+        //{
+        //    byte[] bytes = Encoding.UTF8.GetBytes(byteString);
+
+
+        //    var stringBuilder = new StringBuilder();
+        //    foreach (var b in bytes)
+        //    {
+        //        stringBuilder.AppendFormat("{0}", b);
+        //    }
+        //    return stringBuilder.ToString();
+
+
+        //}
+
+
         private static List<int> byteArray;
         private static int byteCount;
         private static int byteIndex;
+
+
 
         public static string Encode(string str)
         {
@@ -26,17 +68,48 @@ namespace Quobject.EngineIoClientDotNet.Modules
             while (++index < length)
             {
                 var codePoint = codePoints[index];
-                byteString.Append( EncodeCodePoint(codePoint));
+                byteString.Append(EncodeCodePoint(codePoint));
             }
             return byteString.ToString();
         }
-        //
-        // Try using UTF8Encoding http://msdn.microsoft.com/en-us/library/system.text.utf8encoding(v=vs.110).aspx
-        //
 
-        private static StringBuilder EncodeCodePoint(int codePoint)
+
+
+
+        private static string EncodeCodePoint(int codePoint)
         {
-            throw new NotImplementedException();
+            var sb = new StringBuilder();
+            if ((codePoint & 0xFFFFFF80) == 0)
+            {
+                // 1-byte sequence
+                sb.Append((char) codePoint);
+                return sb.ToString();
+            }
+            if ((codePoint & 0xFFFFF800) == 0)
+            {
+                // 2-byte sequence
+                sb.Append((char) (((codePoint >> 6) & 0x1F) | 0xC0));
+            }
+            else if ((codePoint & 0xFFFF0000) == 0)
+            {
+                // 3-byte sequence
+                sb.Append((char) (((codePoint >> 12) & 0x0F) | 0xE0));
+                sb.Append( CreateByte(codePoint, 6));
+            }
+            else if ((codePoint & 0xFFE00000) == 0)
+            {
+                // 4-byte sequence
+                sb.Append((char) (((codePoint >> 18) & 0x07) | 0xF0));
+                sb.Append( CreateByte(codePoint, 12));
+                sb.Append( CreateByte(codePoint, 6));
+            }
+            sb.Append((char) ((codePoint & 0x3F) | 0x80));
+            return sb.ToString();
+        }
+
+        private static char CreateByte(int codePoint, int shift)
+        {
+            return (char)(((codePoint >> shift) & 0x3F) | 0x80);
         }
 
         public static string Decode(string Encoded)
@@ -52,12 +125,12 @@ namespace Quobject.EngineIoClientDotNet.Modules
 
             while (counter < length)
             {
-                var value = (int) str[counter++];
+                var value = (int)str[counter++];
 
                 if (value >= 0xD800 && value <= 0xDBFF && counter < length)
                 {
                     // high surrogate, and there is a next character
-                    var extra = (int) str[counter++];
+                    var extra = (int)str[counter++];
                     if ((extra & 0xFC00) == 0xDC00)
                     {
                         // low surrogate
@@ -89,10 +162,10 @@ namespace Quobject.EngineIoClientDotNet.Modules
                 if (value > 0xFFFF)
                 {
                     value -= 0x10000;
-                    sb.Append((char) (((int) ((uint) value >> 10)) & 0x3FF | 0xD800));
+                    sb.Append((char)(((int)((uint)value >> 10)) & 0x3FF | 0xD800));
                     value = 0xDC00 | value & 0x3FF;
                 }
-                sb.Append((char) value);
+                sb.Append((char)value);
             }
             return sb.ToString();
         }
