@@ -2,6 +2,8 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -36,10 +38,23 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
             return this;
         }
 
+        public Emitter Once(string event1, IListener fn)
+        {
+            IListener on = 
+        }
 
     }
 
     public interface IListener {
         void Call(params object[] args);
+    }
+
+    public class Listener : IListener
+    {
+
+        void IListener.Call(params object[] args)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
