@@ -13,7 +13,7 @@ namespace Quobject.EngineIoClientDotNet.Parser
     /// </remarks>
     public class Parser
     {
-        private static readonly int MAX_INT_CHAR_LENGTH = int.MaxValue.ToString().Length;
+        
 
         public static readonly int Protocol = 3;
 
@@ -42,6 +42,16 @@ namespace Quobject.EngineIoClientDotNet.Parser
             Packet.EncodePayload(packets, callback);
         }
 
+
+        public static void DecodePayload(string data, IDecodePayloadCallback callback)
+        {
+            Packet.DecodePayload(data, callback);
+        }
+
+        public static void DecodePayload(byte[] data, IDecodePayloadCallback callback)
+        {
+            Packet.DecodePayload(data, callback);
+        }
 
     }
 }

@@ -24,6 +24,7 @@ namespace Quobject.EngineIoClientDotNet.Parser
         public static String NOOP = "noop";
         public static String ERROR = "error";
 
+        private static readonly int MAX_INT_CHAR_LENGTH = int.MaxValue.ToString().Length;
 
         private static readonly Dictionary<string, byte> _packets = new Dictionary<string, byte>()
         {
@@ -150,9 +151,153 @@ namespace Quobject.EngineIoClientDotNet.Parser
             }
 
             callback.Call(Buffer.Concat(results.ToArray()));//new byte[results.Count][]
+        }
 
+        /// <summary>
+        /// Decodes data when a payload is maybe expected.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="callback"></param>
+        internal static void DecodePayload(string data, IDecodePayloadCallback callback)
+        {
+            if (String.IsNullOrEmpty(data))
+            {
+                callback.Call(_err, 0, 1);
+                return;
+            }
+
+            var length = new StringBuilder();
+            for (int i = 0, l = data.Length; i < l; i++)
+            {
+                var chr = Convert.ToChar(data.Substring(i, 1));
+
+                if (chr != ':')
+                {
+                    length.Append(chr);
+                }
+                else
+                {
+                    int n;
+                    if (!int.TryParse(length.ToString(), out n))
+                    {
+                        callback.Call(_err, 0, 1);
+                        return;
+                    }
+
+                    string msg;
+                    try
+                    {
+                        msg = data.Substring(i + 1, i + 1 + n);
+                    }
+                    catch (ArgumentOutOfRangeException)
+                    {
+                        callback.Call(_err, 0, 1);
+                        return;
+                    }
+
+                    if (msg.Length != 0)
+                    {
+                        Packet packet = DecodePacket(msg);
+                        if (_err.Type == packet.Type && _err.Data == packet.Data)
+                        {
+                            callback.Call(_err, 0, 1);
+                            return;
+                        }
+
+                        bool ret = callback.Call(packet, i + n, l);
+                        if (!ret)
+                        {
+                            return;
+                        }
+
+                    }
+
+                    i += n;
+                    length = new StringBuilder();
+                }
+            }
+            if (length.Length > 0)
+            {
+                callback.Call(_err, 0, 1);
+            }
+        }
+
+        /// <summary>
+        /// Decodes data when a payload is maybe expected.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="callback"></param>
+        public static void DecodePayload(byte[] data, IDecodePayloadCallback callback)
+        {
+            var bufferTail = ByteBuffer.Wrap(data);
+
+            var buffers = new List<object>();
+            int bufferTail_offset = 0;
+            while (bufferTail.Capacity > 0)
+            {
+                var strLen = new StringBuilder();
+                var isString = (bufferTail.Get(0 + bufferTail_offset) & 0xFF) == 0;
+                var numberTooLong = false;
+                for (int i = 1;; i++)
+                {
+                    int b = bufferTail.Get(i + bufferTail_offset) & 0xFF;
+                    if (b == 255)
+                    {
+                        break;
+                    }
+                    // support only integer
+                    if (strLen.Length > MAX_INT_CHAR_LENGTH)
+                    {
+                        numberTooLong = true;
+                        break;
+                    }
+                    strLen.Append(b);
+                }
+                if (numberTooLong)
+                {
+                    callback.Call(_err, 0, 1);
+                    return;
+                }
+                bufferTail_offset += strLen.Length + 1;
+                //bufferTail.Position(strLen.Length + bufferTail_offset + 1);
+                //bufferTail = bufferTail.Slice();
+
+                int msgLength = int.Parse(strLen.ToString());
+
+                bufferTail.Position(1 + bufferTail_offset);
+                bufferTail.Limit(msgLength + 1 + bufferTail_offset);
+                var msg = new byte[bufferTail.Remaining()];
+                bufferTail.Get(msg, bufferTail_offset, msg.Length);
+                if (isString)
+                {
+                    buffers.Add(ByteArrayToString(msg));
+                }
+                else
+                {
+                    buffers.Add(msg);
+                }
+                bufferTail.Clear();
+                bufferTail.Position(msgLength + 1 + bufferTail_offset);
+                //bufferTail = bufferTail.Slice();
+                bufferTail_offset += msgLength + 1;
+            }
+
+            var total = buffers.Count;
+            for (int i = 0; i < total; i++)
+            {
+                var buffer = buffers[i];
+                if (buffer is string)
+                {
+                    callback.Call(DecodePacket((string) buffer), i, total);
+                }
+                else if (buffer is byte[])
+                {
+                    callback.Call(DecodePacket((byte[])buffer), i, total);                    
+                }
+            }
 
         }
+
 
         internal static byte[] StringToByteArray(string str)
         {
