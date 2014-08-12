@@ -37,6 +37,11 @@ namespace Quobject.EngineIoClientDotNet.Parser
             return Packet.DecodePacket(data);
         }
 
+        public static void EncodePayload(Packet[] packets, IEncodeCallback callback)
+        {
+            Packet.EncodePayload(packets, callback);
+        }
+
 
     }
 }

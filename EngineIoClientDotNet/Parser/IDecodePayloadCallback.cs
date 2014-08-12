@@ -2,9 +2,11 @@
 
 namespace Quobject.EngineIoClientDotNet.Parser
 {
-    public interface IEncodeCallback
+
+    public interface IDecodePayloadCallback
     {
-        void Call(object data);
+         bool Call(Packet packet, int index, int total);
     }
+
 
 }

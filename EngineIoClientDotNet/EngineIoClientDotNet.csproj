@@ -47,6 +47,9 @@
     <Compile Include="Modules\ParseQS.cs" />
     <Compile Include="Modules\UTF8.cs" />
     <Compile Include="Modules\UTF8Exception.cs" />
+    <Compile Include="Parser\Buffer.cs" />
+    <Compile Include="Parser\ByteBuffer.cs" />
+    <Compile Include="Parser\IDecodePayloadCallback.cs" />
     <Compile Include="Parser\IEncodeCallback.cs" />
     <Compile Include="Parser\Packet.cs" />
     <Compile Include="Parser\Parser.cs" />
