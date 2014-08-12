@@ -61,5 +61,24 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
             var expected = new Object[] {"one", 1, "two", 1, "one", 2, "two", 2};
             Assert.Equal(calls.ToArray(), expected);
         }
+
+        [Fact]
+        public void Once()
+        {
+            var emitter = new Emitter();
+            var calls = new List<object>();
+
+            var listener1 = new TestListener1(calls);
+            emitter.Once("foo", listener1);
+
+            emitter.Emit("foo", 1);
+            emitter.Emit("foo", 2);
+            emitter.Emit("foo", 3);
+            emitter.Emit("bar", 1);
+
+            var expected = new Object[] { "one", 1 };
+            Assert.Equal(expected, calls.ToArray() );
+        }
+
     }
 }
