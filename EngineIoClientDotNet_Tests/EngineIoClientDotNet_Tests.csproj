@@ -45,6 +45,7 @@
     <Compile Include="ComponentEmitterTests\EmitterTests.cs" />
     <Compile Include="ModulesTests\UTF8Tests.cs" />
     <Compile Include="ModulesTests\ParseQSTests.cs" />
+    <Compile Include="ParserTests\TestsParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

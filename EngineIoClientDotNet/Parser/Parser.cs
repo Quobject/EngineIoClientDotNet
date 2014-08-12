@@ -12,8 +12,7 @@ namespace Quobject.EngineIoClientDotNet.Parser
     /// <see href="https://github.com/Automattic/engine.io-parser">https://github.com/Automattic/engine.io-parser</see>
     /// </remarks>
     public class Parser
-    {
-        
+    {        
 
         public static readonly int Protocol = 3;
 
