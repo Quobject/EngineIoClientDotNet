@@ -47,6 +47,9 @@
     <Compile Include="Modules\ParseQS.cs" />
     <Compile Include="Modules\UTF8.cs" />
     <Compile Include="Modules\UTF8Exception.cs" />
+    <Compile Include="Parser\IEncodeCallback.cs" />
+    <Compile Include="Parser\Packet.cs" />
+    <Compile Include="Parser\Parser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
