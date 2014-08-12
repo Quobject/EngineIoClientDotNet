@@ -68,6 +68,7 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
             var on = new OnceListener(eventString, fn, this);
 
             _onceCallbacks.TryAdd(fn, on);
+            this.On(eventString, on);
             return this;
 
         }
