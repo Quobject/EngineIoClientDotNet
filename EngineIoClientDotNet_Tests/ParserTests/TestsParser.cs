@@ -301,7 +301,150 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
 
         }
 
+       public class EncodeAndDecodeEmptyPayloads_EncodeCallback : IEncodeCallback
+        {
+            public void Call(object data)
+            {
+                Parser.DecodePayload((byte[])data, new EncodeAndDecodeEmptyPayloads_DecodeCallback());
+            }
 
+            public class EncodeAndDecodeEmptyPayloads_DecodeCallback : IDecodePayloadCallback
+            {
+
+                public bool Call(Packet packet, int index, int total)
+                {
+                    Assert.Equal(Packet.OPEN, packet.Type);
+                    var isLast = index + 2 == total;
+                    Assert.True(isLast);
+                    return true;
+                }
+            }
+
+        }
+
+        [Fact]
+       public void EncodeAndDecodeEmptyPayloads()
+        {
+            var packets = new Packet[] {  };
+            Parser.EncodePayload(packets, new EncodeAndDecodeEmptyPayloads_EncodeCallback());
+
+        }
+
+
+        public class EncodeAndDecodeBinaryContents_EncodeCallback : IEncodeCallback
+        {
+            public void Call(object data)
+            {
+                Parser.DecodePayload((byte[])data, new EncodeAndDecodeBinaryContents_DecodeCallback());
+            }
+
+            public class EncodeAndDecodeBinaryContents_DecodeCallback : IDecodePayloadCallback
+            {
+
+                public bool Call(Packet packet, int index, int total)
+                {
+                    Assert.Equal(Packet.MESSAGE, packet.Type);
+                    var isLast = index + 1 == total;
+                    if (!isLast)
+                    {
+                        Assert.Equal(FirstBuffer(), packet.Data);
+                    }
+                    else
+                    {
+                        Assert.Equal(SecondBuffer(), packet.Data);
+                    }
+                    return true;
+                }
+            }
+
+        }
+
+        [Fact]
+        public void EncodeAndDecodeBinaryContents()
+        {
+            var firstBuffer = FirstBuffer();
+            var secondBuffer = SecondBuffer();
+
+            var packets = new Packet[] { new Packet(Packet.MESSAGE, firstBuffer), new Packet(Packet.MESSAGE, secondBuffer)  };
+            Parser.EncodePayload(packets, new EncodeAndDecodeBinaryContents_EncodeCallback());
+
+        }
+
+        private static byte[] SecondBuffer()
+        {
+            var secondBuffer = new byte[4];
+            for (int i = 0; i < secondBuffer.Length; i++)
+            {
+                secondBuffer[i] = (byte) (5 + i);
+            }
+            return secondBuffer;
+        }
+
+        private static byte[] FirstBuffer()
+        {
+            var firstBuffer = new byte[5];
+            for (int i = 0; i < firstBuffer.Length; i++)
+            {
+                firstBuffer[i] = (byte) i;
+            }
+            return firstBuffer;
+        }
+
+        private static byte[] ThirdBuffer()
+        {
+            var result = new byte[123];
+            for (int i = 0; i < result.Length; i++)
+            {
+                result[i] = (byte)i;
+            }
+            return result;
+        }
+
+
+        public class EncodeMixedBinaryAndStringContents_EncodeCallback : IEncodeCallback
+        {
+            public void Call(object data)
+            {
+                Parser.DecodePayload((byte[])data, new EncodeMixedBinaryAndStringContents_DecodeCallback());
+            }
+
+            public class EncodeMixedBinaryAndStringContents_DecodeCallback : IDecodePayloadCallback
+            {
+
+                public bool Call(Packet packet, int index, int total)
+                {
+                    if (index == 0)
+                    {
+                        Assert.Equal(Packet.MESSAGE, packet.Type);
+                        Assert.Equal(ThirdBuffer(), packet.Data);
+                    }
+                    else if (index == 1)
+                    {
+                        Assert.Equal(Packet.MESSAGE, packet.Type);
+                        Assert.Equal("hello", packet.Data);                        
+                    }
+                    else
+                    {
+                        Assert.Equal(Packet.CLOSE, packet.Type);
+                    }
+                    return true;
+                }
+            }
+
+        }
+
+        [Fact]
+        public void EncodeMixedBinaryAndStringContents()
+        {
+            var packets = new Packet[]
+            {
+                new Packet(Packet.MESSAGE, ThirdBuffer()), 
+                new Packet(Packet.MESSAGE, "hello"), 
+                new Packet(Packet.CLOSE),
+            };
+            Parser.EncodePayload(packets, new EncodeMixedBinaryAndStringContents_EncodeCallback());
+
+        }
 
     }
 }

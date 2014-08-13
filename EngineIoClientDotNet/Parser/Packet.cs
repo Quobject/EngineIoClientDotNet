@@ -97,6 +97,7 @@ namespace Quobject.EngineIoClientDotNet.Parser
                 resultArray[0] =  _packets[Type];
                 Array.Copy(byteData, 0, resultArray, 1, byteData.Length);
                 callback.Call(resultArray);
+                return;
             }
             throw new Exception("byteData == null");
         }
@@ -165,7 +166,7 @@ namespace Quobject.EngineIoClientDotNet.Parser
         /// </summary>
         /// <param name="data"></param>
         /// <param name="callback"></param>
-        internal static void DecodePayload(string data, IDecodePayloadCallback callback)
+        public static void DecodePayload(string data, IDecodePayloadCallback callback)
         {
             if (String.IsNullOrEmpty(data))
             {
