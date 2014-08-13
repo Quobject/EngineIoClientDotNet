@@ -223,6 +223,28 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
             }
         }
 
+
+
+        public class EncodePayloadsCallback : IEncodeCallback
+        {
+            public void Call(object data)
+            {
+                Assert.IsType<byte[]>(data);
+            }
+
+            
+
+        }
+
+        [Fact]
+        public void EncodePayloads()
+        {
+            var packets = new Packet[] { new Packet(Packet.PING), new Packet(Packet.PONG),  };
+            Parser.EncodePayload(packets, new EncodePayloadsCallback());
+
+        }
+
+
         public class EncodeAndDecodePayloads_EncodeCallback : IEncodeCallback
         {
             public void Call(object data)
@@ -250,6 +272,35 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
             Parser.EncodePayload(packets, new EncodeAndDecodePayloads_EncodeCallback());
 
         }
+
+        public class EncodeAndDecodePayloads_EncodeCallback2 : IEncodeCallback
+        {
+            public void Call(object data)
+            {
+                Parser.DecodePayload((byte[])data, new EncodeAndDecodePayloads_DecodeCallback2());
+            }
+
+            public class EncodeAndDecodePayloads_DecodeCallback2 : IDecodePayloadCallback
+            {
+
+                public bool Call(Packet packet, int index, int total)
+                {
+                    var isLast = index + 1 == total;
+                    Assert.Equal(isLast ? Packet.PING : Packet.MESSAGE, packet.Type);
+                    return true;
+                }
+            }
+
+        }
+
+        [Fact]
+        public void EncodeAndDecodePayloads2()
+        {
+            var packets = new Packet[] { new Packet(Packet.MESSAGE, "a"), new Packet(Packet.PING),  };
+            Parser.EncodePayload(packets, new EncodeAndDecodePayloads_EncodeCallback2());
+
+        }
+
 
 
     }
