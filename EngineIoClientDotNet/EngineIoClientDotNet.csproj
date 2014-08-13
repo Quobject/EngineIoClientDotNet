@@ -30,8 +30,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
@@ -39,9 +44,20 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WebSocket4Net">
+      <HintPath>..\lib\WebSocket4Net.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Client\EngineIOException.cs" />
+    <Compile Include="Client\HandshakeData.cs" />
+    <Compile Include="Client\Socket.cs" />
+    <Compile Include="Client\SSLContext.cs" />
+    <Compile Include="Client\Transport.cs" />
+    <Compile Include="Client\Transports\Polling.cs" />
+    <Compile Include="Client\Transports\PollingXHR.cs" />
+    <Compile Include="Client\Transports\WebSocket.cs" />
     <Compile Include="ComponentEmitter\Emitter.cs" />
     <Compile Include="Modules\Global.cs" />
     <Compile Include="Modules\ParseQS.cs" />
@@ -54,6 +70,7 @@
     <Compile Include="Parser\Packet.cs" />
     <Compile Include="Parser\Parser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Thread\EventThread.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
