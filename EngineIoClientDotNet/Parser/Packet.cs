@@ -48,6 +48,7 @@ namespace Quobject.EngineIoClientDotNet.Parser
         }
 
         private static readonly Packet _err = new Packet(Packet.ERROR,"parser error");
+        private string p;
 
 
 
@@ -60,6 +61,12 @@ namespace Quobject.EngineIoClientDotNet.Parser
         {
             this.Type = type;
             this.Data = data;
+        }
+
+        public Packet(string type)
+        {
+            this.Type = type;
+            this.Data = null;
         }
 
         internal void Encode(IEncodeCallback callback)
@@ -97,8 +104,8 @@ namespace Quobject.EngineIoClientDotNet.Parser
         internal static Packet DecodePacket(string data)
         {
             int type;
-
-            if (int.TryParse(data.Substring(0, 1), out type))
+            var s = data.Substring(0, 1);
+            if (!int.TryParse(s, out type))
             {
                 type = -1;
             }
