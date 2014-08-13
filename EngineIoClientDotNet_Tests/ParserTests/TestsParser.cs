@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Quobject.EngineIoClientDotNet.Parser;
 using Xunit;
@@ -33,6 +34,8 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
                 new EncodeMessagePacket(),
                 new EncodeUTF8SpecialCharsPacket(),
                 new EncodeUpgradePacket(),
+                new EncodeFormat1(),
+                new EncodeFormat2(),
 
 
             };
@@ -190,5 +193,64 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
                 return new Packet(Packet.UPGRADE);
             }
         }
+
+        public class EncodeFormat1 : IEncodeCallback, IPacketTest
+        {
+            public void Call(object data)
+            {
+                var dataString = data as string;
+                var r = new Regex(@"[0-9]", RegexOptions.IgnoreCase);
+                Assert.True(r.Match(dataString).Success);
+            }
+
+            public Packet GetPacket()
+            {
+                return new Packet(Packet.MESSAGE);
+            }
+        }
+
+        public class EncodeFormat2 : IEncodeCallback, IPacketTest
+        {
+            public void Call(object data)
+            {
+                var dataString = data as string;
+                Assert.Equal("4test", dataString);
+            }
+
+            public Packet GetPacket()
+            {
+                return new Packet(Packet.MESSAGE,"test");
+            }
+        }
+
+        public class EncodeAndDecodePayloads_EncodeCallback : IEncodeCallback
+        {
+            public void Call(object data)
+            {
+                Parser.DecodePayload((byte[])data, new EncodeAndDecodePayloads_DecodeCallback());
+            }
+
+            public class EncodeAndDecodePayloads_DecodeCallback : IDecodePayloadCallback
+            {
+
+                public bool Call(Packet packet, int index, int total)
+                {
+                    bool isLast = index + 1 == total;
+                    Assert.True(isLast);
+                    return true;
+                }
+            }
+         
+        }
+
+        [Fact]
+        public void EncodeAndDecodePayloads()
+        {
+            var packets = new Packet[] {new Packet(Packet.MESSAGE,"a"), };
+            Parser.EncodePayload(packets, new EncodeAndDecodePayloads_EncodeCallback());
+
+        }
+
+
     }
 }

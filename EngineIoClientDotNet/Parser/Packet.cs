@@ -240,7 +240,7 @@ namespace Quobject.EngineIoClientDotNet.Parser
 
             var buffers = new List<object>();
             int bufferTail_offset = 0;
-            while (bufferTail.Capacity > 0)
+            while (bufferTail.Capacity - bufferTail_offset > 0)
             {
                 var strLen = new StringBuilder();
                 var isString = (bufferTail.Get(0 + bufferTail_offset) & 0xFF) == 0;
@@ -274,7 +274,9 @@ namespace Quobject.EngineIoClientDotNet.Parser
                 bufferTail.Position(1 + bufferTail_offset);
                 bufferTail.Limit(msgLength + 1 + bufferTail_offset);
                 var msg = new byte[bufferTail.Remaining()];
-                bufferTail.Get(msg, bufferTail_offset, msg.Length);
+                //bufferTail.Get(msg, bufferTail_offset, msg.Length);
+                bufferTail.Get(msg, 0, msg.Length);
+                
                 if (isString)
                 {
                     buffers.Add(ByteArrayToString(msg));

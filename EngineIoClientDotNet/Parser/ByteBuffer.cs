@@ -14,7 +14,8 @@ namespace Quobject.EngineIoClientDotNet.Parser
         {
             this._memoryStream = new MemoryStream();
             _memoryStream.SetLength(length);
-            _limit = _memoryStream.Capacity;
+            _memoryStream.Capacity = length;
+            _limit = length;
         }
  
 
