@@ -65,7 +65,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         public Transport Open()
         {
-            
+            return null;
         }
 
 
