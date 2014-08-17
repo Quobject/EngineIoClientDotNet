@@ -80,12 +80,12 @@ namespace Quobject.EngineIoClientDotNet.Client
         }
 
 
-        protected void OnData(string data)
+        protected virtual void OnData(string data)
         {
             this.OnPacket(Parser.Parser.DecodePacket(data));
         }
 
-        protected void OnData(byte[] data)
+        protected virtual void OnData(byte[] data)
         {
             this.OnPacket(Parser.Parser.DecodePacket(data));
         }
