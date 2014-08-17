@@ -26,6 +26,8 @@ namespace Quobject.EngineIoClientDotNet.Client
         public static readonly string EVENT_PACKET = "packet";
         public static readonly string EVENT_DRAIN = "drain";
         public static readonly string EVENT_ERROR = "error";
+        public static readonly string EVENT_SUCCESS = "success";
+        public static readonly string EVENT_DATA = "data";
         public static readonly string EVENT_REQUEST_HEADERS = "requestHeaders";
         public static readonly string EVENT_RESPONSE_HEADERS = "responseHeaders";
 
@@ -129,7 +131,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             {
                 if (ReadyState == ReadyStateEnum.OPEN)
                 {
-                    DoSend(packets);
+                    Write(packets);
                 }
                 else
                 {
@@ -145,7 +147,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         protected abstract void DoClose();
 
-        protected abstract void DoSend(ImmutableList<Packet> packets);
+        protected abstract void Write(ImmutableList<Packet> packets);
 
 
         public class Options

@@ -30,11 +30,95 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             Poll();
         }
 
+        public void Pause(Action onPause)
+        {
+            EventTasks.Exec(n =>
+            {
+                ReadyState = ReadyStateEnum.PAUSED;
+                Action pause = () =>
+                {
+                    Debug.WriteLine("paused", "Polling fine");
+                    ReadyState = ReadyStateEnum.PAUSED;
+                    onPause();
+                };
+
+                if (IsPolling || !Writable)
+                {
+                    var total = new[] {0};
+
+
+                    if (IsPolling)
+                    {
+                        Debug.WriteLine("we are currently polling - waiting to pause", "Polling fine");
+                        total[0]++;
+                        Once(EVENT_POLL_COMPLETE, new PauseEventPollCompleteListener(total, pause));
+
+                    }
+
+                    if (!Writable)
+                    {
+                        Debug.WriteLine("we are currently writing - waiting to pause", "Polling fine");
+                        total[0]++;
+                        Once(EVENT_DRAIN, new PauseEventDrainListener(total, pause));
+                    }
+
+                }
+                else
+                {
+                    pause();
+                }
+            });
+        }
+
+        private class PauseEventDrainListener : IListener
+        {
+            private int[] total;
+            private Action pause;
+
+            public PauseEventDrainListener(int[] total, Action pause)
+            {
+                this.total = total;
+                this.pause = pause;
+            }
+
+            public void Call(params object[] args)
+            {
+                Debug.WriteLine("pre-pause writing complete", "Polling fine");
+                if (--total[0] == 0)
+                {
+                    pause();
+                }
+            }
+        }
+
+        class PauseEventPollCompleteListener : IListener
+        {
+            private int[] total;
+            private Action pause;
+
+            public PauseEventPollCompleteListener(int[] total, Action pause)
+            {
+
+                this.total = total;
+                this.pause = pause;
+            }
+            
+            public void Call(params object[] args)
+            {
+                Debug.WriteLine("pre-pause polling complete", "Polling fine");
+                if (--total[0] == 0)
+                {
+                    pause();
+                }
+            }
+        }
+
+
         private void Poll()
         {
             EventTasks.Exec(n =>
             {
-                Debug.WriteLine("polling", "fine");
+                Debug.WriteLine("polling", "Polling fine");
                 IsPolling = true;
                 DoPoll();
                 Emit(EVENT_POLL);
@@ -83,7 +167,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         private void _onData(object data)
         {
-            Debug.WriteLine(string.Format("polling got data {0}",data), "fine");
+            Debug.WriteLine(string.Format("polling got data {0}",data), "Polling fine");
             var callback = new DecodePayloadCallback(this);
             if (data is string)
             {
@@ -105,7 +189,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 }
                 else
                 {
-                    Debug.WriteLine(string.Format("ignoring poll - transport state {0}", ReadyState), "fine");                    
+                    Debug.WriteLine(string.Format("ignoring poll - transport state {0}", ReadyState), "Polling fine");                    
                 }
             }
 
@@ -122,8 +206,10 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             public void Call(params object[] args)
             {
-                Debug.WriteLine("writing close packet", "fine");
-                polling.Send(new Packet[] {new Packet(Packet.CLOSE)});
+                Debug.WriteLine("writing close packet", "Polling fine");
+                ImmutableList<Packet> packets = ImmutableList<Packet>.Empty;
+                packets = packets.Add(new Packet(Packet.CLOSE));
+                polling.Write(packets);
             }
         }
 
@@ -133,14 +219,14 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             if (ReadyState == ReadyStateEnum.OPEN)
             {
-                Debug.WriteLine("transport open - closing", "fine");
+                Debug.WriteLine("transport open - closing", "Polling fine");
                 closeListener.Call();
             }
             else
             {
                 // in case we're trying to close while
                 // handshaking is in progress (engine.io-client GH-164)
-                Debug.WriteLine("transport not open - deferring close", "fine");
+                Debug.WriteLine("transport not open - deferring close", "Polling fine");
                 this.Once(EVENT_OPEN, closeListener);
             }
         }
@@ -158,7 +244,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             public void Call(object data)
             {
                 var byteData = (byte[]) data;
-                polling.DoSend(byteData, () =>
+                polling.DoWrite(byteData, () =>
                 {
                     polling.Writable = true;
                     polling.Emit(EVENT_DRAIN);
@@ -167,12 +253,13 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         }
 
-        internal void Send(Packet[] packets)
+
+        protected override void Write(ImmutableList<Packet> packets)
         {
-            Writable = false;            
+            Writable = false;
 
             var callback = new SendEncodeCallback(this);
-            Parser.Parser.EncodePayload(packets, callback);
+            Parser.Parser.EncodePayload(packets.ToArray(), callback);
         }
 
         protected string Uri()
@@ -206,8 +293,10 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             return schema + "://" + this.Hostname + portString + this.Path + _query;
         }
 
-        protected abstract void DoSend(byte[] data, Action action);
+        protected abstract void DoWrite(byte[] data, Action action);
         protected abstract void DoPoll();
+
+
 
 
     }
