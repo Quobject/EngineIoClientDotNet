@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Quobject.EngineIoClientDotNet.Thread;
 using WebSocket4Net;
+using Quobject.EngineIoClientDotNet.Parser;
 
 namespace Quobject.EngineIoClientDotNet.Client.Transports
 {
@@ -20,27 +22,97 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             Name = NAME;
         }
 
-
         protected override void DoOpen()
         {
-            var headers = new Dictionary<string, string>();
-            Emit(EVENT_REQUEST_HEADERS, headers);
-            var wsHeaders = new List<KeyValuePair<string, string>>();
+            //var headers = new Dictionary<string, string>();
+            //Emit(EVENT_REQUEST_HEADERS, headers);
+            //var wsHeaders = new List<KeyValuePair<string, string>>();
 
-            ws = new WebSocket4Net.WebSocket(this.Uri(),"",null,wsHeaders,"","",WebSocketVersion.Rfc6455);
-
-
+            //ws = new WebSocket4Net.WebSocket(this.Uri(), "", null, wsHeaders, "", "", WebSocketVersion.Rfc6455);
+            ws = new WebSocket4Net.WebSocket(this.Uri());           
+            
+            ws.Opened += ws_Opened;
+            ws.Closed += ws_Closed;
+            ws.MessageReceived += ws_MessageReceived;
+            ws.Error += ws_Error;
+            ws.Open();                            
         }
 
-        protected override void DoClose()
+        private void ws_Opened(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            EventTasks.Exec(n => this.OnOpen());
+        }
+
+        void ws_Closed(object sender, EventArgs e)
+        {
+            EventTasks.Exec(n => this.OnClose());
+        }
+
+        void ws_MessageReceived(object sender, MessageReceivedEventArgs e)
+        {
+            EventTasks.Exec(n => this.OnData(e.Message));
+        }
+
+        void ws_Error(object sender, SuperSocket.ClientEngine.ErrorEventArgs e)
+        {
+            EventTasks.Exec(n => this.OnError("websocket error",e.Exception));
         }
 
         protected override void Write(System.Collections.Immutable.ImmutableList<Parser.Packet> packets)
         {
-            throw new NotImplementedException();
+            Writable = false;
+            foreach (var packet in packets)
+            {
+                Parser.Parser.EncodePacket(packet, new WriteEncodeCallback( this));
+            }
+
+            // fake drain
+            // defer to next tick to allow Socket to clear writeBuffer
+            EasyTimer.SetTimeout(() =>
+            {
+                Writable = true;
+                Emit(EVENT_DRAIN);
+            }, 0);
         }
+
+        public class WriteEncodeCallback : IEncodeCallback
+        {
+            private WebSocket webSocket;
+
+            public WriteEncodeCallback(WebSocket webSocket)
+            {
+                this.webSocket = webSocket;
+            }
+
+            public void Call(object data)
+            {
+                if (data is string)
+                {
+                    webSocket.ws.Send((string) data);
+                }
+                else if (data is byte[])
+                {                    
+                    var d = (byte[]) data;
+                    webSocket.ws.Send(d, 0, d.Length);
+                }
+            }
+        }
+
+
+
+        protected override void DoClose()
+        {
+            if (ws != null)
+            {
+                ws.Opened -= ws_Opened;
+                ws.Closed -= ws_Closed;
+                ws.MessageReceived -= ws_MessageReceived;
+                ws.Error -= ws_Error;
+                ws.Close();
+            }
+        }
+
+
 
         protected string Uri()
         {
