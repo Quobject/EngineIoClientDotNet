@@ -78,6 +78,7 @@
     <Compile Include="Parser\Packet.cs" />
     <Compile Include="Parser\Parser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Thread\EasyTimer.cs" />
     <Compile Include="Thread\RequestTasks.cs" />
     <Compile Include="Thread\EventTasks.cs" />
   </ItemGroup>
