@@ -191,17 +191,8 @@ namespace Quobject.EngineIoClientDotNet.Client
 
             transport.On(EVENT_DRAIN, new EventDrainListener(this));
             transport.On(EVENT_PACKET, new EventPacketListener(this));
-
-
-
-
-
-
-
-
-
-
-
+            transport.On(EVENT_ERROR, new EventErrorListener(this));
+            transport.On(EVENT_CLOSE, new EventCloseListener(this));
         }
 
         private class EventDrainListener : IListener
@@ -236,19 +227,31 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         private class EventErrorListener : IListener
         {
+            private Socket socket;
 
-            void IListener.Call(params object[] args)
+            public EventErrorListener(Socket socket)
             {
+                this.socket = socket;
+            }
 
+            public void Call(params object[] args)
+            {
+                socket.OnError(args.Length > 0 ? (Exception) args[0] : null);
             }
         }
 
         private class EventCloseListener : IListener
         {
+            private Socket socket;
 
-            void IListener.Call(params object[] args)
+            public EventCloseListener(Socket socket)
             {
+                this.socket = socket;
+            }
 
+            public void Call(params object[] args)
+            {
+                socket.OnClose("transport close");
             }
         }
 
@@ -454,58 +457,77 @@ namespace Quobject.EngineIoClientDotNet.Client
         private void Probe(string name)
         {
             Debug.WriteLine(string.Format("probing transport '{0}'", name), "Socket fine");
-            ImmutableList<Transport> transport = ImmutableList<Transport>.Empty.Add(CreateTransport(name));
-            ImmutableList<bool> failed = ImmutableList<bool>.Empty.Add(false);
 
             PriorWebsocketSuccess = false;
 
-            ImmutableList<Action> cleanup = ImmutableList<Action>.Empty;
+            var parameters = new ProbeParameters
+            {
+                Transport = ImmutableList<Transport>.Empty.Add(CreateTransport(name)),
+                Failed = ImmutableList<bool>.Empty.Add(false),
+                Cleanup = ImmutableList<Action>.Empty,
+                Socket = this
+            };
 
-            IListener onTransportOpen = new OnTransportOpenListener(this, transport, failed, cleanup);
+            var onTransportOpen = new OnTransportOpenListener(parameters);
+            var freezeTransport = new FreezeTransportListener(parameters);
 
+            // Handle any error that happens while probing
+            var onError = new ProbingOnErrorListener(this, parameters.Transport, freezeTransport);
+            var onTransportClose = new ProbingOnTransportCloseListener(onError);
 
+            // When the socket is closed while we're probing
+            var onClose = new ProbingOnCloseListener(onError);
+
+            var onUpgrade = new ProbingOnUpgradeListener(freezeTransport, parameters.Transport);
+
+            parameters.Cleanup = parameters.Cleanup.SetItem(0, () =>
+            {
+                parameters.Transport[0].Off(Transport.EVENT_OPEN, onTransportOpen);
+                parameters.Transport[0].Off(Transport.EVENT_ERROR, onError);
+                parameters.Transport[0].Off(Transport.EVENT_CLOSE, onTransportClose);
+                Off(EVENT_CLOSE, onClose);
+                Off(EVENT_UPGRADING, onUpgrade);
+            });
+
+            parameters.Transport[0].Once(Transport.EVENT_OPEN, onTransportOpen);
+            parameters.Transport[0].Once(Transport.EVENT_ERROR, onError);
+            parameters.Transport[0].Once(Transport.EVENT_CLOSE, onTransportClose);
+
+            this.Once(EVENT_CLOSE, onClose);
+            this.Once(EVENT_UPGRADING, onUpgrade);
+
+            parameters.Transport[0].Open();
         }
 
+        private class ProbeParameters
+        {
+            public ImmutableList<Transport> Transport { get; set; }
+            public ImmutableList<bool> Failed { get; set; }
+            public ImmutableList<Action> Cleanup { get; set; }
+            public Socket Socket { get; set; }
+        }
 
         private class OnTransportOpenListener : IListener
         {
-            private Socket socket;
-            private ImmutableList<Transport> transport;
-            private ImmutableList<bool> failed;
-            private ImmutableList<Action> cleanup;
+            private ProbeParameters Parameters;
 
-            public OnTransportOpenListener(Socket socket)
-            {
-                this.socket = socket;
-            }
 
-            public OnTransportOpenListener(Socket socket, ImmutableList<Transport> transport, ImmutableList<bool> failed)
+            public OnTransportOpenListener(ProbeParameters parameters)
             {
-                this.socket = socket;
-                this.transport = transport;
-                this.failed = failed;
-            }
-
-            public OnTransportOpenListener(Socket socket, ImmutableList<Transport> transport, ImmutableList<bool> failed, ImmutableList<Action> cleanup)
-            {
-                this.socket = socket;
-                this.transport = transport;
-                this.failed = failed;
-                this.cleanup = cleanup;
+                this.Parameters = parameters;
             }
 
             void IListener.Call(params object[] args)
             {
-                if (failed[0])
+                if (Parameters.Failed[0])
                 {
                     return;
                 }
 
-                Debug.WriteLine(string.Format("probe transport '{0}' opened", transport[0].Name), "Socket fine");
+                Debug.WriteLine(string.Format("probe transport '{0}' opened", Parameters.Transport[0].Name), "Socket fine");
                 var packet = new Packet(Packet.PING, "probe");
-                transport[0].Send(ImmutableList<Packet>.Empty.Add(packet));
-                transport[0].Once(Client.Transport.EVENT_PACKET, new ProbeEventPacketListener(this));
-
+                Parameters.Transport[0].Send(ImmutableList<Packet>.Empty.Add(packet));
+                Parameters.Transport[0].Once(Client.Transport.EVENT_PACKET, new ProbeEventPacketListener(this));
             }
 
             private class ProbeEventPacketListener : IListener
@@ -516,141 +538,223 @@ namespace Quobject.EngineIoClientDotNet.Client
                 {
                     this._onTransportOpenListener = onTransportOpenListener;
                 }
-                
+
 
                 void IListener.Call(params object[] args)
                 {
-                    if (_onTransportOpenListener.failed[0])
+                    if (_onTransportOpenListener.Parameters.Failed[0])
                     {
                         return;
                     }
 
-                    var msg = (Packet)args[0];
-                    if (Packet.PONG == msg.Type && "probe" == (string) msg.Data) {
-                            Debug.WriteLine(string.Format("probe transport '{0}' pong", _onTransportOpenListener.transport[0].Name), "Socket fine");
-                            _onTransportOpenListener.socket.Upgrading = true;
-                            _onTransportOpenListener.socket.Emit(EVENT_UPGRADING, _onTransportOpenListener.transport[0]);
-                            Socket.PriorWebsocketSuccess = WebSocket.NAME == _onTransportOpenListener.transport[0].Name;
+                    var msg = (Packet) args[0];
+                    if (Packet.PONG == msg.Type && "probe" == (string) msg.Data)
+                    {
+                        Debug.WriteLine(
+                            string.Format("probe transport '{0}' pong", _onTransportOpenListener.Parameters.Transport[0].Name),
+                            "Socket fine");
+                        _onTransportOpenListener.Parameters.Socket.Upgrading = true;
+                        _onTransportOpenListener.Parameters.Socket.Emit(EVENT_UPGRADING, _onTransportOpenListener.Parameters.Transport[0]);
+                        Socket.PriorWebsocketSuccess = WebSocket.NAME == _onTransportOpenListener.Parameters.Transport[0].Name;
 
-                            Debug.WriteLine(string.Format("pausing current transport '{0}'", _onTransportOpenListener.socket.Transport.Name), "Socket fine");
-                        ((Polling) _onTransportOpenListener.socket.Transport).Pause(
+                        Debug.WriteLine(
+                            string.Format("pausing current transport '{0}'",
+                                _onTransportOpenListener.Parameters.Socket.Transport.Name), "Socket fine");
+                        ((Polling) _onTransportOpenListener.Parameters.Socket.Transport).Pause(
                             () =>
                             {
-                                if (_onTransportOpenListener.failed[0])
+                                if (_onTransportOpenListener.Parameters.Failed[0])
                                 {
                                     return;
                                 }
-                                    if (ReadyStateEnum.CLOSED == _onTransportOpenListener.socket.ReadyState || 
-                                        ReadyStateEnum.CLOSING == _onTransportOpenListener.socket.ReadyState) {
-                                        return;
-                                    }
+                                if (ReadyStateEnum.CLOSED == _onTransportOpenListener.Parameters.Socket.ReadyState ||
+                                    ReadyStateEnum.CLOSING == _onTransportOpenListener.Parameters.Socket.ReadyState)
+                                {
+                                    return;
+                                }
 
-                                    Debug.WriteLine("changing transport and sending upgrade packet", "Socket fine");
+                                Debug.WriteLine("changing transport and sending upgrade packet", "Socket fine");
 
-                                    cleanup[0].run();
+                                _onTransportOpenListener.Parameters.Cleanup[0]();
 
-                                    _onTransportOpenListener.socket.SetTransport(_onTransportOpenListener.transport[0]);
-                                    ImmutableList<Packet> packetList = ImmutableList<Packet>.Empty.Add(new Packet(Packet.UPGRADE));
-                                    _onTransportOpenListener.transport[0].Send(packetList);
-                                    _onTransportOpenListener.socket.Emit(EVENT_UPGRADE, _onTransportOpenListener.transport[0]);
-                                    _onTransportOpenListener.transport = _onTransportOpenListener.transport.RemoveAt(0);
-                                    _onTransportOpenListener.socket.Upgrading = false;
-                                    _onTransportOpenListener.socket.Flush();
-                                
+                                _onTransportOpenListener.Parameters.Socket.SetTransport(_onTransportOpenListener.transport[0]);
+                                ImmutableList<Packet> packetList =
+                                    ImmutableList<Packet>.Empty.Add(new Packet(Packet.UPGRADE));
+                                _onTransportOpenListener.Parameters.Transport[0].Send(packetList);
+                                _onTransportOpenListener.Parameters.Socket.Emit(EVENT_UPGRADE,
+                                    _onTransportOpenListener.Parameters.Transport[0]);
+                                _onTransportOpenListener.Parameters.Transport = _onTransportOpenListener.Parameters.Transport.RemoveAt(0);
+                                _onTransportOpenListener.Parameters.Socket.Upgrading = false;
+                                _onTransportOpenListener.Parameters.Socket.Flush();
+
                             });
-                                
-                    } else {
-                            Debug.WriteLine(string.Format("probe transport '{0}' failed", _onTransportOpenListener.transport[0].Name), "Socket fine");
-                            var err = new EngineIOException("probe error");
-                            _onTransportOpenListener.socket.Emit(EVENT_UPGRADE_ERROR, err);
-                        }
+
+                    }
+                    else
+                    {
+                        Debug.WriteLine(
+                            string.Format("probe transport '{0}' failed", _onTransportOpenListener.Parameters.Transport[0].Name),
+                            "Socket fine");
+                        var err = new EngineIOException("probe error");
+                        _onTransportOpenListener.Parameters.Socket.Emit(EVENT_UPGRADE_ERROR, err);
+                    }
 
                 }
             }
         }
 
-
-
-
         private class FreezeTransportListener : IListener
         {
-            private Socket socket;
+            private ProbeParameters Parameters;
 
-            public FreezeTransportListener(Socket socket)
+            public FreezeTransportListener(ProbeParameters parameters)
             {
-                this.socket = socket;
+                this.Parameters = parameters;
             }
 
             void IListener.Call(params object[] args)
             {
+                if (Parameters.Failed[0])
+                {
+                    return;
+                }
 
+                Parameters.Failed = Parameters.Failed.SetItem(0, true);
+
+                Parameters.Cleanup[0]();
+
+                Parameters.Transport[0].Close();
+                Parameters.Transport = Parameters.Transport.SetItem(0, null);
             }
         }
 
         private class ProbingOnErrorListener : IListener
         {
-            private Socket socket;
+            private readonly Socket _socket;
+            private readonly ImmutableList<Transport> _transport;
+            private readonly IListener _freezeTransport;
 
-            public ProbingOnErrorListener(Socket socket)
+            public ProbingOnErrorListener(Socket socket, ImmutableList<Transport> transport, IListener freezeTransport)
             {
-                this.socket = socket;
+                this._socket = socket;
+                this._transport = transport;
+                this._freezeTransport = freezeTransport;
             }
 
             void IListener.Call(params object[] args)
             {
+                object err = args[0];
+                EngineIOException error;
+                if (err is Exception) {
+                    error = new EngineIOException("probe error", (Exception)err);
+                } else if (err is string) {
+                    error = new EngineIOException("probe error: " + (string)err);
+                } else {
+                    error = new EngineIOException("probe error");
+                }
+                error.Transport = _transport[0].Name;
 
+                _freezeTransport.Call();
+
+                Debug.WriteLine(string.Format("probe transport \"%s\" failed because of error: %s", error.Transport,err), "Socket fine");
+                _socket.Emit(EVENT_UPGRADE_ERROR, error);
             }
         }
 
         private class ProbingOnTransportCloseListener : IListener
         {
-            private Socket socket;
+            private readonly IListener _onError;
 
-            public ProbingOnTransportCloseListener(Socket socket)
+            public ProbingOnTransportCloseListener(ProbingOnErrorListener onError)
             {
-                this.socket = socket;
+                this._onError = onError;
             }
 
             void IListener.Call(params object[] args)
             {
-
+                _onError.Call("transport closed");
             }
         }
 
         private class ProbingOnCloseListener : IListener
         {
-            private Socket socket;
+            private IListener _onError;
 
-            public ProbingOnCloseListener(Socket socket)
+            public ProbingOnCloseListener(ProbingOnErrorListener onError)
             {
-                this.socket = socket;
+                this._onError = onError;
             }
 
             void IListener.Call(params object[] args)
             {
-
+                _onError.Call("socket closed");
             }
         }
 
         private class ProbingOnUpgradeListener : IListener
         {
-            private Socket socket;
+            private readonly IListener _freezeTransport;
+            private readonly ImmutableList<Transport> _transport;
 
-            public ProbingOnUpgradeListener(Socket socket)
+            public ProbingOnUpgradeListener(FreezeTransportListener freezeTransport, ImmutableList<Transport> transport)
             {
-                this.socket = socket;
+                this._freezeTransport = freezeTransport;
+                this._transport = transport;
             }
 
             void IListener.Call(params object[] args)
             {
-
+                var to = (Transport)args[0];
+                if (_transport[0] != null && to.Name !=_transport[0].Name)
+                {
+                    Debug.WriteLine(string.Format("'{0}' works - aborting '{1}'", to.Name, _transport[0].Name), "Socket fine");
+                    _freezeTransport.Call();
+                }
             }
         }
 
 
-        private void OnClose(string p)
+        private void OnClose(string reason, Exception desc = null)
         {
-            throw new NotImplementedException();
+            if (this.ReadyState == ReadyStateEnum.OPENING || this.ReadyState == ReadyStateEnum.OPEN)
+            {
+                Debug.WriteLine(string.Format("socket close with reason: {0}", reason), "Socket fine");
+
+                // clear timers
+                if (this.PingIntervalTimer != null)
+                {
+                    this.PingIntervalTimer.Stop();
+                }
+                if (this.PingTimeoutTimer != null)
+                {
+                    this.PingTimeoutTimer.Stop();
+                }
+
+                EasyTimer.SetTimeout(() =>
+                {
+                    WriteBuffer = WriteBuffer.Clear();
+                    CallbackBuffer = CallbackBuffer.Clear();
+                    PrevBufferLen = 0;
+                }, 0);
+
+                // stop event from firing again for transport
+                this.Transport.Off(EVENT_CLOSE);
+
+                // ensure transport won't stay open
+                this.Transport.Close();
+
+                // ignore further transport communication
+                this.Transport.Off();
+
+                // set ready state
+                this.ReadyState = ReadyStateEnum.CLOSED;
+
+                // clear session id
+                this.Id = null;
+
+                // emit close events
+                this.Emit(EVENT_CLOSE, reason, desc);
+            }
         }
 
         ImmutableList<string> FilterUpgrades(IEnumerable<string> upgrades)
@@ -692,5 +796,10 @@ namespace Quobject.EngineIoClientDotNet.Client
         }
 
 
+
+        internal void OnError(Exception exception)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
