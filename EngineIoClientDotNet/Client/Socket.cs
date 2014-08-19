@@ -407,6 +407,28 @@ namespace Quobject.EngineIoClientDotNet.Client
             EventTasks.Exec(n => SendPacket(Packet.PING));
         }
 
+        public void Write(string msg, Action fn = null)
+        {
+            Send(msg,fn);
+        }
+
+        public void Write(byte[] msg, Action fn = null)
+        {
+            Send(msg, fn);
+        }
+
+        public void Send(string msg, Action fn = null)
+        {
+            EventTasks.Exec(n => SendPacket(Packet.MESSAGE, msg, fn));
+        }
+
+        public void Send(byte[] msg, Action fn = null)
+        {
+            EventTasks.Exec(n => SendPacket(Packet.MESSAGE, msg, fn));
+        }
+
+
+
         private void SendPacket(string type)
         {
             SendPacket(new Packet(type), null);
@@ -577,7 +599,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
                                 _onTransportOpenListener.Parameters.Cleanup[0]();
 
-                                _onTransportOpenListener.Parameters.Socket.SetTransport(_onTransportOpenListener.transport[0]);
+                                _onTransportOpenListener.Parameters.Socket.SetTransport(_onTransportOpenListener.Parameters.Transport[0]);
                                 ImmutableList<Packet> packetList =
                                     ImmutableList<Packet>.Empty.Add(new Packet(Packet.UPGRADE));
                                 _onTransportOpenListener.Parameters.Transport[0].Send(packetList);
@@ -713,6 +735,18 @@ namespace Quobject.EngineIoClientDotNet.Client
             }
         }
 
+        public Socket Close()
+        {
+            EventTasks.Exec(n =>
+            {
+                if ( this.ReadyState == ReadyStateEnum.OPENING || this.ReadyState == ReadyStateEnum.OPEN) {
+                    this.OnClose("forced close");
+                    Debug.WriteLine("socket closing - telling transport to close", "Socket fine");
+                    Transport.Close();
+                }                
+            });
+            return this;
+        }
 
         private void OnClose(string reason, Exception desc = null)
         {
@@ -797,9 +831,13 @@ namespace Quobject.EngineIoClientDotNet.Client
 
 
 
+
         internal void OnError(Exception exception)
         {
-            throw new NotImplementedException();
+            Debug.WriteLine(string.Format("socket error {0}", exception.Message), "Socket fine");
+            PriorWebsocketSuccess = false;
+            Emit(EVENT_ERROR, exception);
+            OnClose("transport error", exception);
         }
     }
 }
