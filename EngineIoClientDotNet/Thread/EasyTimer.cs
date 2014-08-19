@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace Quobject.EngineIoClientDotNet.Thread
 {
     //from http://www.dailycoding.com/Posts/easytimer__javascript_style_settimeout_and_setinterval_in_c.aspx
     public static class EasyTimer
     {
-        public static IDisposable SetInterval(Action method, int delayInMilliseconds)
+        public static Timer SetInterval(Action method, long delayInMilliseconds)
         {
             var timer = new System.Timers.Timer(delayInMilliseconds);
             timer.Elapsed += (source, e) => method();
@@ -19,10 +20,10 @@ namespace Quobject.EngineIoClientDotNet.Thread
 
             // Returns a stop handle which can be used for stopping
             // the timer, if required
-            return timer as IDisposable;
+            return timer;
         }
 
-        public static IDisposable SetTimeout(Action method, int delayInMilliseconds)
+        public static Timer SetTimeout(Action method, long delayInMilliseconds)
         {
             var timer = new System.Timers.Timer(delayInMilliseconds);
             timer.Elapsed += (source, e) => method();
@@ -33,7 +34,7 @@ namespace Quobject.EngineIoClientDotNet.Thread
 
             // Returns a stop handle which can be used for stopping
             // the timer, if required
-            return timer as IDisposable;
+            return timer;
         }
     }
 }

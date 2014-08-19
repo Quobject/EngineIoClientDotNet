@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ namespace Quobject.EngineIoClientDotNet.Client
     public class HandshakeData
     {
         public string Sid;
-        public  List<string> Upgrades = new List<string>();
+        public ImmutableList<string> Upgrades = ImmutableList<string>.Empty;
         public long PingInterval;
         public long PingTimeout;
 
@@ -23,8 +24,8 @@ namespace Quobject.EngineIoClientDotNet.Client
             var upgrades = data.GetValue("upgrades");
 
             foreach (var e in upgrades)
-            {   
-                Upgrades.Add(e.ToString());                                   
+            {
+                Upgrades = Upgrades.Add(e.ToString());                                   
             }
 
             Sid = data.GetValue("sid").Value<string>();

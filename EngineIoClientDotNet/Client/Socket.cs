@@ -4,8 +4,11 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using Quobject.EngineIoClientDotNet.Client.Transports;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
 using Quobject.EngineIoClientDotNet.Modules;
@@ -20,8 +23,8 @@ namespace Quobject.EngineIoClientDotNet.Client
         {
             OPENING,
             OPEN,
-            CLOSED,
-            PAUSED
+            CLOSING,
+            CLOSED
         }
 
         public static readonly string EVENT_OPEN = "open";
@@ -63,12 +66,12 @@ namespace Quobject.EngineIoClientDotNet.Client
         private ImmutableList<string> Transports;
         private ImmutableList<string> Upgrades;
         private ImmutableDictionary<string, string> Query;
-        private ConcurrentQueue<Packet> WriteBuffer = new ConcurrentQueue<Packet>();
-        private ConcurrentQueue<Action> CallbackBuffer = new ConcurrentQueue<Action>();
+        private ImmutableList<Packet> WriteBuffer = ImmutableList<Packet>.Empty;
+        private ImmutableList<Action> CallbackBuffer = ImmutableList<Action>.Empty;
         /*package*/
         private Transport Transport;
-        private Task PingTimeoutTimer;
-        private Task PingIntervalTimer;
+        private Timer PingTimeoutTimer;
+        private Timer PingIntervalTimer;
         private SSLContext SslContext;
 
         private ReadyStateEnum ReadyState;
@@ -174,8 +177,20 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         private void SetTransport(Transport transport)
         {
-           // continue here
-           
+            Debug.WriteLine(string.Format("setting transport '{0}'", transport.Name), "Socket fine");
+
+            if (this.Transport != null)
+            {
+                Debug.WriteLine(string.Format("clearing existing transport '{0}'", transport.Name), "Socket fine");
+                this.Transport.Off();
+            }
+
+            Transport = transport;
+
+            Emit(EVENT_TRANSPORT, transport);
+
+            transport.On(EVENT_DRAIN, new EventDrainListener(this));
+            transport.On(EVENT_PACKET, new EventPacketListener(this));
 
 
 
@@ -187,6 +202,54 @@ namespace Quobject.EngineIoClientDotNet.Client
 
 
 
+        }
+
+        private class EventDrainListener : IListener
+        {
+            private Socket socket;
+
+            public EventDrainListener(Socket socket)
+            {                
+                this.socket = socket;
+            }
+
+            void IListener.Call(params object[] args)
+            {
+                socket.OnDrain();
+            }
+        }
+
+        private class EventPacketListener : IListener
+        {
+            private Socket socket;
+
+            public EventPacketListener(Socket socket)
+            {
+                this.socket = socket;
+            }
+
+            void IListener.Call(params object[] args)
+            {
+                socket.OnPacket(args.Length > 0 ? (Packet) args[0] : null);
+            }
+        }
+
+        private class EventErrorListener : IListener
+        {
+
+            void IListener.Call(params object[] args)
+            {
+
+            }
+        }
+
+        private class EventCloseListener : IListener
+        {
+
+            void IListener.Call(params object[] args)
+            {
+
+            }
         }
 
 
@@ -219,6 +282,415 @@ namespace Quobject.EngineIoClientDotNet.Client
                 return opts;
             }
         }
+
+
+        internal void OnDrain()
+        {
+            for (int i = 0; i < this.PrevBufferLen; i++)
+            {
+                var callback = this.CallbackBuffer[i];
+                if (callback != null)
+                {
+                    callback();
+                }
+            }
+
+            WriteBuffer = WriteBuffer.RemoveRange(0,PrevBufferLen);
+            CallbackBuffer = CallbackBuffer.RemoveRange(0,PrevBufferLen);
+
+            this.PrevBufferLen = 0;
+            if (this.WriteBuffer.Count == 0)
+            {
+                this.Emit(EVENT_DRAIN);
+            }
+            else
+            {
+                this.Flush();
+            }
+        }
+
+        private void Flush()
+        {
+            if (ReadyState != ReadyStateEnum.CLOSED && this.Transport.Writable && !Upgrading && WriteBuffer.Count != 0)
+            {
+                Debug.WriteLine(string.Format("flushing {0} packets in socket", WriteBuffer.Count), "Socket fine");
+                PrevBufferLen = WriteBuffer.Count;
+                var toSend = ImmutableList<Packet>.Empty.AddRange(WriteBuffer.ToArray());
+                Transport.Send(toSend);
+                Emit(EVENT_FLUSH);
+            }
+        }
+
+        internal void OnPacket(Packet packet)
+        {
+            if (ReadyState == ReadyStateEnum.OPENING || ReadyState == ReadyStateEnum.OPEN)
+            {
+                Debug.WriteLine(string.Format("socket received: type '{0}', data '{0}'", packet.Type, packet.Data), "Socket fine");
+
+                Emit(EVENT_PACKET, packet);
+                Emit(EVENT_HEARTBEAT);
+
+                if (packet.Type == Packet.OPEN)
+                {
+                    OnHandshake(new HandshakeData((string) packet.Data));
+
+                }
+
+
+            }
+            else
+            {
+                Debug.WriteLine(string.Format("packet received with socket readyState '{0}'", ReadyState), "Socket fine");
+            }
+            
+        }
+
+        private void OnHandshake(HandshakeData handshakeData)
+        {
+            Emit(EVENT_HANDSHAKE, handshakeData);
+            Id = handshakeData.Sid;
+            Transport.Query = Transport.Query.Add("sid", handshakeData.Sid);
+            Upgrades = FilterUpgrades(handshakeData.Upgrades);
+            PingInterval = handshakeData.PingInterval;
+            PingTimeout = handshakeData.PingTimeout;
+            OnOpen();
+            // In case open handler closes socket
+            if (ReadyStateEnum.CLOSED == this.ReadyState)
+            {
+                return;
+            }
+            this.SetPing();
+
+            this.Off(EVENT_HEARTBEAT, new OnHeartbeatAsListener(this));
+            this.On(EVENT_HEARTBEAT, new OnHeartbeatAsListener(this));
+
+        }
+
+        private class OnHeartbeatAsListener : IListener
+        {
+            private Socket socket;
+
+            public OnHeartbeatAsListener(Socket socket)
+            {
+                this.socket = socket;
+            }
+
+            void IListener.Call(params object[] args)
+            {
+                socket.OnHeartbeat(args.Length > 0 ? (long) args[0] : 0);
+            }
+        }
+
+       
+
+        private void SetPing()
+        {
+            if (this.PingIntervalTimer != null)
+            {
+                PingIntervalTimer.Stop();
+            }
+
+            PingIntervalTimer = EasyTimer.SetTimeout(() => Thread.HeartBeatTasks.Exec(n => EventTasks.Exec(n2 =>
+            {
+                Debug.WriteLine(string.Format("cwriting ping packet - expecting pong within {0}ms", PingTimeout), "Socket fine");
+                Ping();
+                OnHeartbeat(PingTimeout);
+
+            })), PingInterval);
+        }
+
+        private void Ping()
+        {
+            EventTasks.Exec(n => SendPacket(Packet.PING));
+        }
+
+        private void SendPacket(string type)
+        {
+            SendPacket(new Packet(type), null);
+        }
+
+        private void SendPacket(string type, string data, Action fn)
+        {
+            SendPacket(new Packet(type, data), fn);
+        }
+
+        private void SendPacket(string type, byte[] data, Action fn)
+        {
+            SendPacket(new Packet(type, data), fn);
+        }
+
+        private void SendPacket(Packet packet, Action fn)
+        {
+            if (fn == null)
+            {
+                fn = () => { };
+            }
+
+            Emit(EVENT_PACKET_CREATE, packet);
+            WriteBuffer = WriteBuffer.Add(packet);
+            CallbackBuffer = CallbackBuffer.Add(fn);
+            Flush();
+        }
+
+
+        private void OnOpen()
+        {
+            Debug.WriteLine("socket open", "Socket fine");
+            ReadyState = ReadyStateEnum.OPEN;
+            PriorWebsocketSuccess = WebSocket.NAME == Transport.Name;
+            Emit(EVENT_OPEN);
+            Flush();
+
+            if (ReadyState == ReadyStateEnum.OPEN && Upgrade && Transport is Polling)
+            {
+                Debug.WriteLine("starting upgrade probes", "Socket fine");
+                foreach (var upgrade in Upgrades)
+                {
+                    Probe(upgrade);
+                }
+            }
+        }
+
+        private void Probe(string name)
+        {
+            Debug.WriteLine(string.Format("probing transport '{0}'", name), "Socket fine");
+            ImmutableList<Transport> transport = ImmutableList<Transport>.Empty.Add(CreateTransport(name));
+            ImmutableList<bool> failed = ImmutableList<bool>.Empty.Add(false);
+
+            PriorWebsocketSuccess = false;
+
+            ImmutableList<Action> cleanup = ImmutableList<Action>.Empty;
+
+            IListener onTransportOpen = new OnTransportOpenListener(this, transport, failed, cleanup);
+
+
+        }
+
+
+        private class OnTransportOpenListener : IListener
+        {
+            private Socket socket;
+            private ImmutableList<Transport> transport;
+            private ImmutableList<bool> failed;
+            private ImmutableList<Action> cleanup;
+
+            public OnTransportOpenListener(Socket socket)
+            {
+                this.socket = socket;
+            }
+
+            public OnTransportOpenListener(Socket socket, ImmutableList<Transport> transport, ImmutableList<bool> failed)
+            {
+                this.socket = socket;
+                this.transport = transport;
+                this.failed = failed;
+            }
+
+            public OnTransportOpenListener(Socket socket, ImmutableList<Transport> transport, ImmutableList<bool> failed, ImmutableList<Action> cleanup)
+            {
+                this.socket = socket;
+                this.transport = transport;
+                this.failed = failed;
+                this.cleanup = cleanup;
+            }
+
+            void IListener.Call(params object[] args)
+            {
+                if (failed[0])
+                {
+                    return;
+                }
+
+                Debug.WriteLine(string.Format("probe transport '{0}' opened", transport[0].Name), "Socket fine");
+                var packet = new Packet(Packet.PING, "probe");
+                transport[0].Send(ImmutableList<Packet>.Empty.Add(packet));
+                transport[0].Once(Client.Transport.EVENT_PACKET, new ProbeEventPacketListener(this));
+
+            }
+
+            private class ProbeEventPacketListener : IListener
+            {
+                private OnTransportOpenListener _onTransportOpenListener;
+
+                public ProbeEventPacketListener(OnTransportOpenListener onTransportOpenListener)
+                {
+                    this._onTransportOpenListener = onTransportOpenListener;
+                }
+                
+
+                void IListener.Call(params object[] args)
+                {
+                    if (_onTransportOpenListener.failed[0])
+                    {
+                        return;
+                    }
+
+                    var msg = (Packet)args[0];
+                    if (Packet.PONG == msg.Type && "probe" == (string) msg.Data) {
+                            Debug.WriteLine(string.Format("probe transport '{0}' pong", _onTransportOpenListener.transport[0].Name), "Socket fine");
+                            _onTransportOpenListener.socket.Upgrading = true;
+                            _onTransportOpenListener.socket.Emit(EVENT_UPGRADING, _onTransportOpenListener.transport[0]);
+                            Socket.PriorWebsocketSuccess = WebSocket.NAME == _onTransportOpenListener.transport[0].Name;
+
+                            Debug.WriteLine(string.Format("pausing current transport '{0}'", _onTransportOpenListener.socket.Transport.Name), "Socket fine");
+                        ((Polling) _onTransportOpenListener.socket.Transport).Pause(
+                            () =>
+                            {
+                                if (_onTransportOpenListener.failed[0])
+                                {
+                                    return;
+                                }
+                                    if (ReadyStateEnum.CLOSED == _onTransportOpenListener.socket.ReadyState || 
+                                        ReadyStateEnum.CLOSING == _onTransportOpenListener.socket.ReadyState) {
+                                        return;
+                                    }
+
+                                    Debug.WriteLine("changing transport and sending upgrade packet", "Socket fine");
+
+                                    cleanup[0].run();
+
+                                    _onTransportOpenListener.socket.SetTransport(_onTransportOpenListener.transport[0]);
+                                    ImmutableList<Packet> packetList = ImmutableList<Packet>.Empty.Add(new Packet(Packet.UPGRADE));
+                                    _onTransportOpenListener.transport[0].Send(packetList);
+                                    _onTransportOpenListener.socket.Emit(EVENT_UPGRADE, _onTransportOpenListener.transport[0]);
+                                    _onTransportOpenListener.transport = _onTransportOpenListener.transport.RemoveAt(0);
+                                    _onTransportOpenListener.socket.Upgrading = false;
+                                    _onTransportOpenListener.socket.Flush();
+                                
+                            });
+                                
+                    } else {
+                            Debug.WriteLine(string.Format("probe transport '{0}' failed", _onTransportOpenListener.transport[0].Name), "Socket fine");
+                            var err = new EngineIOException("probe error");
+                            _onTransportOpenListener.socket.Emit(EVENT_UPGRADE_ERROR, err);
+                        }
+
+                }
+            }
+        }
+
+
+
+
+        private class FreezeTransportListener : IListener
+        {
+            private Socket socket;
+
+            public FreezeTransportListener(Socket socket)
+            {
+                this.socket = socket;
+            }
+
+            void IListener.Call(params object[] args)
+            {
+
+            }
+        }
+
+        private class ProbingOnErrorListener : IListener
+        {
+            private Socket socket;
+
+            public ProbingOnErrorListener(Socket socket)
+            {
+                this.socket = socket;
+            }
+
+            void IListener.Call(params object[] args)
+            {
+
+            }
+        }
+
+        private class ProbingOnTransportCloseListener : IListener
+        {
+            private Socket socket;
+
+            public ProbingOnTransportCloseListener(Socket socket)
+            {
+                this.socket = socket;
+            }
+
+            void IListener.Call(params object[] args)
+            {
+
+            }
+        }
+
+        private class ProbingOnCloseListener : IListener
+        {
+            private Socket socket;
+
+            public ProbingOnCloseListener(Socket socket)
+            {
+                this.socket = socket;
+            }
+
+            void IListener.Call(params object[] args)
+            {
+
+            }
+        }
+
+        private class ProbingOnUpgradeListener : IListener
+        {
+            private Socket socket;
+
+            public ProbingOnUpgradeListener(Socket socket)
+            {
+                this.socket = socket;
+            }
+
+            void IListener.Call(params object[] args)
+            {
+
+            }
+        }
+
+
+        private void OnClose(string p)
+        {
+            throw new NotImplementedException();
+        }
+
+        ImmutableList<string> FilterUpgrades(IEnumerable<string> upgrades)
+        {
+            var filterUpgrades = ImmutableList<string>.Empty;
+            foreach( var upgrade in upgrades)
+            {
+                if (Transports.Contains(upgrade))
+                {
+                    filterUpgrades = filterUpgrades.Add(upgrade);
+                }
+            }
+            return filterUpgrades;
+        }
+
+
+
+        internal void OnHeartbeat(long timeout)
+        {
+            if (this.PingTimeoutTimer != null)
+            {
+                PingTimeoutTimer.Stop();
+            }
+
+            if (timeout <= 0)
+            {
+                timeout = this.PingInterval + this.PingTimeout;
+            }
+
+            PingTimeoutTimer = EasyTimer.SetTimeout(() => Thread.HeartBeatTasks.Exec(n =>
+            {
+                if (ReadyState == ReadyStateEnum.CLOSED)
+                {
+                    return;
+                }
+                OnClose("ping timeout");
+            }), timeout);
+
+        }
+
 
     }
 }
