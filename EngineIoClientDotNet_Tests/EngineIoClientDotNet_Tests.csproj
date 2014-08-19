@@ -58,7 +58,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientTests\Connection.cs" />
+    <Compile Include="ClientTests\ConnectionTest.cs" />
     <Compile Include="ClientTests\HandshakeDataTests.cs" />
+    <Compile Include="ClientTests\TransportTest.cs" />
     <Compile Include="ModulesTests\EmitterTests.cs" />
     <Compile Include="ModulesTests\UTF8Tests.cs" />
     <Compile Include="ModulesTests\ParseQSTests.cs" />

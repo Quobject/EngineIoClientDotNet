@@ -53,7 +53,8 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
                 this.callbacks[eventString] = ImmutableList<IListener>.Empty;            
             }
             ImmutableList<IListener> callbacksLocal = this.callbacks[eventString];
-            this.callbacks[eventString] = callbacksLocal.Add(fn);
+            callbacksLocal = callbacksLocal.Add(fn);
+            this.callbacks[eventString] = callbacksLocal;
             return this;
         }
 
