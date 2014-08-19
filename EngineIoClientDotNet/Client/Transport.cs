@@ -35,7 +35,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         public bool Writable;
         public string Name;
-        public Dictionary<string, string> Query;
+        public ImmutableDictionary<string, string> Query;
 
         protected bool Secure;
         protected bool TimestampRequests;
@@ -44,7 +44,7 @@ namespace Quobject.EngineIoClientDotNet.Client
         protected string Hostname;
         protected string TimestampParam;
         public SSLContext SSLContext;
-        protected System.Net.Sockets.Socket Socket;
+        protected Socket Socket;
 
         protected ReadyStateEnum ReadyState = ReadyStateEnum.CLOSED;
 
@@ -160,9 +160,9 @@ namespace Quobject.EngineIoClientDotNet.Client
             public bool TimestampRequests;
             public int Port;
             public int PolicyPort;
-            public Dictionary<string, string> Query;
+            public ImmutableDictionary<string, string> Query;
             public SSLContext SSLContext;
-            internal System.Net.Sockets.Socket Socket;
+            internal Socket Socket;
         }
 
 

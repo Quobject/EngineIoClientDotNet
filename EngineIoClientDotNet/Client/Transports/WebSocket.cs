@@ -1,4 +1,5 @@
-﻿using Quobject.EngineIoClientDotNet.Modules;
+﻿using System.Collections.Immutable;
+using Quobject.EngineIoClientDotNet.Modules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         private WebSocket4Net.WebSocket ws;
 
-        protected WebSocket(Options opts)
+        public WebSocket(Options opts)
             : base(opts)
         {
             Name = NAME;
@@ -116,10 +117,10 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         protected string Uri()
         {
-            Dictionary<string, string> query = this.Query;
+            ImmutableDictionary<string, string> query = this.Query;
             if (query == null)
             {
-                query = new Dictionary<string, string>();
+                query = ImmutableDictionary<string, string>.Empty;
             }
             string schema = this.Secure ? "wss" : "ws";
             string portString = "";

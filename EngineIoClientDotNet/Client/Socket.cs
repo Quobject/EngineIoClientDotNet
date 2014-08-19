@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -57,11 +60,11 @@ namespace Quobject.EngineIoClientDotNet.Client
         private string Hostname;
         private string Path;
         private string TimestampParam;
-        private List<string> Transports;
-        private List<string> Upgrades;
-        private Dictionary<string, string> Query;
-        private LinkedList<Packet> WriteBuffer = new LinkedList<Packet>();
-        private LinkedList<Action> CallbackBuffer = new LinkedList<Action>();
+        private ImmutableList<string> Transports;
+        private ImmutableList<string> Upgrades;
+        private ImmutableDictionary<string, string> Query;
+        private ConcurrentQueue<Packet> WriteBuffer = new ConcurrentQueue<Packet>();
+        private ConcurrentQueue<Action> CallbackBuffer = new ConcurrentQueue<Action>();
         /*package*/
         private Transport Transport;
         private Task PingTimeoutTimer;
@@ -93,7 +96,7 @@ namespace Quobject.EngineIoClientDotNet.Client
         {
             if (options.Host != null)
             {
-                var pieces = options.Host.Split(":");
+                var pieces = options.Host.Split(':');
                 options.Hostname = pieces[0];
                 if (pieces.Length > 1)
                 {
@@ -105,30 +108,98 @@ namespace Quobject.EngineIoClientDotNet.Client
             SslContext = options.SSLContext;
             Hostname = options.Hostname;
             Port = options.Port;
-            Query = options.Query != null ? ParseQS.Decode(options.Query) : new Dictionary<string, string>();
+            Query = options.QueryString != null ? ParseQS.Decode(options.QueryString) : ImmutableDictionary<string, string>.Empty;
             Upgrade = options.Upgrade;
             Path = (options.Path ?? "/engine.io").Replace("/$", "") + "/";
             TimestampParam = (options.TimestampParam ?? "t");
             TimestampRequests = options.TimestampRequests;
-            Transports = options.Transports ?? new List<string>() {Polling.NAME, WebSocket.NAME};
+            Transports = options.Transports ?? ImmutableList<string>.Empty.Add(Polling.NAME).Add(WebSocket.NAME);
             PolicyPort = options.PolicyPort != 0 ? options.PolicyPort : 843;
             RememberUpgrade = options.RememberUpgrade;
         }
 
+        public Socket Open()
+        {
+            EventTasks.Exec(n =>
+            {
+                string transportName;
+                if (RememberUpgrade && PriorWebsocketSuccess && Transports.Contains(WebSocket.NAME))
+                {
+                    transportName = WebSocket.NAME;
+                }
+                else
+                {
+                    transportName = Transports[0];
+                }
+                ReadyState = ReadyStateEnum.OPENING;
+                var transport = CreateTransport(transportName);
+                SetTransport(transport);
+                transport.Open();
+            });
+            return this;
+        }
+
+        private Transport CreateTransport(string name)
+        {
+            Debug.WriteLine(string.Format("creating transport '{0}'",name), "Socket fine");
+            var query = Query.Add("EIO", Parser.Parser.Protocol.ToString());
+            query = query.Add("transport", name);
+            if (Id != null)
+            {
+                query = query.Add("sid", Id);
+            }
+            var options = new Transport.Options();
+            options.SSLContext = SslContext;
+            options.Hostname = Hostname;
+            options.Port = Port;
+            options.Secure = Secure;
+            options.Path = Path;
+            options.Query = query;
+            options.TimestampRequests = TimestampRequests;
+            options.TimestampParam = TimestampParam;
+            options.PolicyPort = PolicyPort;
+            options.Socket = this;
+
+            if (name == WebSocket.NAME)
+            {
+                return new WebSocket(options);
+            }
+            else if (name == Polling.NAME)
+            {
+                return new PollingXHR(options);
+            }
+
+            throw new EngineIOException("CreateTransport failed");
+        }
+
+        private void SetTransport(Transport transport)
+        {
+           // continue here
+           
 
 
+
+
+
+
+
+
+
+
+
+        }
 
 
         public class Options : Transport.Options
         {
 
-            public List<string> Transports;
+            public ImmutableList<string> Transports;
 
             public bool Upgrade = true;
 
             public bool RememberUpgrade;
             public string Host;
-            public string Query;
+            public string QueryString;
 
             public static Options FromURI(Uri uri, Options opts)
             {
@@ -142,7 +213,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
                 if (!string.IsNullOrEmpty(uri.Query))
                 {
-                    opts.Query = uri.Query;
+                    opts.QueryString = uri.Query;
                 }
 
                 return opts;

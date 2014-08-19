@@ -1,4 +1,5 @@
-﻿using Quobject.EngineIoClientDotNet.Modules;
+﻿using System.Collections.Immutable;
+using Quobject.EngineIoClientDotNet.Modules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,13 +37,16 @@ namespace Quobject.EngineIoClientDotNet_Tests.ModulesTests
             Dictionary<string, string> obj;
 
             obj = new Dictionary<string, string> {{"a", "b"}};
-            Assert.Equal(ParseQS.Encode(obj),"a=b");
+            var imObj = ImmutableDictionary<string, string>.Empty.AddRange(obj);
+            Assert.Equal(ParseQS.Encode(imObj), "a=b");
 
             obj = new Dictionary<string, string> { { "a", "b" }, { "c", "d" } };
-            Assert.Equal(ParseQS.Encode(obj), "a=b&c=d");
+            imObj = ImmutableDictionary<string, string>.Empty.AddRange(obj);
+            Assert.Equal(ParseQS.Encode(imObj), "a=b&c=d");
 
             obj = new Dictionary<string, string> { { "a", "b" }, { "c", "tobi rocks" } };
-            Assert.Equal(ParseQS.Encode(obj), "a=b&c=tobi%20rocks");
+            imObj = ImmutableDictionary<string, string>.Empty.AddRange(obj);
+            Assert.Equal(ParseQS.Encode(imObj), "a=b&c=tobi%20rocks");
 
         }
 

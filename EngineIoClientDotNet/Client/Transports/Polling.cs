@@ -264,10 +264,10 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         protected string Uri()
         {
-            Dictionary<string, string> query = this.Query;
+            var query = this.Query;
             if (query == null)
             {
-                query = new Dictionary<string, string>();
+                query = ImmutableDictionary<string, string>.Empty;
             }
             string schema = this.Secure ? "https" : "http";
             string portString = "";
