@@ -502,7 +502,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
             var onUpgrade = new ProbingOnUpgradeListener(freezeTransport, parameters.Transport);
 
-            parameters.Cleanup = parameters.Cleanup.SetItem(0, () =>
+            parameters.Cleanup = parameters.Cleanup.Add( () =>
             {
                 parameters.Transport[0].Off(Transport.EVENT_OPEN, onTransportOpen);
                 parameters.Transport[0].Off(Transport.EVENT_ERROR, onError);
@@ -769,7 +769,7 @@ namespace Quobject.EngineIoClientDotNet.Client
                     WriteBuffer = WriteBuffer.Clear();
                     CallbackBuffer = CallbackBuffer.Clear();
                     PrevBufferLen = 0;
-                }, 0);
+                }, 1);
 
                 // stop event from firing again for transport
                 this.Transport.Off(EVENT_CLOSE);

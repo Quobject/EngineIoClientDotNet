@@ -73,7 +73,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             {
                 Writable = true;
                 Emit(EVENT_DRAIN);
-            }, 0);
+            }, 1);
         }
 
         public class WriteEncodeCallback : IEncodeCallback

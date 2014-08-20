@@ -190,10 +190,10 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             public void Create()
             {
-                if (Data == null)
-                {
-                    return;
-                }
+                //if (Data == null)
+                //{
+                //    return;
+                //}
 
                 try
                 {
@@ -217,17 +217,20 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 }
 
                 OnRequestHeaders(headers);
-                Debug.WriteLine(string.Format("sending xhr with url {0} | data {1}", Method, Uri), "PollingXHR.Request fine");
+                Debug.WriteLine(string.Format("sending xhr with url {0} | data {1}", Uri, Data), "PollingXHR.Request fine");
 
                 RequestTasks.Exec( n =>
                 {                    
                     try
                     {
-                        Xhr.ContentLength = Data.Length;
-
-                        using (var requestStream = Xhr.GetRequestStream())
+                        if (Data != null)
                         {
-                            requestStream.Write(Data, 0, Data.Length);
+                            Xhr.ContentLength = Data.Length;
+
+                            using (var requestStream = Xhr.GetRequestStream())
+                            {
+                                requestStream.Write(Data, 0, Data.Length);
+                            }                            
                         }
 
                         using (var res = Xhr.GetResponse())
@@ -235,16 +238,19 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                             var responseHeaders = new Dictionary<string, string>();
                             for (int i = 0; i < res.Headers.Count; i++)
                             {
-                                Debug.WriteLine(string.Format("Header Name:{0}, Header value :{1}", res.Headers.Keys[i], res.Headers[i]), "PollingXHR.Request fine");
+                                Console.WriteLine(string.Format("Header Name:{0}, Header value :{1}", res.Headers.Keys[i], res.Headers[i]), "PollingXHR.Request fine");
                                 responseHeaders.Add(res.Headers.Keys[i], res.Headers[i]);
                             }
+
+                            var contentType = res.Headers["Content-Type"];
+
 
                             OnResponseHeaders(headers);
 
                             using (var resStream = res.GetResponseStream())
                             {
                                 Debug.Assert(resStream != null, "resStream != null");
-                                if (Xhr.ContentType.Equals("application/octet-stream",
+                                if (contentType.Equals("application/octet-stream",
                                     StringComparison.OrdinalIgnoreCase))
                                 {
                                     var buffer = new byte[16*1024];
