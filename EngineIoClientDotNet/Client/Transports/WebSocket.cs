@@ -127,7 +127,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             if (this.TimestampRequests)
             {
-                query.Add(this.TimestampParam, DateTime.Now + "-" + Transport.Timestamps++);
+                query = query.Add(this.TimestampParam, DateTime.Now.Ticks.ToString() + "-" + Transport.Timestamps++);
             }
 
             string _query = ParseQS.Encode(query);

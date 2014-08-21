@@ -45,10 +45,14 @@ namespace Quobject.EngineIoClientDotNet.Client
         protected string TimestampParam;
         public SSLContext SSLContext;
         protected Socket Socket;
+        protected bool Agent = false;
+        protected bool ForceBase64 = false;
+        protected bool ForceJsonp = false;
+
 
         protected ReadyStateEnum ReadyState = ReadyStateEnum.CLOSED;
 
-        public Transport(Options options)
+        protected Transport(Options options)
         {
             this.Path = options.Path;
             this.Hostname = options.Hostname;
@@ -59,6 +63,9 @@ namespace Quobject.EngineIoClientDotNet.Client
             this.TimestampRequests = options.TimestampRequests;
             this.SSLContext = options.SSLContext;
             this.Socket = options.Socket;
+            this.Agent = options.Agent;
+            this.ForceBase64 = options.ForceBase64;
+            this.ForceJsonp = options.ForceJsonp;
         }
 
         protected Transport OnError(string message, Exception exception)
@@ -152,12 +159,14 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         public class Options
         {
-
+            public bool Agent = false;
+            public bool ForceBase64 = false;
+            public bool ForceJsonp = false;
             public string Hostname;
             public string Path;
             public string TimestampParam;
             public bool Secure;
-            public bool TimestampRequests;
+            public bool TimestampRequests = true;
             public int Port;
             public int PolicyPort;
             public ImmutableDictionary<string, string> Query;

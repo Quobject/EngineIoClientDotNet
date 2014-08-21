@@ -274,8 +274,12 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             if (this.TimestampRequests)
             {
-                query.Add(this.TimestampParam, DateTime.Now + "-" + Transport.Timestamps++);
+                query = query.Add(this.TimestampParam, DateTime.Now.Ticks + "-" + Transport.Timestamps++);
             }
+
+            query = query.Add("b64", "1");
+
+
 
             string _query = ParseQS.Encode(query);
 

@@ -195,7 +195,7 @@ namespace Quobject.EngineIoClientDotNet.Parser
                     string msg;
                     try
                     {
-                        msg = data.Substring(i + 1, i + 1 + n);
+                        msg = data.Substring(i + 1, n);
                     }
                     catch (ArgumentOutOfRangeException)
                     {

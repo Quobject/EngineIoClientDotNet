@@ -51,7 +51,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         private bool Secure;
         private bool Upgrade;
-        private bool TimestampRequests;
+        private bool TimestampRequests = true;
         private bool Upgrading;
         private bool RememberUpgrade;
         private int Port;
@@ -79,6 +79,9 @@ namespace Quobject.EngineIoClientDotNet.Client
         private HeartBeatTasks HeartBeatTasks = new HeartBeatTasks();
         private Uri uri;
         private Options options;
+        private bool Agent = false;
+        private bool ForceBase64 = false;
+        private bool ForceJsonp = false;
 
         public Socket() : this(new Options())
         {
@@ -162,6 +165,10 @@ namespace Quobject.EngineIoClientDotNet.Client
             options.TimestampParam = TimestampParam;
             options.PolicyPort = PolicyPort;
             options.Socket = this;
+            options.Agent = this.Agent;
+            options.ForceBase64 = this.ForceBase64;
+            options.ForceJsonp = this.ForceJsonp;
+
 
             if (name == WebSocket.NAME)
             {
@@ -328,7 +335,7 @@ namespace Quobject.EngineIoClientDotNet.Client
         {
             if (ReadyState == ReadyStateEnum.OPENING || ReadyState == ReadyStateEnum.OPEN)
             {
-                Debug.WriteLine(string.Format("socket received: type '{0}', data '{0}'", packet.Type, packet.Data), "Socket fine");
+                Debug.WriteLine(string.Format("socket received: type '{0}', data '{1}'", packet.Type, packet.Data), "Socket fine");
 
                 Emit(EVENT_PACKET, packet);
                 Emit(EVENT_HEARTBEAT);
