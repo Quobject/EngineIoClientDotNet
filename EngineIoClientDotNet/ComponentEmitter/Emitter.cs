@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Reflection.Emit;
@@ -30,7 +29,6 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
         /// <returns>a reference to this object.</returns>
         public Emitter Emit(string eventString, params object[] args)
         {
-            //Debug.WriteLine("evenstring: " + eventString, "Emmiter Emit fine");
             if (this.callbacks.ContainsKey(eventString))
             {
                 ImmutableList<IListener> callbacksLocal = this.callbacks[eventString];                

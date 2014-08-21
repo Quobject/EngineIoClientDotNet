@@ -104,11 +104,6 @@ namespace Quobject.EngineIoClientDotNet.Parser
 
         internal static Packet DecodePacket(string data)
         {
-            if (data.StartsWith("b"))
-            {
-                return DecodeBase64Packet(data.Substring(1));
-            }
-
             int type;
             var s = data.Substring(0, 1);
             if (!int.TryParse(s, out type))
@@ -136,23 +131,6 @@ namespace Quobject.EngineIoClientDotNet.Parser
                 return new Packet(_packetsList[(byte) type], data.Substring(1));
             }
             return new Packet(_packetsList[(byte) type], null);
-        }
-
-        private static Packet DecodeBase64Packet(string msg)
-        {
-            int type;
-            var s = msg.Substring(0, 1);
-            if (!int.TryParse(s, out type))
-            {
-                type = -1;
-            }
-            if (type < 0 || type >= _packetsList.Count)
-            {
-                return _err;
-            }
-            msg = msg.Substring(1);
-            byte[] decodedFromBase64 = Convert.FromBase64String(msg);
-            return new Packet(_packetsList[(byte)type], decodedFromBase64);
         }
 
         internal static Packet DecodePacket(byte[] data)
