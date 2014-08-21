@@ -238,7 +238,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                             var responseHeaders = new Dictionary<string, string>();
                             for (int i = 0; i < res.Headers.Count; i++)
                             {
-                                Console.WriteLine(string.Format("Header Name:{0}, Header value :{1}", res.Headers.Keys[i], res.Headers[i]), "PollingXHR.Request fine");
+                                Debug.WriteLine(string.Format("Header Name:{0}, Header value :{1}", res.Headers.Keys[i], res.Headers[i]), "PollingXHR.Request fine");
                                 responseHeaders.Add(res.Headers.Keys[i], res.Headers[i]);
                             }
 
