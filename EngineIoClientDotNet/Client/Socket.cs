@@ -345,8 +345,21 @@ namespace Quobject.EngineIoClientDotNet.Client
                     OnHandshake(new HandshakeData((string) packet.Data));
 
                 }
-
-
+                else if (packet.Type == Packet.PONG)
+                {
+                    this.SetPing();
+                }
+                else if (packet.Type == Packet.ERROR)
+                {
+                    var err = new EngineIOException("server error");
+                    err.code = packet.Data;
+                    this.Emit(EVENT_ERROR, err);
+                }
+                else if (packet.Type == Packet.MESSAGE)
+                {
+                    Emit(EVENT_DATA, packet.Data);
+                    Emit(EVENT_MESSAGE, packet.Data);
+                }
             }
             else
             {
