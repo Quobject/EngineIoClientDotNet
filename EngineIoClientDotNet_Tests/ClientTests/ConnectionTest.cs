@@ -48,7 +48,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             public void Call(params object[] args)
             {
-                Console.WriteLine("message");
+                Console.WriteLine("message = " + args[0]);
             }
         }
 
