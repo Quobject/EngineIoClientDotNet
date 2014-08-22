@@ -60,6 +60,12 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
             return this;
         }
 
+        public Emitter On(string eventString, Action<string> fn)
+        {
+            var listener = new ListenerImpl(fn);
+            return this.On(eventString, listener);
+        }
+
         /// <summary>
         /// Adds a one time listener for the event.
         /// </summary>
@@ -161,6 +167,21 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
         void Call(params object[] args);
     }
 
+    public class ListenerImpl : IListener
+    {
+        private Action<string> fn;
+
+        public ListenerImpl(Action<string> fn)
+        {
+           
+            this.fn = fn;
+        }
+
+        public void Call(params object[] args)
+        {
+            fn((string)args[0]);
+        }
+    }
 
 
     public class OnceListener : IListener
