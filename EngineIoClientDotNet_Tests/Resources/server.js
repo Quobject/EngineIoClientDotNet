@@ -1,60 +1,46 @@
-var fs = require('fs');
-var engine = require('engine.io');
+// from engine.io-client\test\support
 
-var http;
-if (process.env.SSL) {
-  http = require('https').createServer({
-    key: fs.readFileSync(__dirname + '/key.pem'),
-    cert: fs.readFileSync(__dirname + '/cert.pem')
-  });
-} else {
-  http = require('http').createServer();
-}
+// this is a test server to support tests which make requests
 
-var server = engine.attach(http, {pingInterval: 500});
+var express = require('express');
+var app = express();
+var join = require('path').join;
+var http = require('http').Server(app);
+var server = require('engine.io').attach(http, {'pingInterval': 500});
+//var browserify = require('../../support/browserify');
 
-var port = process.env.PORT || 3000
+var port = process.env.PORT || 3000;
+//http.listen(port);
 http.listen(port, function() {
   console.log('Engine.IO server listening on port', port);
 });
 
-server.on('connection', function(socket) {
-  console.log('on connection');
+// server worker.js as raw file
+//app.use('/test/support', express.static(join(__dirname, 'public')));
+
+// server engine.io.js via browserify
+//app.get('/test/support/engine.io.js', function(err, res, next) {
+//  browserify(function(err, src) {
+//    if (err) return next(err);
+//    res.set('Content-Type', 'application/javascript');
+//    res.send(src);
+//  });
+//});
+
+server.on('connection', function(socket){
   socket.send('hi');
 
-  socket.on('message', function(message) {
-    socket.send(message);
+  // Bounce any received messages back
+  socket.on('message', function (data) {
+    if (data === 'give binary') {
+      var abv = new Int8Array(5);
+      for (var i = 0; i < 5; i++) {
+        abv[i] = i;
+      }
+      socket.send(abv);
+      return;
+    }
+
+    socket.send(data);
   });
-
-  socket.on('error', function(err) {
-    throw err;
-  });
-}).on('error', function(err) {
-  console.error(err);
-});
-
-var handleRequest = server.handleRequest;
-server.handleRequest = function(req, res) {
-  // echo a header value
-  var value = req.headers['x-engineio'];
-  if (value) {
-    res.setHeader('X-EngineIO', value);
-  }
-
-  handleRequest.call(this, req, res);
-};
-
-var headerValue;
-var handleUpgrade = server.handleUpgrade;
-server.handleUpgrade = function(req, socket, head) {
-  // echo a header value for websocket handshake
-  headerValue = req.headers['x-engineio'];
-  handleUpgrade.call(this, req, socket, head);
-};
-
-// FIXME: support parallel requests
-server.ws.on('headers', function(headers) {
-  if (headerValue) {
-    headers.push('X-EngineIO: ' + headerValue);
-  }
 });

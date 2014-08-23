@@ -222,10 +222,29 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 }
 
                 OnRequestHeaders(headers);
-                log.Info(string.Format("sending xhr with url {0} | data {1}", Uri, Data));
+                //log.Info(string.Format("sending xhr with url {0} | data {1}", Uri, dataString));
+                log.Info(string.Format("sending xhr with url {0}", Uri, Data));
+                if (Data == null)
+                {
+                    log.Info(string.Format("sending xhr with no data"));                    
+                }
+                else
+                {
+                    try
+                    {
+//                        var dataString = System.Text.Encoding.UTF8.GetString(Data);
+                        var dataString = BitConverter.ToString(Data);
+                        log.Info(string.Format("sending xhr with data {0}", dataString));
+                    }
+                    catch (Exception e)
+                    {
+                        log.Error(e);                        
+                        throw;
+                    }
+                }
 
                 RequestTasks.Exec( n =>
-                {                    
+                {
                     try
                     {
                         if (Data != null)
@@ -235,7 +254,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                             using (var requestStream = Xhr.GetRequestStream())
                             {
                                 requestStream.Write(Data, 0, Data.Length);
-                            }                            
+                            }
                         }
 
                         using (var res = Xhr.GetResponse())
@@ -283,6 +302,11 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                     {
                         log.Error("Create call failed", e);
                         OnError(e);
+                    }
+                    catch (System.Net.WebException e)
+                    {
+                        log.Error("Create call failed", e);
+                        OnError(e);                        
                     }
                 });
             }

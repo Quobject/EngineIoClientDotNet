@@ -366,7 +366,12 @@ namespace Quobject.EngineIoClientDotNet.Client
 
             if (ReadyState == ReadyStateEnum.OPENING || ReadyState == ReadyStateEnum.OPEN)
             {
-                log.Info(string.Format("socket received: type '{0}', data '{1}'", packet.Type, packet.Data));
+                string typeOfData = "null";
+                if (packet.Data != null)
+                {
+                    typeOfData = packet.Data.GetType().ToString();
+                }
+                log.Info(string.Format("socket received: type '{0}', data '{1}', type '{2}", packet.Type, packet.Data, typeOfData));
 
                 Emit(EVENT_PACKET, packet);
                 Emit(EVENT_HEARTBEAT);
@@ -448,7 +453,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
             PingIntervalTimer = EasyTimer.SetTimeout(() => Thread.HeartBeatTasks.Exec(n => EventTasks.Exec(n2 =>
             {
-                log.Info(string.Format("cwriting ping packet - expecting pong within {0}ms", PingTimeout));
+                log.Info(string.Format("writing ping packet - expecting pong within {0}ms", PingTimeout));
                 Ping();
                 OnHeartbeat(PingTimeout);
 
@@ -860,7 +865,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             }
         }
 
-        ImmutableList<string> FilterUpgrades(IEnumerable<string> upgrades)
+        public ImmutableList<string> FilterUpgrades(IEnumerable<string> upgrades)
         {
             var filterUpgrades = ImmutableList<string>.Empty;
             foreach( var upgrade in upgrades)

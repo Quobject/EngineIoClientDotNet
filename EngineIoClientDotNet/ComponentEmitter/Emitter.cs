@@ -8,6 +8,7 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Immutable;
+using log4net;
 
 namespace Quobject.EngineIoClientDotNet.ComponentEmitter
 {
@@ -30,7 +31,8 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
         /// <returns>a reference to this object.</returns>
         public Emitter Emit(string eventString, params object[] args)
         {
-            //log.Info("evenstring: " + eventString, "Emmiter Emit fine");
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            log.Info("Emitter emit event = " + eventString);
             if (this.callbacks.ContainsKey(eventString))
             {
                 ImmutableList<IListener> callbacksLocal = this.callbacks[eventString];                
@@ -60,17 +62,30 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
             return this;
         }
 
+        /// <summary>
+        ///  Listens on the event.
+        /// </summary>
+        /// <param name="eventString">event name</param>
+        /// <param name="fn"></param>
+        /// <returns>a reference to this object</returns>
+        public Emitter On(string eventString, Action fn)
+        {
+            var listener = new ListenerImpl(fn);
+            return this.On(eventString, listener);
+        }
+
+        /// <summary>
+        ///  Listens on the event.
+        /// </summary>
+        /// <param name="eventString">event name</param>
+        /// <param name="fn"></param>
+        /// <returns>a reference to this object</returns>
         public Emitter On(string eventString, Action<string> fn)
         {
             var listener = new ListenerImpl(fn);
             return this.On(eventString, listener);
         }
 
-        public Emitter On(string eventString, Action fn)
-        {
-            var listener = new ListenerImpl(fn);
-            return this.On(eventString, listener);
-        }
 
 
         /// <summary>
@@ -87,6 +102,18 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
             this.On(eventString, on);
             return this;
 
+        }
+
+        /// <summary>
+        /// Adds a one time listener for the event.
+        /// </summary>
+        /// <param name="eventString">an event name.</param>
+        /// <param name="fn"></param>
+        /// <returns>a reference to this object</returns>
+        public Emitter Once(string eventString, Action fn)
+        {
+            var listener = new ListenerImpl(fn);
+            return this.Once(eventString, listener);
         }
 
         /// <summary>
