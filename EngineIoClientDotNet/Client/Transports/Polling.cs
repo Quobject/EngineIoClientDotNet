@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using log4net;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
 using Quobject.EngineIoClientDotNet.Parser;
 using Quobject.EngineIoClientDotNet.Thread;
@@ -32,12 +33,14 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         public void Pause(Action onPause)
         {
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
             EventTasks.Exec(n =>
             {
                 ReadyState = ReadyStateEnum.PAUSED;
                 Action pause = () =>
                 {
-                    Debug.WriteLine("paused", "Polling fine");
+                    log.Info("paused");
                     ReadyState = ReadyStateEnum.PAUSED;
                     onPause();
                 };
@@ -49,7 +52,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
                     if (IsPolling)
                     {
-                        Debug.WriteLine("we are currently polling - waiting to pause", "Polling fine");
+                        log.Info("we are currently polling - waiting to pause");
                         total[0]++;
                         Once(EVENT_POLL_COMPLETE, new PauseEventPollCompleteListener(total, pause));
 
@@ -57,7 +60,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
                     if (!Writable)
                     {
-                        Debug.WriteLine("we are currently writing - waiting to pause", "Polling fine");
+                        log.Info("we are currently writing - waiting to pause");
                         total[0]++;
                         Once(EVENT_DRAIN, new PauseEventDrainListener(total, pause));
                     }
@@ -83,7 +86,9 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             public void Call(params object[] args)
             {
-                Debug.WriteLine("pre-pause writing complete", "Polling fine");
+                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+                log.Info("pre-pause writing complete");
                 if (--total[0] == 0)
                 {
                     pause();
@@ -105,7 +110,9 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             
             public void Call(params object[] args)
             {
-                Debug.WriteLine("pre-pause polling complete", "Polling fine");
+                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+                log.Info("pre-pause polling complete");
                 if (--total[0] == 0)
                 {
                     pause();
@@ -118,7 +125,9 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
         {
             EventTasks.Exec(n =>
             {
-                Debug.WriteLine("polling", "Polling fine");
+                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+                log.Info("polling");
                 IsPolling = true;
                 DoPoll();
                 Emit(EVENT_POLL);
@@ -167,7 +176,9 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         private void _onData(object data)
         {
-            Debug.WriteLine(string.Format("polling got data {0}",data), "Polling fine");
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+            log.Info(string.Format("polling got data {0}",data));
             var callback = new DecodePayloadCallback(this);
             if (data is string)
             {
@@ -189,7 +200,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 }
                 else
                 {
-                    Debug.WriteLine(string.Format("ignoring poll - transport state {0}", ReadyState), "Polling fine");                    
+                    log.Info(string.Format("ignoring poll - transport state {0}", ReadyState));                    
                 }
             }
 
@@ -206,7 +217,9 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             public void Call(params object[] args)
             {
-                Debug.WriteLine("writing close packet", "Polling fine");
+                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+                log.Info("writing close packet");
                 ImmutableList<Packet> packets = ImmutableList<Packet>.Empty;
                 packets = packets.Add(new Packet(Packet.CLOSE));
                 polling.Write(packets);
@@ -215,18 +228,20 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         protected override void DoClose()
         {
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
             var closeListener = new CloseListener(this);
 
             if (ReadyState == ReadyStateEnum.OPEN)
-            {
-                Debug.WriteLine("transport open - closing", "Polling fine");
+            {                      
+                log.Info("transport open - closing");
                 closeListener.Call();
             }
             else
             {
                 // in case we're trying to close while
                 // handshaking is in progress (engine.io-client GH-164)
-                Debug.WriteLine("transport not open - deferring close", "Polling fine");
+                log.Info("transport not open - deferring close");
                 this.Once(EVENT_OPEN, closeListener);
             }
         }

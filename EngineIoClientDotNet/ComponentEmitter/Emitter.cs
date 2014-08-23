@@ -30,7 +30,7 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
         /// <returns>a reference to this object.</returns>
         public Emitter Emit(string eventString, params object[] args)
         {
-            //Debug.WriteLine("evenstring: " + eventString, "Emmiter Emit fine");
+            //log.Info("evenstring: " + eventString, "Emmiter Emit fine");
             if (this.callbacks.ContainsKey(eventString))
             {
                 ImmutableList<IListener> callbacksLocal = this.callbacks[eventString];                
@@ -65,6 +65,13 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
             var listener = new ListenerImpl(fn);
             return this.On(eventString, listener);
         }
+
+        public Emitter On(string eventString, Action fn)
+        {
+            var listener = new ListenerImpl(fn);
+            return this.On(eventString, listener);
+        }
+
 
         /// <summary>
         /// Adds a one time listener for the event.
@@ -169,17 +176,31 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
 
     public class ListenerImpl : IListener
     {
-        private Action<string> fn;
+        private readonly Action fn1; 
+        private readonly Action<string> fn;
 
         public ListenerImpl(Action<string> fn)
         {
-           
+
             this.fn = fn;
+        }
+
+        public ListenerImpl(Action fn)
+        {
+
+            this.fn1 = fn;
         }
 
         public void Call(params object[] args)
         {
-            fn((string)args[0]);
+            if (fn != null)
+            {
+                fn((string) args[0]);
+            }
+            else
+            {
+                fn1();
+            }
         }
     }
 

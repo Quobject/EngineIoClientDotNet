@@ -8,6 +8,7 @@ using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Hosting;
+using log4net;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
 using Quobject.EngineIoClientDotNet.Thread;
 
@@ -124,7 +125,9 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         protected override void DoPoll()
         {
-            Debug.WriteLine("xhr poll", "PollingXHR fine");
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+            log.Info("xhr poll");
             sendXhr = Request();
             sendXhr.On(EVENT_DATA, new DoPollEventDataListener(this));
             sendXhr.On(EVENT_ERROR, new DoPollEventErrorListener(this));
@@ -194,10 +197,12 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 //{
                 //    return;
                 //}
+                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 
                 try
                 {
-                    Debug.WriteLine(string.Format("xhr open {0}: {0}",Method, Uri), "PollingXHR.Request fine");
+                    log.Info(string.Format("xhr open {0}: {0}",Method, Uri));
                     Xhr = (HttpWebRequest)WebRequest.Create(Uri);
                     Xhr.Method = Method;
                 }
@@ -217,7 +222,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 }
 
                 OnRequestHeaders(headers);
-                Debug.WriteLine(string.Format("sending xhr with url {0} | data {1}", Uri, Data), "PollingXHR.Request fine");
+                log.Info(string.Format("sending xhr with url {0} | data {1}", Uri, Data));
 
                 RequestTasks.Exec( n =>
                 {                    
@@ -238,7 +243,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                             var responseHeaders = new Dictionary<string, string>();
                             for (int i = 0; i < res.Headers.Count; i++)
                             {
-                                //Debug.WriteLine(string.Format("Header Name:{0}, Header value :{1}", res.Headers.Keys[i], res.Headers[i]), "PollingXHR.Request fine");
+                                //log.Info(string.Format("Header Name:{0}, Header value :{1}", res.Headers.Keys[i], res.Headers[i]));
                                 responseHeaders.Add(res.Headers.Keys[i], res.Headers[i]);
                             }
 
@@ -274,8 +279,9 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                             }
                         }
                     }
-                    catch (Exception e)
+                    catch (System.IO.IOException e)
                     {
+                        log.Error("Create call failed", e);
                         OnError(e);
                     }
                 });
