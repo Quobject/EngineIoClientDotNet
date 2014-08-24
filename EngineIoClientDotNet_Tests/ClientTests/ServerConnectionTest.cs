@@ -70,7 +70,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                 events.Enqueue(data);
             });
             socket.Open();
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(3));
+            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(6));
 
             socket.Close();
 

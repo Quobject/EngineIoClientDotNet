@@ -13,7 +13,7 @@ using Quobject.EngineIoClientDotNet.Modules;
 
 namespace Quobject.EngineIoClientDotNet.Client.Transports
 {
-    abstract public class Polling : Transport
+    public class Polling : Transport
     {
         public static readonly string NAME = "polling";
         public static readonly string EVENT_POLL = "poll";
@@ -21,10 +21,11 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         private bool IsPolling = false;
 
-        protected Polling(Options opts) : base(opts)
+        public Polling(Options opts) : base(opts)
         {
             Name = NAME;
         }
+
 
         protected override void DoOpen()
         {
@@ -277,7 +278,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             Parser.Parser.EncodePayload(packets.ToArray(), callback);
         }
 
-        protected string Uri()
+        public string Uri()
         {
             var query = this.Query;
             if (query == null)
@@ -312,8 +313,15 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             return schema + "://" + this.Hostname + portString + this.Path + _query;
         }
 
-        protected abstract void DoWrite(byte[] data, Action action);
-        protected abstract void DoPoll();
+        protected virtual void DoWrite(byte[] data, Action action)
+        {
+            
+        }
+
+        protected virtual void DoPoll()
+        {
+            
+        }
 
 
 

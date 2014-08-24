@@ -115,7 +115,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
 
 
-        protected string Uri()
+        public string Uri()
         {
             ImmutableDictionary<string, string> query = this.Query;
             if (query == null)
