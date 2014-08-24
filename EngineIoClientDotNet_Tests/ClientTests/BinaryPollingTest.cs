@@ -51,15 +51,15 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                     }
                     events.Enqueue(d);
                 });
-                System.Threading.Thread.Sleep(TimeSpan.FromSeconds(3));
-                log.Info("EVENT_OPEN 2");             
+                //System.Threading.Thread.Sleep(TimeSpan.FromSeconds(3));
+                //log.Info("EVENT_OPEN 2");             
                 socket.Send(binaryData);
             });
            
             socket.Open();
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(3));
+            //System.Threading.Thread.Sleep(TimeSpan.FromSeconds(3));
             //socket.Send(binaryData);
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(3));
+            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(2));
 
 
             socket.Close();

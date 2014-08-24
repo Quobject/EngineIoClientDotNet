@@ -522,11 +522,13 @@ namespace Quobject.EngineIoClientDotNet.Client
         {
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-            log.Info("socket open");
+            log.Info("socket open before call to flush()");
             ReadyState = ReadyStateEnum.OPEN;
             PriorWebsocketSuccess = WebSocket.NAME == Transport.Name;
-            Emit(EVENT_OPEN);
+
             Flush();
+            Emit(EVENT_OPEN);
+
 
             if (ReadyState == ReadyStateEnum.OPEN && Upgrade && Transport is Polling)
             {
