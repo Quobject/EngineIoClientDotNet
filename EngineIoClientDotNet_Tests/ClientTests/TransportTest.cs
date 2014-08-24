@@ -8,6 +8,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 {
     public class TransportTest
     {
+        
 
     }
 }

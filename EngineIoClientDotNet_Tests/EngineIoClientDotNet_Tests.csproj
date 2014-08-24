@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="ClientTests\Connection.cs" />
     <Compile Include="ClientTests\ConnectionTest.cs" />
+    <Compile Include="ClientTests\ServerConnectionTest.cs" />
     <Compile Include="ClientTests\HandshakeDataTests.cs" />
     <Compile Include="ClientTests\SocketTest.cs" />
     <Compile Include="ClientTests\TransportTest.cs" />

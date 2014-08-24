@@ -31,8 +31,8 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
         /// <returns>a reference to this object.</returns>
         public Emitter Emit(string eventString, params object[] args)
         {
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            log.Info("Emitter emit event = " + eventString);
+            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            //log.Info("Emitter emit event = " + eventString);
             if (this.callbacks.ContainsKey(eventString))
             {
                 ImmutableList<IListener> callbacksLocal = this.callbacks[eventString];                
@@ -80,11 +80,12 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
         /// <param name="eventString">event name</param>
         /// <param name="fn"></param>
         /// <returns>a reference to this object</returns>
-        public Emitter On(string eventString, Action<string> fn)
+        public Emitter On(string eventString, Action<object> fn)
         {
             var listener = new ListenerImpl(fn);
             return this.On(eventString, listener);
         }
+
 
 
 
@@ -204,9 +205,9 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
     public class ListenerImpl : IListener
     {
         private readonly Action fn1; 
-        private readonly Action<string> fn;
+        private readonly Action<object> fn;
 
-        public ListenerImpl(Action<string> fn)
+        public ListenerImpl(Action<object> fn)
         {
 
             this.fn = fn;
@@ -222,7 +223,7 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
         {
             if (fn != null)
             {
-                fn((string) args[0]);
+                fn(args[0]);
             }
             else
             {

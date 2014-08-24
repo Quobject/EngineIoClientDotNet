@@ -94,8 +94,10 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                 //socket.Send("test send");
 
             });
-            socket.On(Socket.EVENT_MESSAGE, (data) =>
+            socket.On(Socket.EVENT_MESSAGE, (d) =>
             {
+                var data = (string)d;
+
                 log.Info("message2 = " + data);
                 this.Message = data;            
                 
@@ -134,8 +136,10 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             {
                 log.Info("open");
 
-                socket.On(Socket.EVENT_MESSAGE, (data) =>
+                socket.On(Socket.EVENT_MESSAGE, (d) =>
                 {
+                    var data = (string)d;
+
                     log.Info("TestMessage data = " + data);
 
                     if (data == "hi")

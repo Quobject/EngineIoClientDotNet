@@ -74,7 +74,7 @@ namespace Quobject.EngineIoClientDotNet.Client
         private ImmutableList<Packet> WriteBuffer = ImmutableList<Packet>.Empty;
         private ImmutableList<Action> CallbackBuffer = ImmutableList<Action>.Empty;
         /*package*/
-        private Transport Transport;
+        public Transport Transport;
         private Timer PingTimeoutTimer;
         private Timer PingIntervalTimer;
         private SSLContext SslContext;
