@@ -84,6 +84,8 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
         protected override void DoWrite(byte[] data, Action action)
         {
             var opts = new XHRRequest.RequestOptions {Method = "POST", Data = data};
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            log.Info("DoWrite data = " + data);
 
             sendXhr = Request(opts);
             sendXhr.On(EVENT_SUCCESS, new SendEventSuccessListener(action));
@@ -218,10 +220,10 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 {
                     //xhr.setDoOutput(true);
                     Xhr.ContentType = "application/octet-stream";
-                    headers.Add("Content-type", "application/octet-stream");
+                    //headers.Add("Content-type", "application/octet-stream");
                 }
 
-                OnRequestHeaders(headers);
+                //OnRequestHeaders(headers);
                 //log.Info(string.Format("sending xhr with url {0} | data {1}", Uri, dataString));
                 log.Info(string.Format("sending xhr with url {0}", Uri, Data));
                 if (Data == null)
@@ -269,7 +271,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                             var contentType = res.Headers["Content-Type"];
 
 
-                            OnResponseHeaders(headers);
+                            //OnResponseHeaders(headers);
 
                             using (var resStream = res.GetResponseStream())
                             {

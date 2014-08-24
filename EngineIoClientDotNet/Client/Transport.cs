@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using log4net;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
 using System.IO;
 using System.Net;
@@ -136,6 +137,9 @@ namespace Quobject.EngineIoClientDotNet.Client
         {
             EventTasks.Exec(n =>
             {
+                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                log.Info("Send called with packets.Count: "+ packets.Count);
+                var count = packets.Count;
                 if (ReadyState == ReadyStateEnum.OPEN)
                 {
                     Write(packets);

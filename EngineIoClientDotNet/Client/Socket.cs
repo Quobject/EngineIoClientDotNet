@@ -477,12 +477,14 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         public void Send(string msg, Action fn = null)
         {
-            EventTasks.Exec(n => SendPacket(Packet.MESSAGE, msg, fn));
+            //EventTasks.Exec(n => SendPacket(Packet.MESSAGE, msg, fn));
+            SendPacket(Packet.MESSAGE, msg, fn);
         }
 
         public void Send(byte[] msg, Action fn = null)
         {
-            EventTasks.Exec(n => SendPacket(Packet.MESSAGE, msg, fn));
+            //EventTasks.Exec(n => SendPacket(Packet.MESSAGE, msg, fn));
+            SendPacket(Packet.MESSAGE, msg, fn);
         }
 
 
