@@ -354,7 +354,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
             if (ReadyState != ReadyStateEnum.CLOSED && this.Transport.Writable && !Upgrading && WriteBuffer.Count != 0)
             {
-                log.Info(string.Format("flushing {0} packets in socket", WriteBuffer.Count));
+                //log.Info(string.Format("flushing {0} packets in socket", WriteBuffer.Count));
                 PrevBufferLen = WriteBuffer.Count;
                 //var toSend = ImmutableList<Packet>.Empty.AddRange(WriteBuffer.ToArray());
                 Transport.Send(WriteBuffer);
@@ -486,8 +486,8 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         public void Send(byte[] msg, Action fn = null)
         {
-            //EventTasks.Exec(n => SendPacket(Packet.MESSAGE, msg, fn));
-            SendPacket(Packet.MESSAGE, msg, fn);
+            EventTasks.Exec(n => SendPacket(Packet.MESSAGE, msg, fn));
+            //SendPacket(Packet.MESSAGE, msg, fn);
         }
 
 
