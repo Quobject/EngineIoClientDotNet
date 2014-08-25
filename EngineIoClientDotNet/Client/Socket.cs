@@ -349,15 +349,20 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         private void Flush()
         {
-            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
             if (ReadyState != ReadyStateEnum.CLOSED && this.Transport.Writable && !Upgrading && WriteBuffer.Count != 0)
             {
-                //log.Info(string.Format("Flush {0} packets in socket", WriteBuffer.Count));
+                log.Info(string.Format("Flush {0} packets in socket", WriteBuffer.Count));
                 PrevBufferLen = WriteBuffer.Count;
                 //var toSend = ImmutableList<Packet>.Empty.AddRange(WriteBuffer.ToArray());
                 Transport.Send(WriteBuffer);
                 Emit(EVENT_FLUSH);
+            }
+            else
+            {
+                log.Info(string.Format("Flush Not Send"));
+                
             }
         }
 
@@ -674,11 +679,13 @@ namespace Quobject.EngineIoClientDotNet.Client
                                 ImmutableList<Packet> packetList =
                                     ImmutableList<Packet>.Empty.Add(new Packet(Packet.UPGRADE));
                                 _onTransportOpenListener.Parameters.Transport[0].Send(packetList);
+
+                                _onTransportOpenListener.Parameters.Socket.Flush();
+                                _onTransportOpenListener.Parameters.Socket.Upgrading = false;
+
                                 _onTransportOpenListener.Parameters.Socket.Emit(EVENT_UPGRADE,
                                     _onTransportOpenListener.Parameters.Transport[0]);
                                 _onTransportOpenListener.Parameters.Transport = _onTransportOpenListener.Parameters.Transport.RemoveAt(0);
-                                _onTransportOpenListener.Parameters.Socket.Upgrading = false;
-                                _onTransportOpenListener.Parameters.Socket.Flush();
 
                             });
 

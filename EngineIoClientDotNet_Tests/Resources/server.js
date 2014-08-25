@@ -40,7 +40,13 @@ server.on('connection', function(socket){
       socket.send(abv);
       return;
     }
-
+    console.log('got message data = "' + data + '"');
     socket.send(data);
+    //socket.send('hi2');
+    //var abv = new Int8Array(5);
+    //for (var i = 0; i < 5; i++) {
+    //  abv[i] = i;
+    //}
+    //socket.send(abv);
   });
 });

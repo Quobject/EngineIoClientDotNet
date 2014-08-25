@@ -55,6 +55,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                 //System.Threading.Thread.Sleep(TimeSpan.FromSeconds(3));
                 //log.Info("EVENT_OPEN 2");             
                 socket.Send(binaryData);
+                //socket.Send("cash money €€€");
             });
            
             socket.Open();

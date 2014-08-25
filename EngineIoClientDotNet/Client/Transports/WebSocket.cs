@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using log4net;
 using Quobject.EngineIoClientDotNet.Modules;
 using System;
 using System.Collections.Generic;
@@ -41,16 +42,22 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         private void ws_Opened(object sender, EventArgs e)
         {
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            log.Info("ws_Opened");
             this.OnOpen();
         }
 
         void ws_Closed(object sender, EventArgs e)
         {
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            log.Info("ws_Closed");
             this.OnClose();
         }
 
         void ws_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            log.Info("ws_MessageReceived e.Message= " + e.Message);
             this.OnData(e.Message);
         }
 
@@ -87,13 +94,16 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             public void Call(object data)
             {
+                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
                 if (data is string)
                 {
-                    webSocket.ws.Send((string) data);
+                    log.Info("WriteEncodeCallback string data " + data);
+                    webSocket.ws.Send((string)data);
                 }
                 else if (data is byte[])
-                {                    
-                    var d = (byte[]) data;
+                {
+                    log.Info("WriteEncodeCallback byte[] data " + data);
+                    var d = (byte[])data;
                     webSocket.ws.Send(d, 0, d.Length);
                 }
             }

@@ -204,12 +204,12 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             public void Create()
             {
-                //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
 
                 try
                 {
-                    //log.Info(string.Format("xhr open {0}: {0}",Method, Uri));
+                    log.Info(string.Format("xhr open {0}: {1}",Method, Uri));
                     Xhr = (HttpWebRequest)WebRequest.Create(Uri);
                     Xhr.Method = Method;
                 }
@@ -265,6 +265,8 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
                         using (var res = Xhr.GetResponse())
                         {
+                            log.Info("Xhr.GetResponse ");
+
                             var responseHeaders = new Dictionary<string, string>();
                             for (int i = 0; i < res.Headers.Count; i++)
                             {
@@ -291,7 +293,8 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                                         {
                                             ms.Write(buffer, 0, read);
                                         }
-                                        OnData(ms.ToArray());
+                                        var a = ms.ToArray();
+                                        OnData(a);
                                     }
                                 }
                                 else
@@ -306,14 +309,14 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                     }
                     catch (System.IO.IOException e)
                     {
-                        var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                        //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
                         log.Error("Create call failed", e);
                         OnError(e);
                     }
                     catch (System.Net.WebException e)
                     {
-                        var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                        //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
                         log.Error("Create call failed", e);
                         OnError(e);                        
                     }
@@ -329,12 +332,16 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             private void OnData(string data)
             {
+                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                log.Info("OnData string = " + data);
                 this.Emit(EVENT_DATA, data);
                 this.OnSuccess();
             }
 
             private void OnData(byte[] data)
             {
+                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                log.Info("OnData byte[] =" + System.Text.UTF8Encoding.UTF8.GetString(data));
                 this.Emit(EVENT_DATA, data);
                 this.OnSuccess();
             }

@@ -65,6 +65,7 @@
     <Compile Include="ClientTests\BinaryPollingTest.cs" />
     <Compile Include="ClientTests\Connection.cs" />
     <Compile Include="ClientTests\ConnectionTest.cs" />
+    <Compile Include="ClientTests\BinaryWebSocketTest.cs" />
     <Compile Include="ClientTests\ServerConnectionTest.cs" />
     <Compile Include="ClientTests\HandshakeDataTests.cs" />
     <Compile Include="ClientTests\SocketTest.cs" />
