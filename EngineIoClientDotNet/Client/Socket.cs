@@ -322,6 +322,9 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         internal void OnDrain()
         {
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            //log.Info(string.Format("OnDrain() PrevBufferLen={0} WriteBuffer.Count={1}", PrevBufferLen, WriteBuffer.Count));
+
             for (int i = 0; i < this.PrevBufferLen; i++)
             {
                 var callback = this.CallbackBuffer[i];
@@ -353,8 +356,8 @@ namespace Quobject.EngineIoClientDotNet.Client
             {
                 log.Info(string.Format("flushing {0} packets in socket", WriteBuffer.Count));
                 PrevBufferLen = WriteBuffer.Count;
-                var toSend = ImmutableList<Packet>.Empty.AddRange(WriteBuffer.ToArray());
-                Transport.Send(toSend);
+                //var toSend = ImmutableList<Packet>.Empty.AddRange(WriteBuffer.ToArray());
+                Transport.Send(WriteBuffer);
                 Emit(EVENT_FLUSH);
             }
         }
@@ -371,7 +374,7 @@ namespace Quobject.EngineIoClientDotNet.Client
                 {
                     typeOfData = packet.Data.GetType().ToString();
                 }
-                log.Info(string.Format("socket received: type '{0}', data '{1}', type '{2}", packet.Type, packet.Data, typeOfData));
+                //log.Info(string.Format("socket received: type '{0}', data '{1}', type '{2}", packet.Type, packet.Data, typeOfData));
 
                 Emit(EVENT_PACKET, packet);
                 Emit(EVENT_HEARTBEAT);
@@ -522,7 +525,7 @@ namespace Quobject.EngineIoClientDotNet.Client
         {
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-            log.Info("socket open before call to flush()");
+            //log.Info("socket open before call to flush()");
             ReadyState = ReadyStateEnum.OPEN;
             PriorWebsocketSuccess = WebSocket.NAME == Transport.Name;
 
@@ -613,7 +616,7 @@ namespace Quobject.EngineIoClientDotNet.Client
                 }
                 var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-                log.Info(string.Format("probe transport '{0}' opened", Parameters.Transport[0].Name));
+                //log.Info(string.Format("probe transport '{0}' opened", Parameters.Transport[0].Name));
                 var packet = new Packet(Packet.PING, "probe");
                 Parameters.Transport[0].Send(ImmutableList<Packet>.Empty.Add(packet));
                 Parameters.Transport[0].Once(Client.Transport.EVENT_PACKET, new ProbeEventPacketListener(this));
@@ -750,7 +753,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
                 var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-                log.Info(string.Format("probe transport \"{0}\" failed because of error: {1}", error.Transport,err));
+                //log.Info(string.Format("probe transport \"{0}\" failed because of error: {1}", error.Transport,err));
                 _socket.Emit(EVENT_UPGRADE_ERROR, error);
             }
         }

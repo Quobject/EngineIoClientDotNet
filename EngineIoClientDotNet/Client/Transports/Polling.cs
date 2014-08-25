@@ -128,7 +128,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             {
                 var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-                log.Info("polling");
+                //log.Info("polling");
                 IsPolling = true;
                 DoPoll();
                 Emit(EVENT_POLL);
@@ -179,7 +179,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
         {
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-            log.Info(string.Format("polling got data {0}",data));
+            //log.Info(string.Format("polling got data {0}",data));
             var callback = new DecodePayloadCallback(this);
             if (data is string)
             {
@@ -260,7 +260,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             public void Call(object data)
             {
                 var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-                log.Info("SendEncodeCallback data = " + data);
+                //log.Info("SendEncodeCallback data = " + data);
 
                 var byteData = (byte[]) data;
                 polling.DoWrite(byteData, () =>
@@ -276,7 +276,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
         protected override void Write(ImmutableList<Packet> packets)
         {
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            log.Info("Write packets = " + packets);
+            //log.Info("Write packets.Count = " + packets.Count);
 
             Writable = false;
 
