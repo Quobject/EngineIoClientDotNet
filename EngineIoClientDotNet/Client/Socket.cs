@@ -323,7 +323,7 @@ namespace Quobject.EngineIoClientDotNet.Client
         internal void OnDrain()
         {
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            //log.Info(string.Format("OnDrain() PrevBufferLen={0} WriteBuffer.Count={1}", PrevBufferLen, WriteBuffer.Count));
+            log.Info(string.Format("OnDrain1 PrevBufferLen={0} WriteBuffer.Count={1}", PrevBufferLen, WriteBuffer.Count));
 
             for (int i = 0; i < this.PrevBufferLen; i++)
             {
@@ -338,6 +338,8 @@ namespace Quobject.EngineIoClientDotNet.Client
             CallbackBuffer = CallbackBuffer.RemoveRange(0,PrevBufferLen);
 
             this.PrevBufferLen = 0;
+            log.Info(string.Format("OnDrain2 PrevBufferLen={0} WriteBuffer.Count={1}", PrevBufferLen, WriteBuffer.Count));
+            
             if (this.WriteBuffer.Count == 0)
             {
                 this.Emit(EVENT_DRAIN);
@@ -354,7 +356,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
             if (ReadyState != ReadyStateEnum.CLOSED && this.Transport.Writable && !Upgrading && WriteBuffer.Count != 0)
             {
-                //log.Info(string.Format("flushing {0} packets in socket", WriteBuffer.Count));
+                log.Info(string.Format("Flush {0} packets in socket", WriteBuffer.Count));
                 PrevBufferLen = WriteBuffer.Count;
                 //var toSend = ImmutableList<Packet>.Empty.AddRange(WriteBuffer.ToArray());
                 Transport.Send(WriteBuffer);
@@ -515,6 +517,8 @@ namespace Quobject.EngineIoClientDotNet.Client
             }
 
             Emit(EVENT_PACKET_CREATE, packet);
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            log.Info(string.Format("SendPacket WriteBuffer.Add(packet) packet ={0}",packet.Type));
             WriteBuffer = WriteBuffer.Add(packet);
             CallbackBuffer = CallbackBuffer.Add(fn);
             Flush();

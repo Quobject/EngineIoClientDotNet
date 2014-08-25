@@ -260,7 +260,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             public void Call(object data)
             {
                 var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-                //log.Info("SendEncodeCallback data = " + data);
+                log.Info("SendEncodeCallback data = " + data);
 
                 var byteData = (byte[]) data;
                 polling.DoWrite(byteData, () =>
@@ -276,7 +276,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
         protected override void Write(ImmutableList<Packet> packets)
         {
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            //log.Info("Write packets.Count = " + packets.Count);
+            log.Info("Write packets.Count = " + packets.Count);
 
             Writable = false;
 

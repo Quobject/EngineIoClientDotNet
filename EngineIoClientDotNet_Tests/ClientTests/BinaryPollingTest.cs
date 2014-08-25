@@ -110,7 +110,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                     events.Enqueue(d);
                 });
                 socket.Send(binaryData);
-                //socket.Send(stringData);
+                socket.Send(stringData);
                 //EasyTimer.SetTimeout(() =>
                 //{
                 //    socket.Send(binaryData);

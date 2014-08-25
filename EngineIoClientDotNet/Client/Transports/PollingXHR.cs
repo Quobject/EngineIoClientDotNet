@@ -85,11 +85,11 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
         {
             var opts = new XHRRequest.RequestOptions {Method = "POST", Data = data};
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            //log.Info("DoWrite data = " + data);
+            log.Info("DoWrite data = " + data);
             try
             {
                 var dataString = BitConverter.ToString(data);
-                //log.Info(string.Format("DoWrite data {0}", dataString));
+                log.Info(string.Format("DoWrite data {0}", dataString));
             }
             catch (Exception e)
             {
@@ -213,7 +213,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
                 try
                 {
-                    //log.Info(string.Format("xhr open {0}: {0}",Method, Uri));
+                    log.Info(string.Format("xhr open {0}: {0}",Method, Uri));
                     Xhr = (HttpWebRequest)WebRequest.Create(Uri);
                     Xhr.Method = Method;
                 }
@@ -233,19 +233,18 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 }
 
                 //OnRequestHeaders(headers);
-                //log.Info(string.Format("sending xhr with url {0} | data {1}", Uri, dataString));
+                log.Info(string.Format("sending xhr with url= {0} | data= {1}", Uri, Data));
                 //log.Info(string.Format("sending xhr with url {0}", Uri, Data));
                 if (Data == null)
                 {
-                    //log.Info(string.Format("sending xhr with no data"));                    
+                    log.Info(string.Format("sending xhr with no data"));                    
                 }
                 else
                 {
                     try
                     {
-//                        var dataString = System.Text.Encoding.UTF8.GetString(Data);
                         var dataString = BitConverter.ToString(Data);
-                        //log.Info(string.Format("sending xhr with data {0}", dataString));
+                        log.Info(string.Format("sending xhr with data {0}", dataString));
                     }
                     catch (Exception e)
                     {
