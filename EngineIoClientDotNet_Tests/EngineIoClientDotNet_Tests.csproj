@@ -75,7 +75,7 @@
     <Compile Include="ParserTests\DecodeTests.cs" />
     <Compile Include="ParserTests\TestsParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ThreadTests\EventTasksTests.cs" />
+    <Compile Include="ThreadTests\HeartBeatTasksTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EngineIoClientDotNet\EngineIoClientDotNet.csproj">

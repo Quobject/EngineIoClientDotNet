@@ -34,44 +34,41 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         public void Pause(Action onPause)
         {
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-            EventTasks.Exec(n =>
+            ReadyState = ReadyStateEnum.PAUSED;
+            Action pause = () =>
             {
+                //log.Info("paused");
                 ReadyState = ReadyStateEnum.PAUSED;
-                Action pause = () =>
+                onPause();
+            };
+
+            if (IsPolling || !Writable)
+            {
+                var total = new[] {0};
+
+
+                if (IsPolling)
                 {
-                    log.Info("paused");
-                    ReadyState = ReadyStateEnum.PAUSED;
-                    onPause();
-                };
-
-                if (IsPolling || !Writable)
-                {
-                    var total = new[] {0};
-
-
-                    if (IsPolling)
-                    {
-                        log.Info("we are currently polling - waiting to pause");
-                        total[0]++;
-                        Once(EVENT_POLL_COMPLETE, new PauseEventPollCompleteListener(total, pause));
-
-                    }
-
-                    if (!Writable)
-                    {
-                        log.Info("we are currently writing - waiting to pause");
-                        total[0]++;
-                        Once(EVENT_DRAIN, new PauseEventDrainListener(total, pause));
-                    }
+                    //log.Info("we are currently polling - waiting to pause");
+                    total[0]++;
+                    Once(EVENT_POLL_COMPLETE, new PauseEventPollCompleteListener(total, pause));
 
                 }
-                else
+
+                if (!Writable)
                 {
-                    pause();
+                    //log.Info("we are currently writing - waiting to pause");
+                    total[0]++;
+                    Once(EVENT_DRAIN, new PauseEventDrainListener(total, pause));
                 }
-            });
+
+            }
+            else
+            {
+                pause();
+            }
         }
 
         private class PauseEventDrainListener : IListener
@@ -87,9 +84,9 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             public void Call(params object[] args)
             {
-                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-                log.Info("pre-pause writing complete");
+                //log.Info("pre-pause writing complete");
                 if (--total[0] == 0)
                 {
                     pause();
@@ -111,9 +108,9 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             
             public void Call(params object[] args)
             {
-                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-                log.Info("pre-pause polling complete");
+                //log.Info("pre-pause polling complete");
                 if (--total[0] == 0)
                 {
                     pause();
@@ -124,15 +121,12 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         private void Poll()
         {
-            EventTasks.Exec(n =>
-            {
-                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-                //log.Info("polling");
-                IsPolling = true;
-                DoPoll();
-                Emit(EVENT_POLL);
-            });
+            //log.Info("polling");
+            IsPolling = true;
+            DoPoll();
+            Emit(EVENT_POLL);
         }
 
 
@@ -218,9 +212,9 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             public void Call(params object[] args)
             {
-                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-                log.Info("writing close packet");
+                //log.Info("writing close packet");
                 ImmutableList<Packet> packets = ImmutableList<Packet>.Empty;
                 packets = packets.Add(new Packet(Packet.CLOSE));
                 polling.Write(packets);
@@ -259,8 +253,8 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             public void Call(object data)
             {
-                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-                log.Info("SendEncodeCallback data = " + data);
+                //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                //log.Info("SendEncodeCallback data = " + data);
 
                 var byteData = (byte[]) data;
                 polling.DoWrite(byteData, () =>
@@ -275,8 +269,8 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         protected override void Write(ImmutableList<Packet> packets)
         {
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            log.Info("Write packets.Count = " + packets.Count);
+            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            //log.Info("Write packets.Count = " + packets.Count);
 
             Writable = false;
 

@@ -85,11 +85,11 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
         {
             var opts = new XHRRequest.RequestOptions {Method = "POST", Data = data};
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            log.Info("DoWrite data = " + data);
+            //log.Info("DoWrite data = " + data);
             try
             {
                 var dataString = BitConverter.ToString(data);
-                log.Info(string.Format("DoWrite data {0}", dataString));
+                //log.Info(string.Format("DoWrite data {0}", dataString));
             }
             catch (Exception e)
             {
@@ -136,7 +136,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         protected override void DoPoll()
         {
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
             //log.Info("xhr poll");
             sendXhr = Request();
@@ -204,16 +204,12 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             public void Create()
             {
-                //if (Data == null)
-                //{
-                //    return;
-                //}
-                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
 
                 try
                 {
-                    log.Info(string.Format("xhr open {0}: {0}",Method, Uri));
+                    //log.Info(string.Format("xhr open {0}: {0}",Method, Uri));
                     Xhr = (HttpWebRequest)WebRequest.Create(Uri);
                     Xhr.Method = Method;
                 }
@@ -233,25 +229,25 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 }
 
                 //OnRequestHeaders(headers);
-                log.Info(string.Format("sending xhr with url= {0} | data= {1}", Uri, Data));
+                //log.Info(string.Format("sending xhr with url= {0} | data= {1}", Uri, Data));
                 //log.Info(string.Format("sending xhr with url {0}", Uri, Data));
-                if (Data == null)
-                {
-                    log.Info(string.Format("sending xhr with no data"));                    
-                }
-                else
-                {
-                    try
-                    {
-                        var dataString = BitConverter.ToString(Data);
-                        log.Info(string.Format("sending xhr with data {0}", dataString));
-                    }
-                    catch (Exception e)
-                    {
-                        log.Error(e);                        
-                        throw;
-                    }
-                }
+                //if (Data == null)
+                //{
+                //    log.Info(string.Format("sending xhr with no data"));                    
+                //}
+                //else
+                //{
+                //    try
+                //    {
+                //        var dataString = BitConverter.ToString(Data);
+                //        log.Info(string.Format("sending xhr with data {0}", dataString));
+                //    }
+                //    catch (Exception e)
+                //    {
+                //        log.Error(e);                        
+                //        throw;
+                //    }
+                //}
 
                 RequestTasks.Exec( n =>
                 {
@@ -310,11 +306,14 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                     }
                     catch (System.IO.IOException e)
                     {
+                        var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
                         log.Error("Create call failed", e);
                         OnError(e);
                     }
                     catch (System.Net.WebException e)
                     {
+                        var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
                         log.Error("Create call failed", e);
                         OnError(e);                        
                     }

@@ -110,18 +110,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                     events.Enqueue(d);
                 });
                 socket.Send(binaryData);
-                socket.Send(stringData);
-                //EasyTimer.SetTimeout(() =>
-                //{
-                //    socket.Send(binaryData);
-                //}, 000);
-                //EasyTimer.SetTimeout(() =>
-                //{
-                //    socket.Send(stringData);
-                //}, 000);
-
-                //System.Threading.Thread.Sleep(TimeSpan.FromSeconds(3));
-                //log.Info("EVENT_OPEN 2");             
+                socket.Send(stringData);           
 
             });
 
@@ -130,11 +119,11 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             
             socket.Close();
 
-            //object result;
-            //events.TryDequeue(out result);
-            //Assert.Equal(binaryData, result);
-            //events.TryDequeue(out result);
-            //Assert.Equal(stringData, (string)result);
+            object result;
+            events.TryDequeue(out result);
+            Assert.Equal(binaryData, result);
+            events.TryDequeue(out result);
+            Assert.Equal(stringData, (string)result);
 
         }
 

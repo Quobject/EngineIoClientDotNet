@@ -41,22 +41,22 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         private void ws_Opened(object sender, EventArgs e)
         {
-            EventTasks.Exec(n => this.OnOpen());
+            this.OnOpen();
         }
 
         void ws_Closed(object sender, EventArgs e)
         {
-            EventTasks.Exec(n => this.OnClose());
+            this.OnClose();
         }
 
         void ws_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
-            EventTasks.Exec(n => this.OnData(e.Message));
+            this.OnData(e.Message);
         }
 
         void ws_Error(object sender, SuperSocket.ClientEngine.ErrorEventArgs e)
         {
-            EventTasks.Exec(n => this.OnError("websocket error",e.Exception));
+            this.OnError("websocket error", e.Exception);
         }
 
         protected override void Write(System.Collections.Immutable.ImmutableList<Parser.Packet> packets)

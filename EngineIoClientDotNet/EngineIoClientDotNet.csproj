@@ -91,7 +91,6 @@
     <Compile Include="Thread\HeartbeatTasks.cs" />
     <Compile Include="Thread\EasyTimer.cs" />
     <Compile Include="Thread\RequestTasks.cs" />
-    <Compile Include="Thread\EventTasks.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

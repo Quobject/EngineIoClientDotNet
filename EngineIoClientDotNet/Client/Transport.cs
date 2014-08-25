@@ -108,47 +108,38 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         public Transport Open()
         {
-            EventTasks.Exec(n =>
+            if (ReadyState == ReadyStateEnum.CLOSED)
             {
-                if (ReadyState == ReadyStateEnum.CLOSED)
-                {
-                    ReadyState = ReadyStateEnum.OPENING;
-                    DoOpen();
-                    //OnOpen();
-                }            
-            });
+                ReadyState = ReadyStateEnum.OPENING;
+                DoOpen();
+                //OnOpen();
+            }
             return this;
         }
 
         public Transport Close()
         {
-            EventTasks.Exec(n =>
+            if (ReadyState == ReadyStateEnum.OPENING || ReadyState == ReadyStateEnum.OPEN)
             {
-                if (ReadyState == ReadyStateEnum.OPENING || ReadyState == ReadyStateEnum.OPEN)
-                {
-                    DoClose();
-                    OnClose();
-                }
-            });
+                DoClose();
+                OnClose();
+            }
             return this;
         }
 
-        public Transport Send(ImmutableList<Packet> packets )
+        public Transport Send(ImmutableList<Packet> packets)
         {
-            EventTasks.Exec(n =>
+            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            //log.Info("Send called with packets.Count: " + packets.Count);
+            var count = packets.Count;
+            if (ReadyState == ReadyStateEnum.OPEN)
             {
-                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-                log.Info("Send called with packets.Count: "+ packets.Count);
-                var count = packets.Count;
-                if (ReadyState == ReadyStateEnum.OPEN)
-                {
-                    Write(packets);
-                }
-                else
-                {
-                    throw new EngineIOException("Transport not open");
-                }
-            });
+                Write(packets);
+            }
+            else
+            {
+                throw new EngineIOException("Transport not open");
+            }
             return this;
         }
 

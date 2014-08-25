@@ -9,13 +9,15 @@ using Xunit;
 
 namespace Quobject.EngineIoClientDotNet_Tests.ThreadTests
 {
-    public class EventTasksTests
+    public class HeartBeatTasksTests
     {
         [Fact]
         public void Test()
         {
             int result = 0;
-            EventTasks.Exec(n => { int i = 0;
+            HeartBeatTasks.Exec(n =>
+            {
+                int i = 0;
                                      i = i + 1;
                                      Console.WriteLine("in test A " + Thread.CurrentThread.ManagedThreadId);
                                      result = i;
@@ -28,7 +30,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ThreadTests
 
             Console.WriteLine("after exec result = " + result);
 
-            EventTasks.Exec(n =>
+            HeartBeatTasks.Exec(n =>
             {
                 int i = 0;
                 i = i + 1;
