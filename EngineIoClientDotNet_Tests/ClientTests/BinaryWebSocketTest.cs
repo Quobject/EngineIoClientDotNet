@@ -66,7 +66,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             socket.Open();
             //System.Threading.Thread.Sleep(TimeSpan.FromSeconds(3));
             //socket.Send(binaryData);
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(10));
+            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(5));
 
 
             socket.Close();
