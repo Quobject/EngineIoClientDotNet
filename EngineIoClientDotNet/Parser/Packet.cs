@@ -26,6 +26,9 @@ namespace Quobject.EngineIoClientDotNet.Parser
 
         private static readonly int MAX_INT_CHAR_LENGTH = int.MaxValue.ToString().Length;
 
+        //TODO: suport binary?
+        private bool SupportsBinary = false;
+
         private static readonly Dictionary<string, byte> _packets = new Dictionary<string, byte>()
         {
             {Packet.OPEN, 0},
@@ -73,6 +76,11 @@ namespace Quobject.EngineIoClientDotNet.Parser
         {
             if ( Data is byte[])
             {
+                if (!SupportsBinary)
+                {
+                    EncodeBase64Packet(callback);
+                    return;
+                }
                 EncodeByteArray(callback);
                 return;
             }
@@ -88,13 +96,28 @@ namespace Quobject.EngineIoClientDotNet.Parser
 
         }
 
+        private void EncodeBase64Packet(IEncodeCallback callback)
+        {
+            var byteData = Data as byte[];
+            if (byteData != null)
+            {
+                var result = new StringBuilder();
+                result.Append("b");
+                result.Append(_packets[Type]);
+                result.Append(Convert.ToBase64String(byteData));
+                callback.Call(result.ToString());
+                return;
+            }
+            throw new Exception("byteData == null");
+        }
+
         private void EncodeByteArray(IEncodeCallback callback)
         {
             var byteData = Data as byte[];
             if (byteData != null)
             {
                 var resultArray = new byte[1 + byteData.Length];
-                resultArray[0] =  _packets[Type];
+                resultArray[0] = _packets[Type];
                 Array.Copy(byteData, 0, resultArray, 1, byteData.Length);
                 callback.Call(resultArray);
                 return;

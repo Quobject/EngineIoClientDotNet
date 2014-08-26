@@ -31,19 +31,28 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             //var wsHeaders = new List<KeyValuePair<string, string>>();
 
             //ws = new WebSocket4Net.WebSocket(this.Uri(), "", null, wsHeaders, "", "", WebSocketVersion.Rfc6455);
-            ws = new WebSocket4Net.WebSocket(this.Uri());           
-            
+            ws = new WebSocket4Net.WebSocket(this.Uri());
+            ws.EnableAutoSendPing = false;
+            ws.AllowUnstrustedCertificate = true;            
             ws.Opened += ws_Opened;
             ws.Closed += ws_Closed;
             ws.MessageReceived += ws_MessageReceived;
+            ws.DataReceived += ws_DataReceived;
             ws.Error += ws_Error;
             ws.Open();                            
+        }
+
+        void ws_DataReceived(object sender, DataReceivedEventArgs e)
+        {
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            log.Info("ws_DataReceived " + e.Data);
+            this.OnData(e.Data);
         }
 
         private void ws_Opened(object sender, EventArgs e)
         {
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            log.Info("ws_Opened");
+            log.Info("ws_Opened " + ws.SupportBinary);
             this.OnOpen();
         }
 
@@ -71,8 +80,9 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             Writable = false;
             foreach (var packet in packets)
             {
-                Parser.Parser.EncodePacket(packet, new WriteEncodeCallback( this));
+                Parser.Parser.EncodePacket(packet, new WriteEncodeCallback(this));
             }
+            //Parser.Parser.EncodePayload(packets.ToArray(), new WriteEncodeCallback(this));
 
             // fake drain
             // defer to next tick to allow Socket to clear writeBuffer
@@ -95,15 +105,28 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             public void Call(object data)
             {
                 var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                log.Info("WriteEncodeCallback data = " + data);              
+
                 if (data is string)
-                {
-                    log.Info("WriteEncodeCallback string data " + data);
+                {                    
+                    log.Info("WriteEncodeCallback string data " + data);                    
                     webSocket.ws.Send((string)data);
                 }
                 else if (data is byte[])
                 {
-                    log.Info("WriteEncodeCallback byte[] data " + data);
                     var d = (byte[])data;
+
+                    try
+                    {
+                        var dataString = BitConverter.ToString(d);
+                        log.Info(string.Format("WriteEncodeCallback byte[] data {0}", dataString));
+                    }
+                    catch (Exception e)
+                    {
+                        log.Error(e);
+                    }
+
+
                     webSocket.ws.Send(d, 0, d.Length);
                 }
             }
@@ -118,6 +141,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 ws.Opened -= ws_Opened;
                 ws.Closed -= ws_Closed;
                 ws.MessageReceived -= ws_MessageReceived;
+                ws.DataReceived -= ws_DataReceived;
                 ws.Error -= ws_Error;
                 ws.Close();
             }

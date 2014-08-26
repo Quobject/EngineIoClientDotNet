@@ -26,7 +26,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             var binaryData = new byte[5];
             for (int i = 0; i < binaryData.Length ; i++)
             {
-                binaryData[i] = (byte) (i + 65);
+                binaryData[i] = (byte) (i + 0);
             }
 
 

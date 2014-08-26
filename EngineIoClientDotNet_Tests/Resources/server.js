@@ -41,12 +41,22 @@ server.on('connection', function(socket){
       return;
     }
     console.log('got message data = "' + data + '"');
+    console.log('got message data = "' + JSON.stringify(data) + '"');
+    var result = new Int8Array(data);
+    console.log('got message data = "' + JSON.stringify(result) + '"\n\n');
+
     socket.send(data);
+    //socket.send(result);
+
+
+
     //socket.send('hi2');
     //var abv = new Int8Array(5);
     //for (var i = 0; i < 5; i++) {
-    //  abv[i] = i;
+    //  abv[i] = i + 65;
     //}
+    //socket.send("hi 3");
     //socket.send(abv);
+    //socket.send("hi 4");
   });
 });

@@ -269,8 +269,8 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         protected override void Write(ImmutableList<Packet> packets)
         {
-            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            //log.Info("Write packets.Count = " + packets.Count);
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            log.Info("Write packets.Count = " + packets.Count);
 
             Writable = false;
 

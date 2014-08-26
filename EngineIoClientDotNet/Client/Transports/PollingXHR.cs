@@ -85,11 +85,11 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
         {
             var opts = new XHRRequest.RequestOptions {Method = "POST", Data = data};
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            //log.Info("DoWrite data = " + data);
+            log.Info("DoWrite data = " + data);
             try
             {
                 var dataString = BitConverter.ToString(data);
-                //log.Info(string.Format("DoWrite data {0}", dataString));
+                log.Info(string.Format("DoWrite data {0}", dataString));
             }
             catch (Exception e)
             {
