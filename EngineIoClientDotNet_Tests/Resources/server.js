@@ -1,31 +1,37 @@
-// from engine.io-client\test\support
+var
+  ssl = true,
+  express = require('express'),
+  app = express(),
+  fs = require('fs'),
+  options = {
+    key: fs.readFileSync(__dirname + '/testme.quobject.com.key'),
+    cert: fs.readFileSync(__dirname + '/testme.quobject.com.cert'),
+    requestCert: true
+  },
+  server,
+  https,
+  http;
 
-// this is a test server to support tests which make requests
 
-var express = require('express');
-var app = express();
-var join = require('path').join;
-var http = require('http').Server(app);
-var server = require('engine.io').attach(http, {'pingInterval': 500});
-//var browserify = require('../../support/browserify');
+//if (ssl === true) {
 
-var port = process.env.PORT || 3000;
-//http.listen(port);
-http.listen(port, function() {
-  console.log('Engine.IO server listening on port', port);
-});
+  console.log("https");
+  https = require('https').createServer(options, app);
+  ssl_server = require('engine.io').attach(https, {'pingInterval': 500});
+  https.listen(443, function(d) {
+    console.log('Engine.IO server listening on port', 443);
+  });
+//} else {
 
-// server worker.js as raw file
-//app.use('/test/support', express.static(join(__dirname, 'public')));
+  console.log("http");
+  http = require('http').createServer(app);
+  server = require('engine.io').attach(http, {'pingInterval': 500});
+  http.listen(80, function() {
+    console.log('Engine.IO server listening on port', 80);
+  });
+//}
 
-// server engine.io.js via browserify
-//app.get('/test/support/engine.io.js', function(err, res, next) {
-//  browserify(function(err, src) {
-//    if (err) return next(err);
-//    res.set('Content-Type', 'application/javascript');
-//    res.send(src);
-//  });
-//});
+
 
 server.on('connection', function(socket){
   socket.send('hi');
@@ -41,22 +47,35 @@ server.on('connection', function(socket){
       return;
     }
     console.log('got message data = "' + data + '"');
-    console.log('got message data = "' + JSON.stringify(data) + '"');
+    console.log('got message data stringify = "' + JSON.stringify(data) + '"');
     var result = new Int8Array(data);
-    console.log('got message data = "' + JSON.stringify(result) + '"\n\n');
+    console.log('got message data Int8Array = "' + JSON.stringify(result) + '"\n\n');
 
     socket.send(data);
-    //socket.send(result);
+
+  });
+});
 
 
+ssl_server.on('connection', function(socket){
+  socket.send('hi');
 
-    //socket.send('hi2');
-    //var abv = new Int8Array(5);
-    //for (var i = 0; i < 5; i++) {
-    //  abv[i] = i + 65;
-    //}
-    //socket.send("hi 3");
-    //socket.send(abv);
-    //socket.send("hi 4");
+  // Bounce any received messages back
+  socket.on('message', function (data) {
+    if (data === 'give binary') {
+      var abv = new Int8Array(5);
+      for (var i = 0; i < 5; i++) {
+        abv[i] = i;
+      }
+      socket.send(abv);
+      return;
+    }
+    console.log('got message data = "' + data + '"');
+    console.log('got message data stringify = "' + JSON.stringify(data) + '"');
+    var result = new Int8Array(data);
+    console.log('got message data Int8Array = "' + JSON.stringify(result) + '"\n\n');
+
+    socket.send(data);
+
   });
 });

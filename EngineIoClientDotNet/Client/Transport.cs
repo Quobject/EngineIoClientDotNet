@@ -44,7 +44,6 @@ namespace Quobject.EngineIoClientDotNet.Client
         protected string Path;
         protected string Hostname;
         protected string TimestampParam;
-        public SSLContext SSLContext;
         protected Socket Socket;
         protected bool Agent = false;
         protected bool ForceBase64 = false;
@@ -62,7 +61,6 @@ namespace Quobject.EngineIoClientDotNet.Client
             this.Query = options.Query;
             this.TimestampParam = options.TimestampParam;
             this.TimestampRequests = options.TimestampRequests;
-            this.SSLContext = options.SSLContext;
             this.Socket = options.Socket;
             this.Agent = options.Agent;
             this.ForceBase64 = options.ForceBase64;
@@ -160,12 +158,12 @@ namespace Quobject.EngineIoClientDotNet.Client
             public string Hostname;
             public string Path;
             public string TimestampParam;
-            public bool Secure;
+            public bool Secure =  false;
             public bool TimestampRequests = true;
             public int Port;
             public int PolicyPort;
             public ImmutableDictionary<string, string> Query;
-            public SSLContext SSLContext;
+            public bool IgnoreServerCertificateValidation = false;
             internal Socket Socket;
         }
 

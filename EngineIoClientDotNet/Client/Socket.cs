@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
@@ -52,7 +53,6 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         public static bool PriorWebsocketSuccess = false;
 
-        private static SSLContext DefaultSSLContext;
 
         private bool Secure;
         private bool Upgrade;
@@ -77,7 +77,6 @@ namespace Quobject.EngineIoClientDotNet.Client
         public Transport Transport;
         private Timer PingTimeoutTimer;
         private Timer PingIntervalTimer;
-        private SSLContext SslContext;
 
         private ReadyStateEnum ReadyState;
         //private ScheduledExecutorService heartbeatScheduler = Executors.newSingleThreadScheduledExecutor();
@@ -134,7 +133,6 @@ namespace Quobject.EngineIoClientDotNet.Client
             }
 
             Secure = options.Secure;
-            SslContext = options.SSLContext;
             Hostname = options.Hostname;
             Port = options.Port;
             Query = options.QueryString != null ? ParseQS.Decode(options.QueryString) : ImmutableDictionary<string, string>.Empty;
@@ -145,6 +143,11 @@ namespace Quobject.EngineIoClientDotNet.Client
             Transports = options.Transports ?? ImmutableList<string>.Empty.Add(Polling.NAME).Add(WebSocket.NAME);
             PolicyPort = options.PolicyPort != 0 ? options.PolicyPort : 843;
             RememberUpgrade = options.RememberUpgrade;
+            if (options.IgnoreServerCertificateValidation)
+            {
+                ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;                
+            }
+
         }
 
         public Socket Open()
@@ -176,7 +179,6 @@ namespace Quobject.EngineIoClientDotNet.Client
                 query = query.Add("sid", Id);
             }
             var options = new Transport.Options();
-            options.SSLContext = SslContext;
             options.Hostname = Hostname;
             options.Port = Port;
             options.Secure = Secure;

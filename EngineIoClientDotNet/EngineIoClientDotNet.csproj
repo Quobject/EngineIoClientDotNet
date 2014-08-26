@@ -70,7 +70,6 @@
     <Compile Include="Client\EngineIOException.cs" />
     <Compile Include="Client\HandshakeData.cs" />
     <Compile Include="Client\Socket.cs" />
-    <Compile Include="Client\SSLContext.cs" />
     <Compile Include="Client\Transport.cs" />
     <Compile Include="Client\Transports\HttpURLConnection.cs" />
     <Compile Include="Client\Transports\Polling.cs" />

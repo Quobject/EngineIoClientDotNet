@@ -38,7 +38,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 opts = new XHRRequest.RequestOptions();
             }
             opts.Uri = Uri();
-            opts.SslContext = SSLContext;
+           
 
             XHRRequest req = new XHRRequest(opts);
 
@@ -191,7 +191,6 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             private string Method;
             private string Uri;
             private byte[] Data;
-            private SSLContext SslContext;
             private HttpWebRequest Xhr;
 
             public XHRRequest(RequestOptions options)
@@ -199,13 +198,11 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 Method = options.Method ?? "GET";
                 Uri = options.Uri;
                 Data = options.Data;
-                SslContext = options.SslContext;
             }
 
             public void Create()
             {
                 var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
 
                 try
                 {
@@ -367,7 +364,6 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 public string Uri;
                 public string Method;
                 public byte[] Data;
-                public SSLContext SslContext;
             }
         }
 
