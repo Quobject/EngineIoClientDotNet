@@ -5,7 +5,8 @@
   "win": {
     "powershell" : "C:/WINDOWS/System32/WindowsPowerShell/v1.0/powershell.exe",
     "msbuild" : "C:/Windows/Microsoft.NET/Framework/v4.0.30319/msbuild.exe",
-    "xunit_path" : "C:/vendors/xunit"
+    "xunit_path" : "C:/vendors/xunit",  
+    "nuget" : "C:/vendors/nuget/nuget.exe"
   },
   "linux": {
     "msbuild" : "xbuild",
