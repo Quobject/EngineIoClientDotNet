@@ -54,6 +54,7 @@
     <Compile Include="ClientTests\Connection.cs" />
     <Compile Include="ClientTests\ConnectionTest.cs" />
     <Compile Include="ClientTests\BinaryWebSocketTest.cs" />
+    <Compile Include="ClientTests\UsageTest.cs" />
     <Compile Include="ClientTests\SSLServerConnectionTest.cs" />
     <Compile Include="ClientTests\ServerConnectionTest.cs" />
     <Compile Include="ClientTests\HandshakeDataTests.cs" />
