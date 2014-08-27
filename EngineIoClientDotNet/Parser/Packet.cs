@@ -1,9 +1,7 @@
-﻿using System;
+﻿using Quobject.EngineIoClientDotNet.Modules;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Quobject.EngineIoClientDotNet.Modules;
 
 namespace Quobject.EngineIoClientDotNet.Parser
 {
@@ -51,7 +49,6 @@ namespace Quobject.EngineIoClientDotNet.Parser
         }
 
         private static readonly Packet _err = new Packet(Packet.ERROR,"parser error");
-        private string p;
 
 
 

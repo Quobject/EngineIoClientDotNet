@@ -1,25 +1,16 @@
 ﻿module.exports = function (grunt) {
 
-  grunt.registerTask('buildClient',
-      'build cs modules', function () {
+  grunt.registerTask('buildTest',
+      'build cs test modules', function () {
     var
-      fs = require('fs'),
-      S = require('string'),
-      string = require('string-formatter'),
       os = grunt.config('os'),
+      string = require('string-formatter'),
       config = grunt.config('config'),
       tasks = [],
 
-      csproj = __dirname + '/../../EngineIoClientDotNet/EngineIoClientDotNet.csproj',
+      csproj = __dirname + '/../../EngineIoClientDotNet_Tests/EngineIoClientDotNet_Tests.csproj',
       build,
-      clean,
-      template_file_content;
-
-    template_file_content = fs.readFileSync('./templates/AssemblyInfo.cs');
-    template_file_content = S(template_file_content).replaceAll('@VERSION@', config.version).s;
-    //grunt.log.writeln('template_file_content = "%s"', template_file_content);
-    fs.writeFileSync( __dirname + '/../../EngineIoClientDotNet/Properties/AssemblyInfo.cs', template_file_content );
-
+      clean;
 
     grunt.log.writeln('csproj = "%s"', csproj);
 

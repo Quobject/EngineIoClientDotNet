@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using log4net;
-using Quobject.EngineIoClientDotNet.ComponentEmitter;
-using System.IO;
-using System.Net;
-using System.Net.Sockets;
+﻿using Quobject.EngineIoClientDotNet.ComponentEmitter;
 using Quobject.EngineIoClientDotNet.Parser;
-using Quobject.EngineIoClientDotNet.Thread;
+using System;
+using System.Collections.Immutable;
 
 
 namespace Quobject.EngineIoClientDotNet.Client

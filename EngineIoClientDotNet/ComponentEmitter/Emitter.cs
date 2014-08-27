@@ -1,14 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 using System.Collections.Immutable;
-using log4net;
 
 namespace Quobject.EngineIoClientDotNet.ComponentEmitter
 {

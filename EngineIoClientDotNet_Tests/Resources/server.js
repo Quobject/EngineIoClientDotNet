@@ -17,15 +17,15 @@ var
   console.log("https port = " + config.ssl_port);
   https = require('https').createServer(options, app);
   ssl_server = require('engine.io').attach(https, {'pingInterval': 500});
-  https.listen(443, function(d) {
-    console.log('Engine.IO server listening on port', 443);
+  https.listen(config.ssl_port, function(d) {
+    console.log('Engine.IO server listening on port', config.ssl_port);
   });
 
   console.log("http port = " + config.port);
   http = require('http').createServer(app);
   server = require('engine.io').attach(http, {'pingInterval': 500});
-  http.listen(80, function() {
-    console.log('Engine.IO server listening on port', 80);
+  http.listen( config.port, function() {
+    console.log('Engine.IO server listening on port', config.port);
   });
 
 

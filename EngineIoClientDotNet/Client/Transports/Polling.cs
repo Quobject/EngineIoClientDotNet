@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using log4net;
+using Quobject.EngineIoClientDotNet.ComponentEmitter;
+using Quobject.EngineIoClientDotNet.Modules;
+using Quobject.EngineIoClientDotNet.Parser;
+using System;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Diagnostics;
-using log4net;
-using Quobject.EngineIoClientDotNet.ComponentEmitter;
-using Quobject.EngineIoClientDotNet.Parser;
-using Quobject.EngineIoClientDotNet.Thread;
-using Quobject.EngineIoClientDotNet.Modules;
 
 namespace Quobject.EngineIoClientDotNet.Client.Transports
 {

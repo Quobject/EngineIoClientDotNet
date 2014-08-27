@@ -1,9 +1,7 @@
-﻿using System;
+﻿using Quobject.EngineIoClientDotNet.ComponentEmitter;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Quobject.EngineIoClientDotNet.ComponentEmitter;
 using Xunit;
 
 namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests

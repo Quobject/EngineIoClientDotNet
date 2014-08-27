@@ -1,23 +1,17 @@
-﻿using System;
+﻿using log4net;
+using Quobject.EngineIoClientDotNet.ComponentEmitter;
+using Quobject.EngineIoClientDotNet.Thread;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Hosting;
-using log4net;
-using Quobject.EngineIoClientDotNet.ComponentEmitter;
-using Quobject.EngineIoClientDotNet.Thread;
 
 namespace Quobject.EngineIoClientDotNet.Client.Transports
 {
     public class PollingXHR : Polling
     {
         private XHRRequest sendXhr;
-        private XHRRequest pollXhr;
 
         public PollingXHR(Options options) : base(options)
         {

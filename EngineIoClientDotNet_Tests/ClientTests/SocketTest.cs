@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using log4net;
+﻿using log4net;
 using Quobject.EngineIoClientDotNet.Client;
+using System;
+using System.Collections.Immutable;
 using Xunit;
 
 namespace Quobject.EngineIoClientDotNet_Tests.ClientTests

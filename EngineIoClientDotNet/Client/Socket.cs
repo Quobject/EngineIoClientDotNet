@@ -1,25 +1,18 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Diagnostics;
-using System.Linq;
-using System.Net;
-using System.Net.NetworkInformation;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
-using log4net;
+﻿using log4net;
 using log4net.Appender;
+using log4net.Config;
 using log4net.Layout;
+using log4net.Repository.Hierarchy;
 using Quobject.EngineIoClientDotNet.Client.Transports;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
 using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Parser;
 using Quobject.EngineIoClientDotNet.Thread;
-using log4net.Repository.Hierarchy;
-using log4net.Config;
+using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Net;
+using System.Timers;
 
 namespace Quobject.EngineIoClientDotNet.Client
 {
