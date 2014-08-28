@@ -13,24 +13,46 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void Usage1()
         {
+            Socket.SetupLog4Net();
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-            var socket = new Socket(new Socket.Options { Port = 3000, Hostname = "localhost" });
+            var options = CreateOptions();
+            var socket = new Socket(options);
+
+            //You can use `Socket` to connect:
+            //var socket = new Socket("ws://localhost");
             socket.On(Socket.EVENT_OPEN, () =>
             {
-                socket.Send("hi");
-                //socket.Send("hi", () =>
-                //{
-                //    System.Threading.Thread.Sleep(TimeSpan.FromSeconds(4));
-                //    socket.Close();
-                //});
+                socket.Send("hi", () =>
+                {
+                    socket.Close();
+                });
             });
             socket.Open();
 
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(4));
-            socket.Close();
+            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(2));
+        }
 
+        [Fact]
+        public void Usage2()
+        {
+            Socket.SetupLog4Net();
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+            //Receiving data
+            var socket = new Socket("ws://localhost");
+            socket.On(Socket.EVENT_OPEN, () =>
+            {
+                socket.On(Socket.EVENT_MESSAGE, (data) =>
+                {
+                    var dataString = (string)data;
+                    Console.WriteLine(dataString);
+                    socket.Close();
+                });
+            });
+            socket.Open();
 
+            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(2));
         }
 
    

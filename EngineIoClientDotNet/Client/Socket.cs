@@ -102,6 +102,11 @@ namespace Quobject.EngineIoClientDotNet.Client
         {
         }
 
+        public Socket(string uri) : this(uri, null)
+        {
+            
+        }
+
         public Socket(string uri, Options options) : this(uri == null ? null : new Uri(uri), options)
         {            
         }
@@ -301,6 +306,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
                 opts.Host = uri.Host;
                 opts.Secure = uri.Scheme == "https" || uri.Scheme == "wss";
+                opts.Port = uri.Port;
 
                 if (!string.IsNullOrEmpty(uri.Query))
                 {
@@ -314,8 +320,8 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         internal void OnDrain()
         {
-            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            //log.Info(string.Format("OnDrain1 PrevBufferLen={0} WriteBuffer.Count={1}", PrevBufferLen, WriteBuffer.Count));
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            log.Info(string.Format("OnDrain1 PrevBufferLen={0} WriteBuffer.Count={1}", PrevBufferLen, WriteBuffer.Count));
 
             for (int i = 0; i < this.PrevBufferLen; i++)
             {
@@ -325,12 +331,13 @@ namespace Quobject.EngineIoClientDotNet.Client
                     callback();
                 }
             }
+            log.Info(string.Format("OnDrain2 PrevBufferLen={0} WriteBuffer.Count={1}", PrevBufferLen, WriteBuffer.Count));
 
             WriteBuffer = WriteBuffer.RemoveRange(0,PrevBufferLen);
             CallbackBuffer = CallbackBuffer.RemoveRange(0,PrevBufferLen);
 
             this.PrevBufferLen = 0;
-            //log.Info(string.Format("OnDrain2 PrevBufferLen={0} WriteBuffer.Count={1}", PrevBufferLen, WriteBuffer.Count));
+            log.Info(string.Format("OnDrain3 PrevBufferLen={0} WriteBuffer.Count={1}", PrevBufferLen, WriteBuffer.Count));
             
             if (this.WriteBuffer.Count == 0)
             {
@@ -818,9 +825,9 @@ namespace Quobject.EngineIoClientDotNet.Client
             if (this.ReadyState == ReadyStateEnum.OPENING || this.ReadyState == ReadyStateEnum.OPEN)
             {
                 this.OnClose("forced close");
-                //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-                //log.Info("socket closing - telling transport to close");
+                log.Info("socket closing - telling transport to close");
                 if (PingTimeoutTimer != null)
                 {
                     PingTimeoutTimer.Stop();                    
