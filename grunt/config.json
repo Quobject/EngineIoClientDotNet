@@ -10,6 +10,7 @@
   },
   "linux": {
     "msbuild" : "xbuild",
-    "xunit_path" : "/home/apollo/vendors/xunit"
+    "xunit_path" : "/home/apollo/vendors/xunit",
+    "nuget" : "/home/apollo/vendors/nuget/nuget.exe"
   }
 }
