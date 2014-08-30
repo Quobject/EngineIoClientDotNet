@@ -3,7 +3,7 @@ using Quobject.EngineIoClientDotNet.Client;
 using Quobject.EngineIoClientDotNet.Client.Transports;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
+using System.Collections.Immutable;
 using Xunit;
 
 namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
@@ -89,7 +89,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             const string stringData = "cash money €€€";
 
             var options = CreateOptions();
-            options.Transports = new List<string> {Polling.NAME};
+            options.Transports = ImmutableList.Create<string>(Polling.NAME);
 
 
             var socket = new Socket(options);

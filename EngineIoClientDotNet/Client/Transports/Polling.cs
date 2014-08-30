@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using log4net;
+﻿using log4net;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
 using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Parser;
 using System;
-
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace Quobject.EngineIoClientDotNet.Client.Transports
@@ -211,8 +210,8 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
                 //log.Info("writing close packet");
-                List<Packet> packets = new List<Packet>();
-                packets.Add(new Packet(Packet.CLOSE));
+                ImmutableList<Packet> packets = ImmutableList<Packet>.Empty;
+                packets = packets.Add(new Packet(Packet.CLOSE));
                 polling.Write(packets);
             }
         }
@@ -263,7 +262,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
         }
 
 
-        protected override void Write(List<Packet> packets)
+        protected override void Write(ImmutableList<Packet> packets)
         {
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info("Write packets.Count = " + packets.Count);
@@ -276,20 +275,20 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         public string Uri()
         {
-            var query = this.Query.ToDictionary(e => e.Key, e => e.Value);
+            var query = this.Query;
             if (query == null)
             {
-                query = new Dictionary<string, string>();
+                query = ImmutableDictionary<string, string>.Empty;
             }
             string schema = this.Secure ? "https" : "http";
             string portString = "";
 
             if (this.TimestampRequests)
             {
-                query.Add(this.TimestampParam, DateTime.Now.Ticks + "-" + Transport.Timestamps++);
+                query = query.Add(this.TimestampParam, DateTime.Now.Ticks + "-" + Transport.Timestamps++);
             }
 
-            query.Add("b64", "1");
+            query = query.Add("b64", "1");
 
 
 

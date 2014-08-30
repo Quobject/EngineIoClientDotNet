@@ -16,8 +16,8 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             }";
 
             var handshakeData = new HandshakeData(json);
-            Assert.Equal("u1", handshakeData.Upgrades.ToArray()[0]);
-            Assert.Equal("u2", handshakeData.Upgrades.ToArray()[1]);
+            Assert.Equal("u1", handshakeData.Upgrades[0]);
+            Assert.Equal("u2", handshakeData.Upgrades[1]);
 
             Assert.Equal(12, handshakeData.PingInterval);
             Assert.Equal(23, handshakeData.PingTimeout);

@@ -1,5 +1,4 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Immutable;
 using System.Text;
 
 namespace Quobject.EngineIoClientDotNet.Modules
@@ -19,7 +18,7 @@ namespace Quobject.EngineIoClientDotNet.Modules
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public static string Encode(Dictionary<string, string> obj)
+        public static string Encode(ImmutableDictionary<string, string> obj)
         {
             var sb = new StringBuilder();
             foreach (var key in obj.Keys)
@@ -42,15 +41,15 @@ namespace Quobject.EngineIoClientDotNet.Modules
         /// </summary>
         /// <param name="qs"></param>
         /// <returns></returns>
-        public static Dictionary<string, string> Decode(string qs)
+        public static ImmutableDictionary<string, string> Decode(string qs)
         {
-            var qry = new Dictionary<string, string>();
+            ImmutableDictionary<string, string> qry = ImmutableDictionary<string, string>.Empty;
             var pairs = qs.Split('&');
             for (int i = 0; i < pairs.Length; i++)
             {
                 var pair = pairs[i].Split('=');
 
-                qry.Add(Global.DecodeURIComponent(pair[0]), Global.DecodeURIComponent(pair[1]));
+                qry = qry.Add(Global.DecodeURIComponent(pair[0]), Global.DecodeURIComponent(pair[1]));
             }
             return qry;
         }
