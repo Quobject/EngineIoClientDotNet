@@ -7,8 +7,8 @@
       string = require('string-formatter'),
       config = grunt.config('config'),
       tasks = [],
-      csproj = os === 'win' ? __dirname + '/../../EngineIoClientDotNet/EngineIoClientDotNet_Tests.csproj':
-        __dirname + '/../../EngineIoClientDotNet/EngineIoClientDotNet_Tests_Mono.csproj',
+      csproj = os === 'win' ? __dirname + '/../../EngineIoClientDotNet_Tests/EngineIoClientDotNet_Tests.csproj':
+        __dirname + '/../../EngineIoClientDotNet_Test/EngineIoClientDotNet_Tests_Mono.csproj',
       build,
       clean;
 
