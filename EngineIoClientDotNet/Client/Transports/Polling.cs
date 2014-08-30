@@ -1,5 +1,7 @@
-﻿using log4net;
+﻿using System.Collections.Generic;
+using log4net;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
+using Quobject.EngineIoClientDotNet.Immutable;
 using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Parser;
 using System;
@@ -278,7 +280,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             var query = this.Query;
             if (query == null)
             {
-                query = ImmutableDictionary<string, string>.Empty;
+                query = ImmutableDictionary.Create<string, string>();
             }
             string schema = this.Secure ? "https" : "http";
             string portString = "";

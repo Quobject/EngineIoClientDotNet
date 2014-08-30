@@ -158,7 +158,10 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
                 ImmutableList<IListener> callbacksLocal = this.callbacks[eventString];
                 IListener offListener;
                 this._onceCallbacks.TryRemove(fn, out offListener);
-                this.callbacks[eventString] = callbacksLocal.Remove(offListener ?? fn);                
+                if (callbacksLocal.Count > 0 && callbacksLocal.Contains(offListener ?? fn))
+                {
+                    this.callbacks[eventString] = callbacksLocal.Remove(offListener ?? fn);                                    
+                }
             }
             return this;
         }

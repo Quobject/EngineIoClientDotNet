@@ -150,7 +150,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             ImmutableDictionary<string, string> query = this.Query;
             if (query == null)
             {
-                query = ImmutableDictionary<string, string>.Empty;
+                query = ImmutableDictionary.Create<string, string>();
             }
             string schema = this.Secure ? "wss" : "ws";
             string portString = "";

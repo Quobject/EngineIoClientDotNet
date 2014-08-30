@@ -43,7 +43,7 @@ namespace Quobject.EngineIoClientDotNet.Modules
         /// <returns></returns>
         public static ImmutableDictionary<string, string> Decode(string qs)
         {
-            ImmutableDictionary<string, string> qry = ImmutableDictionary<string, string>.Empty;
+            ImmutableDictionary<string, string> qry = ImmutableDictionary.Create<string, string>();
             var pairs = qs.Split('&');
             for (int i = 0; i < pairs.Length; i++)
             {

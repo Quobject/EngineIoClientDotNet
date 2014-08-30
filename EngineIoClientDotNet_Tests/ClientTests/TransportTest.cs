@@ -32,10 +32,10 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             options.Path = "/engine.io";
             options.Hostname = "localhost";
             options.Secure = false;
-            options.Query = ImmutableDictionary<string, string>.Empty.Add("sid", "test");
+            options.Query = ImmutableDictionary.Create<string, string>().Add("sid", "test");
             options.TimestampRequests = false;
             var polling = new Polling(options);
-            Assert.Contains("http://localhost/engine.io?sid=test", polling.Uri());
+            Assert.Contains("http://localhost/engine.io?b64=1&sid=test", polling.Uri());
         }
 
         [Fact]
@@ -45,11 +45,11 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             options.Path = "/engine.io";
             options.Hostname = "localhost";
             options.Secure = false;
-            options.Query = ImmutableDictionary<string, string>.Empty.Add("sid", "test");
+            options.Query = ImmutableDictionary.Create<string, string>().Add("sid", "test");
             options.TimestampRequests = false;
             options.Port = 80;
             var polling = new Polling(options);
-            Assert.Contains("http://localhost/engine.io?sid=test", polling.Uri());
+            Assert.Contains("http://localhost/engine.io?b64=1&sid=test", polling.Uri());
         }
 
         [Fact]
@@ -59,11 +59,11 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             options.Path = "/engine.io";
             options.Hostname = "localhost";
             options.Secure = false;
-            options.Query = ImmutableDictionary<string, string>.Empty.Add("sid", "test");
+            options.Query = ImmutableDictionary.Create<string, string>().Add("sid", "test");
             options.TimestampRequests = false;
             options.Port = 3000;
             var polling = new Polling(options);
-            Assert.Contains("http://localhost:3000/engine.io?sid=test", polling.Uri());
+            Assert.Contains("http://localhost:3000/engine.io?b64=1&sid=test", polling.Uri());
         }
 
 
@@ -74,11 +74,11 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             options.Path = "/engine.io";
             options.Hostname = "localhost";
             options.Secure = true;
-            options.Query = ImmutableDictionary<string, string>.Empty.Add("sid", "test");
+            options.Query = ImmutableDictionary.Create<string, string>().Add("sid", "test");
             options.TimestampRequests = false;
             options.Port = 443;
             var polling = new Polling(options);
-            Assert.Contains("https://localhost/engine.io?sid=test", polling.Uri());
+            Assert.Contains("https://localhost/engine.io?b64=1&sid=test", polling.Uri());
         }
 
 
@@ -92,12 +92,12 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             options.Path = "/engine.io";
             options.Hostname = "localhost";
             options.Secure = false;
-            options.Query = ImmutableDictionary<string, string>.Empty.Add("sid", "test");
+            options.Query = ImmutableDictionary.Create<string, string>().Add("sid", "test");
             options.TimestampRequests = true;
             options.TimestampParam = "t";
             var polling = new Polling(options);
 
-            string pat = @"http://localhost/engine.io\?sid=test&(t=[0-9]+-[0-9]+)";
+            string pat = @"http://localhost/engine.io\?b64=1&sid=test&(t=[0-9]+-[0-9]+)";
             var r = new Regex(pat, RegexOptions.IgnoreCase);
             var test = polling.Uri();
             log.Info(test);
@@ -113,7 +113,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             options.Path = "/engine.io";
             options.Hostname = "test";
             options.Secure = false;
-            options.Query = ImmutableDictionary<string, string>.Empty.Add("transport", "websocket");
+            options.Query = ImmutableDictionary.Create<string, string>().Add("transport", "websocket");
             options.TimestampRequests = false;
             var ws = new WebSocket(options);
             Assert.Contains("ws://test/engine.io?transport=websocket", ws.Uri());
@@ -126,7 +126,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             options.Path = "/engine.io";
             options.Hostname = "test";
             options.Secure = true;
-            options.Query = ImmutableDictionary<string, string>.Empty.Add("transport", "websocket");
+            options.Query = ImmutableDictionary.Create<string, string>().Add("transport", "websocket");
             options.TimestampRequests = false;
             var ws = new WebSocket(options);
             Assert.Contains("wss://test/engine.io?transport=websocket", ws.Uri());
@@ -143,12 +143,12 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             options.Path = "/engine.io";
             options.Hostname = "localhost";
             options.Secure = false;
-            options.Query = ImmutableDictionary<string, string>.Empty.Add("sid", "test");
+            options.Query = ImmutableDictionary.Create<string, string>().Add("sid", "test");
             options.TimestampRequests = true;
             options.TimestampParam = "woot";
             var ws = new WebSocket(options);
 
-            string pat = @"ws://localhost/engine.io\?(woot=[0-9]+-[0-9]+)";
+            string pat = @"ws://localhost/engine.io\?sid=test&(woot=[0-9]+-[0-9]+)";
             var r = new Regex(pat, RegexOptions.IgnoreCase);
             var test = ws.Uri();
             log.Info(test);
