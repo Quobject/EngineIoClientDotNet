@@ -1,0 +1,56 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngineIoClientDotNet", "EngineIoClientDotNet\EngineIoClientDotNet.csproj", "{C44547B2-A90F-4F32-A1F3-9439C772D145}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngineIoClientDotNet_Tests", "EngineIoClientDotNet_Tests\EngineIoClientDotNet_Tests.csproj", "{E988D97C-43C3-401B-9B82-BF7F5101F951}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "grunt", "grunt\", "{7F5CBDD0-5537-4B8B-AD7E-9F7E88600084}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/grunt"
+		Debug.AspNetCompiler.PhysicalPath = "grunt\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\grunt\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/grunt"
+		Release.AspNetCompiler.PhysicalPath = "grunt\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\grunt\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "8528"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Collections.Immutable", "System.Collections.Immutable\System.Collections.Immutable.csproj", "{024A2111-4B19-44D7-917E-8514CF632469}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C44547B2-A90F-4F32-A1F3-9439C772D145}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C44547B2-A90F-4F32-A1F3-9439C772D145}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C44547B2-A90F-4F32-A1F3-9439C772D145}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C44547B2-A90F-4F32-A1F3-9439C772D145}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E988D97C-43C3-401B-9B82-BF7F5101F951}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E988D97C-43C3-401B-9B82-BF7F5101F951}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E988D97C-43C3-401B-9B82-BF7F5101F951}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E988D97C-43C3-401B-9B82-BF7F5101F951}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F5CBDD0-5537-4B8B-AD7E-9F7E88600084}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F5CBDD0-5537-4B8B-AD7E-9F7E88600084}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F5CBDD0-5537-4B8B-AD7E-9F7E88600084}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F5CBDD0-5537-4B8B-AD7E-9F7E88600084}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{024A2111-4B19-44D7-917E-8514CF632469}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{024A2111-4B19-44D7-917E-8514CF632469}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{024A2111-4B19-44D7-917E-8514CF632469}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{024A2111-4B19-44D7-917E-8514CF632469}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
