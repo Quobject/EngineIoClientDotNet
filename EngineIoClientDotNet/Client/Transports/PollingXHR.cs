@@ -206,6 +206,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 }
                 catch (Exception e)
                 {
+                    log.Error(e);
                     OnError(e);
                     return;
                 }
@@ -310,6 +311,12 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                         //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
                         log.Error("Create call failed", e);
                         OnError(e);                        
+                    }
+                    catch (Exception e)
+                    {
+                        //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                        log.Error("Create call failed", e);
+                        OnError(e);
                     }
                 });
             }
