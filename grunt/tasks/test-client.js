@@ -14,7 +14,7 @@
         config.win.xunit_path : config.linux.xunit_path,    
       testdll =  os === 'win' ?
         __dirname + '/../../EngineIoClientDotNet_Tests/bin/Release/EngineIoClientDotNet_Tests.dll':
-        __dirname + '/../../EngineIoClientDotNet_Tests/bin/Release/EngineIoClientDotNet_Tests_Mono.dll';
+        __dirname + '/../../EngineIoClientDotNet_Tests/bin/Release/EngineIoClientDotNet_Tests.dll';
 
 
     grunt.log.writeln('testdll = "%s"', testdll);
