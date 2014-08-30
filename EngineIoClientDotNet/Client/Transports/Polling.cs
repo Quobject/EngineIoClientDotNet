@@ -276,7 +276,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         public string Uri()
         {
-            var query = this.Query;
+            var query = this.Query.ToDictionary(e => e.Key, e => e.Value);
             if (query == null)
             {
                 query = new Dictionary<string, string>();

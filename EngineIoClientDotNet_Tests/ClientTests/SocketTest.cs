@@ -17,17 +17,14 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         {
             Socket.SetupLog4Net();
             var options = CreateOptions();
-            options.Transports = new List<string>();
-            options.Transports.Add("polling");
-            
+            options.Transports = new List<string> {"polling"};
+
             socket = new Socket(options);
 
-            var builder = new List<string>();
-            builder.Add("polling");
-            builder.Add("websocket");
+            var builder = new List<string> {"polling", "websocket"};
 
 
-            var list = socket.FilterUpgrades(new List<string>(new[] { Polling.NAME, WebSocket.NAME }));
+            var list = socket.FilterUpgrades(new List<string>{ Polling.NAME, WebSocket.NAME });
 
             Assert.Equal("polling", list[0]);
             Assert.Equal(1,list.Count);

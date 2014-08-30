@@ -27,8 +27,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
 
             var options = CreateOptions();
-            options.Transports = new List<string>();
-            options.Transports.Add(Polling.NAME);
+            options.Transports = new List<string> {Polling.NAME};
 
 
             var socket = new Socket(options);
@@ -86,8 +85,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             const string stringData = "cash money €€€";
 
             var options = CreateOptions();
-            options.Transports = new List<string>();
-            options.Transports.Add(Polling.NAME);
+            options.Transports = new List<string> {Polling.NAME};
 
 
             var socket = new Socket(options);

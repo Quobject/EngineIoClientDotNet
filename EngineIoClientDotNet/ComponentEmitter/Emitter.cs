@@ -28,8 +28,10 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
             //log.Info("Emitter emit event = " + eventString);
             if (this.callbacks.ContainsKey(eventString))
             {
-                List<IListener> callbacksLocal = this.callbacks[eventString];                
-                foreach (var fn in callbacksLocal)
+                List<IListener> callbacksLocal = this.callbacks[eventString];
+                var nc = new List<IListener>();
+                nc.AddRange(callbacksLocal);
+                foreach (var fn in nc)
                 {
                     fn.Call(args);
                 }                    

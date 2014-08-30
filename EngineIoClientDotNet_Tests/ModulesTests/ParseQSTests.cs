@@ -30,7 +30,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ModulesTests
 
             // Assignments containing non-alphanumeric characters
             queryObj = ParseQS.Decode("india=new%20delhi");
-            queryObj.TryGetValue("germany", out result);
+            queryObj.TryGetValue("india", out result);
             Assert.Equal(result, "new delhi");
 
         }
@@ -39,20 +39,15 @@ namespace Quobject.EngineIoClientDotNet_Tests.ModulesTests
         [Fact]
         public void Encode()
         {
-            var imObj = new Dictionary<string, string>();
-            imObj.Add("a", "b");
+            var imObj = new Dictionary<string, string> {{"a", "b"}};
             Assert.Equal(ParseQS.Encode(imObj), "a=b");
 
-            imObj = new Dictionary<string, string>();
-            imObj.Add("a", "b");
-            imObj.Add("c", "d");
+            imObj = new Dictionary<string, string> {{"a", "b"}, {"c", "d"}};
             Assert.Equal(ParseQS.Encode(imObj), "a=b&c=d");
 
 
-            imObj = new Dictionary<string, string>();
-            imObj.Add("a", "b");
-            imObj.Add("c", "tobi%20rocks");
-            Assert.Equal(ParseQS.Encode(imObj), "a=b&c=tobi%20rocks");
+            imObj = new Dictionary<string, string> {{"a", "b"}, {"c", "tobi rocks"}};
+            Assert.Equal("a=b&c=tobi%20rocks", ParseQS.Encode(imObj));
 
         }
 

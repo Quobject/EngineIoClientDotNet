@@ -1,4 +1,5 @@
-﻿using log4net;
+﻿using System.Linq;
+using log4net;
 using log4net.Appender;
 using log4net.Config;
 using log4net.Layout;
@@ -138,7 +139,8 @@ namespace Quobject.EngineIoClientDotNet.Client
             Path = (options.Path ?? "/engine.io").Replace("/$", "") + "/";
             TimestampParam = (options.TimestampParam ?? "t");
             TimestampRequests = options.TimestampRequests;
-            Transports = options.Transports ?? new List<string>(new[] {Polling.NAME, WebSocket.NAME});  
+            
+            Transports = options.Transports ??  new List<string> {Polling.NAME, WebSocket.NAME};  
             PolicyPort = options.PolicyPort != 0 ? options.PolicyPort : 843;
             RememberUpgrade = options.RememberUpgrade;
             if (options.IgnoreServerCertificateValidation)
@@ -170,8 +172,9 @@ namespace Quobject.EngineIoClientDotNet.Client
         {
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info(string.Format("creating transport '{0}'", name));
-            Query.Add("EIO", Parser.Parser.Protocol.ToString());
-            Query.Add("transport", name);
+            var query = this.Query.ToDictionary(e => e.Key, e => e.Value);
+            query.Add("EIO", Parser.Parser.Protocol.ToString());
+            query.Add("transport", name);
             if (Id != null)
             {
                 Query.Add("sid", Id);
@@ -181,6 +184,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             options.Port = Port;
             options.Secure = Secure;
             options.Path = Path;
+            options.Query = query;
             options.TimestampRequests = TimestampRequests;
             options.TimestampParam = TimestampParam;
             options.PolicyPort = PolicyPort;
