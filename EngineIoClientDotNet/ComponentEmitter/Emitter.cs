@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Immutable;
+using System.Collections.Generic;
+
 
 namespace Quobject.EngineIoClientDotNet.ComponentEmitter
 {
@@ -11,7 +12,7 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
     /// </remarks>
     public class Emitter
     {
-        private ConcurrentDictionary<string, ImmutableList<IListener>> callbacks = new ConcurrentDictionary<string, ImmutableList<IListener>>();
+        private ConcurrentDictionary<string, List<IListener>> callbacks = new ConcurrentDictionary<string, List<IListener>>();
 
         private ConcurrentDictionary<IListener, IListener> _onceCallbacks = new ConcurrentDictionary<IListener, IListener>();
 
@@ -27,7 +28,7 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
             //log.Info("Emitter emit event = " + eventString);
             if (this.callbacks.ContainsKey(eventString))
             {
-                ImmutableList<IListener> callbacksLocal = this.callbacks[eventString];                
+                List<IListener> callbacksLocal = this.callbacks[eventString];                
                 foreach (var fn in callbacksLocal)
                 {
                     fn.Call(args);
@@ -46,10 +47,10 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
         {
             if (!this.callbacks.ContainsKey(eventString))
             {
-                this.callbacks[eventString] = ImmutableList<IListener>.Empty;            
+                this.callbacks[eventString] = new List<IListener>();            
             }
-            ImmutableList<IListener> callbacksLocal = this.callbacks[eventString];
-            callbacksLocal = callbacksLocal.Add(fn);
+            List<IListener> callbacksLocal = this.callbacks[eventString];
+            callbacksLocal.Add(fn);
             this.callbacks[eventString] = callbacksLocal;
             return this;
         }
@@ -128,7 +129,7 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
         public Emitter Off(string eventString)
         {
 
-            ImmutableList<IListener> retrievedValue;
+            List<IListener> retrievedValue;
             if (! this.callbacks.TryRemove(eventString, out retrievedValue))
             {
                 Console.WriteLine("Emitter.Off Could not remove {0}",eventString);
@@ -155,10 +156,10 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
         {
             if (this.callbacks.ContainsKey(eventString))
             {
-                ImmutableList<IListener> callbacksLocal = this.callbacks[eventString];
+                List<IListener> callbacksLocal = this.callbacks[eventString];
                 IListener offListener;
                 this._onceCallbacks.TryRemove(fn, out offListener);
-                this.callbacks[eventString] = callbacksLocal.Remove(offListener ?? fn);                
+                callbacksLocal.Remove(offListener ?? fn);                
             }
             return this;
         }
@@ -168,14 +169,14 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
         /// </summary>
         /// <param name="eventString">an event name.</param>
         /// <returns>a reference to this object</returns>
-        public ImmutableList<IListener> Listeners(string eventString)
+        public List<IListener> Listeners(string eventString)
         {
             if (this.callbacks.ContainsKey(eventString))
             {
-                ImmutableList<IListener> callbacksLocal = this.callbacks[eventString];
-                return callbacksLocal ?? ImmutableList<IListener>.Empty;
+                List<IListener> callbacksLocal = this.callbacks[eventString];
+                return callbacksLocal ?? new List<IListener>();
             }
-            return ImmutableList<IListener>.Empty;
+            return new List<IListener>();
         }
 
         /// <summary>

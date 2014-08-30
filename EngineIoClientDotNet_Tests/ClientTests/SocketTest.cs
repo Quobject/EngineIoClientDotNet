@@ -1,7 +1,8 @@
-﻿using log4net;
+﻿using System.Collections.Generic;
+using log4net;
 using Quobject.EngineIoClientDotNet.Client;
 using System;
-using System.Collections.Immutable;
+using Quobject.EngineIoClientDotNet.Client.Transports;
 using Xunit;
 
 namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
@@ -16,17 +17,20 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         {
             Socket.SetupLog4Net();
             var options = CreateOptions();
-            options.Transports = ImmutableList<string>.Empty.Add("polling");
+            options.Transports = new List<string>();
+            options.Transports.Add("polling");
             
             socket = new Socket(options);
 
-            var builder = ImmutableList<string>.Empty.Add("polling").Add("websocket");
+            var builder = new List<string>();
+            builder.Add("polling");
+            builder.Add("websocket");
 
 
-            var immutablelist = socket.FilterUpgrades(ImmutableList<string>.Empty.Add("polling").Add("websocket"));
+            var list = socket.FilterUpgrades(new List<string>(new[] { Polling.NAME, WebSocket.NAME }));
 
-            Assert.Equal("polling", immutablelist[0]);
-            Assert.Equal(1,immutablelist.Count);
+            Assert.Equal("polling", list[0]);
+            Assert.Equal(1,list.Count);
         }
 
         [Fact]

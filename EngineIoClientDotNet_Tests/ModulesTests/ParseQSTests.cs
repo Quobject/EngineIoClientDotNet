@@ -1,6 +1,6 @@
 ﻿using Quobject.EngineIoClientDotNet.Modules;
 using System.Collections.Generic;
-using System.Collections.Immutable;
+
 using Xunit;
 
 
@@ -13,17 +13,26 @@ namespace Quobject.EngineIoClientDotNet_Tests.ModulesTests
         public void Decode()
         {
             // Single assignment
-            var queryObj = ParseQS.Decode("foo=bar");                        
-            Assert.Equal(queryObj["foo"], "bar");
+            var queryObj = ParseQS.Decode("foo=bar");
+            string result;
+            queryObj.TryGetValue("foo", out result);                      
+            Assert.Equal(result, "bar");
 
             // Multiple assignments
             queryObj = ParseQS.Decode("france=grenoble&germany=mannheim");
-            Assert.Equal(queryObj["france"], "grenoble");
-            Assert.Equal(queryObj["germany"], "mannheim");
+
+            queryObj.TryGetValue("france", out result);
+            Assert.Equal(result, "grenoble");
+
+            queryObj.TryGetValue("germany", out result);
+            Assert.Equal(result, "mannheim");
+
 
             // Assignments containing non-alphanumeric characters
             queryObj = ParseQS.Decode("india=new%20delhi");
-            Assert.Equal(queryObj["india"], "new delhi");
+            queryObj.TryGetValue("germany", out result);
+            Assert.Equal(result, "new delhi");
+
         }
 
         //should construct a query string from an object'
@@ -33,15 +42,15 @@ namespace Quobject.EngineIoClientDotNet_Tests.ModulesTests
             Dictionary<string, string> obj;
 
             obj = new Dictionary<string, string> {{"a", "b"}};
-            var imObj = ImmutableDictionary<string, string>.Empty.AddRange(obj);
+            var imObj = Dictionary<string, string>.Empty.AddRange(obj);
             Assert.Equal(ParseQS.Encode(imObj), "a=b");
 
             obj = new Dictionary<string, string> { { "a", "b" }, { "c", "d" } };
-            imObj = ImmutableDictionary<string, string>.Empty.AddRange(obj);
+            imObj = Dictionary<string, string>.Empty.AddRange(obj);
             Assert.Equal(ParseQS.Encode(imObj), "a=b&c=d");
 
             obj = new Dictionary<string, string> { { "a", "b" }, { "c", "tobi rocks" } };
-            imObj = ImmutableDictionary<string, string>.Empty.AddRange(obj);
+            imObj = Dictionary<string, string>.Empty.AddRange(obj);
             Assert.Equal(ParseQS.Encode(imObj), "a=b&c=tobi%20rocks");
 
         }

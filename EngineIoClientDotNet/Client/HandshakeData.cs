@@ -1,12 +1,13 @@
 ﻿using Newtonsoft.Json.Linq;
-using System.Collections.Immutable;
+using System.Collections.Generic;
+
 
 namespace Quobject.EngineIoClientDotNet.Client
 {
     public class HandshakeData
     {
         public string Sid;
-        public ImmutableList<string> Upgrades = ImmutableList<string>.Empty;
+        public List<string> Upgrades = new List<string>();
         public long PingInterval;
         public long PingTimeout;
 
@@ -20,7 +21,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
             foreach (var e in upgrades)
             {
-                Upgrades = Upgrades.Add(e.ToString());                                   
+                Upgrades.Add(e.ToString());                                   
             }
 
             Sid = data.GetValue("sid").Value<string>();

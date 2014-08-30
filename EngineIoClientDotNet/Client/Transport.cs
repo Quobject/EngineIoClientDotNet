@@ -1,7 +1,8 @@
-﻿using Quobject.EngineIoClientDotNet.ComponentEmitter;
+﻿using System.Collections.Generic;
+using Quobject.EngineIoClientDotNet.ComponentEmitter;
 using Quobject.EngineIoClientDotNet.Parser;
 using System;
-using System.Collections.Immutable;
+
 
 
 namespace Quobject.EngineIoClientDotNet.Client
@@ -30,7 +31,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         public bool Writable;
         public string Name;
-        public ImmutableDictionary<string, string> Query;
+        public Dictionary<string, string> Query;
 
         protected bool Secure;
         protected bool TimestampRequests;
@@ -119,7 +120,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             return this;
         }
 
-        public Transport Send(ImmutableList<Packet> packets)
+        public Transport Send(List<Packet> packets)
         {
             //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             //log.Info("Send called with packets.Count: " + packets.Count);
@@ -141,7 +142,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         protected abstract void DoClose();
 
-        protected abstract void Write(ImmutableList<Packet> packets);
+        protected abstract void Write(List<Packet> packets);
 
 
         public class Options
@@ -156,7 +157,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             public bool TimestampRequests = true;
             public int Port;
             public int PolicyPort;
-            public ImmutableDictionary<string, string> Query;
+            public Dictionary<string, string> Query;
             public bool IgnoreServerCertificateValidation = false;
             internal Socket Socket;
         }

@@ -10,7 +10,7 @@ using Quobject.EngineIoClientDotNet.Parser;
 using Quobject.EngineIoClientDotNet.Thread;
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
+
 using System.Net;
 using System.Timers;
 
@@ -61,11 +61,11 @@ namespace Quobject.EngineIoClientDotNet.Client
         private string Hostname;
         private string Path;
         private string TimestampParam;
-        private ImmutableList<string> Transports;
-        private ImmutableList<string> Upgrades;
-        private ImmutableDictionary<string, string> Query;
-        private ImmutableList<Packet> WriteBuffer = ImmutableList<Packet>.Empty;
-        private ImmutableList<Action> CallbackBuffer = ImmutableList<Action>.Empty;
+        private List<string> Transports;
+        private List<string> Upgrades;
+        private Dictionary<string, string> Query;
+        private List<Packet> WriteBuffer = new List<Packet>();
+        private List<Action> CallbackBuffer = new List<Action>();
         /*package*/
         public Transport Transport;
         private Timer PingTimeoutTimer;
@@ -133,12 +133,12 @@ namespace Quobject.EngineIoClientDotNet.Client
             Secure = options.Secure;
             Hostname = options.Hostname;
             Port = options.Port;
-            Query = options.QueryString != null ? ParseQS.Decode(options.QueryString) : ImmutableDictionary<string, string>.Empty;
+            Query = options.QueryString != null ? ParseQS.Decode(options.QueryString) : new Dictionary<string, string>();
             Upgrade = options.Upgrade;
             Path = (options.Path ?? "/engine.io").Replace("/$", "") + "/";
             TimestampParam = (options.TimestampParam ?? "t");
             TimestampRequests = options.TimestampRequests;
-            Transports = options.Transports ?? ImmutableList<string>.Empty.Add(Polling.NAME).Add(WebSocket.NAME);
+            Transports = options.Transports ?? new List<string>(new[] {Polling.NAME, WebSocket.NAME});  
             PolicyPort = options.PolicyPort != 0 ? options.PolicyPort : 843;
             RememberUpgrade = options.RememberUpgrade;
             if (options.IgnoreServerCertificateValidation)
@@ -170,18 +170,17 @@ namespace Quobject.EngineIoClientDotNet.Client
         {
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info(string.Format("creating transport '{0}'", name));
-            var query = Query.Add("EIO", Parser.Parser.Protocol.ToString());
-            query = query.Add("transport", name);
+            Query.Add("EIO", Parser.Parser.Protocol.ToString());
+            Query.Add("transport", name);
             if (Id != null)
             {
-                query = query.Add("sid", Id);
+                Query.Add("sid", Id);
             }
             var options = new Transport.Options();
             options.Hostname = Hostname;
             options.Port = Port;
             options.Secure = Secure;
             options.Path = Path;
-            options.Query = query;
             options.TimestampRequests = TimestampRequests;
             options.TimestampParam = TimestampParam;
             options.PolicyPort = PolicyPort;
@@ -289,7 +288,7 @@ namespace Quobject.EngineIoClientDotNet.Client
         public class Options : Transport.Options
         {
 
-            public ImmutableList<string> Transports;
+            public List<string> Transports;
 
             public bool Upgrade = true;
 
@@ -333,8 +332,8 @@ namespace Quobject.EngineIoClientDotNet.Client
             }
             log.Info(string.Format("OnDrain2 PrevBufferLen={0} WriteBuffer.Count={1}", PrevBufferLen, WriteBuffer.Count));
 
-            WriteBuffer = WriteBuffer.RemoveRange(0,PrevBufferLen);
-            CallbackBuffer = CallbackBuffer.RemoveRange(0,PrevBufferLen);
+            WriteBuffer.RemoveRange(0,PrevBufferLen);
+            CallbackBuffer.RemoveRange(0,PrevBufferLen);
 
             this.PrevBufferLen = 0;
             log.Info(string.Format("OnDrain3 PrevBufferLen={0} WriteBuffer.Count={1}", PrevBufferLen, WriteBuffer.Count));
@@ -357,7 +356,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             {
                 log.Info(string.Format("Flush {0} packets in socket", WriteBuffer.Count));
                 PrevBufferLen = WriteBuffer.Count;
-                //var toSend = ImmutableList<Packet>.Empty.AddRange(WriteBuffer.ToArray());
+                //var toSend = List<Packet>.Empty.AddRange(WriteBuffer.ToArray());
                 Transport.Send(WriteBuffer);
                 Emit(EVENT_FLUSH);
             }
@@ -417,7 +416,7 @@ namespace Quobject.EngineIoClientDotNet.Client
         {
             Emit(EVENT_HANDSHAKE, handshakeData);
             Id = handshakeData.Sid;
-            Transport.Query = Transport.Query.Add("sid", handshakeData.Sid);
+            Transport.Query.Add("sid", handshakeData.Sid);
             Upgrades = FilterUpgrades(handshakeData.Upgrades);
             PingInterval = handshakeData.PingInterval;
             PingTimeout = handshakeData.PingTimeout;
@@ -521,8 +520,8 @@ namespace Quobject.EngineIoClientDotNet.Client
             Emit(EVENT_PACKET_CREATE, packet);
             //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             //log.Info(string.Format("SendPacket WriteBuffer.Add(packet) packet ={0}",packet.Type));
-            WriteBuffer = WriteBuffer.Add(packet);
-            CallbackBuffer = CallbackBuffer.Add(fn);
+            WriteBuffer.Add(packet);
+            CallbackBuffer.Add(fn);
             Flush();
         }
 
@@ -557,11 +556,14 @@ namespace Quobject.EngineIoClientDotNet.Client
 
             PriorWebsocketSuccess = false;
 
+            var transport = new List<Transport>();
+            transport.Add(CreateTransport(name));
+
             var parameters = new ProbeParameters
             {
-                Transport = ImmutableList<Transport>.Empty.Add(CreateTransport(name)),
-                Failed = ImmutableList<bool>.Empty.Add(false),
-                Cleanup = ImmutableList<Action>.Empty,
+                Transport = transport,
+                Failed = new List<bool>(),
+                Cleanup = new List<Action>(),
                 Socket = this
             };
 
@@ -598,9 +600,9 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         private class ProbeParameters
         {
-            public ImmutableList<Transport> Transport { get; set; }
-            public ImmutableList<bool> Failed { get; set; }
-            public ImmutableList<Action> Cleanup { get; set; }
+            public List<Transport> Transport { get; set; }
+            public List<bool> Failed { get; set; }
+            public List<Action> Cleanup { get; set; }
             public Socket Socket { get; set; }
         }
 
@@ -624,7 +626,9 @@ namespace Quobject.EngineIoClientDotNet.Client
 
                 //log.Info(string.Format("probe transport '{0}' opened", Parameters.Transport[0].Name));
                 var packet = new Packet(Packet.PING, "probe");
-                Parameters.Transport[0].Send(ImmutableList<Packet>.Empty.Add(packet));
+                var packetList = new List<Packet>();
+                packetList.Add(packet);
+                Parameters.Transport[0].Send(packetList);
                 Parameters.Transport[0].Once(Client.Transport.EVENT_PACKET, new ProbeEventPacketListener(this));
             }
 
@@ -678,8 +682,8 @@ namespace Quobject.EngineIoClientDotNet.Client
                                 _onTransportOpenListener.Parameters.Cleanup[0]();
 
                                 _onTransportOpenListener.Parameters.Socket.SetTransport(_onTransportOpenListener.Parameters.Transport[0]);
-                                ImmutableList<Packet> packetList =
-                                    ImmutableList<Packet>.Empty.Add(new Packet(Packet.UPGRADE));
+                                var packetList = new List<Packet>();
+                                packetList.Add(new Packet(Packet.UPGRADE));
                                 _onTransportOpenListener.Parameters.Transport[0].Send(packetList);
 
                                 _onTransportOpenListener.Parameters.Socket.Flush();
@@ -687,7 +691,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
                                 _onTransportOpenListener.Parameters.Socket.Emit(EVENT_UPGRADE,
                                     _onTransportOpenListener.Parameters.Transport[0]);
-                                _onTransportOpenListener.Parameters.Transport = _onTransportOpenListener.Parameters.Transport.RemoveAt(0);
+                                _onTransportOpenListener.Parameters.Transport.RemoveAt(0);
 
                             });
 
@@ -722,22 +726,22 @@ namespace Quobject.EngineIoClientDotNet.Client
                     return;
                 }
 
-                Parameters.Failed = Parameters.Failed.SetItem(0, true);
+                Parameters.Failed[0] = true;
 
                 Parameters.Cleanup[0]();
 
                 Parameters.Transport[0].Close();
-                Parameters.Transport = Parameters.Transport.SetItem(0, null);
+                Parameters.Transport[0] = null;                
             }
         }
 
         private class ProbingOnErrorListener : IListener
         {
             private readonly Socket _socket;
-            private readonly ImmutableList<Transport> _transport;
+            private readonly List<Transport> _transport;
             private readonly IListener _freezeTransport;
 
-            public ProbingOnErrorListener(Socket socket, ImmutableList<Transport> transport, IListener freezeTransport)
+            public ProbingOnErrorListener(Socket socket, List<Transport> transport, IListener freezeTransport)
             {
                 this._socket = socket;
                 this._transport = transport;
@@ -799,9 +803,9 @@ namespace Quobject.EngineIoClientDotNet.Client
         private class ProbingOnUpgradeListener : IListener
         {
             private readonly IListener _freezeTransport;
-            private readonly ImmutableList<Transport> _transport;
+            private readonly List<Transport> _transport;
 
-            public ProbingOnUpgradeListener(FreezeTransportListener freezeTransport, ImmutableList<Transport> transport)
+            public ProbingOnUpgradeListener(FreezeTransportListener freezeTransport, List<Transport> transport)
             {
                 this._freezeTransport = freezeTransport;
                 this._transport = transport;
@@ -857,8 +861,8 @@ namespace Quobject.EngineIoClientDotNet.Client
 
                 EasyTimer.SetTimeout(() =>
                 {
-                    WriteBuffer = WriteBuffer.Clear();
-                    CallbackBuffer = CallbackBuffer.Clear();
+                    WriteBuffer.Clear();
+                    CallbackBuffer.Clear();
                     PrevBufferLen = 0;
                 }, 1);
 
@@ -882,14 +886,14 @@ namespace Quobject.EngineIoClientDotNet.Client
             }
         }
 
-        public ImmutableList<string> FilterUpgrades(IEnumerable<string> upgrades)
+        public List<string> FilterUpgrades(IEnumerable<string> upgrades)
         {
-            var filterUpgrades = ImmutableList<string>.Empty;
+            var filterUpgrades = new List<string>();
             foreach( var upgrade in upgrades)
             {
                 if (Transports.Contains(upgrade))
                 {
-                    filterUpgrades = filterUpgrades.Add(upgrade);
+                    filterUpgrades.Add(upgrade);
                 }
             }
             return filterUpgrades;

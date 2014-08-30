@@ -1,9 +1,10 @@
-﻿using log4net;
+﻿using System.Collections.Generic;
+using log4net;
 using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Parser;
 using Quobject.EngineIoClientDotNet.Thread;
 using System;
-using System.Collections.Immutable;
+
 using WebSocket4Net;
 
 namespace Quobject.EngineIoClientDotNet.Client.Transports
@@ -71,7 +72,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             this.OnError("websocket error", e.Exception);
         }
 
-        protected override void Write(System.Collections.Immutable.ImmutableList<Parser.Packet> packets)
+        protected override void Write(List<Parser.Packet> packets)
         {
             Writable = false;
             foreach (var packet in packets)
@@ -147,17 +148,17 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         public string Uri()
         {
-            ImmutableDictionary<string, string> query = this.Query;
+            Dictionary<string, string> query = this.Query;
             if (query == null)
             {
-                query = ImmutableDictionary<string, string>.Empty;
+                query = new Dictionary<string, string>();
             }
             string schema = this.Secure ? "wss" : "ws";
             string portString = "";
 
             if (this.TimestampRequests)
             {
-                query = query.Add(this.TimestampParam, DateTime.Now.Ticks.ToString() + "-" + Transport.Timestamps++);
+                query.Add(this.TimestampParam, DateTime.Now.Ticks.ToString() + "-" + Transport.Timestamps++);
             }
 
             string _query = ParseQS.Encode(query);
