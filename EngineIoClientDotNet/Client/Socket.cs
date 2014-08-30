@@ -63,7 +63,7 @@ namespace Quobject.EngineIoClientDotNet.Client
         private string TimestampParam;
         private ImmutableList<string> Transports;
         private ImmutableList<string> Upgrades;
-        private ImmutableDictionary<string, string> Query;
+        private Dictionary<string, string> Query;
         private ImmutableList<Packet> WriteBuffer = ImmutableList<Packet>.Empty;
         private ImmutableList<Action> CallbackBuffer = ImmutableList<Action>.Empty;
         /*package*/
@@ -133,7 +133,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             Secure = options.Secure;
             Hostname = options.Hostname;
             Port = options.Port;
-            Query = options.QueryString != null ? ParseQS.Decode(options.QueryString) : ImmutableDictionary.Create<string, string>();
+            Query = options.QueryString != null ? ParseQS.Decode(options.QueryString) : new Dictionary<string, string>();
             Upgrade = options.Upgrade;
             Path = (options.Path ?? "/engine.io").Replace("/$", "") + "/";
             TimestampParam = (options.TimestampParam ?? "t");
@@ -170,11 +170,12 @@ namespace Quobject.EngineIoClientDotNet.Client
         {
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info(string.Format("creating transport '{0}'", name));
-            var query = Query.Add("EIO", Parser.Parser.Protocol.ToString());
-            query = query.Add("transport", name);
+            var query = new Dictionary<string, string>(Query);
+            query.Add("EIO", Parser.Parser.Protocol.ToString());
+            query.Add("transport", name);
             if (Id != null)
             {
-                query = query.Add("sid", Id);
+                query.Add("sid", Id);
             }
             var options = new Transport.Options();
             options.Hostname = Hostname;
@@ -417,7 +418,7 @@ namespace Quobject.EngineIoClientDotNet.Client
         {
             Emit(EVENT_HANDSHAKE, handshakeData);
             Id = handshakeData.Sid;
-            Transport.Query = Transport.Query.Add("sid", handshakeData.Sid);
+            Transport.Query.Add("sid", handshakeData.Sid);
             Upgrades = FilterUpgrades(handshakeData.Upgrades);
             PingInterval = handshakeData.PingInterval;
             PingTimeout = handshakeData.PingTimeout;

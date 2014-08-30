@@ -1,4 +1,5 @@
-﻿using Quobject.EngineIoClientDotNet.ComponentEmitter;
+﻿using System.Collections.Generic;
+using Quobject.EngineIoClientDotNet.ComponentEmitter;
 using Quobject.EngineIoClientDotNet.Parser;
 using System;
 using System.Collections.Immutable;
@@ -30,7 +31,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         public bool Writable;
         public string Name;
-        public ImmutableDictionary<string, string> Query;
+        public Dictionary<string, string> Query;
 
         protected bool Secure;
         protected bool TimestampRequests;
@@ -156,7 +157,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             public bool TimestampRequests = true;
             public int Port;
             public int PolicyPort;
-            public ImmutableDictionary<string, string> Query;
+            public Dictionary<string, string> Query;
             public bool IgnoreServerCertificateValidation = false;
             internal Socket Socket;
         }

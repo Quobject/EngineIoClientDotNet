@@ -1,4 +1,5 @@
-﻿using log4net;
+﻿using System.Collections.Generic;
+using log4net;
 using Quobject.EngineIoClientDotNet.Client;
 using Quobject.EngineIoClientDotNet.Client.Transports;
 using System;
@@ -32,10 +33,10 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             options.Path = "/engine.io";
             options.Hostname = "localhost";
             options.Secure = false;
-            options.Query = ImmutableDictionary.Create<string, string>().Add("sid", "test");
+            options.Query = new Dictionary<string, string> {{"sid", "test"}};
             options.TimestampRequests = false;
             var polling = new Polling(options);
-            Assert.Contains("http://localhost/engine.io?b64=1&sid=test", polling.Uri());
+            Assert.Contains("http://localhost/engine.io?sid=test&b64=1", polling.Uri());
         }
 
         [Fact]
@@ -45,11 +46,11 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             options.Path = "/engine.io";
             options.Hostname = "localhost";
             options.Secure = false;
-            options.Query = ImmutableDictionary.Create<string, string>().Add("sid", "test");
+            options.Query = new Dictionary<string, string> { { "sid", "test" } };
             options.TimestampRequests = false;
             options.Port = 80;
             var polling = new Polling(options);
-            Assert.Contains("http://localhost/engine.io?b64=1&sid=test", polling.Uri());
+            Assert.Contains("http://localhost/engine.io?sid=test&b64=1", polling.Uri());
         }
 
         [Fact]
@@ -59,11 +60,11 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             options.Path = "/engine.io";
             options.Hostname = "localhost";
             options.Secure = false;
-            options.Query = ImmutableDictionary.Create<string, string>().Add("sid", "test");
+            options.Query = new Dictionary<string, string> { { "sid", "test" } };
             options.TimestampRequests = false;
             options.Port = 3000;
             var polling = new Polling(options);
-            Assert.Contains("http://localhost:3000/engine.io?b64=1&sid=test", polling.Uri());
+            Assert.Contains("http://localhost:3000/engine.io?sid=test&b64=1", polling.Uri());
         }
 
 
@@ -74,11 +75,11 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             options.Path = "/engine.io";
             options.Hostname = "localhost";
             options.Secure = true;
-            options.Query = ImmutableDictionary.Create<string, string>().Add("sid", "test");
+            options.Query = new Dictionary<string, string> { { "sid", "test" } };
             options.TimestampRequests = false;
             options.Port = 443;
             var polling = new Polling(options);
-            Assert.Contains("https://localhost/engine.io?b64=1&sid=test", polling.Uri());
+            Assert.Contains("https://localhost/engine.io?sid=test&b64=1", polling.Uri());
         }
 
 
@@ -92,12 +93,12 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             options.Path = "/engine.io";
             options.Hostname = "localhost";
             options.Secure = false;
-            options.Query = ImmutableDictionary.Create<string, string>().Add("sid", "test");
+            options.Query = new Dictionary<string, string> { { "sid", "test" } };
             options.TimestampRequests = true;
             options.TimestampParam = "t";
             var polling = new Polling(options);
 
-            string pat = @"http://localhost/engine.io\?b64=1&sid=test&(t=[0-9]+-[0-9]+)";
+            string pat = @"http://localhost/engine.io\?sid=test&(t=[0-9]+-[0-9]+)";
             var r = new Regex(pat, RegexOptions.IgnoreCase);
             var test = polling.Uri();
             log.Info(test);
@@ -113,7 +114,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             options.Path = "/engine.io";
             options.Hostname = "test";
             options.Secure = false;
-            options.Query = ImmutableDictionary.Create<string, string>().Add("transport", "websocket");
+            options.Query = new Dictionary<string, string> { { "transport", "websocket" } };
             options.TimestampRequests = false;
             var ws = new WebSocket(options);
             Assert.Contains("ws://test/engine.io?transport=websocket", ws.Uri());
@@ -126,7 +127,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             options.Path = "/engine.io";
             options.Hostname = "test";
             options.Secure = true;
-            options.Query = ImmutableDictionary.Create<string, string>().Add("transport", "websocket");
+            options.Query = new Dictionary<string, string> { { "transport", "websocket" } };
             options.TimestampRequests = false;
             var ws = new WebSocket(options);
             Assert.Contains("wss://test/engine.io?transport=websocket", ws.Uri());
@@ -143,7 +144,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             options.Path = "/engine.io";
             options.Hostname = "localhost";
             options.Secure = false;
-            options.Query = ImmutableDictionary.Create<string, string>().Add("sid", "test");
+            options.Query = new Dictionary<string, string> { { "sid", "test" } };
             options.TimestampRequests = true;
             options.TimestampParam = "woot";
             var ws = new WebSocket(options);

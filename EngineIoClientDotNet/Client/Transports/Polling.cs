@@ -277,20 +277,21 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         public string Uri()
         {
-            var query = this.Query;
-            if (query == null)
-            {
-                query = ImmutableDictionary.Create<string, string>();
-            }
+            //var query = this.Query;
+            var query = new Dictionary<string, string>(Query);
+            //if (Query == null)
+            //{
+            //    query = new Dictionary<string, string>();
+            //}
             string schema = this.Secure ? "https" : "http";
             string portString = "";
 
             if (this.TimestampRequests)
             {
-                query = query.Add(this.TimestampParam, DateTime.Now.Ticks + "-" + Transport.Timestamps++);
+                query.Add(this.TimestampParam, DateTime.Now.Ticks + "-" + Transport.Timestamps++);
             }
 
-            query = query.Add("b64", "1");
+            query.Add("b64", "1");
 
 
 

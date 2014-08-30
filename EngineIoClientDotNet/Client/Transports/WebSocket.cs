@@ -1,4 +1,5 @@
-﻿using log4net;
+﻿using System.Collections.Generic;
+using log4net;
 using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Parser;
 using Quobject.EngineIoClientDotNet.Thread;
@@ -147,17 +148,17 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         public string Uri()
         {
-            ImmutableDictionary<string, string> query = this.Query;
+            Dictionary<string, string> query = this.Query;
             if (query == null)
             {
-                query = ImmutableDictionary.Create<string, string>();
+                query = new Dictionary<string, string>();
             }
             string schema = this.Secure ? "wss" : "ws";
             string portString = "";
 
             if (this.TimestampRequests)
             {
-                query = query.Add(this.TimestampParam, DateTime.Now.Ticks.ToString() + "-" + Transport.Timestamps++);
+                query.Add(this.TimestampParam, DateTime.Now.Ticks.ToString() + "-" + Transport.Timestamps++);
             }
 
             string _query = ParseQS.Encode(query);

@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Text;
 
 namespace Quobject.EngineIoClientDotNet.Modules
@@ -34,6 +35,28 @@ namespace Quobject.EngineIoClientDotNet.Modules
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Compiles a querystring
+        /// Returns string representation of the object
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        internal static string Encode(System.Collections.Generic.Dictionary<string, string> obj)
+        {
+            var sb = new StringBuilder();
+            foreach (var key in obj.Keys)
+            {
+                if (sb.Length > 0)
+                {
+                    sb.Append("&");
+                }
+                sb.Append(Global.EncodeURIComponent(key));
+                sb.Append("=");
+                sb.Append(Global.EncodeURIComponent(obj[key]));
+            }
+            return sb.ToString();
+        }
+
 
 
         /// <summary>
@@ -41,17 +64,19 @@ namespace Quobject.EngineIoClientDotNet.Modules
         /// </summary>
         /// <param name="qs"></param>
         /// <returns></returns>
-        public static ImmutableDictionary<string, string> Decode(string qs)
+        public static Dictionary<string, string> Decode(string qs)
         {
-            ImmutableDictionary<string, string> qry = ImmutableDictionary.Create<string, string>();
+            var qry = new Dictionary<string, string>();
             var pairs = qs.Split('&');
             for (int i = 0; i < pairs.Length; i++)
             {
                 var pair = pairs[i].Split('=');
 
-                qry = qry.Add(Global.DecodeURIComponent(pair[0]), Global.DecodeURIComponent(pair[1]));
+                qry.Add(Global.DecodeURIComponent(pair[0]), Global.DecodeURIComponent(pair[1]));
             }
             return qry;
         }
+
+
     }
 }
