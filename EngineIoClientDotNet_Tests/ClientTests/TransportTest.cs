@@ -132,7 +132,8 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             options.Path = "/engine.io";
             options.Hostname = "test";
             options.Secure = true;
-            options.Query = Dictionary<string, string>.Empty.Add("transport", "websocket");
+            options.Query = new Dictionary<string, string>();
+            options.Query.Add("transport", "websocket");
             options.TimestampRequests = false;
             var ws = new WebSocket(options);
             Assert.Contains("wss://test/engine.io?transport=websocket", ws.Uri());

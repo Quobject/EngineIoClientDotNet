@@ -39,18 +39,19 @@ namespace Quobject.EngineIoClientDotNet_Tests.ModulesTests
         [Fact]
         public void Encode()
         {
-            Dictionary<string, string> obj;
-
-            obj = new Dictionary<string, string> {{"a", "b"}};
-            var imObj = Dictionary<string, string>.Empty.AddRange(obj);
+            var imObj = new Dictionary<string, string>();
+            imObj.Add("a", "b");
             Assert.Equal(ParseQS.Encode(imObj), "a=b");
 
-            obj = new Dictionary<string, string> { { "a", "b" }, { "c", "d" } };
-            imObj = Dictionary<string, string>.Empty.AddRange(obj);
+            imObj = new Dictionary<string, string>();
+            imObj.Add("a", "b");
+            imObj.Add("c", "d");
             Assert.Equal(ParseQS.Encode(imObj), "a=b&c=d");
 
-            obj = new Dictionary<string, string> { { "a", "b" }, { "c", "tobi rocks" } };
-            imObj = Dictionary<string, string>.Empty.AddRange(obj);
+
+            imObj = new Dictionary<string, string>();
+            imObj.Add("a", "b");
+            imObj.Add("c", "tobi%20rocks");
             Assert.Equal(ParseQS.Encode(imObj), "a=b&c=tobi%20rocks");
 
         }

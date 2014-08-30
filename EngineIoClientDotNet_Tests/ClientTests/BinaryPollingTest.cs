@@ -1,4 +1,5 @@
-﻿using log4net;
+﻿using System.Collections.Generic;
+using log4net;
 using Quobject.EngineIoClientDotNet.Client;
 using Quobject.EngineIoClientDotNet.Client.Transports;
 using System;
@@ -26,7 +27,8 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
 
             var options = CreateOptions();
-            options.Transports = ImmutableList.Create<string>(Polling.NAME);
+            options.Transports = new List<string>();
+            options.Transports.Add(Polling.NAME);
 
 
             var socket = new Socket(options);
@@ -84,7 +86,8 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             const string stringData = "cash money €€€";
 
             var options = CreateOptions();
-            options.Transports = ImmutableList.Create<string>(Polling.NAME);
+            options.Transports = new List<string>();
+            options.Transports.Add(Polling.NAME);
 
 
             var socket = new Socket(options);

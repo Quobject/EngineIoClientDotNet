@@ -579,9 +579,9 @@ namespace Quobject.EngineIoClientDotNet.Client
 
             var onUpgrade = new ProbingOnUpgradeListener(freezeTransport, parameters.Transport);
 
-            parameters.Cleanup = parameters.Cleanup.Add( () =>
+            parameters.Cleanup.Add( () =>
             {
-                parameters.Transport[0].Off(Transport.EVENT_OPEN, onTransportOpen);
+                parameters.Transport.ToArray()[0].Off(Transport.EVENT_OPEN, onTransportOpen);
                 parameters.Transport[0].Off(Transport.EVENT_ERROR, onError);
                 parameters.Transport[0].Off(Transport.EVENT_CLOSE, onTransportClose);
                 Off(EVENT_CLOSE, onClose);
