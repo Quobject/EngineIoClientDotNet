@@ -12,7 +12,9 @@
         'mono {0}/xunit.console.clr4.exe {1}',
       xunit_path = os === 'win' ?
         config.win.xunit_path : config.linux.xunit_path,    
-      testdll = __dirname + '/../../EngineIoClientDotNet_Tests/bin/Release/EngineIoClientDotNet_Tests.dll';
+      testdll =  os === 'win' ?
+        __dirname + '/../../EngineIoClientDotNet_Tests/bin/Release/EngineIoClientDotNet_Tests.dll':
+        __dirname + '/../../EngineIoClientDotNet_Tests/bin/Release/EngineIoClientDotNet_Tests_Mono.dll';
 
 
     grunt.log.writeln('testdll = "%s"', testdll);

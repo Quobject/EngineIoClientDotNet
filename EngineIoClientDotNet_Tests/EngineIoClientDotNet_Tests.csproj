@@ -74,10 +74,6 @@
       <Project>{c44547b2-a90f-4f32-a1f3-9439c772d145}</Project>
       <Name>EngineIoClientDotNet</Name>
     </ProjectReference>
-    <ProjectReference Include="..\System.Collections.Immutable\System.Collections.Immutable.csproj">
-      <Project>{024a2111-4b19-44d7-917e-8514cf632469}</Project>
-      <Name>System.Collections.Immutable</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

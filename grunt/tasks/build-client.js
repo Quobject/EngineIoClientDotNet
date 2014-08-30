@@ -9,8 +9,8 @@
       os = grunt.config('os'),
       config = grunt.config('config'),
       tasks = [],
-
-      csproj = __dirname + '/../../EngineIoClientDotNet/EngineIoClientDotNet.csproj',
+      csproj = os === 'win' ? __dirname + '/../../EngineIoClientDotNet/EngineIoClientDotNet.csproj':
+        __dirname + '/../../EngineIoClientDotNet/EngineIoClientDotNet_Mono.csproj',
       build,
       clean,
       template_file_content;

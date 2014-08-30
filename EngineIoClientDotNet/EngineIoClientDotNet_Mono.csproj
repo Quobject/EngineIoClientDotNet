@@ -80,6 +80,12 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\System.Collections.Immutable\System.Collections.Immutable_Mono.csproj">
+      <Project>{024a2111-4b19-44d7-917e-8514cf632469}</Project>
+      <Name>System.Collections.Immutable_Mono</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

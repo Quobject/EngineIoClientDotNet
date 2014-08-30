@@ -14,6 +14,9 @@
         config.win.nuget : config.linux.nuget,    
       solution = __dirname + '/../../EngineIoClientDotNet.sln';
 
+    if (os !== 'win') {
+      return;
+    }
 
     grunt.log.writeln('nuget_path = "%s"', nuget_path);
 
