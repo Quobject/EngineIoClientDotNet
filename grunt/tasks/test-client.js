@@ -7,14 +7,16 @@
       os = grunt.config('os'),
       config = grunt.config('config'),
       tasks = [],
+      configuration = 'Debug',
       test_format_str = os === 'win' ?
         '{0}/xunit.console.clr4.exe {1} /nunit test.xml' :
         'mono {0}/xunit.console.clr4.exe {1}',
+
       xunit_path = os === 'win' ?
         config.win.xunit_path : config.linux.xunit_path,    
       testdll =  os === 'win' ?
-        __dirname + '/../../EngineIoClientDotNet_Tests/bin/Release/EngineIoClientDotNet_Tests.dll':
-        __dirname + '/../../EngineIoClientDotNet_Tests/bin/Release/EngineIoClientDotNet_Tests.dll';
+        __dirname + '/../../EngineIoClientDotNet_Tests/bin/'+configuration+'/EngineIoClientDotNet_Tests.dll':
+        __dirname + '/../../EngineIoClientDotNet_Tests/bin/'+configuration+'/EngineIoClientDotNet_Tests.dll';
 
 
     grunt.log.writeln('testdll = "%s"', testdll);
