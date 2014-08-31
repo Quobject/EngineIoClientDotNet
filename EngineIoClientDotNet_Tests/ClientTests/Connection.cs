@@ -31,6 +31,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             options.Port = config.ssl_port;
             //options.Hostname = "localhost";
             options.Hostname = "testme.quobject.com";
+            Console.Write("Please add to your hosts file: 127.0.0.1 testme.quobject.com");
             options.Secure = true;
             options.IgnoreServerCertificateValidation = true;
             return options;
