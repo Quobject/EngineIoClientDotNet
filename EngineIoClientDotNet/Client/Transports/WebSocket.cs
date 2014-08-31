@@ -106,11 +106,11 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             public void Call(object data)
             {
                 var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-                log.Info("WriteEncodeCallback data = " + data);              
+                //log.Info("WriteEncodeCallback data = " + data);              
 
                 if (data is string)
                 {                    
-                    log.Info("WriteEncodeCallback string data " + data);                    
+                    //log.Info("WriteEncodeCallback string data " + data);                    
                     webSocket.ws.Send((string)data);
                 }
                 else if (data is byte[])
@@ -120,7 +120,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                     try
                     {
                         var dataString = BitConverter.ToString(d);
-                        log.Info(string.Format("WriteEncodeCallback byte[] data {0}", dataString));
+                        //log.Info(string.Format("WriteEncodeCallback byte[] data {0}", dataString));
                     }
                     catch (Exception e)
                     {
@@ -144,7 +144,15 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 ws.MessageReceived -= ws_MessageReceived;
                 ws.DataReceived -= ws_DataReceived;
                 ws.Error -= ws_Error;
-                ws.Close();
+                try
+                {
+                    ws.Close();
+                }
+                catch (Exception e)
+                {
+                    var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                    log.Info("DoClose ws.Close() Exception= " + e.Message);                                          
+                }
             }
         }
 

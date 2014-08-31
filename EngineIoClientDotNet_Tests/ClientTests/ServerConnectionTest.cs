@@ -1,4 +1,5 @@
-﻿using log4net;
+﻿using System.Threading.Tasks;
+using log4net;
 using Quobject.EngineIoClientDotNet.Client;
 using Quobject.EngineIoClientDotNet.Client.Transports;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
@@ -11,7 +12,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
     public class ServerConnectionTest : Connection
     {
         [Fact]
-        public void OpenAndClose()
+        public async Task OpenAndClose()
         {
             Socket.SetupLog4Net();
 
@@ -23,6 +24,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             {
                 log.Info("EVENT_OPEN");
                 events.Enqueue(Socket.EVENT_OPEN);
+                socket.Close();
 
             });
             socket.On(Socket.EVENT_CLOSE, () =>
@@ -31,16 +33,14 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                 events.Enqueue(Socket.EVENT_CLOSE);
             });
             socket.Open();
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(3));
-
-            socket.Close();
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.1));
 
             string result;
             events.TryDequeue(out result);
             Assert.Equal(Socket.EVENT_OPEN, result);
             events.TryDequeue(out result);
             Assert.Equal(Socket.EVENT_CLOSE, result);
+            await Task.Delay(1);
+            socket.Close();
         }
 
 
@@ -63,11 +63,13 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                 var data = (string) d;
                 log.Info("EVENT_MESSAGE data = " + data);
                 events.Enqueue(data);
+                if (events.Count > 1)
+                {
+                    socket.Close();                    
+                }
             });
             socket.Open();
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(6));
 
-            socket.Close();
 
             string result;
             events.TryDequeue(out result);
@@ -146,7 +148,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
 
         [Fact]
-        public void Upgrade()
+        public async Task Upgrade()
         {
             Socket.SetupLog4Net();
 
@@ -164,11 +166,11 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             {
                 log.Info(Socket.EVENT_UPGRADE + string.Format(" data = {0}", data));
                 events.Enqueue(data);
+
             });
 
             socket.Open();
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(5));
-            socket.Close();
+
 
             object test = null;
             events.TryDequeue(out test);
@@ -178,45 +180,50 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             events.TryDequeue(out test);
             Assert.NotNull(test);
             Assert.IsAssignableFrom<Transport>(test);
+            await Task.Delay(3000);
+            socket.Close();
         }
 
 
 
         [Fact]
-        public void RememberWebsocket()
+        public async Task RememberWebsocket()
         {
             Socket.SetupLog4Net();
 
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-            var socket = new Socket(CreateOptions());
+            var socket1 = new Socket(CreateOptions());
+            string socket1TransportName = null;
             string socket2TransportName = null;
 
-            socket.On(Socket.EVENT_UPGRADE, (data) =>
+            socket1.On(Socket.EVENT_OPEN, () =>
+            {
+                log.Info("EVENT_OPEN");
+                socket1TransportName = socket1.Transport.Name;
+            });
+
+            socket1.On(Socket.EVENT_UPGRADE, (data) =>
             {
                 log.Info(Socket.EVENT_UPGRADE + string.Format(" data = {0}", data));
                 var transport = (Transport) data;
-                socket.Close();
+                socket1.Close();
                 if (WebSocket.NAME == transport.Name)
                 {
                     var options = CreateOptions();
                     options.RememberUpgrade = true;
                     var socket2 = new Socket(options);
                     socket2.Open();
-                    System.Threading.Thread.Sleep(TimeSpan.FromSeconds(2));
                     socket2TransportName = socket2.Transport.Name;
                     socket2.Close();
                 }
             });
 
-            socket.Open();
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(1));
-            Assert.Equal(Polling.NAME,socket.Transport.Name);
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(5));
-
+            socket1.Open();
+            await Task.Delay(5);
+            Assert.Equal(Polling.NAME, socket1TransportName);
             Assert.Equal(WebSocket.NAME, socket2TransportName);
         }
-
 
 
 
@@ -227,91 +234,42 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-            var socket = new Socket(CreateOptions());
+            var socket1 = new Socket(CreateOptions());
+            string socket1TransportName = null;
             string socket2TransportName = null;
 
-            socket.On(Socket.EVENT_UPGRADE, (data) =>
+            socket1.On(Socket.EVENT_OPEN, () =>
+            {
+                log.Info("EVENT_OPEN");
+                socket1TransportName = socket1.Transport.Name;
+            });
+
+            socket1.On(Socket.EVENT_UPGRADE, (data) =>
             {
                 log.Info(Socket.EVENT_UPGRADE + string.Format(" data = {0}", data));
                 var transport = (Transport)data;
-                socket.Close();
                 if (WebSocket.NAME == transport.Name)
                 {
+                    socket1.Close();
                     var options = CreateOptions();
                     options.RememberUpgrade = false;
                     var socket2 = new Socket(options);
+                    socket2.On(Socket.EVENT_OPEN, () =>
+                    {
+                        log.Info("EVENT_OPEN socket 2");
+                        socket2TransportName = socket2.Transport.Name;
+                        socket2.Close();
+                    });
                     socket2.Open();
-                    System.Threading.Thread.Sleep(TimeSpan.FromSeconds(1));
-                    socket2TransportName = socket2.Transport.Name;
-                    socket2.Close();
                 }
             });
 
-            socket.Open();
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(1));
-            Assert.Equal(Polling.NAME, socket.Transport.Name);
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(1));
-
-            Assert.NotEqual(WebSocket.NAME, socket2TransportName);
+            socket1.Open();
+            Assert.Equal(Polling.NAME, socket1TransportName);
+            Assert.Equal(Polling.NAME, socket2TransportName);
         }
 
-
-
-
-
-
-
-
-
-        //[Fact]
-        //public void PollingHeaders()
-        //{
-        //    Socket.SetupLog4Net();
-
-        //    var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        //    var message = new ConcurrentQueue<object>();
-
-        //    var options = CreateOptions();
-        //    options.Transports = ImmutableList.Create(Polling.NAME);
-        //    var socket = new Socket(CreateOptions());
-
-        //    socket.On(Socket.EVENT_TRANSPORT, (data) =>
-        //    {
-        //        var transport = (Transport) data;
-        //        transport.On(Transport.EVENT_REQUEST_HEADERS, o =>
-        //        {
-        //            log.Info(Transport.EVENT_REQUEST_HEADERS + string.Format(" data = {0}", o));
-        //            var headers = (Dictionary<string, string>)o;
-        //            log.Info(Transport.EVENT_REQUEST_HEADERS + string.Format(" headers = {0}", headers.ToString()));                    
-        //            headers.Add("X-EngineIO", "foo");
-        //        });
-        //        transport.On(Transport.EVENT_RESPONSE_HEADERS, o =>
-        //        {
-        //            log.Info(Transport.EVENT_RESPONSE_HEADERS + string.Format(" data = {0}", o));
-        //            var headers = (Dictionary<string, string>)o;
-        //            log.Info(Transport.EVENT_RESPONSE_HEADERS + string.Format(" headers = {0}", headers.ToString()));                   
-        //            string result;
-        //            headers.TryGetValue("X-EngineIO", out result);
-        //            message.Enqueue(result);
-        //        });
-        //    });
-           
-        //    socket.Open();
-        //    System.Threading.Thread.Sleep(TimeSpan.FromSeconds(6));
-        //    socket.Close();
-
-        //    object test = null;
-        //    message.TryDequeue(out test);
-        //    log.Info(string.Format("PollingHeaders test1 = {0}", test));
-        //    //Assert.NotNull(test);
-        //    Assert.True(message.Count == 1);
-        //}
-
-
-
-
     }
-
-
+    
 }
 

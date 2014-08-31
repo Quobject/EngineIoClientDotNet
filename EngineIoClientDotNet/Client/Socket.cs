@@ -73,7 +73,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         private ReadyStateEnum ReadyState;
         //private ScheduledExecutorService heartbeatScheduler = Executors.newSingleThreadScheduledExecutor();
-        private HeartBeatTasks HeartBeatTasks = new HeartBeatTasks();
+        //private HeartBeatTasks HeartBeatTasks = new HeartBeatTasks();
         private Uri uri;
         private Options options;
         private bool Agent = false;
@@ -322,7 +322,7 @@ namespace Quobject.EngineIoClientDotNet.Client
         internal void OnDrain()
         {
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            log.Info(string.Format("OnDrain1 PrevBufferLen={0} WriteBuffer.Count={1}", PrevBufferLen, WriteBuffer.Count));
+            //log.Info(string.Format("OnDrain1 PrevBufferLen={0} WriteBuffer.Count={1}", PrevBufferLen, WriteBuffer.Count));
 
             for (int i = 0; i < this.PrevBufferLen; i++)
             {
@@ -332,13 +332,13 @@ namespace Quobject.EngineIoClientDotNet.Client
                     callback();
                 }
             }
-            log.Info(string.Format("OnDrain2 PrevBufferLen={0} WriteBuffer.Count={1}", PrevBufferLen, WriteBuffer.Count));
+            //log.Info(string.Format("OnDrain2 PrevBufferLen={0} WriteBuffer.Count={1}", PrevBufferLen, WriteBuffer.Count));
 
             WriteBuffer = WriteBuffer.RemoveRange(0,PrevBufferLen);
             CallbackBuffer = CallbackBuffer.RemoveRange(0,PrevBufferLen);
 
             this.PrevBufferLen = 0;
-            log.Info(string.Format("OnDrain3 PrevBufferLen={0} WriteBuffer.Count={1}", PrevBufferLen, WriteBuffer.Count));
+            //log.Info(string.Format("OnDrain3 PrevBufferLen={0} WriteBuffer.Count={1}", PrevBufferLen, WriteBuffer.Count));
             
             if (this.WriteBuffer.Count == 0)
             {
@@ -461,13 +461,12 @@ namespace Quobject.EngineIoClientDotNet.Client
                 PingIntervalTimer.Stop();
             }
 
-            PingIntervalTimer = EasyTimer.SetTimeout(() => Thread.HeartBeatTasks.Exec(n =>
+            PingIntervalTimer = EasyTimer.SetTimeout(() =>
             {
                 //log.Info(string.Format("writing ping packet - expecting pong within {0}ms", PingTimeout));
                 Ping();
                 OnHeartbeat(PingTimeout);
-
-            }), PingInterval);
+            }, PingInterval);
         }
 
         private void Ping()
@@ -852,10 +851,6 @@ namespace Quobject.EngineIoClientDotNet.Client
                 {
                     this.PingIntervalTimer.Stop();
                 }
-                if (this.PingTimeoutTimer != null)
-                {
-                    this.PingTimeoutTimer.Stop();
-                }
 
                 EasyTimer.SetTimeout(() =>
                 {
@@ -911,14 +906,14 @@ namespace Quobject.EngineIoClientDotNet.Client
                 timeout = this.PingInterval + this.PingTimeout;
             }
 
-            PingTimeoutTimer = EasyTimer.SetTimeout(() => Thread.HeartBeatTasks.Exec(n =>
+            PingTimeoutTimer = EasyTimer.SetTimeout(() => 
             {
                 if (ReadyState == ReadyStateEnum.CLOSED)
                 {
                     return;
                 }
                 OnClose("ping timeout");
-            }), timeout);
+            }, timeout);
 
         }
 

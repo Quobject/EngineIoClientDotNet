@@ -211,7 +211,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                     return;
                 }
 
-                log.Info("XHRRequest Create 0");
+                //log.Info("XHRRequest Create 0");
 
                 var headers = new Dictionary<string, string>();
 
@@ -221,7 +221,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                     Xhr.ContentType = "application/octet-stream";
                     //headers.Add("Content-type", "application/octet-stream");
                 }
-                log.Info("XHRRequest Create 1");
+                //log.Info("XHRRequest Create 1");
 
                 //OnRequestHeaders(headers);
                 //log.Info(string.Format("sending xhr with url= {0} | data= {1}", Uri, Data));
@@ -246,21 +246,21 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
                 RequestTasks.Exec( n =>
                 {
-                    log.Info("XHRRequest Create 2");
+                    //log.Info("XHRRequest Create 2");
 
                     try
                     {
-                        log.Info("XHRRequest Create 3");
+                        //log.Info("XHRRequest Create 3");
 
                         if (Data != null)
                         {
-                            log.Info("XHRRequest Create 4");
+                            //log.Info("XHRRequest Create 4");
 
                             Xhr.ContentLength = Data.Length;
 
                             using (var requestStream = Xhr.GetRequestStream())
                             {
-                                log.Info("XHRRequest Create 5");
+                                //og.Info("XHRRequest Create 5");
                                 requestStream.Write(Data, 0, Data.Length);
 
                             }

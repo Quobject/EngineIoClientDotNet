@@ -21,20 +21,21 @@ namespace Quobject.EngineIoClientDotNet.Thread
 
         public static void Exec(Action<int> action)
         {
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            log.Info("RequestTasks Exec 0");
+            action(0);
+            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            //log.Info("RequestTasks Exec 0");
 
-            var actionBlock = new ActionBlock<int>(action,
-                new ExecutionDataflowBlockOptions { TaskScheduler = limitedConcurrencyLevelTaskScheduler });
+            //var actionBlock = new ActionBlock<int>(action,
+            //    new ExecutionDataflowBlockOptions { TaskScheduler = limitedConcurrencyLevelTaskScheduler });
 
-            log.Info("RequestTasks Exec 1" + actionBlock );
+            //log.Info("RequestTasks Exec 1" + actionBlock );
 
-            actionBlock.Post(0);
-            log.Info("RequestTasks Exec 2");
+            //actionBlock.Post(0);
+            //log.Info("RequestTasks Exec 2");
 
-            //Console.WriteLine("after post");
-            //actionBlock.Completion.ContinueWith( n => Console.WriteLine("finished"));
-            actionBlock.Complete();
+            ////Console.WriteLine("after post");
+            ////actionBlock.Completion.ContinueWith( n => Console.WriteLine("finished"));
+            //actionBlock.Complete();
 
         }
 
