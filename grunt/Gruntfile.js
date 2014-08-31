@@ -35,4 +35,5 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.registerTask('default', ['jshint', 'installNpm', 'nuget', 'buildClient', 'buildTest', 'startServer', 'testClient']);
+  grunt.registerTask('test', ['jshint', 'buildClient', 'buildTest', 'testClient']);
 };

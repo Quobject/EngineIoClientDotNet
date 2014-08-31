@@ -9,6 +9,7 @@ using System.Threading.Tasks;
  * The TaskScheduler for requests. 
  */
 using System.Threading.Tasks.Dataflow;
+using log4net;
 
 namespace Quobject.EngineIoClientDotNet.Thread
 {
@@ -20,9 +21,17 @@ namespace Quobject.EngineIoClientDotNet.Thread
 
         public static void Exec(Action<int> action)
         {
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            log.Info("RequestTasks Exec 0");
+
             var actionBlock = new ActionBlock<int>(action,
                 new ExecutionDataflowBlockOptions {TaskScheduler = taskSchedulerPair.ConcurrentScheduler});
+
+            log.Info("RequestTasks Exec 1" + actionBlock );
+
             actionBlock.Post(0);
+            log.Info("RequestTasks Exec 2");
+
             //Console.WriteLine("after post");
             //actionBlock.Completion.ContinueWith( n => Console.WriteLine("finished"));
             actionBlock.Complete();
