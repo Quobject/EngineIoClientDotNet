@@ -21,7 +21,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             socket.On(Socket.EVENT_MESSAGE, new MessageListener(socket, this));
             socket.Open();
 
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(4));
             Assert.Equal("hi", this.Message);
         }
 
@@ -94,36 +93,19 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                 var data = (string)d;
 
                 log.Info("message2 = " + data);
-                this.Message = data;            
-                
+                this.Message = data;
+                socket.Close();                
             });
             socket.Open();
 
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(3));
-            socket.Close();
             Assert.Equal("hi", this.Message);
         }   
 
-        [Fact]
-        public void TestSend()
-        {
-            var testList = new List<Data>()
-            {
-                 new Data { Info = "multibyte utf-8 strings with polling", Test = "cash money €€€" },
-                 new Data { Info = "emoji", Test = "\uD800-\uDB7F\uDB80-\uDBFF\uDC00-\uDFFF\uE000-\uF8FF" }
-            };
-
-            foreach (var test in testList)
-            {
-                TestMessage(test);
-                
-            }
-        }
-
-        private void TestMessage(Data test)
+       [Fact]
+        public void TestmultibyteUtf8StringsWithPolling()
         {
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            this.Message = "";
+            const string SendMessage = "cash money €€€";
 
             Socket.SetupLog4Net();
             socket = new Socket(CreateOptions());
@@ -143,24 +125,53 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                     }
 
                     this.Message = data;
+                    socket.Close();
                 });
-                socket.Send(test.Test);
+                socket.Send(SendMessage);
             });
 
             socket.Open();
-
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(3));
-            socket.Close();
-            log.Info("Test Info = " + test.Info);
-            log.Info("TestMessage this.Message = " + this.Message);
-            Assert.True(test.Test == this.Message);
+            log.Info("TestmultibyteUtf8StringsWithPolling this.Message = " + this.Message);
+            Assert.Equal(SendMessage, this.Message);
         }
 
-        private class Data
-        {
-            public string Info;
-            public string Test;
-        }
+
+
+       [Fact]
+       public void Testemoji()
+       {
+           var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+           const string SendMessage = "\uD800-\uDB7F\uDB80-\uDBFF\uDC00-\uDFFF\uE000-\uF8FF";
+
+           Socket.SetupLog4Net();
+           socket = new Socket(CreateOptions());
+           socket.On(Socket.EVENT_OPEN, () =>
+           {
+               log.Info("open");
+
+               socket.On(Socket.EVENT_MESSAGE, (d) =>
+               {
+                   var data = (string)d;
+
+                   log.Info("TestMessage data = " + data);
+
+                   if (data == "hi")
+                   {
+                       return;
+                   }
+
+                   this.Message = data;
+                   socket.Close();
+               });
+               socket.Send(SendMessage);
+           });
+
+           socket.Open();
+           log.Info("TestmultibyteUtf8StringsWithPolling this.Message = " + this.Message);
+           Assert.True(SendMessage == this.Message);
+
+       }
+
 
         [Fact]
         public void NotSendPacketsIfSocketCloses()
@@ -175,12 +186,10 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             socket.On(Socket.EVENT_OPEN, () =>
             {
                 noPacket = true;
-//                System.Threading.Thread.Sleep(TimeSpan.FromSeconds(6));
 
             });
 
             socket.Open();
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(3));
             socket.On(Socket.EVENT_PACKET_CREATE, () =>
             {
                 noPacket = false;
