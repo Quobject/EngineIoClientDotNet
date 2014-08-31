@@ -73,10 +73,7 @@
     <Compile Include="Parser\Packet.cs" />
     <Compile Include="Parser\Parser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Thread\HeartbeatTasks.cs" />
     <Compile Include="Thread\EasyTimer.cs" />
-    <Compile Include="Thread\LimitedConcurrencyLevelTaskScheduler.cs" />
-    <Compile Include="Thread\RequestTasks.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

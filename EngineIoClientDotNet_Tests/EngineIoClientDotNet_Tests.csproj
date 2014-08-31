@@ -67,7 +67,6 @@
     <Compile Include="ParserTests\DecodeTests.cs" />
     <Compile Include="ParserTests\TestsParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ThreadTests\HeartBeatTasksTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EngineIoClientDotNet\EngineIoClientDotNet.csproj">
@@ -84,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ComponentEmitterTests\" />
+    <Folder Include="ThreadTests\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

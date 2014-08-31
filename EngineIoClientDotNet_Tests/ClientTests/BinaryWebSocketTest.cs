@@ -1,4 +1,5 @@
-﻿using log4net;
+﻿using System.Threading.Tasks;
+using log4net;
 using Quobject.EngineIoClientDotNet.Client;
 using Quobject.EngineIoClientDotNet.Client.Transports;
 using System;
@@ -11,7 +12,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
     public class BinaryWebSocketTest : Connection
     {
         [Fact]
-        public void ReceiveBinaryData()
+        public async Task ReceiveBinaryData()
         {
             Socket.SetupLog4Net();
 
@@ -36,45 +37,45 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                 {
 
                     log.Info(Socket.EVENT_UPGRADE);
-
-                    socket.On(Socket.EVENT_MESSAGE, (d) =>
-                    {
-
-                        var data = d as string;
-                        log.Info(string.Format("EVENT_MESSAGE data ={0} d = {1} ", data, d));
-
-                        if (data == "hi")
-                        {
-                            return;
-                        }
-                        events.Enqueue(d);
-                    });
-
                     socket.Send(binaryData);
-                    //socket.Send("cash money €€€");
                 });
-
-
-
             });
-           
+
+            socket.On(Socket.EVENT_MESSAGE, (d) =>
+            {
+
+                var data = d as string;
+                log.Info(string.Format("EVENT_MESSAGE data ={0} d = {1} ", data, d));
+
+                if (data == "hi")
+                {
+                    return;
+                }
+                events.Enqueue(d);
+                socket.Close();
+            });
+
             socket.Open();
-            //System.Threading.Thread.Sleep(TimeSpan.FromSeconds(3));
-            //socket.Send(binaryData);
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(5));
 
+            await Task.Delay(1000);
 
-            socket.Close();
+            log.Info("ReceiveBinaryData end");
+
+            var binaryData2 = new byte[5];
+            for (int i = 0; i < binaryData2.Length; i++)
+            {
+                binaryData2[i] = (byte)(i + 1);
+            }
 
             object result;
             events.TryDequeue(out result);
-            Assert.Equal(binaryData, result);
+            Assert.Equal(binaryData, result); 
             
         }
 
 
         [Fact]
-        public void ReceiveBinaryDataAndMultibyteUTF8String()
+        public async Task ReceiveBinaryDataAndMultibyteUTF8String()
         {
             Socket.SetupLog4Net();
 
@@ -109,6 +110,10 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                         return;
                     }
                     events.Enqueue(d);
+                    if (events.Count > 1)
+                    {
+                        socket.Close();
+                    }
                 });
                 socket.Send(binaryData);
                 socket.Send(stringData);           
@@ -116,9 +121,14 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             });
 
             socket.Open();
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(5));
-            
-            socket.Close();
+            await Task.Delay(1000);
+            //socket.Close();
+
+            var binaryData2 = new byte[5];
+            for (int i = 0; i < binaryData2.Length; i++)
+            {
+                binaryData2[i] = (byte)(i + 1);
+            }
 
             object result;
             events.TryDequeue(out result);

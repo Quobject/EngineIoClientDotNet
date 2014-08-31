@@ -200,8 +200,8 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
                 try
                 {
-                    log.Info(string.Format("xhr open {0}: {1}",Method, Uri));
-                    Xhr = (HttpWebRequest)WebRequest.Create(Uri);
+                    log.Info(string.Format("xhr open {0}: {1}", Method, Uri));
+                    Xhr = (HttpWebRequest) WebRequest.Create(Uri);
                     Xhr.Method = Method;
                 }
                 catch (Exception e)
@@ -221,115 +221,90 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                     Xhr.ContentType = "application/octet-stream";
                     //headers.Add("Content-type", "application/octet-stream");
                 }
-                //log.Info("XHRRequest Create 1");
+                //log.Info("XHRRequest Create 1"); 
 
-                //OnRequestHeaders(headers);
-                //log.Info(string.Format("sending xhr with url= {0} | data= {1}", Uri, Data));
-                //log.Info(string.Format("sending xhr with url {0}", Uri, Data));
-                //if (Data == null)
-                //{
-                //    log.Info(string.Format("sending xhr with no data"));                    
-                //}
-                //else
-                //{
-                //    try
-                //    {
-                //        var dataString = BitConverter.ToString(Data);
-                //        log.Info(string.Format("sending xhr with data {0}", dataString));
-                //    }
-                //    catch (Exception e)
-                //    {
-                //        log.Error(e);                        
-                //        throw;
-                //    }
-                //}
-
-                RequestTasks.Exec( n =>
+                try
                 {
-                    //log.Info("XHRRequest Create 2");
+                    //log.Info("XHRRequest Create 3");
 
-                    try
+                    if (Data != null)
                     {
-                        //log.Info("XHRRequest Create 3");
+                        //log.Info("XHRRequest Create 4");
 
-                        if (Data != null)
+                        Xhr.ContentLength = Data.Length;
+
+                        using (var requestStream = Xhr.GetRequestStream())
                         {
-                            //log.Info("XHRRequest Create 4");
+                            //og.Info("XHRRequest Create 5");
+                            requestStream.Write(Data, 0, Data.Length);
 
-                            Xhr.ContentLength = Data.Length;
+                        }
+                    }
 
-                            using (var requestStream = Xhr.GetRequestStream())
-                            {
-                                //og.Info("XHRRequest Create 5");
-                                requestStream.Write(Data, 0, Data.Length);
+                    using (var res = Xhr.GetResponse())
+                    {
+                        log.Info("Xhr.GetResponse ");
 
-                            }
+                        var responseHeaders = new Dictionary<string, string>();
+                        for (int i = 0; i < res.Headers.Count; i++)
+                        {
+                            //log.Info(string.Format("Header Name:{0}, Header value :{1}", res.Headers.Keys[i], res.Headers[i]));
+                            responseHeaders.Add(res.Headers.Keys[i], res.Headers[i]);
                         }
 
-                        using (var res = Xhr.GetResponse())
+                        var contentType = res.Headers["Content-Type"];
+
+
+                        //OnResponseHeaders(headers);
+
+                        using (var resStream = res.GetResponseStream())
                         {
-                            log.Info("Xhr.GetResponse ");
-
-                            var responseHeaders = new Dictionary<string, string>();
-                            for (int i = 0; i < res.Headers.Count; i++)
+                            Debug.Assert(resStream != null, "resStream != null");
+                            if (contentType.Equals("application/octet-stream",
+                                StringComparison.OrdinalIgnoreCase))
                             {
-                                //log.Info(string.Format("Header Name:{0}, Header value :{1}", res.Headers.Keys[i], res.Headers[i]));
-                                responseHeaders.Add(res.Headers.Keys[i], res.Headers[i]);
-                            }
-
-                            var contentType = res.Headers["Content-Type"];
-
-
-                            //OnResponseHeaders(headers);
-
-                            using (var resStream = res.GetResponseStream())
-                            {
-                                Debug.Assert(resStream != null, "resStream != null");
-                                if (contentType.Equals("application/octet-stream",
-                                    StringComparison.OrdinalIgnoreCase))
+                                var buffer = new byte[16*1024];
+                                using (var ms = new MemoryStream())
                                 {
-                                    var buffer = new byte[16*1024];
-                                    using (var ms = new MemoryStream())
+                                    int read;
+                                    while ((read = resStream.Read(buffer, 0, buffer.Length)) > 0)
                                     {
-                                        int read;
-                                        while ((read = resStream.Read(buffer, 0, buffer.Length)) > 0)
-                                        {
-                                            ms.Write(buffer, 0, read);
-                                        }
-                                        var a = ms.ToArray();
-                                        OnData(a);
+                                        ms.Write(buffer, 0, read);
                                     }
+                                    var a = ms.ToArray();
+                                    OnData(a);
                                 }
-                                else
+                            }
+                            else
+                            {
+                                using (var sr = new StreamReader(resStream))
                                 {
-                                    using (var sr = new StreamReader(resStream))
-                                    {
-                                        OnData(sr.ReadToEnd());
-                                    }
+                                    OnData(sr.ReadToEnd());
                                 }
                             }
                         }
                     }
-                    catch (System.IO.IOException e)
-                    {
-                        //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                }
+                catch (System.IO.IOException e)
+                {
+                    //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-                        log.Error("Create call failed", e);
-                        OnError(e);
-                    }
-                    catch (System.Net.WebException e)
-                    {
-                        //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-                        log.Error("Create call failed", e);
-                        OnError(e);                        
-                    }
-                    catch (Exception e)
-                    {
-                        //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-                        log.Error("Create call failed", e);
-                        OnError(e);
-                    }
-                });
+                    log.Error("Create call failed", e);
+                    OnError(e);
+                }
+                catch (System.Net.WebException e)
+                {
+                    //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                    log.Error("Create call failed", e);
+                    OnError(e);
+                }
+                catch (Exception e)
+                {
+                    //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                    log.Error("Create call failed", e);
+                    OnError(e);
+                }
+
             }
 
 

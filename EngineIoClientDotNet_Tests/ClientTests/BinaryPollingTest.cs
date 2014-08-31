@@ -48,26 +48,25 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                         return;
                     }
                     events.Enqueue(d);
+                    socket.Close();
                 });
-                //System.Threading.Thread.Sleep(TimeSpan.FromSeconds(3));
-                //log.Info("EVENT_OPEN 2");             
                 socket.Send(binaryData);
                 //socket.Send("cash money €€€");
             });
            
             socket.Open();
-            //System.Threading.Thread.Sleep(TimeSpan.FromSeconds(3));
-            //socket.Send(binaryData);
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(5));
 
-
-            socket.Close();
             log.Info("ReceiveBinaryData end");
+
+            var binaryData2 = new byte[5];
+            for (int i = 0; i < binaryData2.Length; i++)
+            {
+                binaryData2[i] = (byte)(i+1);
+            }
 
             object result;
             events.TryDequeue(out result);
-            Assert.Equal(binaryData, result);
-            
+            Assert.Equal(binaryData, result);            
         }
 
 
@@ -108,23 +107,31 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                         return;
                     }
                     events.Enqueue(d);
+                    if (events.Count > 1)
+                    {
+                        socket.Close();                        
+                    }
                 });
                 socket.Send(binaryData);
                 socket.Send(stringData);           
-
             });
 
             socket.Open();
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(5));
             
-            socket.Close();
             log.Info("ReceiveBinaryDataAndMultibyteUTF8String end");
+
+            var binaryData2 = new byte[5];
+            for (int i = 0; i < binaryData2.Length; i++)
+            {
+                binaryData2[i] = (byte)(i + 1);
+            }
 
             object result;
             events.TryDequeue(out result);
             Assert.Equal(binaryData, result);
             events.TryDequeue(out result);
             Assert.Equal(stringData, (string)result);
+            socket.Close();                        
 
         }
 
