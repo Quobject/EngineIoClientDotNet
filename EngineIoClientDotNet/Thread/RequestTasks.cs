@@ -17,7 +17,7 @@ namespace Quobject.EngineIoClientDotNet.Thread
 
     public class RequestTasks
     {
-        private static readonly ConcurrentExclusiveSchedulerPair taskSchedulerPair = new ConcurrentExclusiveSchedulerPair();
+        private static readonly LimitedConcurrencyLevelTaskScheduler limitedConcurrencyLevelTaskScheduler = new LimitedConcurrencyLevelTaskScheduler(3);
 
         public static void Exec(Action<int> action)
         {
@@ -25,7 +25,7 @@ namespace Quobject.EngineIoClientDotNet.Thread
             log.Info("RequestTasks Exec 0");
 
             var actionBlock = new ActionBlock<int>(action,
-                new ExecutionDataflowBlockOptions {TaskScheduler = taskSchedulerPair.ConcurrentScheduler});
+                new ExecutionDataflowBlockOptions { TaskScheduler = limitedConcurrencyLevelTaskScheduler });
 
             log.Info("RequestTasks Exec 1" + actionBlock );
 

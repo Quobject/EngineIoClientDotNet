@@ -16,12 +16,13 @@ namespace Quobject.EngineIoClientDotNet.Thread
 
     public class HeartBeatTasks
     {
-        private static readonly ConcurrentExclusiveSchedulerPair taskSchedulerPair = new ConcurrentExclusiveSchedulerPair();
+        private static readonly LimitedConcurrencyLevelTaskScheduler limitedConcurrencyLevelTaskScheduler = new LimitedConcurrencyLevelTaskScheduler(1);
+
 
         public static void Exec(Action<int> action)
         {
             var actionBlock = new ActionBlock<int>(action,
-                new ExecutionDataflowBlockOptions {TaskScheduler = taskSchedulerPair.ExclusiveScheduler});
+                new ExecutionDataflowBlockOptions { TaskScheduler = limitedConcurrencyLevelTaskScheduler });
             actionBlock.Post(0);
             //Console.WriteLine("after post");
             //actionBlock.Completion.ContinueWith( n => Console.WriteLine("finished"));
