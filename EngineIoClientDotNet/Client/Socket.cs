@@ -530,9 +530,9 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         private void OnOpen()
         {
-            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-            //log.Info("socket open before call to flush()");
+            log.Info("socket open before call to flush()");
             ReadyState = ReadyStateEnum.OPEN;
             PriorWebsocketSuccess = WebSocket.NAME == Transport.Name;
 
@@ -542,7 +542,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
             if (ReadyState == ReadyStateEnum.OPEN && Upgrade && Transport is Polling)
             {
-                //log.Info("starting upgrade probes");
+                log.Info("starting upgrade probes");
                 foreach (var upgrade in Upgrades)
                 {
                     Probe(upgrade);
@@ -833,7 +833,8 @@ namespace Quobject.EngineIoClientDotNet.Client
                 {
                     PingTimeoutTimer.Stop();                    
                 }
-                Transport.Close();
+                Transport.Close();               
+
             }
             return this;
         }

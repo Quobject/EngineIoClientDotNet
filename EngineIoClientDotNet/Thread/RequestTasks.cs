@@ -17,7 +17,7 @@ namespace Quobject.EngineIoClientDotNet.Thread
 
     public class RequestTasks
     {
-        private static readonly LimitedConcurrencyLevelTaskScheduler limitedConcurrencyLevelTaskScheduler = new LimitedConcurrencyLevelTaskScheduler(3);
+        private static readonly LimitedConcurrencyLevelTaskScheduler limitedConcurrencyLevelTaskScheduler = new LimitedConcurrencyLevelTaskScheduler(4);
 
         public static void Exec(Action<int> action)
         {

@@ -16,6 +16,8 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             Socket.SetupLog4Net();
 
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            log.Info("ReceiveBinaryData start");
+
             var events = new ConcurrentQueue<object>();
 
             var binaryData = new byte[5];
@@ -56,10 +58,11 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             socket.Open();
             //System.Threading.Thread.Sleep(TimeSpan.FromSeconds(3));
             //socket.Send(binaryData);
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(2));
+            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(5));
 
 
             socket.Close();
+            log.Info("ReceiveBinaryData end");
 
             object result;
             events.TryDequeue(out result);
@@ -74,6 +77,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             Socket.SetupLog4Net();
 
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            log.Info("ReceiveBinaryDataAndMultibyteUTF8String start");
             var events = new ConcurrentQueue<object>();
 
             var binaryData = new byte[5];
@@ -114,6 +118,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             System.Threading.Thread.Sleep(TimeSpan.FromSeconds(5));
             
             socket.Close();
+            log.Info("ReceiveBinaryDataAndMultibyteUTF8String end");
 
             object result;
             events.TryDequeue(out result);

@@ -68,8 +68,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                 var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
                 log.Info("message = " + args[0]);
                 connectionTest.Message = (string) args[0];
-                Assert.Equal("hi1", connectionTest.Message);
-                //throw new Exception("test");
                 socket.Close();
             }
         }

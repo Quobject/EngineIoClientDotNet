@@ -28,6 +28,10 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             //var wsHeaders = new List<KeyValuePair<string, string>>();
 
             //ws = new WebSocket4Net.WebSocket(this.Uri(), "", null, wsHeaders, "", "", WebSocketVersion.Rfc6455);
+
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            log.Info("DoOpen uri =" + this.Uri());
+
             ws = new WebSocket4Net.WebSocket(this.Uri());
             ws.EnableAutoSendPing = false;
             ws.AllowUnstrustedCertificate = true;            
@@ -148,11 +152,8 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         public string Uri()
         {
-            Dictionary<string, string> query = this.Query;
-            if (query == null)
-            {
-                query = new Dictionary<string, string>();
-            }
+            Dictionary<string, string> query = null;
+            query = this.Query == null ? new Dictionary<string, string>() : new Dictionary<string, string>(this.Query);
             string schema = this.Secure ? "wss" : "ws";
             string portString = "";
 

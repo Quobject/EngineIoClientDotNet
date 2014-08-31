@@ -29,7 +29,8 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             var config = ConfigBase.Load();
             var options = new Socket.Options();
             options.Port = config.ssl_port;
-            options.Hostname = "localhost";
+            //options.Hostname = "localhost";
+            options.Hostname = "testme.quobject.com";
             options.Secure = true;
             options.IgnoreServerCertificateValidation = true;
             return options;
