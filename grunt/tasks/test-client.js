@@ -7,7 +7,7 @@
       os = grunt.config('os'),
       config = grunt.config('config'),
       tasks = [],
-      configuration = 'Debug',
+      configuration = grunt.config('msbuild_configuration'),
       test_format_str = os === 'win' ?
         '{0}/xunit.console.clr4.exe {1} /nunit test.xml' :
         'mono {0}/xunit.console.clr4.exe {1}',

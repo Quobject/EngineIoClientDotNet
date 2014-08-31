@@ -10,11 +10,12 @@
       config = grunt.config('config'),
       tasks = [],
       csproj = os === 'win' ? __dirname + '/../../EngineIoClientDotNet/EngineIoClientDotNet.csproj' :
-        __dirname + '/../../EngineIoClientDotNet/EngineIoClientDotNet_Mono.csproj',
+//        __dirname + '/../../EngineIoClientDotNet/EngineIoClientDotNet_Mono.csproj',
+        __dirname + '/../../EngineIoClientDotNet/EngineIoClientDotNet.csproj',
       build,
       clean,
       template_file_content,
-      configuration = 'Debug';
+      configuration = grunt.config('msbuild_configuration');
 
     template_file_content = fs.readFileSync('./templates/AssemblyInfo.cs');
     template_file_content = S(template_file_content).replaceAll('@VERSION@', config.version).s;

@@ -14,6 +14,7 @@ module.exports = function (grunt) {
   grunt.initConfig({      
     os: os,
     config: config,
+    msbuild_configuration: 'Debug',
     server_path: '../EngineIoClientDotNet_Tests/Resources',
     shell: {
       exec: {

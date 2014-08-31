@@ -11,7 +11,7 @@
         __dirname + '/../../EngineIoClientDotNet_Tests/EngineIoClientDotNet_Tests_Mono.csproj',
       build,
       clean,
-      configuration = 'Debug';
+      configuration = grunt.config('msbuild_configuration');
 
     grunt.log.writeln('csproj = "%s"', csproj);
 

@@ -15,7 +15,7 @@
       solution = __dirname + '/../../EngineIoClientDotNet.sln';
 
     if (os !== 'win') {
-      return;
+      //return;
     }
 
     grunt.log.writeln('nuget_path = "%s"', nuget_path);
