@@ -51,9 +51,15 @@ git clone https://github.com/Quobject/EngineIoClientDotNet.git
 cd EngineIoClientDotNet/grunt
 npm install
 ```
-Update `config.json` and add line to hosts file: `127.0.0.1 testme.quobject.com`
+Update `config.json` and add line to hosts file: `127.0.0.1 testme.quobject.com`. 
 ```
 grunt
+```
+This will start node server and tests for windows. 
+
+In linux this will only start node server. Therefore type (within a new linux terminal):
+```
+grunt testClient
 ```
 
 ## License
