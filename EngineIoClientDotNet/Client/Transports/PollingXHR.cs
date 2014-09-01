@@ -74,15 +74,15 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
         {
             var opts = new XHRRequest.RequestOptions {Method = "POST", Data = data};
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            try
-            {
-                var dataString = BitConverter.ToString(data);
-                //log.Info(string.Format("DoWrite data {0}", dataString));
-            }
-            catch (Exception e)
-            {
-                log.Error(e);
-            }
+            //try
+            //{
+            //    var dataString = BitConverter.ToString(data);
+            //    log.Info(string.Format("DoWrite data {0}", dataString));
+            //}
+            //catch (Exception e)
+            //{
+            //    log.Error(e);
+            //}
 
             sendXhr = Request(opts);
             sendXhr.On(EVENT_SUCCESS, new SendEventSuccessListener(action));
@@ -201,7 +201,6 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                     return;
                 }
 
-                var headers = new Dictionary<string, string>();
 
                 if (Method == "POST")
                 {

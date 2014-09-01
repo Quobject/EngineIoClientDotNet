@@ -69,11 +69,6 @@
     <Compile Include="Thread\EasyTimer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\System.Collections.Immutable\System.Collections.Immutable_Mono.csproj">
       <Project>{024a2111-4b19-44d7-917e-8514cf632469}</Project>
       <Name>System.Collections.Immutable_Mono</Name>

@@ -109,15 +109,15 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 {
                     var d = (byte[])data;
 
-                    try
-                    {
-                        var dataString = BitConverter.ToString(d);
-                        //log.Info(string.Format("WriteEncodeCallback byte[] data {0}", dataString));
-                    }
-                    catch (Exception e)
-                    {
-                        log.Error(e);
-                    }
+                    //try
+                    //{
+                    //    var dataString = BitConverter.ToString(d);
+                    //    log.Info(string.Format("WriteEncodeCallback byte[] data {0}", dataString));
+                    //}
+                    //catch (Exception e)
+                    //{
+                    //    log.Error(e);
+                    //}
                     webSocket.ws.Send(d, 0, d.Length);
                 }
             }

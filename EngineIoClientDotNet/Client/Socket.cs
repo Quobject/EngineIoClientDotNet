@@ -72,8 +72,6 @@ namespace Quobject.EngineIoClientDotNet.Client
         private Timer PingIntervalTimer;
 
         private ReadyStateEnum ReadyState;
-        private Uri uri;
-        private Options options;
         private bool Agent = false;
         private bool ForceBase64 = false;
         private bool ForceJsonp = false;
@@ -110,8 +108,6 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         public Socket(Uri uri, Options options) : this(uri == null ? options : Options.FromURI(uri, options))
         {
-            this.uri = uri;
-            this.options = options;
         }
 
 
@@ -367,11 +363,6 @@ namespace Quobject.EngineIoClientDotNet.Client
 
             if (ReadyState == ReadyStateEnum.OPENING || ReadyState == ReadyStateEnum.OPEN)
             {
-                string typeOfData = "null";
-                if (packet.Data != null)
-                {
-                    typeOfData = packet.Data.GetType().ToString();
-                }
                 //log.Info(string.Format("socket received: type '{0}', data '{1}', type '{2}", packet.Type, packet.Data, typeOfData));
 
                 Emit(EVENT_PACKET, packet);
