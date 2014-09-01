@@ -50,8 +50,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                 {
                     return;
                 }
-                events.Enqueue(d);
-                socket.Close();
+                events.Enqueue(d);                
             });
 
             socket.Open();
@@ -68,8 +67,8 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             object result;
             events.TryDequeue(out result);
-            Assert.Equal(binaryData, result); 
-            
+            Assert.Equal(binaryData, result);
+            socket.Close();
         }
 
 
@@ -98,25 +97,27 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             {
 
                 log.Info("EVENT_OPEN");
-                socket.On(Socket.EVENT_MESSAGE, (d) =>
-                {
-
-                    var data = d as string;
-                    log.Info(string.Format("EVENT_MESSAGE data ={0} d = {1} ", data, d));
-
-                    if (data == "hi")
-                    {
-                        return;
-                    }
-                    events.Enqueue(d);
-                    if (events.Count > 1)
-                    {
-                        socket.Close();
-                    }
-                });
+             
                 socket.Send(binaryData);
                 socket.Send(stringData);           
 
+            });
+
+            socket.On(Socket.EVENT_MESSAGE, (d) =>
+            {
+
+                var data = d as string;
+                log.Info(string.Format("EVENT_MESSAGE data ={0} d = {1} ", data, d));
+
+                if (data == "hi")
+                {
+                    return;
+                }
+                events.Enqueue(d);
+                if (events.Count > 1)
+                {
+                    socket.Close();
+                }
             });
 
             socket.Open();
@@ -134,7 +135,8 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             Assert.Equal(binaryData, result);
             events.TryDequeue(out result);
             Assert.Equal(stringData, (string)result);
-
+            await Task.Delay(1000);
+            log.Info("ReceiveBinaryDataAndMultibyteUTF8String end");
         }
 
 

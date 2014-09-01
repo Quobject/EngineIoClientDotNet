@@ -94,19 +94,23 @@ namespace Quobject.EngineIoClientDotNet.Client
             BasicConfigurator.Configure(fileAppender);
         }
 
-        public Socket() : this(new Options())
+        public Socket()
+            : this(new Options())
         {
         }
 
-        public Socket(string uri) : this(uri, null)
+        public Socket(string uri)
+            : this(uri, null)
         {
         }
 
-        public Socket(string uri, Options options) : this(uri == null ? null : new Uri(uri), options)
-        {            
+        public Socket(string uri, Options options)
+            : this(uri == null ? null : new Uri(uri), options)
+        {
         }
 
-        public Socket(Uri uri, Options options) : this(uri == null ? options : Options.FromURI(uri, options))
+        public Socket(Uri uri, Options options)
+            : this(uri == null ? options : Options.FromURI(uri, options))
         {
         }
 
@@ -136,7 +140,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             RememberUpgrade = options.RememberUpgrade;
             if (options.IgnoreServerCertificateValidation)
             {
-                ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;                
+                ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
             }
 
         }
@@ -220,7 +224,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             private Socket socket;
 
             public EventDrainListener(Socket socket)
-            {                
+            {
                 this.socket = socket;
             }
 
@@ -241,7 +245,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
             void IListener.Call(params object[] args)
             {
-                socket.OnPacket(args.Length > 0 ? (Packet) args[0] : null);
+                socket.OnPacket(args.Length > 0 ? (Packet)args[0] : null);
             }
         }
 
@@ -256,7 +260,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
             public void Call(params object[] args)
             {
-                socket.OnError(args.Length > 0 ? (Exception) args[0] : null);
+                socket.OnError(args.Length > 0 ? (Exception)args[0] : null);
             }
         }
 
@@ -323,12 +327,12 @@ namespace Quobject.EngineIoClientDotNet.Client
             }
             //log.Info(string.Format("OnDrain2 PrevBufferLen={0} WriteBuffer.Count={1}", PrevBufferLen, WriteBuffer.Count));
 
-            WriteBuffer = WriteBuffer.RemoveRange(0,PrevBufferLen);
-            CallbackBuffer = CallbackBuffer.RemoveRange(0,PrevBufferLen);
+            WriteBuffer = WriteBuffer.RemoveRange(0, PrevBufferLen);
+            CallbackBuffer = CallbackBuffer.RemoveRange(0, PrevBufferLen);
 
             this.PrevBufferLen = 0;
             //log.Info(string.Format("OnDrain3 PrevBufferLen={0} WriteBuffer.Count={1}", PrevBufferLen, WriteBuffer.Count));
-            
+
             if (this.WriteBuffer.Count == 0)
             {
                 this.Emit(EVENT_DRAIN);
@@ -370,7 +374,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
                 if (packet.Type == Packet.OPEN)
                 {
-                    OnHandshake(new HandshakeData((string) packet.Data));
+                    OnHandshake(new HandshakeData((string)packet.Data));
 
                 }
                 else if (packet.Type == Packet.PONG)
@@ -393,7 +397,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             {
                 log.Info(string.Format("OnPacket packet received with socket readyState '{0}'", ReadyState));
             }
-            
+
         }
 
         private void OnHandshake(HandshakeData handshakeData)
@@ -428,7 +432,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
             void IListener.Call(params object[] args)
             {
-                socket.OnHeartbeat(args.Length > 0 ? (long) args[0] : 0);
+                socket.OnHeartbeat(args.Length > 0 ? (long)args[0] : 0);
             }
         }
 
@@ -458,7 +462,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         public void Write(string msg, Action fn = null)
         {
-            Send(msg,fn);
+            Send(msg, fn);
         }
 
         public void Write(byte[] msg, Action fn = null)
@@ -559,7 +563,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
             var onUpgrade = new ProbingOnUpgradeListener(freezeTransport, parameters.Transport);
 
-            parameters.Cleanup = parameters.Cleanup.Add( () =>
+            parameters.Cleanup = parameters.Cleanup.Add(() =>
             {
                 parameters.Transport[0].Off(Transport.EVENT_OPEN, onTransportOpen);
                 parameters.Transport[0].Off(Transport.EVENT_ERROR, onError);
@@ -626,13 +630,13 @@ namespace Quobject.EngineIoClientDotNet.Client
                     }
                     var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-                    var msg = (Packet) args[0];
-                    if (Packet.PONG == msg.Type && "probe" == (string) msg.Data)
+                    var msg = (Packet)args[0];
+                    if (Packet.PONG == msg.Type && "probe" == (string)msg.Data)
                     {
                         //log.Info(
                         //    string.Format("probe transport '{0}' pong",
                         //        _onTransportOpenListener.Parameters.Transport[0].Name));
-                            
+
                         _onTransportOpenListener.Parameters.Socket.Upgrading = true;
                         _onTransportOpenListener.Parameters.Socket.Emit(EVENT_UPGRADING, _onTransportOpenListener.Parameters.Transport[0]);
                         Socket.PriorWebsocketSuccess = WebSocket.NAME == _onTransportOpenListener.Parameters.Transport[0].Name;
@@ -640,7 +644,7 @@ namespace Quobject.EngineIoClientDotNet.Client
                         //log.Info(
                         //    string.Format("pausing current transport '{0}'",
                         //        _onTransportOpenListener.Parameters.Socket.Transport.Name));
-                        ((Polling) _onTransportOpenListener.Parameters.Socket.Transport).Pause(
+                        ((Polling)_onTransportOpenListener.Parameters.Socket.Transport).Pause(
                             () =>
                             {
                                 if (_onTransportOpenListener.Parameters.Failed[0])
@@ -677,7 +681,7 @@ namespace Quobject.EngineIoClientDotNet.Client
                         log.Info(
                             string.Format("probe transport '{0}' failed",
                                 _onTransportOpenListener.Parameters.Transport[0].Name));
-                            
+
                         var err = new EngineIOException("probe error");
                         _onTransportOpenListener.Parameters.Socket.Emit(EVENT_UPGRADE_ERROR, err);
                     }
@@ -728,11 +732,16 @@ namespace Quobject.EngineIoClientDotNet.Client
             {
                 object err = args[0];
                 EngineIOException error;
-                if (err is Exception) {
+                if (err is Exception)
+                {
                     error = new EngineIOException("probe error", (Exception)err);
-                } else if (err is string) {
+                }
+                else if (err is string)
+                {
                     error = new EngineIOException("probe error: " + (string)err);
-                } else {
+                }
+                else
+                {
                     error = new EngineIOException("probe error");
                 }
                 error.Transport = _transport[0].Name;
@@ -741,7 +750,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
                 var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-                log.Info(string.Format("probe transport \"{0}\" failed because of error: {1}", error.Transport,err));
+                log.Info(string.Format("probe transport \"{0}\" failed because of error: {1}", error.Transport, err));
                 _socket.Emit(EVENT_UPGRADE_ERROR, error);
             }
         }
@@ -790,7 +799,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             void IListener.Call(params object[] args)
             {
                 var to = (Transport)args[0];
-                if (_transport[0] != null && to.Name !=_transport[0].Name)
+                if (_transport[0] != null && to.Name != _transport[0].Name)
                 {
                     var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -810,9 +819,9 @@ namespace Quobject.EngineIoClientDotNet.Client
                 log.Info("socket closing - telling transport to close");
                 if (PingTimeoutTimer != null)
                 {
-                    PingTimeoutTimer.Stop();                    
+                    PingTimeoutTimer.Stop();
                 }
-                Transport.Close();               
+                Transport.Close();
 
             }
             return this;
@@ -862,7 +871,7 @@ namespace Quobject.EngineIoClientDotNet.Client
         public ImmutableList<string> FilterUpgrades(IEnumerable<string> upgrades)
         {
             var filterUpgrades = ImmutableList<string>.Empty;
-            foreach( var upgrade in upgrades)
+            foreach (var upgrade in upgrades)
             {
                 if (Transports.Contains(upgrade))
                 {
@@ -886,7 +895,7 @@ namespace Quobject.EngineIoClientDotNet.Client
                 timeout = this.PingInterval + this.PingTimeout;
             }
 
-            PingTimeoutTimer = EasyTimer.SetTimeout(() => 
+            PingTimeoutTimer = EasyTimer.SetTimeout(() =>
             {
                 if (ReadyState == ReadyStateEnum.CLOSED)
                 {

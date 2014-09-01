@@ -220,7 +220,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             });
 
             socket1.Open();
-            await Task.Delay(5);
+            await Task.Delay(1000);
             Assert.Equal(Polling.NAME, socket1TransportName);
             Assert.Equal(WebSocket.NAME, socket2TransportName);
         }

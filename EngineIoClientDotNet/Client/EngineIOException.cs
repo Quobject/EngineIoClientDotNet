@@ -21,5 +21,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             : base(message, cause)
         {
         }
+
+
     }
 }

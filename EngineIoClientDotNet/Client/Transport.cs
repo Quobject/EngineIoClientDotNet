@@ -152,7 +152,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             public string Hostname;
             public string Path;
             public string TimestampParam;
-            public bool Secure =  false;
+            public bool Secure = false;
             public bool TimestampRequests = true;
             public int Port;
             public int PolicyPort;
