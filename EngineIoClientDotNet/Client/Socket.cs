@@ -72,8 +72,6 @@ namespace Quobject.EngineIoClientDotNet.Client
         private Timer PingIntervalTimer;
 
         private ReadyStateEnum ReadyState;
-        //private ScheduledExecutorService heartbeatScheduler = Executors.newSingleThreadScheduledExecutor();
-        //private HeartBeatTasks HeartBeatTasks = new HeartBeatTasks();
         private Uri uri;
         private Options options;
         private bool Agent = false;
@@ -104,7 +102,6 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         public Socket(string uri) : this(uri, null)
         {
-            
         }
 
         public Socket(string uri, Options options) : this(uri == null ? null : new Uri(uri), options)
@@ -168,8 +165,6 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         private Transport CreateTransport(string name)
         {
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            log.Info(string.Format("creating transport '{0}'", name));
             var query = new Dictionary<string, string>(Query);
             query.Add("EIO", Parser.Parser.Protocol.ToString());
             query.Add("transport", name);
@@ -191,7 +186,6 @@ namespace Quobject.EngineIoClientDotNet.Client
             options.ForceBase64 = this.ForceBase64;
             options.ForceJsonp = this.ForceJsonp;
 
-
             if (name == WebSocket.NAME)
             {
                 return new WebSocket(options);
@@ -207,12 +201,11 @@ namespace Quobject.EngineIoClientDotNet.Client
         private void SetTransport(Transport transport)
         {
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-            log.Info(string.Format("setting transport '{0}'", transport.Name));
+            log.Info(string.Format("SetTransport setting transport '{0}'", transport.Name));
 
             if (this.Transport != null)
             {
-                log.Info(string.Format("clearing existing transport '{0}'", transport.Name));
+                log.Info(string.Format("SetTransport clearing existing transport '{0}'", transport.Name));
                 this.Transport.Off();
             }
 
@@ -321,7 +314,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         internal void OnDrain()
         {
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             //log.Info(string.Format("OnDrain1 PrevBufferLen={0} WriteBuffer.Count={1}", PrevBufferLen, WriteBuffer.Count));
 
             for (int i = 0; i < this.PrevBufferLen; i++)
@@ -358,14 +351,12 @@ namespace Quobject.EngineIoClientDotNet.Client
             {
                 log.Info(string.Format("Flush {0} packets in socket", WriteBuffer.Count));
                 PrevBufferLen = WriteBuffer.Count;
-                //var toSend = ImmutableList<Packet>.Empty.AddRange(WriteBuffer.ToArray());
                 Transport.Send(WriteBuffer);
                 Emit(EVENT_FLUSH);
             }
             else
             {
                 log.Info(string.Format("Flush Not Send"));
-                
             }
         }
 
@@ -409,7 +400,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             }
             else
             {
-                log.Info(string.Format("packet received with socket readyState '{0}'", ReadyState));
+                log.Info(string.Format("OnPacket packet received with socket readyState '{0}'", ReadyState));
             }
             
         }
@@ -531,7 +522,7 @@ namespace Quobject.EngineIoClientDotNet.Client
         {
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-            log.Info("socket open before call to flush()");
+            //log.Info("socket open before call to flush()");
             ReadyState = ReadyStateEnum.OPEN;
             PriorWebsocketSuccess = WebSocket.NAME == Transport.Name;
 
@@ -541,7 +532,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
             if (ReadyState == ReadyStateEnum.OPEN && Upgrade && Transport is Polling)
             {
-                log.Info("starting upgrade probes");
+                log.Info("OnOpen starting upgrade probes");
                 foreach (var upgrade in Upgrades)
                 {
                     Probe(upgrade);
@@ -553,7 +544,7 @@ namespace Quobject.EngineIoClientDotNet.Client
         {
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-            log.Info(string.Format("probing transport '{0}'", name));
+            log.Info(string.Format("Probe probing transport '{0}'", name));
 
             PriorWebsocketSuccess = false;
 
@@ -620,9 +611,7 @@ namespace Quobject.EngineIoClientDotNet.Client
                 {
                     return;
                 }
-                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-                //log.Info(string.Format("probe transport '{0}' opened", Parameters.Transport[0].Name));
                 var packet = new Packet(Packet.PING, "probe");
                 Parameters.Transport[0].Send(ImmutableList<Packet>.Empty.Add(packet));
                 Parameters.Transport[0].Once(Client.Transport.EVENT_PACKET, new ProbeEventPacketListener(this));
@@ -761,7 +750,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
                 var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-                //log.Info(string.Format("probe transport \"{0}\" failed because of error: {1}", error.Transport,err));
+                log.Info(string.Format("probe transport \"{0}\" failed because of error: {1}", error.Transport,err));
                 _socket.Emit(EVENT_UPGRADE_ERROR, error);
             }
         }
@@ -844,7 +833,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             {
                 var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-                log.Info(string.Format("socket close with reason: {0}", reason));
+                log.Info(string.Format("OnClose socket close with reason: {0}", reason));
 
                 // clear timers
                 if (this.PingIntervalTimer != null)
@@ -916,9 +905,6 @@ namespace Quobject.EngineIoClientDotNet.Client
             }, timeout);
 
         }
-
-
-
 
         internal void OnError(Exception exception)
         {

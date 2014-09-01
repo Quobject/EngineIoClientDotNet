@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using Quobject.EngineIoClientDotNet.ComponentEmitter;
+﻿using Quobject.EngineIoClientDotNet.ComponentEmitter;
 using Quobject.EngineIoClientDotNet.Parser;
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 
 
@@ -105,7 +105,6 @@ namespace Quobject.EngineIoClientDotNet.Client
             {
                 ReadyState = ReadyStateEnum.OPENING;
                 DoOpen();
-                //OnOpen();
             }
             return this;
         }
@@ -161,7 +160,5 @@ namespace Quobject.EngineIoClientDotNet.Client
             public bool IgnoreServerCertificateValidation = false;
             internal Socket Socket;
         }
-
-
     }
 }

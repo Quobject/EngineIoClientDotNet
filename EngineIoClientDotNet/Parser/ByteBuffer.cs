@@ -29,7 +29,6 @@ namespace Quobject.EngineIoClientDotNet.Parser
             _memoryStream.Write(buf,0,buf.Length);
         }
 
-
         internal byte[] Array()
         {
             return _memoryStream.ToArray();

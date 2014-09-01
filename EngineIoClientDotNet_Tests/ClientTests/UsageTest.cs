@@ -1,7 +1,6 @@
 ﻿using log4net;
 using Quobject.EngineIoClientDotNet.Client;
 using System;
-using System.Collections.Immutable;
 using Xunit;
 
 namespace Quobject.EngineIoClientDotNet_Tests.ClientTests

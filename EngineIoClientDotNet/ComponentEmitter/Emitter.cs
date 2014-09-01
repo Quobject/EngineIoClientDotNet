@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Immutable;
+using log4net;
 
 namespace Quobject.EngineIoClientDotNet.ComponentEmitter
 {
@@ -79,8 +80,6 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
         }
 
 
-
-
         /// <summary>
         /// Adds a one time listener for the event.
         /// </summary>
@@ -127,12 +126,13 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
         /// <returns>a reference to this object.</returns>
         public Emitter Off(string eventString)
         {
-
             ImmutableList<IListener> retrievedValue;
             if (! this.callbacks.TryRemove(eventString, out retrievedValue))
             {
-                Console.WriteLine("Emitter.Off Could not remove {0}",eventString);
+                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                log.Info(string.Format("Emitter.Off Could not remove {0}", eventString));
             }
+
             if (retrievedValue != null)
             {
                 foreach (var listener in retrievedValue)
@@ -226,7 +226,6 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
             }
         }
     }
-
 
     public class OnceListener : IListener
     {

@@ -10,12 +10,9 @@ namespace Quobject.EngineIoClientDotNet.Modules
     /// </remarks>
     public class UTF8
     {
-
         private static List<int> byteArray;
         private static int byteCount;
         private static int byteIndex;
-
-
 
         public static string Encode(string str)
         {

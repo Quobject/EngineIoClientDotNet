@@ -6,6 +6,4 @@ namespace Quobject.EngineIoClientDotNet.Parser
     {
          bool Call(Packet packet, int index, int total);
     }
-
-
 }

@@ -1,10 +1,9 @@
-﻿using System.Threading.Tasks;
-using log4net;
+﻿using log4net;
 using Quobject.EngineIoClientDotNet.Client;
 using Quobject.EngineIoClientDotNet.Client.Transports;
-using System;
 using System.Collections.Concurrent;
 using System.Collections.Immutable;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Quobject.EngineIoClientDotNet_Tests.ClientTests

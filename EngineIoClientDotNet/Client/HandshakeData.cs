@@ -27,8 +27,5 @@ namespace Quobject.EngineIoClientDotNet.Client
             PingInterval = data.GetValue("pingInterval").Value<long>();
             PingTimeout = data.GetValue("pingTimeout").Value<long>();
         }
-
-
-
     }
 }

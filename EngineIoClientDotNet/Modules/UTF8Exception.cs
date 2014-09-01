@@ -6,6 +6,5 @@ namespace Quobject.EngineIoClientDotNet.Modules
     {
         public UTF8Exception(string message) : base(message)
         {}
-
     }
 }

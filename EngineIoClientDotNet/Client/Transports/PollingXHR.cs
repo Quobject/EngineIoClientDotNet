@@ -1,6 +1,5 @@
 ﻿using log4net;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
-using Quobject.EngineIoClientDotNet.Thread;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,15 +13,13 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
         private XHRRequest sendXhr;
 
         public PollingXHR(Options options) : base(options)
-        {
-            
+        {            
         }
 
         protected XHRRequest Request()
         {
             return Request(null);
         }
-
 
 
         protected XHRRequest Request(XHRRequest.RequestOptions opts)
@@ -39,7 +36,6 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             req.On(EVENT_REQUEST_HEADERS, new EventRequestHeadersListener(this)).
                 On(EVENT_RESPONSE_HEADERS, new EventResponseHeadersListener(this));
 
-
             return req;
         }
 
@@ -49,7 +45,6 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             public EventRequestHeadersListener(PollingXHR pollingXHR)
             {
-
                 this.pollingXHR = pollingXHR;
             }
 
@@ -79,11 +74,10 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
         {
             var opts = new XHRRequest.RequestOptions {Method = "POST", Data = data};
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            log.Info("DoWrite data = " + data);
             try
             {
                 var dataString = BitConverter.ToString(data);
-                log.Info(string.Format("DoWrite data {0}", dataString));
+                //log.Info(string.Format("DoWrite data {0}", dataString));
             }
             catch (Exception e)
             {
@@ -130,9 +124,6 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         protected override void DoPoll()
         {
-            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-            //log.Info("xhr poll");
             sendXhr = Request();
             sendXhr.On(EVENT_DATA, new DoPollEventDataListener(this));
             sendXhr.On(EVENT_ERROR, new DoPollEventErrorListener(this));
@@ -197,10 +188,9 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             public void Create()
             {
                 var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
                 try
                 {
-                    log.Info(string.Format("xhr open {0}: {1}", Method, Uri));
+                    //log.Info(string.Format("xhr open {0}: {1}", Method, Uri));
                     Xhr = (HttpWebRequest) WebRequest.Create(Uri);
                     Xhr.Method = Method;
                 }
@@ -211,40 +201,27 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                     return;
                 }
 
-                //log.Info("XHRRequest Create 0");
-
                 var headers = new Dictionary<string, string>();
 
                 if (Method == "POST")
                 {
-                    //xhr.setDoOutput(true);
                     Xhr.ContentType = "application/octet-stream";
-                    //headers.Add("Content-type", "application/octet-stream");
                 }
-                //log.Info("XHRRequest Create 1"); 
 
                 try
                 {
-                    //log.Info("XHRRequest Create 3");
-
                     if (Data != null)
                     {
-                        //log.Info("XHRRequest Create 4");
-
                         Xhr.ContentLength = Data.Length;
 
                         using (var requestStream = Xhr.GetRequestStream())
                         {
-                            //og.Info("XHRRequest Create 5");
                             requestStream.Write(Data, 0, Data.Length);
-
                         }
                     }
 
                     using (var res = Xhr.GetResponse())
                     {
-                        log.Info("Xhr.GetResponse ");
-
                         var responseHeaders = new Dictionary<string, string>();
                         for (int i = 0; i < res.Headers.Count; i++)
                         {
@@ -253,9 +230,6 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                         }
 
                         var contentType = res.Headers["Content-Type"];
-
-
-                        //OnResponseHeaders(headers);
 
                         using (var resStream = res.GetResponseStream())
                         {
@@ -287,45 +261,38 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 }
                 catch (System.IO.IOException e)
                 {
-                    //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
                     log.Error("Create call failed", e);
                     OnError(e);
                 }
                 catch (System.Net.WebException e)
                 {
-                    //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
                     log.Error("Create call failed", e);
                     OnError(e);
                 }
                 catch (Exception e)
                 {
-                    //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
                     log.Error("Create call failed", e);
                     OnError(e);
                 }
-
             }
-
 
             private void OnSuccess()
             {
                 this.Emit(EVENT_SUCCESS);
-                //this.Cleanup();
             }
 
             private void OnData(string data)
             {
-                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-                log.Info("OnData string = " + data);
+                //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                //log.Info("OnData string = " + data);
                 this.Emit(EVENT_DATA, data);
                 this.OnSuccess();
             }
 
             private void OnData(byte[] data)
             {
-                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-                log.Info("OnData byte[] =" + System.Text.UTF8Encoding.UTF8.GetString(data));
+                //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                //log.Info("OnData byte[] =" + System.Text.UTF8Encoding.UTF8.GetString(data));
                 this.Emit(EVENT_DATA, data);
                 this.OnSuccess();
             }
@@ -333,7 +300,6 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             private void OnError(Exception err)
             {
                 this.Emit(EVENT_ERROR, err);
-                //this.Cleanup();
             }
 
             private void OnRequestHeaders(Dictionary<string, string> headers)
@@ -353,9 +319,6 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 public byte[] Data;
             }
         }
-
-
-
     }
 
 }

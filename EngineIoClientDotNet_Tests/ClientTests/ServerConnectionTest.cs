@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
-using log4net;
+﻿using log4net;
 using Quobject.EngineIoClientDotNet.Client;
 using Quobject.EngineIoClientDotNet.Client.Transports;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
 using System;
 using System.Collections.Concurrent;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Quobject.EngineIoClientDotNet_Tests.ClientTests

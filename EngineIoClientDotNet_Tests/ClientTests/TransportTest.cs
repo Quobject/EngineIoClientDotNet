@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using log4net;
+﻿using log4net;
 using Quobject.EngineIoClientDotNet.Client;
 using Quobject.EngineIoClientDotNet.Client.Transports;
 using System;
-using System.Collections.Immutable;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Xunit;
 

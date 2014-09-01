@@ -1,8 +1,6 @@
 ﻿using log4net;
 using Quobject.EngineIoClientDotNet.Client;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
-using System;
-using System.Collections.Generic;
 using Xunit;
 
 namespace Quobject.EngineIoClientDotNet_Tests.ClientTests

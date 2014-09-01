@@ -1,7 +1,6 @@
 ﻿using log4net;
 using Quobject.EngineIoClientDotNet.Client;
 using Quobject.EngineIoClientDotNet.Client.Transports;
-using System;
 using System.Collections.Concurrent;
 using System.Collections.Immutable;
 using Xunit;

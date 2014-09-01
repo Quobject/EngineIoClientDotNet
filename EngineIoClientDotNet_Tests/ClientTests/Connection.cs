@@ -1,5 +1,5 @@
-﻿using System;
-using Quobject.EngineIoClientDotNet.Client;
+﻿using Quobject.EngineIoClientDotNet.Client;
+using System;
 using System.IO;
 using System.Web.Script.Serialization;
 

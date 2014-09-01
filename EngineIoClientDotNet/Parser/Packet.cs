@@ -50,9 +50,6 @@ namespace Quobject.EngineIoClientDotNet.Parser
 
         private static readonly Packet _err = new Packet(Packet.ERROR,"parser error");
 
-
-
-
         public string Type { get; set; }
         public object Data { get; set; }
        
@@ -90,7 +87,6 @@ namespace Quobject.EngineIoClientDotNet.Parser
             }
 
             callback.Call(encodedStringBuilder.ToString());
-
         }
 
         private void EncodeBase64Packet(IEncodeCallback callback)
@@ -309,15 +305,12 @@ namespace Quobject.EngineIoClientDotNet.Parser
                     return;
                 }
                 bufferTail_offset += strLen.Length + 1;
-                //bufferTail.Position(strLen.Length + bufferTail_offset + 1);
-                //bufferTail = bufferTail.Slice();
 
                 int msgLength = int.Parse(strLen.ToString());
 
                 bufferTail.Position(1 + bufferTail_offset);
                 bufferTail.Limit(msgLength + 1 + bufferTail_offset);
                 var msg = new byte[bufferTail.Remaining()];
-                //bufferTail.Get(msg, bufferTail_offset, msg.Length);
                 bufferTail.Get(msg, 0, msg.Length);
                 
                 if (isString)
@@ -330,7 +323,6 @@ namespace Quobject.EngineIoClientDotNet.Parser
                 }
                 bufferTail.Clear();
                 bufferTail.Position(msgLength + 1 + bufferTail_offset);
-                //bufferTail = bufferTail.Slice();
                 bufferTail_offset += msgLength + 1;
             }
 

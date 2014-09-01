@@ -11,8 +11,6 @@ namespace Quobject.EngineIoClientDotNet.Modules
     /// </remarks>
     public class ParseQS
     {
-
-
         /// <summary>
         /// Compiles a querystring
         /// Returns string representation of the object
@@ -56,8 +54,6 @@ namespace Quobject.EngineIoClientDotNet.Modules
             }
             return sb.ToString();
         }
-
-
 
         /// <summary>
         /// Parses a simple querystring into an object

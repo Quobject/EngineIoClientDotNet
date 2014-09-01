@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using log4net;
+﻿using log4net;
 using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Parser;
 using Quobject.EngineIoClientDotNet.Thread;
 using System;
-using System.Collections.Immutable;
+using System.Collections.Generic;
 using WebSocket4Net;
 
 namespace Quobject.EngineIoClientDotNet.Client.Transports
@@ -23,12 +22,6 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         protected override void DoOpen()
         {
-            //var headers = new Dictionary<string, string>();
-            //Emit(EVENT_REQUEST_HEADERS, headers);
-            //var wsHeaders = new List<KeyValuePair<string, string>>();
-
-            //ws = new WebSocket4Net.WebSocket(this.Uri(), "", null, wsHeaders, "", "", WebSocketVersion.Rfc6455);
-
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info("DoOpen uri =" + this.Uri());
 
@@ -45,29 +38,29 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         void ws_DataReceived(object sender, DataReceivedEventArgs e)
         {
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            log.Info("ws_DataReceived " + e.Data);
+            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            //log.Info("ws_DataReceived " + e.Data);
             this.OnData(e.Data);
         }
 
         private void ws_Opened(object sender, EventArgs e)
         {
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            log.Info("ws_Opened " + ws.SupportBinary);
+            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            //log.Info("ws_Opened " + ws.SupportBinary);
             this.OnOpen();
         }
 
         void ws_Closed(object sender, EventArgs e)
         {
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            log.Info("ws_Closed");
+            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            //log.Info("ws_Closed");
             this.OnClose();
         }
 
         void ws_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            log.Info("ws_MessageReceived e.Message= " + e.Message);
+            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            //log.Info("ws_MessageReceived e.Message= " + e.Message);
             this.OnData(e.Message);
         }
 
@@ -83,7 +76,6 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             {
                 Parser.Parser.EncodePacket(packet, new WriteEncodeCallback(this));
             }
-            //Parser.Parser.EncodePayload(packets.ToArray(), new WriteEncodeCallback(this));
 
             // fake drain
             // defer to next tick to allow Socket to clear writeBuffer
@@ -126,8 +118,6 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                     {
                         log.Error(e);
                     }
-
-
                     webSocket.ws.Send(d, 0, d.Length);
                 }
             }
