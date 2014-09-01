@@ -16,6 +16,7 @@ module.exports = function (grunt) {
     config: config,
    // msbuild_configuration: 'Debug',
     msbuild_configuration: 'Release',
+    release_path:  './../Releases/<%= config.version %>/', 
     server_path: '../EngineIoClientDotNet_Tests/Resources',
     shell: {
       exec: {
@@ -30,10 +31,37 @@ module.exports = function (grunt) {
         jshintrc: true,
       },
       target: ['Gruntfile.js', '../EngineIoClientDotNet_Tests/Resources/server.js', 'tasks/**/*.js']
+    },
+    clean: {
+      release : [ '<%= release_path %>/*' ],
+      options: { force: true }                
+    },  
+    copy: {
+      release: {
+        files: [
+          {
+            expand: true,
+            cwd:  './../EngineIoClientDotNet/bin/Release',
+            src:  '*',
+            dest: '<%= release_path %>/net45'
+          }
+        ]
+      },
+      release_mono: {
+        files: [
+          {
+            expand: true,
+            cwd:  './../EngineIoClientDotNet_Mono/bin/Release',
+            src:  '*',
+            dest: '<%= release_path %>/mono'
+          }
+        ]
+      },
     }
   });
 
-  
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-clean');  
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.registerTask('default', ['jshint', 'installNpm', 'nuget', 'buildClient', 'buildTest', 'startServer', 'testClient']);
