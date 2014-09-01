@@ -1,5 +1,5 @@
 ﻿{
-  "version" : "0.9.0.0",
+  "version" : "0.1.0.0",
   "port": 3000,
   "ssl_port": 3001,
   "win": {
@@ -10,7 +10,6 @@
   },
   "linux": {
     "msbuild" : "xbuild",
-    "xunit_path" : "/home/apollo/vendors/xunit",
-    "nuget" : "/home/apollo/vendors/nuget/nuget.exe"
+    "xunit_path" : "/home/apollo/vendors/xunit"
   }
 }

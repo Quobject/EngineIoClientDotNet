@@ -10,8 +10,7 @@
       format_str = os === 'win' ?
         '{0} restore {1}' :
         'mono --runtime=v4.0.30319 {0} restore {1}',
-      nuget_path = os === 'win' ?
-        config.win.nuget : config.linux.nuget,    
+      nuget_path = config.win.nuget, 
       solution = __dirname + '/../../EngineIoClientDotNet.sln';
 
     if (os !== 'win') {

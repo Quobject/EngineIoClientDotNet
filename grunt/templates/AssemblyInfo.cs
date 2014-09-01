@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("EngineIoClientDotNet")]
+[assembly: AssemblyTitle("@TITLE@")]
 [assembly: AssemblyDescription("Engine.IO Client Library for .Net")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Quobject Software")]

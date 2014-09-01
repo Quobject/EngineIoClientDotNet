@@ -3,38 +3,43 @@
   grunt.registerTask('buildTest',
       'build cs test modules', function () {
     var
-      os = grunt.config('os'),
+      fs = require('fs'),
+      S = require('string'),
       string = require('string-formatter'),
+      os = grunt.config('os'),
       config = grunt.config('config'),
+      configuration = grunt.config('msbuild_configuration'),
       tasks = [],
-      csproj = os === 'win' ? __dirname + '/../../EngineIoClientDotNet_Tests/EngineIoClientDotNet_Tests.csproj':
-        __dirname + '/../../EngineIoClientDotNet_Tests/EngineIoClientDotNet_Tests_Mono.csproj',
+      title = os === 'win' ? 'EngineIoClientDotNet_Tests' : 'EngineIoClientDotNet_Tests_Mono',
+      dir_path = string.format('{0}/../../{1}/', __dirname, title),
+      csproj = string.format('{0}{1}.csproj', dir_path, title),
+      build_format,
+      clean_format,
       build,
-      clean,
-      configuration = grunt.config('msbuild_configuration');
+      clean;
 
     grunt.log.writeln('csproj = "%s"', csproj);
 
 
     if (os === 'win') {
 
-      clean = '{0} start-process ' +
+      clean_format = '{0} start-process ' +
         '-NoNewWindow ' + 
         //'-WindowStyle Normal ' + //-WindowStyle (Hidden | Normal) | -NoNewWindow
         '-FilePath {1} ' +
         '-ArgumentList \' {2} /t:clean  /p:Configuration={3} \' ';
-      clean = string.format(clean, config.win.powershell, config.win.msbuild, csproj, configuration );
+      clean = string.format(clean_format, config.win.powershell, config.win.msbuild, csproj, configuration );
 
 
-      build = '{0} start-process ' +
+      build_format = '{0} start-process ' +
         '-NoNewWindow ' + 
         //'-WindowStyle Normal ' + //-WindowStyle (Hidden | Normal) | -NoNewWindow
         '-FilePath {1} ' +
         '-ArgumentList \' {2}  /p:Configuration={3} \' ';
-      build = string.format(build, config.win.powershell, config.win.msbuild, csproj, configuration );
+      build = string.format(build_format, config.win.powershell, config.win.msbuild, csproj, configuration );
     } else {
-      clean = string.format('{0} {1} /t:clean /p:Configuration={2}', config.linux.msbuild,csproj, configuration);
-      build = string.format('{0} {1} /p:Configuration={2}', config.linux.msbuild,csproj, configuration);
+      clean = string.format('{0} {1} /t:clean /p:Configuration={2}', config.linux.msbuild, csproj, configuration);
+      build = string.format('{0} {1} /p:Configuration={2}', config.linux.msbuild, csproj, configuration);
     }
 
     tasks.push(clean);
