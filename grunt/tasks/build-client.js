@@ -42,8 +42,8 @@
         '-ArgumentList \' {2}  /p:Configuration={3} \' ';
       build = string.format(build, config.win.powershell, config.win.msbuild, csproj, configuration );
     } else {
-      clean = string.format('{0} {1} /t:clean /p:Configuration={2}', config.linux.msbuild,csproj, configuration);
-      build = string.format('{0} {1} /p:Configuration={2}', config.linux.msbuild,csproj, configuration);
+      clean = string.format('{0} {1} /t:clean /p:Configuration={2}', config.linux.msbuild, csproj, configuration);
+      build = string.format('{0} {1} /p:Configuration={2}', config.linux.msbuild, csproj, configuration);
     }
 
     tasks.push(clean);
