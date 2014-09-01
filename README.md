@@ -44,6 +44,18 @@ socket.Open();
 ## Features
 This library supports all of the features the JS client does, including events, options and upgrading transport.
 
+## Tests
+Run tests on windows or linux:
+```
+git clone https://github.com/Quobject/EngineIoClientDotNet.git
+cd EngineIoClientDotNet/grunt
+npm install
+```
+Update `config.json` and add line to hosts file: `127.0.0.1 testme.quobject.com`
+```
+grunt
+```
+
 ## License
 
 MIT
