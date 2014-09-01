@@ -15,7 +15,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         {
             Socket.SetupLog4Net();
             socket = new Socket(CreateOptions());
-            socket.On(Socket.EVENT_OPEN, new TestListener(socket));
+            socket.On(Socket.EVENT_OPEN, new TestListener());
             socket.On(Socket.EVENT_MESSAGE, new MessageListener(socket, this));
             socket.Open();
 
@@ -25,12 +25,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
         public class TestListener : IListener
         {
-            private Socket socket;
-
-            public TestListener(Socket socket)
-            {                
-                this.socket = socket;
-            }
 
 
             public void Call(params object[] args)

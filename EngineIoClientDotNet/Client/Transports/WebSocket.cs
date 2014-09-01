@@ -99,7 +99,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             public void Call(object data)
             {
-                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
                 if (data is string)
                 {                    
