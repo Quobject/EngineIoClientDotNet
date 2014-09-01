@@ -13,15 +13,20 @@
         'mono {0}/xunit.console.clr4.exe {1}',
 
       xunit_path = os === 'win' ?
-        config.win.xunit_path : config.linux.xunit_path,    
-      testdll =  os === 'win' ?
-        __dirname + '/../../EngineIoClientDotNet_Tests/bin/'+configuration+'/EngineIoClientDotNet_Tests.dll':
-        __dirname + '/../../EngineIoClientDotNet_Tests/bin/'+configuration+'/EngineIoClientDotNet_Tests.dll';
+        config.win.xunit_path : config.linux.xunit_path;
 
+    function addTestDllWithTitle(title) {
+      var dir_path = string.format('{0}/../../{1}/', __dirname, title),
+        test_dll = string.format('{0}bin/{1}/{2}.dll', dir_path, configuration, title);
 
-    grunt.log.writeln('testdll = "%s"', testdll);
+      tasks.push(  string.format(test_format_str,xunit_path, test_dll) );      
+    }
 
-    tasks.push(  string.format(test_format_str,xunit_path, testdll) );
+    if (os === 'win') {
+      addTestDllWithTitle('EngineIoClientDotNet_Tests');
+    } else {
+      addTestDllWithTitle('EngineIoClientDotNet_Tests_Mono');      
+    }
 
     grunt.log.writeln('tasks = %s', JSON.stringify(tasks));
     grunt.config('shell.exec.command', tasks.join('&&'));
