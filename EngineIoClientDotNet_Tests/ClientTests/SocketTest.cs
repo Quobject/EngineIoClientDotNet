@@ -20,9 +20,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             
             socket = new Socket(options);
 
-            var builder = ImmutableList<string>.Empty.Add("polling").Add("websocket");
-
-
             var immutablelist = socket.FilterUpgrades(ImmutableList<string>.Empty.Add("polling").Add("websocket"));
 
             Assert.Equal("polling", immutablelist[0]);

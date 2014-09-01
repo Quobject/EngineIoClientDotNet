@@ -23,12 +23,6 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         protected override void DoOpen()
         {
-            //var headers = new Dictionary<string, string>();
-            //Emit(EVENT_REQUEST_HEADERS, headers);
-            //var wsHeaders = new List<KeyValuePair<string, string>>();
-
-            //ws = new WebSocket4Net.WebSocket(this.Uri(), "", null, wsHeaders, "", "", WebSocketVersion.Rfc6455);
-
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info("DoOpen uri =" + this.Uri());
 
@@ -106,27 +100,24 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             public void Call(object data)
             {
                 var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-                //log.Info("WriteEncodeCallback data = " + data);              
 
                 if (data is string)
                 {                    
-                    //log.Info("WriteEncodeCallback string data " + data);                    
                     webSocket.ws.Send((string)data);
                 }
                 else if (data is byte[])
                 {
                     var d = (byte[])data;
 
-                    try
-                    {
-                        var dataString = BitConverter.ToString(d);
-                        //log.Info(string.Format("WriteEncodeCallback byte[] data {0}", dataString));
-                    }
-                    catch (Exception e)
-                    {
-                        log.Error(e);
-                    }
-
+                    //try
+                    //{
+                    //    var dataString = BitConverter.ToString(d);
+                    //    //log.Info(string.Format("WriteEncodeCallback byte[] data {0}", dataString));
+                    //}
+                    //catch (Exception e)
+                    //{
+                    //    log.Error(e);
+                    //}
 
                     webSocket.ws.Send(d, 0, d.Length);
                 }

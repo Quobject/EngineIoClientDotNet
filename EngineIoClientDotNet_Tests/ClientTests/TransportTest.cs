@@ -15,7 +15,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void Constructors()
         {
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             var socket = new Socket(CreateOptions());
 
             socket.Open();

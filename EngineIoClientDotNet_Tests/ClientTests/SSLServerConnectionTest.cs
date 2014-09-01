@@ -108,13 +108,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
         public class TestHandshakeListener : IListener
         {
-            private Socket socket;
             public HandshakeData HandshakeData;
-
-            public TestHandshakeListener(Socket socket)
-            {
-                this.socket = socket;
-            }
 
             public void Call(params object[] args)
             {
@@ -130,10 +124,8 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             Socket.SetupLog4Net();
 
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
             var socket = new Socket(CreateOptionsSecure());
-            var testListener = new ServerConnectionTest.TestHandshakeListener(socket);
+            var testListener = new SSLServerConnectionTest.TestHandshakeListener();
             socket.On(Socket.EVENT_HANDSHAKE, testListener);
             socket.Open();
             System.Threading.Thread.Sleep(TimeSpan.FromSeconds(4));

@@ -13,7 +13,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         public void Usage1()
         {
             Socket.SetupLog4Net();
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
             var options = CreateOptions();
             var socket = new Socket(options);
@@ -36,7 +35,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         public void Usage2()
         {
             Socket.SetupLog4Net();
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
             //Receiving data
             var socket = new Socket("ws://localhost");
