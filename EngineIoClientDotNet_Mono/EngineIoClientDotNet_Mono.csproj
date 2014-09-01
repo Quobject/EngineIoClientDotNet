@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E1CA3197-FF08-469F-B728-3DB02A432AA2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EngineIoClientDotNet_Mono</RootNamespace>
+    <AssemblyName>EngineIoClientDotNet_Mono</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\mono_lib\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\mono_lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="WebSocket4Net">
+      <HintPath>..\mono_lib\WebSocket4Net.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\EngineIoClientDotNet\Client\EngineIOException.cs">
+      <Link>Client\EngineIOException.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet\Client\HandshakeData.cs">
+      <Link>Client\HandshakeData.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet\Client\Socket.cs">
+      <Link>Client\Socket.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet\Client\Transport.cs">
+      <Link>Client\Transport.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet\Client\Transports\HttpURLConnection.cs">
+      <Link>Client\Transports\HttpURLConnection.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet\Client\Transports\Polling.cs">
+      <Link>Client\Transports\Polling.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet\Client\Transports\PollingXHR.cs">
+      <Link>Client\Transports\PollingXHR.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet\Client\Transports\WebSocket.cs">
+      <Link>Client\Transports\WebSocket.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet\ComponentEmitter\Emitter.cs">
+      <Link>ComponentEmitter\Emitter.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet\Modules\Global.cs">
+      <Link>Modules\Global.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet\Modules\ParseQS.cs">
+      <Link>Modules\ParseQS.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet\Modules\UTF8.cs">
+      <Link>Modules\UTF8.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet\Modules\UTF8Exception.cs">
+      <Link>Modules\UTF8Exception.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet\Parser\Buffer.cs">
+      <Link>Parser\Buffer.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet\Parser\ByteBuffer.cs">
+      <Link>Parser\ByteBuffer.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet\Parser\IDecodePayloadCallback.cs">
+      <Link>Parser\IDecodePayloadCallback.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet\Parser\IEncodeCallback.cs">
+      <Link>Parser\IEncodeCallback.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet\Parser\Packet.cs">
+      <Link>Parser\Packet.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet\Parser\Parser.cs">
+      <Link>Parser\Parser.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet\Thread\EasyTimer.cs">
+      <Link>Thread\EasyTimer.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\System.Collections.Immutable\System.Collections.Immutable_Mono.csproj">
+      <Project>{024a2111-4b19-44d7-917e-8514cf632469}</Project>
+      <Name>System.Collections.Immutable_Mono</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,7 +1,8 @@
-﻿using Quobject.EngineIoClientDotNet.Client;
+﻿using System.Web.Script.Serialization;
+using Quobject.EngineIoClientDotNet.Client;
 using System;
 using System.IO;
-using System.Web.Script.Serialization;
+
 
 namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 {

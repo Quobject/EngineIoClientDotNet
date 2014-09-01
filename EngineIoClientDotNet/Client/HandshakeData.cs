@@ -10,7 +10,8 @@ namespace Quobject.EngineIoClientDotNet.Client
         public long PingInterval;
         public long PingTimeout;
 
-        public HandshakeData(string data) : this(JObject.Parse(data))
+        public HandshakeData(string data)
+            : this(JObject.Parse(data))
         {
         }
 
@@ -20,15 +21,12 @@ namespace Quobject.EngineIoClientDotNet.Client
 
             foreach (var e in upgrades)
             {
-                Upgrades = Upgrades.Add(e.ToString());                                   
+                Upgrades = Upgrades.Add(e.ToString());
             }
 
             Sid = data.GetValue("sid").Value<string>();
             PingInterval = data.GetValue("pingInterval").Value<long>();
             PingTimeout = data.GetValue("pingTimeout").Value<long>();
         }
-
-
-
     }
 }

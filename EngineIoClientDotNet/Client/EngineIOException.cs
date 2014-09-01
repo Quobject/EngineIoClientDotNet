@@ -7,7 +7,8 @@ namespace Quobject.EngineIoClientDotNet.Client
         public string Transport;
         public object code;
 
-        public EngineIOException(string message) : base(message)
+        public EngineIOException(string message)
+            : base(message)
         {
         }
 
@@ -21,7 +22,5 @@ namespace Quobject.EngineIoClientDotNet.Client
             : base(message, cause)
         {
         }
-
-
     }
 }
