@@ -1,31 +1,36 @@
 ﻿module.exports = function (grunt) {
 
   grunt.registerTask('nuget',
-      'get assemplys ', function () {
-    var
-      string = require('string-formatter'),
-      os = grunt.config('os'),
-      config = grunt.config('config'),
-      tasks = [],
-      format_str = os === 'win' ?
-        '{0} restore {1}' :
-        'mono --runtime=v4.0.30319 {0} restore {1}',
-      nuget_path = config.win.nuget, 
-      solution = __dirname + '/../../EngineIoClientDotNet.sln';
+    'get nuget assemblies', function () {
+      var
+        //fs = require('fs'),
+        //S = require('string'),
+        string = require('string-formatter'),
+        os = grunt.config('os'),
+        config = grunt.config('config'),
+        //configuration = grunt.config('msbuild_configuration'),
+        nuget_path = os === 'win' ?
+          config.win.nuget : config.linux.nuget,
+        format_str = os === 'win' ?
+          '{0} restore "{1}"' :
+          'mono --runtime=v4.0.30319 {0} restore {1}',
+            tasks = [];
 
-    if (os !== 'win') {
-      return;
-    }
+      function getPackagesWithTitle(title) {
+        var
+          sln = string.format('./../{0}.sln', title),
+          restore = string.format(format_str, nuget_path, sln);
 
-    grunt.log.writeln('nuget_path = "%s"', nuget_path);
+        tasks.push(restore);
+      }
 
-    tasks.push(  string.format(format_str,nuget_path, solution) );
+      if (os === 'win') {
+        getPackagesWithTitle('EngineIoClientDotNet');
+      }
 
-    grunt.log.writeln('tasks = %s', JSON.stringify(tasks));
-    grunt.config('shell.exec.command', tasks.join('&&'));
-    grunt.task.run('shell');
-
-  });
+       grunt.log.writeln('tasks = %s', JSON.stringify(tasks));
+       grunt.config('shell.exec.command', tasks.join('&&'));
+       grunt.task.run('shell');
+     });
 };
-
 
