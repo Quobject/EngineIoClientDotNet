@@ -4,9 +4,17 @@ using System.Timers;
 namespace Quobject.EngineIoClientDotNet.Thread
 {
     //from http://www.dailycoding.com/Posts/easytimer__javascript_style_settimeout_and_setinterval_in_c.aspx
-    public static class EasyTimer
+    public class EasyTimer
     {
-        public static Timer SetInterval(Action method, long delayInMilliseconds)
+        private Timer timer;
+
+        public EasyTimer(Timer timer)
+        {
+            this.timer = timer;
+        }
+
+
+        public static EasyTimer SetInterval(Action method, long delayInMilliseconds)
         {
             var timer = new System.Timers.Timer(delayInMilliseconds);
             timer.Elapsed += (source, e) => method();
@@ -16,10 +24,11 @@ namespace Quobject.EngineIoClientDotNet.Thread
 
             // Returns a stop handle which can be used for stopping
             // the timer, if required
-            return timer;
+
+            return new EasyTimer( timer);
         }
 
-        public static Timer SetTimeout(Action method, long delayInMilliseconds)
+        public static EasyTimer SetTimeout(Action method, long delayInMilliseconds)
         {
             var timer = new System.Timers.Timer(delayInMilliseconds);
             timer.Elapsed += (source, e) => method();
@@ -30,7 +39,14 @@ namespace Quobject.EngineIoClientDotNet.Thread
 
             // Returns a stop handle which can be used for stopping
             // the timer, if required
-            return timer;
+            return new EasyTimer(timer);
+        }
+
+        internal void Stop()
+        {
+            this.timer.Stop();
         }
     }
+
+
 }

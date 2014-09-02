@@ -9,7 +9,7 @@
     <ProjectTypeGuids>{C089C8C0-30E0-4E22-80C0-CE093F111A43};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EngineIoClientDotNet.windowsphone8</RootNamespace>
+    <RootNamespace>EngineIoClientDotNet</RootNamespace>
     <AssemblyName>EngineIoClientDotNet.windowsphone8</AssemblyName>
     <TargetFrameworkIdentifier>WindowsPhone</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
@@ -92,6 +92,7 @@
     <Compile Include="Client\Transports\PollingXHR.cs" />
     <Compile Include="Client\Transports\WebSocket.cs" />
     <Compile Include="ComponentEmitter\Emitter.cs" />
+    <Compile Include="Modules\LogManager_windowsphone8.cs" />
     <Compile Include="Modules\Global_windowsphone8.cs" />
     <Compile Include="Modules\ParseQS.cs" />
     <Compile Include="Modules\UTF8.cs" />

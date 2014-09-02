@@ -10,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Net;
-using System.Timers;
 
 namespace Quobject.EngineIoClientDotNet.Client
 {
@@ -66,8 +65,8 @@ namespace Quobject.EngineIoClientDotNet.Client
         private ImmutableList<Action> CallbackBuffer = ImmutableList<Action>.Empty;
         /*package*/
         public Transport Transport;
-        private Timer PingTimeoutTimer;
-        private Timer PingIntervalTimer;
+        private EasyTimer PingTimeoutTimer;
+        private EasyTimer PingIntervalTimer;
 
         private ReadyStateEnum ReadyState;
         private bool Agent = false;
