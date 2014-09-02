@@ -1,4 +1,6 @@
-﻿using log4net;
+﻿//using log4net;
+
+using EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Client;
 using Quobject.EngineIoClientDotNet.Client.Transports;
 using System;
@@ -84,8 +86,8 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void TimestampedUri()
         {
-            Socket.SetupLog4Net();
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
 
             var options = new Transport.Options();
             options.Path = "/engine.io";
@@ -135,8 +137,8 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void WsTimestampedUri()
         {
-            Socket.SetupLog4Net();
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
 
             var options = new Transport.Options();
             options.Path = "/engine.io";

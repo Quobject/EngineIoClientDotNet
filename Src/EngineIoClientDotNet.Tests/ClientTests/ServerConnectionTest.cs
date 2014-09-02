@@ -1,4 +1,6 @@
-﻿using log4net;
+﻿//using log4net;
+
+using EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Client;
 using Quobject.EngineIoClientDotNet.Client.Transports;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
@@ -14,9 +16,9 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public async Task OpenAndClose()
         {
-            Socket.SetupLog4Net();
+            
 
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             var events = new ConcurrentQueue<string>();
 
             var socket = new Socket(CreateOptions());
@@ -47,9 +49,9 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void Messages()
         {
-            Socket.SetupLog4Net();
+            
 
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             var events = new ConcurrentQueue<string>();
 
             var socket = new Socket(CreateOptions());
@@ -81,9 +83,9 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void Handshake()
         {
-            Socket.SetupLog4Net();
+            
 
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             HandshakeData handshake_data = null;
 
             var socket = new Socket(CreateOptions());
@@ -114,7 +116,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             public void Call(params object[] args)
             {
-                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
                 log.Info(string.Format("open args[0]={0} args.Length={1}", args[0], args.Length));
                 HandshakeData = args[0] as HandshakeData;
             }
@@ -124,7 +126,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         public void Handshake2()
         {
 
-            Socket.SetupLog4Net();
+            
 
             var socket = new Socket(CreateOptions());
             var testListener = new TestHandshakeListener();
@@ -144,9 +146,9 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public async Task Upgrade()
         {
-            Socket.SetupLog4Net();
+            
 
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             var events = new ConcurrentQueue<object>();
 
             var socket = new Socket(CreateOptions());
@@ -183,9 +185,9 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public async Task RememberWebsocket()
         {
-            Socket.SetupLog4Net();
+            
 
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
 
             var socket1 = new Socket(CreateOptions());
             string socket1TransportName = null;
@@ -224,9 +226,9 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void NotRememberWebsocket()
         {
-            Socket.SetupLog4Net();
+            
 
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
 
             var socket1 = new Socket(CreateOptions());
             string socket1TransportName = null;

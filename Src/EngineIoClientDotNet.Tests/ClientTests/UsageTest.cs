@@ -1,4 +1,4 @@
-﻿using log4net;
+﻿//using log4net;
 using Quobject.EngineIoClientDotNet.Client;
 using System;
 using Xunit;
@@ -12,7 +12,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void Usage1()
         {
-            Socket.SetupLog4Net();
+            
 
             var options = CreateOptions();
             var socket = new Socket(options);
@@ -34,7 +34,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void Usage2()
         {
-            Socket.SetupLog4Net();
+            
 
             //Receiving data
             var socket = new Socket("ws://localhost");

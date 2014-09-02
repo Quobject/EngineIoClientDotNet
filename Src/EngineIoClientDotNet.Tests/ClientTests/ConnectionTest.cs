@@ -1,4 +1,6 @@
-﻿using log4net;
+﻿//using log4net;
+
+using EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Client;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
 using Xunit;
@@ -13,7 +15,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void ConnectToLocalhost()
         {
-            Socket.SetupLog4Net();
+            
             socket = new Socket(CreateOptions());
             socket.On(Socket.EVENT_OPEN, new TestListener());
             socket.On(Socket.EVENT_MESSAGE, new MessageListener(socket, this));
@@ -29,7 +31,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             public void Call(params object[] args)
             {
-                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
                 log.Info("open");
             }
         }
@@ -56,7 +58,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             public void Call(params object[] args)
             {
-                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
                 log.Info("message = " + args[0]);
                 connectionTest.Message = (string) args[0];
                 socket.Close();
@@ -68,9 +70,9 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         public void ConnectToLocalhost2()
         {
 
-            Socket.SetupLog4Net();
+            
 
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             this.Message = "";
 
             socket = new Socket(CreateOptions());
@@ -96,10 +98,10 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
        [Fact]
         public void TestmultibyteUtf8StringsWithPolling()
         {
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             const string SendMessage = "cash money €€€";
 
-            Socket.SetupLog4Net();
+            
             socket = new Socket(CreateOptions());
             socket.On(Socket.EVENT_OPEN, () =>
             {
@@ -132,10 +134,10 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
        [Fact]
        public void Testemoji()
        {
-           var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+           var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
            const string SendMessage = "\uD800-\uDB7F\uDB80-\uDBFF\uDC00-\uDFFF\uE000-\uF8FF";
 
-           Socket.SetupLog4Net();
+           
            socket = new Socket(CreateOptions());
            socket.On(Socket.EVENT_OPEN, () =>
            {
@@ -169,9 +171,9 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         public void NotSendPacketsIfSocketCloses()
         {
 
-            Socket.SetupLog4Net();
+            
 
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             var noPacket = true;
 
             socket = new Socket(CreateOptions());

@@ -1,20 +1,27 @@
-﻿using log4net;
+﻿//using log4net;
+
+using System.Diagnostics;
+using EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Client;
 using Quobject.EngineIoClientDotNet.Client.Transports;
 using System.Collections.Concurrent;
 using System.Collections.Immutable;
 using Xunit;
+using System.IO;
+using System;
 
 namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 {
+
     public class BinaryPollingTest : Connection
     {
+
         [Fact]
         public void ReceiveBinaryData()
         {
-            Socket.SetupLog4Net();
+            
 
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("ReceiveBinaryData start");
 
             var events = new ConcurrentQueue<object>();
@@ -72,10 +79,12 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void ReceiveBinaryDataAndMultibyteUTF8String()
         {
-            Socket.SetupLog4Net();
+            
 
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("ReceiveBinaryDataAndMultibyteUTF8String start");
+            Debug.Listeners.Add(new DefaultTraceListener());
+            Debug.WriteLine("ReceiveBinaryDataAndMultibyteUTF8String start");
             var events = new ConcurrentQueue<object>();
 
             var binaryData = new byte[5];

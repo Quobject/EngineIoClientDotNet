@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Immutable;
-using log4net;
+//using log4net;
+using EngineIoClientDotNet.Modules;
 
 namespace Quobject.EngineIoClientDotNet.ComponentEmitter
 {
@@ -24,7 +25,7 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
         /// <returns>a reference to this object.</returns>
         public Emitter Emit(string eventString, params object[] args)
         {
-            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             //log.Info("Emitter emit event = " + eventString);
             if (this.callbacks.ContainsKey(eventString))
             {
@@ -129,7 +130,7 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
             ImmutableList<IListener> retrievedValue;
             if (! this.callbacks.TryRemove(eventString, out retrievedValue))
             {
-                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
                 log.Info(string.Format("Emitter.Off Could not remove {0}", eventString));
             }
 

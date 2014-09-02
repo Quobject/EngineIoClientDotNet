@@ -1,4 +1,6 @@
-﻿using log4net;
+﻿//using log4net;
+
+using EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
 using Quobject.EngineIoClientDotNet.Thread;
 using System;
@@ -78,17 +80,17 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
         protected override void DoWrite(byte[] data, Action action)
         {
             var opts = new XHRRequest.RequestOptions {Method = "POST", Data = data};
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("DoWrite data = " + data);
-            try
-            {
-                var dataString = BitConverter.ToString(data);
-                log.Info(string.Format("DoWrite data {0}", dataString));
-            }
-            catch (Exception e)
-            {
-                log.Error(e);
-            }
+            //try
+            //{
+            //    var dataString = BitConverter.ToString(data);
+            //    log.Info(string.Format("DoWrite data {0}", dataString));
+            //}
+            //catch (Exception e)
+            //{
+            //    log.Error(e);
+            //}
 
             sendXhr = Request(opts);
             sendXhr.On(EVENT_SUCCESS, new SendEventSuccessListener(action));
@@ -130,7 +132,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         protected override void DoPoll()
         {
-            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
 
             //log.Info("xhr poll");
             sendXhr = Request();
@@ -196,7 +198,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             public void Create()
             {
-                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
 
                 try
                 {
@@ -298,7 +300,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             private void OnData(string data)
             {
-                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
                 log.Info("OnData string = " + data);
                 this.Emit(EVENT_DATA, data);
                 this.OnSuccess();
@@ -306,7 +308,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             private void OnData(byte[] data)
             {
-                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
                 log.Info("OnData byte[] =" + System.Text.UTF8Encoding.UTF8.GetString(data));
                 this.Emit(EVENT_DATA, data);
                 this.OnSuccess();

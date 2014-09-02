@@ -1,4 +1,6 @@
-﻿using log4net;
+﻿//using log4net;
+
+using EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Client;
 using System;
 using System.Collections.Immutable;
@@ -14,7 +16,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void FilterUpgrades()
         {
-            Socket.SetupLog4Net();
+            
             var options = CreateOptions();
             options.Transports = ImmutableList<string>.Empty.Add("polling");
             
@@ -29,9 +31,9 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void SocketClosing()
         {
-            Socket.SetupLog4Net();
+            
 
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             var closed = false;
             var error = false;
 

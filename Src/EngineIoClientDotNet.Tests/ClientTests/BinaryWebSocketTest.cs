@@ -1,4 +1,6 @@
-﻿using log4net;
+﻿//using log4net;
+
+using EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Client;
 using Quobject.EngineIoClientDotNet.Client.Transports;
 using System.Collections.Concurrent;
@@ -13,9 +15,9 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public async Task ReceiveBinaryData()
         {
-            Socket.SetupLog4Net();
+            
 
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             var events = new ConcurrentQueue<object>();
 
             var binaryData = new byte[5];
@@ -75,9 +77,9 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public async Task ReceiveBinaryDataAndMultibyteUTF8String()
         {
-            Socket.SetupLog4Net();
+            
 
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             var events = new ConcurrentQueue<object>();
 
             var binaryData = new byte[5];

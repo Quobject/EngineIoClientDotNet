@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using log4net;
+//using log4net;
+using EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
 using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Parser;
@@ -30,7 +31,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         public void Pause(Action onPause)
         {
-            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
 
             ReadyState = ReadyStateEnum.PAUSED;
             Action pause = () =>
@@ -80,7 +81,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             public void Call(params object[] args)
             {
-                //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
 
                 //log.Info("pre-pause writing complete");
                 if (--total[0] == 0)
@@ -104,7 +105,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             
             public void Call(params object[] args)
             {
-                //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
 
                 //log.Info("pre-pause polling complete");
                 if (--total[0] == 0)
@@ -117,7 +118,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         private void Poll()
         {
-            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
 
             //log.Info("polling");
             IsPolling = true;
@@ -167,7 +168,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         private void _onData(object data)
         {
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
 
             //log.Info(string.Format("polling got data {0}",data));
             var callback = new DecodePayloadCallback(this);
@@ -208,7 +209,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             public void Call(params object[] args)
             {
-                //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
 
                 //log.Info("writing close packet");
                 ImmutableList<Packet> packets = ImmutableList<Packet>.Empty;
@@ -219,7 +220,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         protected override void DoClose()
         {
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
 
             var closeListener = new CloseListener(this);
 
@@ -249,7 +250,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             public void Call(object data)
             {
-                //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
                 //log.Info("SendEncodeCallback data = " + data);
 
                 var byteData = (byte[]) data;
@@ -265,7 +266,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         protected override void Write(ImmutableList<Packet> packets)
         {
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Write packets.Count = " + packets.Count);
 
             Writable = false;

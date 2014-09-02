@@ -121,7 +121,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         public Transport Send(ImmutableList<Packet> packets)
         {
-            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             //log.Info("Send called with packets.Count: " + packets.Count);
             var count = packets.Count;
             if (ReadyState == ReadyStateEnum.OPEN)
