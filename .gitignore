@@ -174,3 +174,4 @@ UpgradeLog*.htm
 # Microsoft Fakes
 FakesAssemblies/
 EngineIoClientDotNet_Tests/Resources/test.xml
+TestServer/test.xml
