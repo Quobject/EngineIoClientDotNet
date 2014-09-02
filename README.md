@@ -10,7 +10,7 @@ This is the Engine.IO Client Library for C#, which is ported from the [JavaScrip
 
 
 ## Usage
-EngineIoClientDotNet has a similar api to those of the JS client. 
+EngineIoClientDotNet has a similar api to those of the [JavaScript client](https://github.com/LearnBoost/engine.io-client).
 
 You can use `Socket` to connect:
 
@@ -20,6 +20,7 @@ socket.On(Socket.EVENT_OPEN, () =>
 {
 	socket.Send("hi", () =>
 	{
+		socket.Send("hi");
 		socket.Close();
 	});
 });
@@ -33,9 +34,7 @@ socket.On(Socket.EVENT_OPEN, () =>
 {
 	socket.On(Socket.EVENT_MESSAGE, (data) =>
 	{
-		var dataString = (string)data;
-		Console.WriteLine(dataString);
-		socket.Close();
+		socket.On(Socket.EVENT_MESSAGE, (data) => Console.WriteLine((string)data));
 	});
 });
 socket.Open();            
@@ -55,9 +54,9 @@ Update `config.json` and add line to hosts file: `127.0.0.1 testme.quobject.com`
 ```
 grunt
 ```
-This will start node server and tests for windows. 
+This will start test server and xunit tests for windows. 
 
-In linux this will only start node server. Therefore type (within a new linux terminal):
+In linux this will stop after starting test server. Start xunit tests within a new linux terminal:
 ```
 grunt testClient
 ```

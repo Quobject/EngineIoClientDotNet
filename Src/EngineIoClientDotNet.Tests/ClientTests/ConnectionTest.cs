@@ -173,7 +173,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             });
 
             socket.Open();
-            Assert.True(SendMessage+"l" == this.Message);
+            Assert.True(SendMessage == this.Message);
 
         }
 
