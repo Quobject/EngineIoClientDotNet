@@ -14,23 +14,23 @@
         format_str = os === 'win' ?
           '{0} restore "{1}"' :
           'mono --runtime=v4.0.30319 {0} restore {1}',
-            tasks = [];
+        tasks = [];
 
       function getPackagesWithTitle(title) {
         var
-          sln = string.format('./../{0}.sln', title),
+          sln = string.format('./../src/{0}.sln', title),
           restore = string.format(format_str, nuget_path, sln);
 
         tasks.push(restore);
       }
 
       if (os === 'win') {
-        getPackagesWithTitle('EngineIoClientDotNet');
+        getPackagesWithTitle('EngineIoClientDotNet.net45');
       }
 
-       grunt.log.writeln('tasks = %s', JSON.stringify(tasks));
-       grunt.config('shell.exec.command', tasks.join('&&'));
-       grunt.task.run('shell');
-     });
+      grunt.log.writeln('tasks = %s', JSON.stringify(tasks));
+      grunt.config('shell.exec.command', tasks.join('&&'));
+      grunt.task.run('shell');
+    });
 };
 

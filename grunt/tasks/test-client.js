@@ -16,16 +16,17 @@
         config.win.xunit_path : config.linux.xunit_path;
 
     function addTestDllWithTitle(title) {
-      var dir_path = string.format('{0}/../../{1}/', __dirname, title),
+      var 
+        dir_path = string.format('{0}/../../src/EngineIoClientDotNet.Tests/', __dirname),      
         test_dll = string.format('{0}bin/{1}/{2}.dll', dir_path, configuration, title);
 
       tasks.push(  string.format(test_format_str,xunit_path, test_dll) );      
     }
 
     if (os === 'win') {
-      addTestDllWithTitle('EngineIoClientDotNet_Tests');
+      addTestDllWithTitle('EngineIoClientDotNet.Tests.net45');
     } else {
-      addTestDllWithTitle('EngineIoClientDotNet_Tests_Mono');      
+      addTestDllWithTitle('EngineIoClientDotNet.Tests.mono');      
     }
 
     grunt.log.writeln('tasks = %s', JSON.stringify(tasks));

@@ -47,7 +47,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
         public static ConfigBase Load()
         {
-            var configString = File.ReadAllText("../../../grunt/config.json");
+            var configString = File.ReadAllText("./../../../../grunt/config.json");
             //Console.WriteLine("configString = {0}", configString);
 
             var ser = new JavaScriptSerializer();

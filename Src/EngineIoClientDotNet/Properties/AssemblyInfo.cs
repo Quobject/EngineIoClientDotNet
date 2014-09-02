@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCompany("Quobject Software")]
 [assembly: AssemblyProduct("EngineIoClientDotNet")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
-[assembly: AssemblyTrademark("Quobject Software")]
+[assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 

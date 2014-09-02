@@ -17,7 +17,7 @@ module.exports = function (grunt) {
    // msbuild_configuration: 'Debug',
     msbuild_configuration: 'Release',
     release_path:  './../Releases/<%= config.version %>/', 
-    server_path: '../EngineIoClientDotNet_Tests/Resources',
+    server_path: '../TestServer/',
     shell: {
       exec: {
         options: {
@@ -30,7 +30,7 @@ module.exports = function (grunt) {
       options: {
         jshintrc: true,
       },
-      target: ['Gruntfile.js', '../EngineIoClientDotNet_Tests/Resources/server.js', 'tasks/**/*.js']
+      target: ['Gruntfile.js', '<%= server_path %>server.js', 'tasks/**/*.js']
     },
     clean: {
       release : [ '<%= release_path %>/*' ],

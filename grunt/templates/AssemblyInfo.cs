@@ -4,13 +4,13 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("@TITLE@")]
+[assembly: AssemblyTitle("EngineIoClientDotNet")]
 [assembly: AssemblyDescription("Engine.IO Client Library for .Net")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Quobject Software")]
 [assembly: AssemblyProduct("EngineIoClientDotNet")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
-[assembly: AssemblyTrademark("Quobject Software")]
+[assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 

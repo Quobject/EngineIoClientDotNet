@@ -25,7 +25,7 @@
 
     function addBuildWithTitle(title) {
       var   
-        dir_path = string.format('{0}/../../{1}/', __dirname, title),
+        dir_path = string.format('{0}/../../src/EngineIoClientDotNet/', __dirname),
         csproj = string.format('{0}{1}.csproj', dir_path, title),
         clean = os === 'win' ? string.format(clean_format, config.win.powershell, config.win.msbuild, csproj, configuration ):
           string.format(clean_format, config.linux.msbuild, csproj, configuration),
@@ -33,7 +33,7 @@
           string.format(build_format, config.linux.msbuild, csproj, configuration),
         template_file_content = fs.readFileSync('./templates/AssemblyInfo.cs');
 
-      template_file_content = S(template_file_content).replaceAll('@TITLE@', title).s;
+      //template_file_content = S(template_file_content).replaceAll('@TITLE@', title).s;
       template_file_content = S(template_file_content).replaceAll('@VERSION@', config.version).s;
       //grunt.log.writeln('template_file_content = "%s"', template_file_content);
       fs.writeFileSync(string.format('{0}Properties/AssemblyInfo.cs', dir_path), template_file_content);
@@ -43,9 +43,9 @@
     }
 
     if (os === 'win') {
-      addBuildWithTitle('EngineIoClientDotNet');
+      addBuildWithTitle('EngineIoClientDotNet.net45');
     } else {
-      addBuildWithTitle('EngineIoClientDotNet_Mono');
+      addBuildWithTitle('EngineIoClientDotNet.mono');
     }
 
     grunt.log.writeln('tasks = %s', JSON.stringify(tasks));

@@ -1,7 +1,7 @@
 var
   ssl = true,
   express = require('express'),
-  config = require('../../grunt/config.json'),
+  config = require('./../grunt/config.json'),
   app = express(),
   fs = require('fs'),
   options = {
