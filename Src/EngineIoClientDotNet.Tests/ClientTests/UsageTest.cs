@@ -1,4 +1,6 @@
 ﻿//using log4net;
+
+using EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Client;
 using System;
 using Xunit;
@@ -12,7 +14,10 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void Usage1()
         {
-            
+            LogManager.SetupLogManager();
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            log.Info("Start");
+
 
             var options = CreateOptions();
             var socket = new Socket(options);
@@ -34,7 +39,10 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void Usage2()
         {
-            
+            LogManager.SetupLogManager();
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            log.Info("Start");
+
 
             //Receiving data
             var socket = new Socket("ws://localhost");
@@ -42,7 +50,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             {
                 socket.On(Socket.EVENT_MESSAGE, (data) =>
                 {
-                    var dataString = (string)data;
+                    var dataString = (string) data;
                     Console.WriteLine(dataString);
                     socket.Close();
                 });
@@ -52,6 +60,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             System.Threading.Thread.Sleep(TimeSpan.FromSeconds(2));
         }
 
-   
+
     }
 }

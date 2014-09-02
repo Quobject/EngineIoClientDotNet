@@ -1,4 +1,5 @@
-﻿using Quobject.EngineIoClientDotNet.Modules;
+﻿using EngineIoClientDotNet.Modules;
+using Quobject.EngineIoClientDotNet.Modules;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Xunit;
@@ -12,8 +13,12 @@ namespace Quobject.EngineIoClientDotNet_Tests.ModulesTests
         [Fact]
         public void Decode()
         {
+            LogManager.SetupLogManager();
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            log.Info("Start");
+
             // Single assignment
-            var queryObj = ParseQS.Decode("foo=bar");                        
+            var queryObj = ParseQS.Decode("foo=bar");
             Assert.Equal(queryObj["foo"], "bar");
 
             // Multiple assignments
@@ -30,17 +35,21 @@ namespace Quobject.EngineIoClientDotNet_Tests.ModulesTests
         [Fact]
         public void Encode()
         {
+            LogManager.SetupLogManager();
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            log.Info("Start");
+
             Dictionary<string, string> obj;
 
             obj = new Dictionary<string, string> {{"a", "b"}};
             var imObj = ImmutableDictionary.Create<string, string>().AddRange(obj);
             Assert.Equal(ParseQS.Encode(imObj), "a=b");
 
-            obj = new Dictionary<string, string> { { "a", "b" }, { "c", "d" } };
+            obj = new Dictionary<string, string> {{"a", "b"}, {"c", "d"}};
             imObj = ImmutableDictionary.Create<string, string>().AddRange(obj);
             Assert.Equal(ParseQS.Encode(imObj), "a=b&c=d");
 
-            obj = new Dictionary<string, string> { { "a", "b" }, { "c", "tobi rocks" } };
+            obj = new Dictionary<string, string> {{"a", "b"}, {"c", "tobi rocks"}};
             imObj = ImmutableDictionary.Create<string, string>().AddRange(obj);
             Assert.Equal(ParseQS.Encode(imObj), "a=b&c=tobi%20rocks");
 

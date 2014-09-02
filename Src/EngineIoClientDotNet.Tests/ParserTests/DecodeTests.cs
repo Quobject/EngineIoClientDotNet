@@ -1,4 +1,5 @@
-﻿using Quobject.EngineIoClientDotNet.Parser;
+﻿using EngineIoClientDotNet.Modules;
+using Quobject.EngineIoClientDotNet.Parser;
 using Xunit;
 
 namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
@@ -10,14 +11,22 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [Fact]
         public void DecodeBadFormat()
         {
+            LogManager.SetupLogManager();
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            log.Info("Start");
+
             Packet p = Parser.DecodePacket(":::");
-            Assert.Equal(Packet.ERROR,p.Type);
+            Assert.Equal(Packet.ERROR, p.Type);
             Assert.Equal(PARSER_ERROR, p.Data);
         }
 
         [Fact]
         public void DecodeInexistingTypes()
         {
+            LogManager.SetupLogManager();
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            log.Info("Start");
+
             Packet p = Parser.DecodePacket("94103");
             Assert.Equal(Packet.ERROR, p.Type);
             Assert.Equal(PARSER_ERROR, p.Data);
@@ -26,6 +35,10 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [Fact]
         public void DecodeInvalidUTF8()
         {
+            LogManager.SetupLogManager();
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            log.Info("Start");
+
             Packet p = Parser.DecodePacket("4\uffff");
             Assert.Equal(Packet.ERROR, p.Type);
             Assert.Equal(PARSER_ERROR, p.Data);
@@ -48,6 +61,10 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [Fact]
         public void EncodeAndDecodeEmptyPayloads()
         {
+            LogManager.SetupLogManager();
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            log.Info("Start");
+
             Packet.DecodePayload("1!", new DecodePayloadBadFormat_DecodeCallback());
             Packet.DecodePayload("", new DecodePayloadBadFormat_DecodeCallback());
             Packet.DecodePayload("))", new DecodePayloadBadFormat_DecodeCallback());
@@ -56,6 +73,10 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [Fact]
         public void DecodePayloadBadPacketFormat()
         {
+            LogManager.SetupLogManager();
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            log.Info("Start");
+
             Packet.DecodePayload("3:99", new DecodePayloadBadFormat_DecodeCallback());
             Packet.DecodePayload("1:aa", new DecodePayloadBadFormat_DecodeCallback());
             Packet.DecodePayload("1:a2:b", new DecodePayloadBadFormat_DecodeCallback());
@@ -64,10 +85,14 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [Fact]
         public void DecodePayloadInvalidUTF8()
         {
+            LogManager.SetupLogManager();
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            log.Info("Start");
+
             Packet.DecodePayload("2:4\uffff", new DecodePayloadBadFormat_DecodeCallback());
         }
 
- 
+
 
     }
 }

@@ -1,4 +1,5 @@
-﻿using Quobject.EngineIoClientDotNet.Modules;
+﻿using EngineIoClientDotNet.Modules;
+using Quobject.EngineIoClientDotNet.Modules;
 using System;
 using Xunit;
 
@@ -54,6 +55,10 @@ namespace Quobject.EngineIoClientDotNet_Tests.ModulesTests
         [Fact]
         public void EncodeAndDecode()
         {
+            LogManager.SetupLogManager();
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            log.Info("Start");
+
             foreach (var data in DATA)
             {
                 data.Test();
@@ -93,7 +98,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ModulesTests
             private void EncodingTest()
             {
                 var value = UTF8.Encode(Decoded);
-                Assert.Equal( Encoded, value );
+                Assert.Equal(Encoded, value);
             }
 
             private void DecodingTest()
@@ -104,28 +109,28 @@ namespace Quobject.EngineIoClientDotNet_Tests.ModulesTests
             private void ExceptionTest()
             {
                 Assert.Throws<UTF8Exception>(
-                delegate
-                {
-                    UTF8.Decode("\uFFFF");
-                });
+                    delegate
+                    {
+                        UTF8.Decode("\uFFFF");
+                    });
 
                 Assert.Throws<UTF8Exception>(
-                delegate
-                {
-                    UTF8.Decode("\xE9\x00\x00");
-                });
+                    delegate
+                    {
+                        UTF8.Decode("\xE9\x00\x00");
+                    });
 
                 Assert.Throws<UTF8Exception>(
-                delegate
-                {
-                    UTF8.Decode("\xC2\uFFFF");
-                });
+                    delegate
+                    {
+                        UTF8.Decode("\xC2\uFFFF");
+                    });
 
                 Assert.Throws<UTF8Exception>(
-                delegate
-                {
-                    UTF8.Decode("\xF0\x9D");
-                });
+                    delegate
+                    {
+                        UTF8.Decode("\xF0\x9D");
+                    });
 
             }
 

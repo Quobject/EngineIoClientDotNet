@@ -1,4 +1,5 @@
-﻿using Quobject.EngineIoClientDotNet.ComponentEmitter;
+﻿using EngineIoClientDotNet.Modules;
+using Quobject.EngineIoClientDotNet.ComponentEmitter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
             public TestListener1(List<object> calls)
             {
                 this._calls = calls;
-            }                  
+            }
 
             public void Call(params object[] args)
             {
@@ -43,7 +44,11 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
 
         [Fact]
         public void On()
-        {            
+        {
+            LogManager.SetupLogManager();
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            log.Info("Start");
+
             var emitter = new Emitter();
             var calls = new List<object>();
 
@@ -64,6 +69,10 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
         [Fact]
         public void Once()
         {
+            LogManager.SetupLogManager();
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            log.Info("Start");
+
             var emitter = new Emitter();
             var calls = new List<object>();
 
@@ -75,8 +84,8 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
             emitter.Emit("foo", 3);
             emitter.Emit("bar", 1);
 
-            var expected = new Object[] { "one", 1 };
-            Assert.Equal(expected, calls.ToArray() );
+            var expected = new Object[] {"one", 1};
+            Assert.Equal(expected, calls.ToArray());
         }
 
 
@@ -113,6 +122,10 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
         [Fact]
         public void Off()
         {
+            LogManager.SetupLogManager();
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            log.Info("Start");
+
             var emitter = new Emitter();
             var calls = new List<object>();
 
@@ -125,13 +138,17 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
 
             emitter.Emit("foo");
 
-            var expected = new Object[] { "one" };
+            var expected = new Object[] {"one"};
             Assert.Equal(expected, calls.ToArray());
         }
 
         [Fact]
         public void OffWithOnce()
         {
+            LogManager.SetupLogManager();
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            log.Info("Start");
+
             var emitter = new Emitter();
             var calls = new List<object>();
 
@@ -142,7 +159,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
 
             emitter.Emit("foo");
 
-            var expected = new Object[] { };
+            var expected = new Object[] {};
             Assert.Equal(expected, calls.ToArray());
         }
 
@@ -182,12 +199,16 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
         [Fact]
         public void OffWhenCalledfromEvent()
         {
+            LogManager.SetupLogManager();
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            log.Info("Start");
+
             var emitter = new Emitter();
             var called = new List<bool>() {false};
 
 
             var listener5 = new TestListener5(called);
-            var listener6 = new TestListener6(emitter,listener5);
+            var listener6 = new TestListener6(emitter, listener5);
             emitter.On("tobi", listener6);
 
             emitter.Once("tobi", listener5);
@@ -201,6 +222,10 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
         [Fact]
         public void OffEvent()
         {
+            LogManager.SetupLogManager();
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            log.Info("Start");
+
             var emitter = new Emitter();
             var calls = new List<object>();
 
@@ -216,7 +241,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
             emitter.Emit("foo");
             emitter.Emit("foo");
 
-            var expected = new Object[] { };
+            var expected = new Object[] {};
             Assert.Equal(expected, calls.ToArray());
         }
 
@@ -224,6 +249,10 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
         [Fact]
         public void OffAll()
         {
+            LogManager.SetupLogManager();
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            log.Info("Start");
+
             var emitter = new Emitter();
             var calls = new List<object>();
 
@@ -245,19 +274,23 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
             emitter.Emit("bar");
 
 
-            var expected = new Object[] { "one", "two" };
+            var expected = new Object[] {"one", "two"};
             Assert.Equal(expected, calls.ToArray());
         }
 
         [Fact]
         public void Listeners()
         {
+            LogManager.SetupLogManager();
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            log.Info("Start");
+
             var emitter = new Emitter();
             var calls = new List<object>();
 
             var listener3 = new TestListener3(calls);
             emitter.On("foo", listener3);
-            var expected = new IListener[] { listener3 };
+            var expected = new IListener[] {listener3};
             Assert.Equal(expected, emitter.Listeners("foo").ToArray());
         }
 
@@ -265,13 +298,17 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
         public void ListenersWithoutHandlers()
         {
             var emitter = new Emitter();
-            var expected = new IListener[] { };
+            var expected = new IListener[] {};
             Assert.Equal(expected, emitter.Listeners("foo").ToArray());
         }
 
         [Fact]
         public void HasListeners()
         {
+            LogManager.SetupLogManager();
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            log.Info("Start");
+
             var emitter = new Emitter();
             var calls = new List<object>();
             Assert.Equal(false, emitter.HasListeners("foo"));
@@ -284,7 +321,11 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
         [Fact]
         public void HasListenersWithoutHandlers()
         {
-            var emitter = new Emitter();            
+            LogManager.SetupLogManager();
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            log.Info("Start");
+
+            var emitter = new Emitter();
             Assert.Equal(false, emitter.HasListeners("foo"));
         }
 

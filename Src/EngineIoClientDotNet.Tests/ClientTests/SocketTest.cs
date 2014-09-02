@@ -16,24 +16,28 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void FilterUpgrades()
         {
-            
+            LogManager.SetupLogManager();
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            log.Info("Start");
+
             var options = CreateOptions();
             options.Transports = ImmutableList<string>.Empty.Add("polling");
-            
+
             socket = new Socket(options);
 
             var immutablelist = socket.FilterUpgrades(ImmutableList<string>.Empty.Add("polling").Add("websocket"));
 
             Assert.Equal("polling", immutablelist[0]);
-            Assert.Equal(1,immutablelist.Count);
+            Assert.Equal(1, immutablelist.Count);
         }
 
         [Fact]
         public void SocketClosing()
         {
-            
-
+            LogManager.SetupLogManager();
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            log.Info("Start");
+
             var closed = false;
             var error = false;
 
@@ -48,7 +52,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             });
             socket.On(Socket.EVENT_CLOSE, () =>
             {
-                log.Info("EVENT_CLOSE = " );
+                log.Info("EVENT_CLOSE = ");
                 closed = true;
 
             });

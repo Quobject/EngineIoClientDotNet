@@ -14,8 +14,8 @@ module.exports = function (grunt) {
   grunt.initConfig({      
     os: os,
     config: config,
-   // msbuild_configuration: 'Debug',
-    msbuild_configuration: 'Release',
+    msbuild_configuration: 'Debug',
+    //msbuild_configuration: 'Release',
     release_path:  './../Releases/<%= config.version %>/', 
     server_path: '../TestServer/',
     shell: {

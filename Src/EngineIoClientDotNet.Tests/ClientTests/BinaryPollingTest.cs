@@ -19,11 +19,10 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void ReceiveBinaryData()
         {
-            
-
+            LogManager.SetupLogManager();
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
-            log.Info("ReceiveBinaryData start");
-
+            log.Info("Start");
+            Trace.WriteLine("dddd");
             var events = new ConcurrentQueue<object>();
 
             var binaryData = new byte[5];
@@ -38,7 +37,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
 
             var socket = new Socket(options);
-            
+
             socket.On(Socket.EVENT_OPEN, () =>
             {
 
@@ -47,7 +46,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                 {
 
                     var data = d as string;
-                    log.Info(string.Format("EVENT_MESSAGE data ={0} d = {1} " , data,d));
+                    log.Info(string.Format("EVENT_MESSAGE data ={0} d = {1} ", data, d));
 
                     if (data == "hi")
                     {
@@ -59,7 +58,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                 socket.Send(binaryData);
                 //socket.Send("cash money €€€");
             });
-           
+
             socket.Open();
 
             log.Info("ReceiveBinaryData end");
@@ -67,30 +66,30 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             var binaryData2 = new byte[5];
             for (int i = 0; i < binaryData2.Length; i++)
             {
-                binaryData2[i] = (byte)(i+1);
+                binaryData2[i] = (byte) (i + 1);
             }
 
             object result;
             events.TryDequeue(out result);
-            Assert.Equal(binaryData, result);            
+            Assert.Equal(binaryData, result);
         }
 
 
         [Fact]
         public void ReceiveBinaryDataAndMultibyteUTF8String()
         {
-            
-
+            LogManager.SetupLogManager();
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
-            log.Info("ReceiveBinaryDataAndMultibyteUTF8String start");
-            Debug.Listeners.Add(new DefaultTraceListener());
-            Debug.WriteLine("ReceiveBinaryDataAndMultibyteUTF8String start");
+            log.Info("Start");
+            Trace.WriteLine("eeeee");
+
+
             var events = new ConcurrentQueue<object>();
 
             var binaryData = new byte[5];
             for (int i = 0; i < binaryData.Length; i++)
             {
-                binaryData[i] = (byte)i;
+                binaryData[i] = (byte) i;
             }
             const string stringData = "cash money €€€";
 
@@ -117,29 +116,27 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                     events.Enqueue(d);
                     if (events.Count > 1)
                     {
-                        socket.Close();                        
+                        socket.Close();
                     }
                 });
                 socket.Send(binaryData);
-                socket.Send(stringData);           
+                socket.Send(stringData);
             });
 
             socket.Open();
-            
-            log.Info("ReceiveBinaryDataAndMultibyteUTF8String end");
 
             var binaryData2 = new byte[5];
             for (int i = 0; i < binaryData2.Length; i++)
             {
-                binaryData2[i] = (byte)(i + 1);
+                binaryData2[i] = (byte) (i + 1);
             }
 
             object result;
             events.TryDequeue(out result);
             Assert.Equal(binaryData, result);
             events.TryDequeue(out result);
-            Assert.Equal(stringData, (string)result);
-            socket.Close();                        
+            Assert.Equal(stringData, (string) result);
+            socket.Close();
 
         }
 

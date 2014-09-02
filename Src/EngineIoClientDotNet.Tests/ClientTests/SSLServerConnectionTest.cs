@@ -16,9 +16,10 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public async Task OpenAndClose()
         {
-            
-
+            LogManager.SetupLogManager();
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            log.Info("Start");
+
             var events = new ConcurrentQueue<string>();
 
             var socket = new Socket(CreateOptionsSecure());
@@ -49,9 +50,10 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void Messages()
         {
-            
-
+            LogManager.SetupLogManager();
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            log.Info("Start");
+
             var events = new ConcurrentQueue<string>();
 
             var socket = new Socket(CreateOptionsSecure());
@@ -62,7 +64,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             });
             socket.On(Socket.EVENT_MESSAGE, (d) =>
             {
-                var data = (string)d;
+                var data = (string) d;
                 log.Info("EVENT_MESSAGE data = " + data);
                 events.Enqueue(data);
                 if (events.Count > 1)
@@ -83,9 +85,10 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void Handshake()
         {
-            
-
+            LogManager.SetupLogManager();
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            log.Info("Start");
+
             HandshakeData handshake_data = null;
 
             var socket = new Socket(CreateOptionsSecure());
@@ -114,6 +117,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             public void Call(params object[] args)
             {
+                LogManager.SetupLogManager();
                 var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
                 log.Info(string.Format("open args[0]={0} args.Length={1}", args[0], args.Length));
                 HandshakeData = args[0] as HandshakeData;
@@ -123,8 +127,10 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void Handshake2()
         {
+            LogManager.SetupLogManager();
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            log.Info("Start");
 
-            
 
             var socket = new Socket(CreateOptionsSecure());
             var testListener = new SSLServerConnectionTest.TestHandshakeListener();
@@ -144,9 +150,10 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public async Task Upgrade()
         {
-            
-
+            LogManager.SetupLogManager();
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            log.Info("Start");
+
             var events = new ConcurrentQueue<object>();
 
             var socket = new Socket(CreateOptionsSecure());
@@ -183,9 +190,9 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public async Task RememberWebsocket()
         {
-            
-
+            LogManager.SetupLogManager();
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            log.Info("Start");
 
             var socket1 = new Socket(CreateOptionsSecure());
             string socket1TransportName = null;
@@ -200,7 +207,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             socket1.On(Socket.EVENT_UPGRADE, (data) =>
             {
                 log.Info(Socket.EVENT_UPGRADE + string.Format(" data = {0}", data));
-                var transport = (Transport)data;
+                var transport = (Transport) data;
                 socket1.Close();
                 if (WebSocket.NAME == transport.Name)
                 {
@@ -224,9 +231,9 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void NotRememberWebsocket()
         {
-            
-
+            LogManager.SetupLogManager();
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            log.Info("Start");
 
             var socket1 = new Socket(CreateOptionsSecure());
             string socket1TransportName = null;
@@ -241,7 +248,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             socket1.On(Socket.EVENT_UPGRADE, (data) =>
             {
                 log.Info(Socket.EVENT_UPGRADE + string.Format(" data = {0}", data));
-                var transport = (Transport)data;
+                var transport = (Transport) data;
                 if (WebSocket.NAME == transport.Name)
                 {
                     socket1.Close();

@@ -13,18 +13,21 @@ namespace EngineIoClientDotNet.Modules
     {
         private const string myFileName = "XunitTrace.txt";
         private string MyType;
-        private static readonly TextWriterTraceListener myTextListener = null;
+        private static TextWriterTraceListener myTextListener = null;
         private static readonly LogManager EmptyLogger = new LogManager(null);
 
         #region Statics
-#if DEBUG
-        static LogManager()
+
+        public static void SetupLogManager()
         {
-            var myOutputWriter = new StreamWriter(myFileName, true);
-            myTextListener = new TextWriterTraceListener(myOutputWriter);
+            if (myTextListener == null)
+            {
+                var myOutputWriter = new StreamWriter(myFileName, true);
+                myTextListener = new TextWriterTraceListener(myOutputWriter);
+                
+            }
             Trace.Listeners.Add(myTextListener);
         }
-#endif
 
         public static LogManager GetLogger(string type)
         {
@@ -58,7 +61,7 @@ namespace EngineIoClientDotNet.Modules
         [Conditional("DEBUG")]
         public void Info(string msg)
         {
-            Trace.WriteLine(string.Format("{0} [{3}] {1} - {2}", DateTime.Now.ToString("yyyy-MM-dd HH:MM:ss fff"), MyType, msg, System.Threading.Thread.CurrentThread.ManagedThreadId));
+            Trace.WriteLine(string.Format("{0} [{3}] {1} - {2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), MyType, msg, System.Threading.Thread.CurrentThread.ManagedThreadId));
             myTextListener.Flush();
         }
 

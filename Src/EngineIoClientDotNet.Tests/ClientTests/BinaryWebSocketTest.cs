@@ -15,13 +15,14 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public async Task ReceiveBinaryData()
         {
-            
-
+            LogManager.SetupLogManager();
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            log.Info("Start");
+
             var events = new ConcurrentQueue<object>();
 
             var binaryData = new byte[5];
-            for (int i = 0; i < binaryData.Length ; i++)
+            for (int i = 0; i < binaryData.Length; i++)
             {
                 binaryData[i] = (byte) (i + 0);
             }
@@ -30,10 +31,10 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             var options = CreateOptions();
 
             var socket = new Socket(options);
-            
+
             socket.On(Socket.EVENT_OPEN, () =>
             {
-                log.Info(Socket.EVENT_OPEN); 
+                log.Info(Socket.EVENT_OPEN);
                 socket.On(Socket.EVENT_UPGRADE, () =>
                 {
 
@@ -52,7 +53,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                 {
                     return;
                 }
-                events.Enqueue(d);                
+                events.Enqueue(d);
             });
 
             socket.Open();
@@ -64,7 +65,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             var binaryData2 = new byte[5];
             for (int i = 0; i < binaryData2.Length; i++)
             {
-                binaryData2[i] = (byte)(i + 1);
+                binaryData2[i] = (byte) (i + 1);
             }
 
             object result;
@@ -77,15 +78,17 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public async Task ReceiveBinaryDataAndMultibyteUTF8String()
         {
-            
-
+            LogManager.SetupLogManager();
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            log.Info("Start");
+
+
             var events = new ConcurrentQueue<object>();
 
             var binaryData = new byte[5];
             for (int i = 0; i < binaryData.Length; i++)
             {
-                binaryData[i] = (byte)i;
+                binaryData[i] = (byte) i;
             }
             const string stringData = "cash money €€€";
 
@@ -99,9 +102,9 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             {
 
                 log.Info("EVENT_OPEN");
-             
+
                 socket.Send(binaryData);
-                socket.Send(stringData);           
+                socket.Send(stringData);
 
             });
 
@@ -129,14 +132,14 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             var binaryData2 = new byte[5];
             for (int i = 0; i < binaryData2.Length; i++)
             {
-                binaryData2[i] = (byte)(i + 1);
+                binaryData2[i] = (byte) (i + 1);
             }
 
             object result;
             events.TryDequeue(out result);
             Assert.Equal(binaryData, result);
             events.TryDequeue(out result);
-            Assert.Equal(stringData, (string)result);
+            Assert.Equal(stringData, (string) result);
             await Task.Delay(1000);
             log.Info("ReceiveBinaryDataAndMultibyteUTF8String end");
         }
