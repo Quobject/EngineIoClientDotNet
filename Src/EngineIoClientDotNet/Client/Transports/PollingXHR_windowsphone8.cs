@@ -144,7 +144,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             sendXhr = Request();
             sendXhr.On(EVENT_DATA, new DoPollEventDataListener(this));
             sendXhr.On(EVENT_ERROR, new DoPollEventErrorListener(this));
-            sendXhr.Create();
+            sendXhr.Create().Wait();
         }
 
         private class DoPollEventDataListener : IListener
@@ -380,7 +380,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             private void OnData(byte[] data)
             {
                 var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
-                log.Info("OnData byte[] =" + System.Text.UTF8Encoding.UTF8.GetString(data));
+                log.Info("OnData byte[] =" + Parser.Packet.ByteArrayToString(data));
                 this.Emit(EVENT_DATA, data);
                 this.OnSuccess();
             }

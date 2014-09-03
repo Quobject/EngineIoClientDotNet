@@ -1,11 +1,11 @@
-﻿using Newtonsoft.Json;
-using Quobject.EngineIoClientDotNet.Client;
+﻿using Quobject.EngineIoClientDotNet.Client;
 using System;
-using System.IO;
+
 
 
 namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 {
+    
     public class Connection
     {
         public static readonly int TIMEOUT = 300000;
@@ -47,10 +47,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
         public static ConfigBase Load()
         {
-            var configString = File.ReadAllText("./../../../../grunt/config.json");
-            //Console.WriteLine("configString = {0}", configString);
-
-            var config = JsonConvert.DeserializeObject<ConfigBase>(configString);
+            var config = new ConfigBase {version = "0.1", port = 3000, ssl_port = 3001};
             return config;
         }
     }

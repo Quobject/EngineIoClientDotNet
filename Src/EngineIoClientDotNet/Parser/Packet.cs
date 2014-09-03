@@ -1,4 +1,5 @@
-﻿using Quobject.EngineIoClientDotNet.Modules;
+﻿using System.Linq;
+using Quobject.EngineIoClientDotNet.Modules;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -356,7 +357,9 @@ namespace Quobject.EngineIoClientDotNet.Parser
 
         internal static string ByteArrayToString(byte[] bytes)
         {
-            return Encoding.ASCII.GetString(bytes);
+            //return Encoding.ASCII.GetString(bytes);
+            //http://stackoverflow.com/questions/7750850/encoding-ascii-getstring-in-windows-phone-platform
+            return string.Concat(bytes.Select(b => b <= 0x7f ? (char)b : '?'));
         }
 
         private class EncodePayloadCallback : IEncodeCallback

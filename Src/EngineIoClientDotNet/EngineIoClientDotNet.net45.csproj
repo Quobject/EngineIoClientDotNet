@@ -57,6 +57,7 @@
     <Compile Include="Modules\Global.cs" />
     <Compile Include="Modules\LogManager.cs" />
     <Compile Include="Modules\ParseQS.cs" />
+    <Compile Include="Modules\ServerCertificate.cs" />
     <Compile Include="Modules\UTF8.cs" />
     <Compile Include="Modules\UTF8Exception.cs" />
     <Compile Include="Parser\Buffer.cs" />

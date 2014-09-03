@@ -87,14 +87,15 @@
     <Compile Include="Client\HandshakeData.cs" />
     <Compile Include="Client\Socket.cs" />
     <Compile Include="Client\Transport.cs" />
-    <Compile Include="Client\Transports\WebSocket_windowsphone8.cs" />
     <Compile Include="Client\Transports\PollingXHR_windowsphone8.cs" />
     <Compile Include="Client\Transports\HttpURLConnection.cs" />
     <Compile Include="Client\Transports\Polling.cs" />
+    <Compile Include="Client\Transports\WebSocket.cs" />
     <Compile Include="ComponentEmitter\Emitter.cs" />
     <Compile Include="Modules\LogManager_windowsphone8.cs" />
     <Compile Include="Modules\Global_windowsphone8.cs" />
     <Compile Include="Modules\ParseQS.cs" />
+    <Compile Include="Modules\ServerCertificate_windowsphone8.cs" />
     <Compile Include="Modules\UTF8.cs" />
     <Compile Include="Modules\UTF8Exception.cs" />
     <Compile Include="Parser\Buffer.cs" />

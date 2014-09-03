@@ -9,7 +9,7 @@ using Quobject.EngineIoClientDotNet.Thread;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Net;
+
 
 namespace Quobject.EngineIoClientDotNet.Client
 {
@@ -137,7 +137,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             RememberUpgrade = options.RememberUpgrade;
             if (options.IgnoreServerCertificateValidation)
             {
-                ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
+                ServerCertificate.IgnoreServerCertificateValidation();
             }
 
         }
