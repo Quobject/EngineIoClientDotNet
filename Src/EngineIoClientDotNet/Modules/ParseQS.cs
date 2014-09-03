@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Text;
 
 namespace Quobject.EngineIoClientDotNet.Modules
@@ -20,7 +21,7 @@ namespace Quobject.EngineIoClientDotNet.Modules
         public static string Encode(ImmutableDictionary<string, string> obj)
         {
             var sb = new StringBuilder();
-            foreach (var key in obj.Keys)
+            foreach (var key in obj.Keys.OrderBy(x=>x))
             {
                 if (sb.Length > 0)
                 {

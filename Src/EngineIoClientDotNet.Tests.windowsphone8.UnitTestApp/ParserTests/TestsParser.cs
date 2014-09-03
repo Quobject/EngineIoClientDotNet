@@ -203,7 +203,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
             {
                 var dataString = data as string;
                 var r = new Regex(@"[0-9]", RegexOptions.IgnoreCase);
-                Assert.IsNull(r.Match(dataString).Success);
+                Assert.IsTrue(r.Match(dataString).Success);
             }
 
             public Packet GetPacket()
@@ -262,7 +262,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
                 public bool Call(Packet packet, int index, int total)
                 {
                     bool isLast = index + 1 == total;
-                    Assert.IsNull(isLast);
+                    Assert.IsTrue(isLast);
                     return true;
                 }
             }
@@ -363,11 +363,13 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
                     var isLast = index + 1 == total;
                     if (!isLast)
                     {
-                        Assert.AreEqual(FirstBuffer(), packet.Data);
+                        //Assert.AreEqual(FirstBuffer(), packet.Data);
+                        CollectionAssert.AreEqual(FirstBuffer(), (byte[]) packet.Data);
                     }
                     else
                     {
-                        Assert.AreEqual(SecondBuffer(), packet.Data);
+                        //Assert.AreEqual(SecondBuffer(), packet.Data);
+                        CollectionAssert.AreEqual(SecondBuffer(), (byte[])packet.Data);
                     }
                     return true;
                 }
@@ -438,7 +440,8 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
                     if (index == 0)
                     {
                         Assert.AreEqual(Packet.MESSAGE, packet.Type);
-                        Assert.AreEqual(ThirdBuffer(), packet.Data);
+                        //Assert.AreEqual(ThirdBuffer(), packet.Data);
+                        CollectionAssert.AreEqual(ThirdBuffer(), (byte[])packet.Data);
                     }
                     else if (index == 1)
                     {

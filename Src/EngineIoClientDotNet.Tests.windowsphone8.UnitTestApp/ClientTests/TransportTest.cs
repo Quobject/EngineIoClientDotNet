@@ -130,7 +130,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             var test = polling.Uri();
             log.Info(test);
             Match m = r.Match(test);
-            Assert.IsNull(m.Success);
+            Assert.IsTrue(m.Success);
         }
 
 
@@ -193,7 +193,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             var test = ws.Uri();
             log.Info(test);
             Match m = r.Match(test);
-            Assert.IsNull(m.Success);
+            Assert.IsTrue(m.Success);
         }
 
     }
