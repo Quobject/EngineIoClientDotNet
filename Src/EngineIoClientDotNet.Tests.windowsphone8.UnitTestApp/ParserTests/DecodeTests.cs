@@ -53,7 +53,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
             public bool Call(Packet packet, int index, int total)
             {
                 var isLast = index + 1 == total;
-                Assert.True(isLast);
+                Assert.IsTrue(isLast);
                 Assert.AreEqual(Packet.ERROR, packet.Type);
                 Assert.AreEqual(PARSER_ERROR, packet.Data);
                 return true;

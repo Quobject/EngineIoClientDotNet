@@ -109,26 +109,26 @@ namespace Quobject.EngineIoClientDotNet_Tests.ModulesTests
             }
 
             private void ExceptionTest()
-            {
-                Assert.Throws<UTF8Exception>(
+            {                
+                Assert.ThrowsException<UTF8Exception>(
                     delegate
                     {
                         UTF8.Decode("\uFFFF");
                     });
 
-                Assert.Throws<UTF8Exception>(
+                Assert.ThrowsException<UTF8Exception>(
                     delegate
                     {
                         UTF8.Decode("\xE9\x00\x00");
                     });
 
-                Assert.Throws<UTF8Exception>(
+                Assert.ThrowsException<UTF8Exception>(
                     delegate
                     {
                         UTF8.Decode("\xC2\uFFFF");
                     });
 
-                Assert.Throws<UTF8Exception>(
+                Assert.ThrowsException<UTF8Exception>(
                     delegate
                     {
                         UTF8.Decode("\xF0\x9D");

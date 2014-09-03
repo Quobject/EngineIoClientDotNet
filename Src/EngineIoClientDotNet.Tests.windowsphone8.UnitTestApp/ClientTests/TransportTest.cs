@@ -27,7 +27,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             socket.Open();
             System.Threading.Thread.Sleep(TimeSpan.FromSeconds(3));
-            Assert.NotNull(socket.Transport);
+            Assert.IsNotNull(socket.Transport);
 
             socket.Close();
         }
@@ -46,7 +46,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             options.Query = new Dictionary<string, string> {{"sid", "test"}};
             options.TimestampRequests = false;
             var polling = new Polling(options);
-            Assert.Contains("http://localhost/engine.io?sid=test&b64=1", polling.Uri());
+            Assert.IsTrue(polling.Uri().StartsWith("http://localhost/engine.io?sid=test&b64=1"));
         }
 
         [TestMethod]
@@ -65,7 +65,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             options.TimestampRequests = false;
             options.Port = 80;
             var polling = new Polling(options);
-            Assert.Contains("http://localhost/engine.io?sid=test&b64=1", polling.Uri());
+            Assert.IsTrue(polling.Uri().StartsWith("http://localhost/engine.io?sid=test&b64=1"));
         }
 
         [TestMethod]
@@ -83,8 +83,8 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             options.Query = new Dictionary<string, string> {{"sid", "test"}};
             options.TimestampRequests = false;
             options.Port = 3000;
-            var polling = new Polling(options);
-            Assert.Contains("http://localhost:3000/engine.io?sid=test&b64=1", polling.Uri());
+            var polling = new Polling(options);            
+            Assert.IsTrue(polling.Uri().StartsWith("http://localhost:3000/engine.io?sid=test&b64=1"));
         }
 
 
@@ -103,7 +103,9 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             options.TimestampRequests = false;
             options.Port = 443;
             var polling = new Polling(options);
-            Assert.Contains("https://localhost/engine.io?sid=test&b64=1", polling.Uri());
+            //Assert.Contains("https://localhost/engine.io?sid=test&b64=1", polling.Uri());
+            Assert.IsTrue(polling.Uri().StartsWith("https://localhost/engine.io?sid=test&b64=1"));
+
         }
 
 
@@ -128,7 +130,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             var test = polling.Uri();
             log.Info(test);
             Match m = r.Match(test);
-            Assert.True(m.Success);
+            Assert.IsNull(m.Success);
         }
 
 
@@ -146,7 +148,8 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             options.Query = new Dictionary<string, string> {{"transport", "websocket"}};
             options.TimestampRequests = false;
             var ws = new WebSocket(options);
-            Assert.Contains("ws://test/engine.io?transport=websocket", ws.Uri());
+            //Assert.Contains("ws://test/engine.io?transport=websocket", ws.Uri());
+            Assert.IsTrue(ws.Uri().StartsWith("ws://test/engine.io?transport=websocket"));
         }
 
         [TestMethod]
@@ -163,7 +166,8 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             options.Query = new Dictionary<string, string> {{"transport", "websocket"}};
             options.TimestampRequests = false;
             var ws = new WebSocket(options);
-            Assert.Contains("wss://test/engine.io?transport=websocket", ws.Uri());
+            //Assert.Contains("wss://test/engine.io?transport=websocket", ws.Uri());
+            Assert.IsTrue(ws.Uri().StartsWith("wss://test/engine.io?transport=websocket"));
         }
 
 
@@ -189,7 +193,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             var test = ws.Uri();
             log.Info(test);
             Match m = r.Match(test);
-            Assert.True(m.Success);
+            Assert.IsNull(m.Success);
         }
 
     }

@@ -1,5 +1,6 @@
 ﻿//using log4net;
 
+using System.Collections.Generic;
 using EngineIoClientDotNet.Modules;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Quobject.EngineIoClientDotNet.Client;
@@ -21,7 +22,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
-            var events = new ConcurrentQueue<object>();
+            var events = new Queue<object>();
 
             var binaryData = new byte[5];
             for (int i = 0; i < binaryData.Length; i++)
@@ -70,8 +71,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                 binaryData2[i] = (byte) (i + 1);
             }
 
-            object result;
-            events.TryDequeue(out result);
+            object result = events.Dequeue();
             Assert.AreEqual(binaryData, result);
             socket.Close();
         }
@@ -85,7 +85,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             log.Info("Start");
 
 
-            var events = new ConcurrentQueue<object>();
+            var events = new Queue<object>();
 
             var binaryData = new byte[5];
             for (int i = 0; i < binaryData.Length; i++)
@@ -138,9 +138,9 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             }
 
             object result;
-            events.TryDequeue(out result);
+            result = events.Dequeue();
             Assert.AreEqual(binaryData, result);
-            events.TryDequeue(out result);
+            result = events.Dequeue();
             Assert.AreEqual(stringData, (string) result);
             await Task.Delay(1000);
             log.Info("ReceiveBinaryDataAndMultibyteUTF8String end");

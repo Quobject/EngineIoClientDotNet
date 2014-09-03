@@ -53,7 +53,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         {
             public void Call(object data)
             {
-                Assert.IsType<string>(data);
+                Assert.IsInstanceOfType(data, typeof(string));
             }
 
             public Packet GetPacket()
@@ -67,7 +67,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         {
             public void Call(object data)
             {
-                Assert.IsType<Packet>(Parser.DecodePacket((string) data));
+                Assert.IsInstanceOfType(Parser.DecodePacket((string)data), typeof(Packet));
             }
 
             public Packet GetPacket()
@@ -83,7 +83,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
             {
                 Packet p = Parser.DecodePacket((string) data);
                 Assert.AreEqual(Packet.MESSAGE, p.Type);
-                Assert.Null(p.Data);
+                Assert.IsNull(p.Data);
             }
 
             public Packet GetPacket()
@@ -203,7 +203,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
             {
                 var dataString = data as string;
                 var r = new Regex(@"[0-9]", RegexOptions.IgnoreCase);
-                Assert.True(r.Match(dataString).Success);
+                Assert.IsNull(r.Match(dataString).Success);
             }
 
             public Packet GetPacket()
@@ -232,11 +232,8 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         {
             public void Call(object data)
             {
-                Assert.IsType<byte[]>(data);
+                Assert.IsInstanceOfType(data, typeof(byte[]));
             }
-
-
-
         }
 
         [TestMethod]
@@ -265,7 +262,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
                 public bool Call(Packet packet, int index, int total)
                 {
                     bool isLast = index + 1 == total;
-                    Assert.True(isLast);
+                    Assert.IsNull(isLast);
                     return true;
                 }
             }
@@ -330,7 +327,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
                 {
                     Assert.AreEqual(Packet.OPEN, packet.Type);
                     var isLast = index + 2 == total;
-                    Assert.True(isLast);
+                    Assert.IsNull(isLast);
                     return true;
                 }
             }

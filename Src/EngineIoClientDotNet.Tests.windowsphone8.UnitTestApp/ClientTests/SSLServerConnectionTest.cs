@@ -1,5 +1,6 @@
 ﻿//using log4net;
 
+using System.Collections.Generic;
 using EngineIoClientDotNet.Modules;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Quobject.EngineIoClientDotNet.Client;
@@ -22,7 +23,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
-            var events = new ConcurrentQueue<string>();
+            var events = new Queue<string>();
 
             var socket = new Socket(CreateOptionsSecure());
             socket.On(Socket.EVENT_OPEN, () =>
@@ -39,10 +40,9 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             });
             socket.Open();
 
-            string result;
-            events.TryDequeue(out result);
+            string result = events.Dequeue();
             Assert.AreEqual(Socket.EVENT_OPEN, result);
-            events.TryDequeue(out result);
+            result = events.Dequeue();
             Assert.AreEqual(Socket.EVENT_CLOSE, result);
             await Task.Delay(1);
             socket.Close();
@@ -56,7 +56,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
-            var events = new ConcurrentQueue<string>();
+            var events = new Queue<string>();
 
             var socket = new Socket(CreateOptionsSecure());
             socket.On(Socket.EVENT_OPEN, () =>
@@ -78,9 +78,9 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
 
             string result;
-            events.TryDequeue(out result);
+            result = events.Dequeue();
             Assert.AreEqual("hi", result);
-            events.TryDequeue(out result);
+            result = events.Dequeue();
             Assert.AreEqual("hello", result);
         }
 
@@ -105,11 +105,11 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             System.Threading.Thread.Sleep(TimeSpan.FromSeconds(5));
             socket.Close();
 
-            Assert.NotNull(handshake_data);
-            Assert.NotNull(handshake_data.Upgrades);
-            Assert.True(handshake_data.Upgrades.Count > 0);
-            Assert.True(handshake_data.PingInterval > 0);
-            Assert.True(handshake_data.PingTimeout > 0);
+            Assert.IsNotNull(handshake_data);
+            Assert.IsNotNull(handshake_data.Upgrades);
+            Assert.IsNull(handshake_data.Upgrades.Count > 0);
+            Assert.IsNull(handshake_data.PingInterval > 0);
+            Assert.IsNull(handshake_data.PingTimeout > 0);
         }
 
 
@@ -141,11 +141,11 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             System.Threading.Thread.Sleep(TimeSpan.FromSeconds(4));
             socket.Close();
 
-            Assert.NotNull(testListener.HandshakeData);
-            Assert.NotNull(testListener.HandshakeData.Upgrades);
-            Assert.True(testListener.HandshakeData.Upgrades.Count > 0);
-            Assert.True(testListener.HandshakeData.PingInterval > 0);
-            Assert.True(testListener.HandshakeData.PingTimeout > 0);
+            Assert.IsNotNull(testListener.HandshakeData);
+            Assert.IsNotNull(testListener.HandshakeData.Upgrades);
+            Assert.IsNull(testListener.HandshakeData.Upgrades.Count > 0);
+            Assert.IsNull(testListener.HandshakeData.PingInterval > 0);
+            Assert.IsNull(testListener.HandshakeData.PingTimeout > 0);
         }
 
 
@@ -156,7 +156,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
-            var events = new ConcurrentQueue<object>();
+            var events = new Queue<object>();
 
             var socket = new Socket(CreateOptionsSecure());
 
@@ -176,13 +176,13 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
 
             object test = null;
-            events.TryDequeue(out test);
-            Assert.NotNull(test);
-            Assert.IsAssignableFrom<Transport>(test);
+            test = events.Dequeue();
+            Assert.IsNotNull(test);
+            //Assert.IsAssignableFrom<Transport>(test);
 
-            events.TryDequeue(out test);
-            Assert.NotNull(test);
-            Assert.IsAssignableFrom<Transport>(test);
+            test = events.Dequeue();
+            Assert.IsNotNull(test);
+            //Assert.IsAssignableFrom<Transport>(test);
             await Task.Delay(3000);
             socket.Close();
         }

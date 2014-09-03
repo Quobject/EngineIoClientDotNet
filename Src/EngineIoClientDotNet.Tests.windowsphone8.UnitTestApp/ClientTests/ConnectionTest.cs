@@ -175,7 +175,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             });
 
             socket.Open();
-            Assert.True(SendMessage == this.Message);
+            Assert.IsNull(SendMessage == this.Message);
 
         }
 
@@ -204,7 +204,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             });
             socket.Close();
             log.Info("NotSendPacketsIfSocketCloses end noPacket = " + noPacket);
-            Assert.True(noPacket);
+            Assert.IsNull(noPacket);
         }
 
 
