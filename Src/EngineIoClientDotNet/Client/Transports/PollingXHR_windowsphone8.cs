@@ -1,5 +1,7 @@
 ﻿//using log4net;
 
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
@@ -15,6 +17,8 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
     public class PollingXHR : Polling
     {
         private XHRRequest sendXhr;
+        public static ManualResetEvent allDone = new ManualResetEvent(false);
+        const int BUFFER_SIZE = 1024;
 
         public PollingXHR(Options options) : base(options)
         {
@@ -97,7 +101,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             sendXhr = Request(opts);
             sendXhr.On(EVENT_SUCCESS, new SendEventSuccessListener(action));
             sendXhr.On(EVENT_ERROR, new SendEventErrorListener(this));
-            sendXhr.Create();
+            sendXhr.Create().Wait();
         }
 
         private class SendEventErrorListener : IListener
@@ -184,12 +188,33 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
         }
 
 
+        //http://msdn.microsoft.com/en-us/library/windows/apps/system.net.httpwebrequest.begingetresponse(v=vs.105).aspx
+        public class RequestState
+        {
+            // This class stores the State of the request.
+            const int BUFFER_SIZE = 1024;
+            public StringBuilder requestData;
+            public byte[] BufferRead;
+            public HttpWebRequest request;
+            public HttpWebResponse response;
+            public Stream streamResponse;
+
+            public RequestState()
+            {
+                BufferRead = new byte[BUFFER_SIZE];
+                requestData = new StringBuilder("");
+                request = null;
+                streamResponse = null;
+            }
+        }
+
+
         public class XHRRequest : Emitter
         {
             private string Method;
             private string Uri;
             private byte[] Data;
-            private HttpWebRequest Xhr;
+            private HttpWebRequest myHttpWebRequest1;
 
             public XHRRequest(RequestOptions options)
             {
@@ -205,8 +230,13 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 try
                 {
                     log.Info(string.Format("xhr open {0}: {1}", Method, Uri));
-                    Xhr = (HttpWebRequest) WebRequest.Create(Uri);
-                    Xhr.Method = Method;
+                    myHttpWebRequest1 = (HttpWebRequest)WebRequest.Create(Uri);
+                    myHttpWebRequest1.Method = Method;
+
+                    if (Method == "POST")
+                    {
+                        myHttpWebRequest1.ContentType = "application/octet-stream";
+                    }                 
                 }
                 catch (Exception e)
                 {
@@ -216,21 +246,17 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 }
 
 
-                if (Method == "POST")
-                {
-                    Xhr.ContentType = "application/octet-stream";
-                }
 
                 try
                 {
                     if (Data != null)
                     {
-                        Xhr.ContentLength = Data.Length;
+                        myHttpWebRequest1.ContentLength = Data.Length;
                         //http://stackoverflow.com/questions/14344029/system-net-httpwebrequest-does-not-contain-a-definition-for-getrequeststream
                         using (
                             var requestStream =
                                 await
-                                    Task.Factory.FromAsync<Stream>(Xhr.BeginGetRequestStream, Xhr.EndGetRequestStream,
+                                    Task.Factory.FromAsync<Stream>(myHttpWebRequest1.BeginGetRequestStream, myHttpWebRequest1.EndGetRequestStream,
                                         null))
                         {
                             requestStream.Write(Data, 0, Data.Length);
@@ -239,8 +265,21 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
                     }
 
-                    Xhr.BeginGetResponse(new AsyncCallback(FinishWebRequest), null);
+                    //myHttpWebRequest1.BeginGetResponse(new AsyncCallback(FinishWebRequest), null);
 
+                    // Create an instance of the RequestState and assign the previous myHttpWebRequest1
+                    // object to it's request field.  
+                    var myRequestState = new RequestState();
+                    myRequestState.request = myHttpWebRequest1;
+
+                    // Start the asynchronous request.
+                    IAsyncResult result =
+                    (IAsyncResult)myHttpWebRequest1.BeginGetResponse(new AsyncCallback(RespCallback), myRequestState);
+
+                    allDone.WaitOne();
+
+                    // Release the HttpWebResponse resource.
+                    myRequestState.response.Close();
 
                 }
                 catch (System.IO.IOException e)
@@ -261,50 +300,68 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             }
 
-            private void FinishWebRequest(IAsyncResult res)
+            private void RespCallback(IAsyncResult asynchronousResult)
             {
                 var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
-
                 log.Info("start");
 
-                var responseHeaders = new Dictionary<string, string>();
-                for (int i = 0; i < res.Headers.Count; i++)
+                try
                 {
-                    responseHeaders.Add(res.Headers.Keys[i], res.Headers[i]);
+                    // State of request is asynchronous.
+                    RequestState myRequestState = (RequestState)asynchronousResult.AsyncState;
+                    HttpWebRequest myHttpWebRequest2 = myRequestState.request;
+                    myRequestState.response = (HttpWebResponse)myHttpWebRequest2.EndGetResponse(asynchronousResult);
+
+                    // Read the response into a Stream object.
+                    Stream responseStream = myRequestState.response.GetResponseStream();
+                    myRequestState.streamResponse = responseStream;
+
+                    // Begin the Reading of the contents of the HTML page and print it to the console.
+                    IAsyncResult asynchronousInputRead = responseStream.BeginRead(myRequestState.BufferRead, 0, BUFFER_SIZE, new AsyncCallback(ReadCallBack), myRequestState);
                 }
-
-                var contentType = Xhr.Headers["Content-Type"];
-               
-
-
-                using (var resStream = res.GetResponseStream())
+                catch (WebException e)
                 {
-                    Debug.Assert(resStream != null, "resStream != null");
-                    if (contentType.Equals("application/octet-stream",
-                        StringComparison.OrdinalIgnoreCase))
-                    {
-                        var buffer = new byte[16*1024];
-                        using (var ms = new MemoryStream())
-                        {
-                            int read;
-                            while ((read = resStream.Read(buffer, 0, buffer.Length)) > 0)
-                            {
-                                ms.Write(buffer, 0, read);
-                            }
-                            var a = ms.ToArray();
-                            OnData(a);
-                        }
-                    }
-                    else
-                    {
-                        using (var sr = new StreamReader(resStream))
-                        {
-                            OnData(sr.ReadToEnd());
-                        }
-                    }
+                    // Need to handle the exception
+                    // ...
+                    log.Error("",e);
                 }
             }
 
+            private void ReadCallBack(IAsyncResult asyncResult)
+            {
+                try
+                {
+                    RequestState myRequestState = (RequestState)asyncResult.AsyncState;
+                    Stream responseStream = myRequestState.streamResponse;
+                    int read = responseStream.EndRead(asyncResult);
+
+                    // Read the HTML page and then do something with it
+                    if (read > 0)
+                    {
+                        myRequestState.requestData.Append(Encoding.UTF8.GetString(myRequestState.BufferRead, 0, read));
+                        IAsyncResult asynchronousResult = responseStream.BeginRead(myRequestState.BufferRead, 0, BUFFER_SIZE, new AsyncCallback(ReadCallBack), myRequestState);
+                    }
+                    else
+                    {
+                        if (myRequestState.requestData.Length > 1)
+                        {
+                            string stringContent;
+                            stringContent = myRequestState.requestData.ToString();
+                            OnData(stringContent);
+                        }
+
+                        responseStream.Close();
+                        allDone.Set();
+                    }
+                }
+                catch (WebException e)
+                {
+                    // Need to handle the exception
+                    // ...
+
+                    Debug.WriteLine(e.Message);
+                }
+            }
 
 
             private void OnSuccess()
