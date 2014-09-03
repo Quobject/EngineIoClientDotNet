@@ -265,8 +265,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             {
                 var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
 
-
-                log.Info("Xhr.GetResponse ");
+                log.Info("start");
 
                 var responseHeaders = new Dictionary<string, string>();
                 for (int i = 0; i < res.Headers.Count; i++)
@@ -274,8 +273,8 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                     responseHeaders.Add(res.Headers.Keys[i], res.Headers[i]);
                 }
 
-                var contentType = res.Headers["Content-Type"];
-
+                var contentType = Xhr.Headers["Content-Type"];
+               
 
 
                 using (var resStream = res.GetResponseStream())
