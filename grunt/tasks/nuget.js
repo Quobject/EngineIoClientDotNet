@@ -2,35 +2,39 @@
 
   grunt.registerTask('nuget',
     'get nuget assemblies', function () {
+    var
+      //fs = require('fs'),
+      //S = require('string'),
+      string = require('string-formatter'),
+      os = grunt.config('os'),
+      config = grunt.config('config'),
+      //configuration = grunt.config('msbuild_configuration'),
+      nuget_builds = grunt.config('nuget_builds'),
+      nuget_path = os === 'win' ?
+        config.win.nuget : config.linux.nuget,
+      format_str = os === 'win' ?
+        '{0} restore "{1}"' :
+        'mono --runtime=v4.0.30319 {0} restore {1}',
+      tasks = [],
+      i;
+
+    function restorePackagesWithTitle(title) {
       var
-        //fs = require('fs'),
-        //S = require('string'),
-        string = require('string-formatter'),
-        os = grunt.config('os'),
-        config = grunt.config('config'),
-        //configuration = grunt.config('msbuild_configuration'),
-        nuget_path = os === 'win' ?
-          config.win.nuget : config.linux.nuget,
-        format_str = os === 'win' ?
-          '{0} restore "{1}"' :
-          'mono --runtime=v4.0.30319 {0} restore {1}',
-        tasks = [];
+        sln = string.format('./../src/{0}.sln', title),
+        restore = string.format(format_str, nuget_path, sln);
 
-      function getPackagesWithTitle(title) {
-        var
-          sln = string.format('./../src/{0}.sln', title),
-          restore = string.format(format_str, nuget_path, sln);
+      tasks.push(restore);
+    }
 
-        tasks.push(restore);
+    if (os === 'win') {
+      for (i = 0; i < nuget_builds.length; i++) {
+        restorePackagesWithTitle(nuget_builds[i].Name);
       }
+    }
 
-      if (os === 'win') {
-        getPackagesWithTitle('EngineIoClientDotNet.net45');
-      }
-
-      grunt.log.writeln('tasks = %s', JSON.stringify(tasks));
-      grunt.config('shell.exec.command', tasks.join('&&'));
-      grunt.task.run('shell');
-    });
+    grunt.log.writeln('tasks = %s', JSON.stringify(tasks));
+    grunt.config('shell.exec.command', tasks.join('&&'));
+    grunt.task.run('shell');
+  });
 };
 

@@ -4,7 +4,11 @@ module.exports = function (grunt) {
     node_os = require('os'),
     config = require('./config.json'),
     util = require('util'),
-    os = node_os.platform() === 'win32' ? 'win' : 'linux';
+    os = node_os.platform() === 'win32' ? 'win' : 'linux',
+    nuget_builds = [
+      { "Name": "EngineIoClientDotNet.net45", "NuGetDir": "net45" },
+      { "Name": "EngineIoClientDotNet.windowsphone8", "NuGetDir": "windowsphone8" }
+    ];
 
   grunt.log.writeln(util.inspect(config));
   grunt.log.writeln( 'os = "%s"', os );
@@ -15,8 +19,10 @@ module.exports = function (grunt) {
     os: os,
     config: config,
     msbuild_configuration: 'Debug',
+    nuget_builds: nuget_builds,
     //msbuild_configuration: 'Release',
-    release_path:  './../Releases/<%= config.version %>/', 
+    release_path: './../Releases/<%= config.version %>/',
+    working_path: './../Working/',
     server_path: '../TestServer/',
     shell: {
       exec: {
@@ -33,7 +39,8 @@ module.exports = function (grunt) {
       target: ['Gruntfile.js', '<%= server_path %>server.js', 'tasks/**/*.js']
     },
     clean: {
-      release : [ '<%= release_path %>/*' ],
+      release: ['<%= release_path %>/*'],
+      working: ['<%= working_path %>/*'],
       options: { force: true }                
     },  
     copy: {
@@ -66,4 +73,5 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.registerTask('default', ['jshint', 'installNpm', 'nuget', 'buildClient', 'buildTest', 'startServer', 'testClient']);
   grunt.registerTask('test', ['jshint', 'buildClient', 'buildTest', 'testClient']);
+  grunt.registerTask('makeNuget', ['clean:working','createNugetPackage']);
 };

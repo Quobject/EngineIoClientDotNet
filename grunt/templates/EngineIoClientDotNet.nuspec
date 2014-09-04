@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>EngineIoClientDotNet</id>
+    <version>@VERSION@</version>
+    <title>EngineIoClientDotNet</title>
+    <description>Engine.IO Client Library for .Net</description>
+    <authors>Matthias Ludwig</authors>
+    <projectUrl>https://github.com/Quobject/EngineIoClientDotNet/</projectUrl>
+    <tags>engine.io.client</tags>
+  </metadata>
+</package>

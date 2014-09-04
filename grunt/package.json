@@ -17,6 +17,7 @@
     "string": "^1.9.1",
     "string-formatter": "^0.2.0",
     "grunt-contrib-clean": "^0.6.0",
-    "grunt-contrib-copy": "^0.5.0"
+    "grunt-contrib-copy": "^0.5.0",
+    "rimraf": "^2.2.8"
   }
 }
