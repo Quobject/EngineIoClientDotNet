@@ -81,7 +81,6 @@
     <Compile Include="ClientTests\ServerConnectionTest.cs" />
     <Compile Include="ClientTests\SocketTest.cs" />
     <Compile Include="ClientTests\SSLServerConnectionTest.cs" />
-    <Compile Include="ClientTests\TransportTest.cs" />
     <Compile Include="ClientTests\UsageTest.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="ModulesTests\EmitterTests.cs" />
@@ -110,6 +109,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="config.json" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml">

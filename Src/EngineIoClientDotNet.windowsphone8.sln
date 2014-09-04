@@ -5,6 +5,26 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngineIoClientDotNet.window
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngineIoClientDotNet.Tests.windowsphone8.UnitTestApp", "EngineIoClientDotNet.Tests.windowsphone8.UnitTestApp\EngineIoClientDotNet.Tests.windowsphone8.UnitTestApp.csproj", "{64754630-FF48-49C2-BF46-76576E5577F8}"
 EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "grunt", "..\grunt\", "{7F5CBDD0-5537-4B8B-AD7E-9F7E88600084}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/grunt"
+		Debug.AspNetCompiler.PhysicalPath = "..\grunt\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\grunt\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/grunt"
+		Release.AspNetCompiler.PhysicalPath = "..\grunt\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\grunt\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "8528"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,8 +41,9 @@ Global
 		{C2D45C06-B6E0-4D71-9328-7ABA4B9708E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2D45C06-B6E0-4D71-9328-7ABA4B9708E4}.Debug|ARM.ActiveCfg = Debug|ARM
 		{C2D45C06-B6E0-4D71-9328-7ABA4B9708E4}.Debug|ARM.Build.0 = Debug|ARM
-		{C2D45C06-B6E0-4D71-9328-7ABA4B9708E4}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{C2D45C06-B6E0-4D71-9328-7ABA4B9708E4}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{C2D45C06-B6E0-4D71-9328-7ABA4B9708E4}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C2D45C06-B6E0-4D71-9328-7ABA4B9708E4}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C2D45C06-B6E0-4D71-9328-7ABA4B9708E4}.Debug|Mixed Platforms.Deploy.0 = Debug|Any CPU
 		{C2D45C06-B6E0-4D71-9328-7ABA4B9708E4}.Debug|x86.ActiveCfg = Debug|x86
 		{C2D45C06-B6E0-4D71-9328-7ABA4B9708E4}.Debug|x86.Build.0 = Debug|x86
 		{C2D45C06-B6E0-4D71-9328-7ABA4B9708E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -37,9 +58,9 @@ Global
 		{64754630-FF48-49C2-BF46-76576E5577F8}.Debug|ARM.ActiveCfg = Debug|ARM
 		{64754630-FF48-49C2-BF46-76576E5577F8}.Debug|ARM.Build.0 = Debug|ARM
 		{64754630-FF48-49C2-BF46-76576E5577F8}.Debug|ARM.Deploy.0 = Debug|ARM
-		{64754630-FF48-49C2-BF46-76576E5577F8}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{64754630-FF48-49C2-BF46-76576E5577F8}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{64754630-FF48-49C2-BF46-76576E5577F8}.Debug|Mixed Platforms.Deploy.0 = Debug|x86
+		{64754630-FF48-49C2-BF46-76576E5577F8}.Debug|Mixed Platforms.ActiveCfg = Debug|ARM
+		{64754630-FF48-49C2-BF46-76576E5577F8}.Debug|Mixed Platforms.Build.0 = Debug|ARM
+		{64754630-FF48-49C2-BF46-76576E5577F8}.Debug|Mixed Platforms.Deploy.0 = Debug|ARM
 		{64754630-FF48-49C2-BF46-76576E5577F8}.Debug|x86.ActiveCfg = Debug|x86
 		{64754630-FF48-49C2-BF46-76576E5577F8}.Debug|x86.Build.0 = Debug|x86
 		{64754630-FF48-49C2-BF46-76576E5577F8}.Debug|x86.Deploy.0 = Debug|x86
@@ -53,6 +74,18 @@ Global
 		{64754630-FF48-49C2-BF46-76576E5577F8}.Release|x86.ActiveCfg = Release|x86
 		{64754630-FF48-49C2-BF46-76576E5577F8}.Release|x86.Build.0 = Release|x86
 		{64754630-FF48-49C2-BF46-76576E5577F8}.Release|x86.Deploy.0 = Release|x86
+		{7F5CBDD0-5537-4B8B-AD7E-9F7E88600084}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F5CBDD0-5537-4B8B-AD7E-9F7E88600084}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F5CBDD0-5537-4B8B-AD7E-9F7E88600084}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{7F5CBDD0-5537-4B8B-AD7E-9F7E88600084}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7F5CBDD0-5537-4B8B-AD7E-9F7E88600084}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7F5CBDD0-5537-4B8B-AD7E-9F7E88600084}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7F5CBDD0-5537-4B8B-AD7E-9F7E88600084}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F5CBDD0-5537-4B8B-AD7E-9F7E88600084}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{7F5CBDD0-5537-4B8B-AD7E-9F7E88600084}.Release|ARM.ActiveCfg = Debug|Any CPU
+		{7F5CBDD0-5537-4B8B-AD7E-9F7E88600084}.Release|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7F5CBDD0-5537-4B8B-AD7E-9F7E88600084}.Release|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7F5CBDD0-5537-4B8B-AD7E-9F7E88600084}.Release|x86.ActiveCfg = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

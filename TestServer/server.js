@@ -14,18 +14,18 @@ var
   http;
 
 
-  console.log("https port = " + config.ssl_port);
+  console.log("https port = " + config.server.ssl_port);
   https = require('https').createServer(options, app);
   ssl_server = require('engine.io').attach(https, {'pingInterval': 500});
-  https.listen(config.ssl_port, function(d) {
-    console.log('Engine.IO server listening on port', config.ssl_port);
+  https.listen(config.server.ssl_port, function(d) {
+    console.log('Engine.IO server listening on port', config.server.ssl_port);
   });
 
-  console.log("http port = " + config.port);
+  console.log("http port = " + config.server.port);
   http = require('http').createServer(app);
   server = require('engine.io').attach(http, {'pingInterval': 500});
-  http.listen( config.port, function() {
-    console.log('Engine.IO server listening on port', config.port);
+  http.listen( config.server.port, function() {
+    console.log('Engine.IO server listening on port', config.server.port);
   });
 
 
