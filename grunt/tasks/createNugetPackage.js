@@ -9,6 +9,8 @@
       os = grunt.config('os'),
       config = grunt.config('config'),
       working_path = grunt.config('working_path'),
+      package_path = working_path + '/NuGet/',
+      package_lib_path = working_path + '/NuGet/lib/',
       //configuration = grunt.config('msbuild_configuration'),
       configuration = grunt.config('msbuild_configuration'),
       output_path_base = 'bin\\' + configuration + '\\',
@@ -38,9 +40,19 @@
 
     if (! fs.existsSync(working_path)) {
       fs.mkdirSync(working_path);
+      fs.mkdirSync(package_path);
+      fs.mkdirSync(package_lib_path);
     }
+    if (!fs.existsSync(package_path)) {
+      fs.mkdirSync(package_path);
+      fs.mkdirSync(package_lib_path);
+    }
+    if (!fs.existsSync(package_lib_path)) {
+      fs.mkdirSync(package_lib_path);
+    }
+
     for (i = 0; i < nuget_builds.length; i++) {
-      dst_path = working_path + nuget_builds[i].NuGetDir + '/';
+      dst_path = package_lib_path + nuget_builds[i].NuGetDir + '/';
       //files = fs.readdirSync(dst_path);
       grunt.log.writeln(string.format('dst_path={0}', dst_path));
       fs.mkdirSync(dst_path);
@@ -49,14 +61,14 @@
 
     template_file_content = fs.readFileSync('./templates/EngineIoClientDotNet.nuspec');
     template_file_content = S(template_file_content).replaceAll('@VERSION@', config.version).s;
-    fs.writeFileSync(string.format('{0}EngineIoClientDotNet.nuspec', working_path), template_file_content);
+    fs.writeFileSync(string.format('{0}EngineIoClientDotNet.nuspec', package_path), template_file_content);
 
 
 
     function addBuildWithTitle(title, dir) {
       var
         src_path = string.format('{0}/../../src/EngineIoClientDotNet/{1}{2}/', __dirname, output_path_base, dir),
-        dst_path = working_path + dir + '/',
+        dst_path = package_lib_path + dir + '/',
         src_file = src_path + string.format('{0}.dll',title),
         dst_file = dst_path + string.format('{0}.dll',title);
       
