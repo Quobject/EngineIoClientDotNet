@@ -33,7 +33,11 @@
 
     if (os !== 'win') {
       return;
-    } 
+    }
+    if (configuration !== 'Release') {
+      grunt.log.writeln('wrong configuration = ' + configuration);
+      return;
+    }
 
     //createPackageWithTitle('EngineIoClientDotNet');
 
@@ -69,17 +73,17 @@
       var
         src_path = string.format('{0}/../../src/EngineIoClientDotNet/{1}{2}/', __dirname, output_path_base, dir),
         dst_path = package_lib_path + dir + '/',
-        src_file = src_path + string.format('{0}.dll',title),
-        dst_file = dst_path + string.format('{0}.dll',title);
+        //src_file = string.format('{0}EngineIoClientDotNet.dll', src_path),
+        src_file = src_path + string.format('{0}.dll', title),
+        dst_file = string.format('{0}EngineIoClientDotNet.dll', dst_path);
       
       grunt.log.writeln(string.format('src_file={0} dst_file={1}', src_file, dst_file));
       fs.writeFileSync(dst_file, fs.readFileSync(src_file));
 
-      src_file = src_path + string.format('{0}.pdb', title);
-      dst_file = dst_path + string.format('{0}.pdb', title);
-
-      grunt.log.writeln(string.format('src_file={0} dst_file={1}', src_file, dst_file));
-      fs.writeFileSync(dst_file, fs.readFileSync(src_file));
+      //src_file = src_path + string.format('{0}.xml', title);
+      //dst_file = string.format('{0}EngineIoClientDotNet.xml', dst_path);
+      //grunt.log.writeln(string.format('src_file={0} dst_file={1}', src_file, dst_file));
+      //fs.writeFileSync(dst_file, fs.readFileSync(src_file));
     }
 
     for (i = 0; i < nuget_builds.length; i++) {
