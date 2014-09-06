@@ -116,7 +116,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             });
 
             socket.Open();
-
+            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(4));
             socket.Close();
 
             Assert.IsNotNull(handshake_data);

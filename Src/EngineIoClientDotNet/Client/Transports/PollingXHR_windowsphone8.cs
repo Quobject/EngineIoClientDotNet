@@ -198,6 +198,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             public HttpWebRequest request;
             public HttpWebResponse response;
             public Stream streamResponse;
+            public Exception error_exception { get; set; }
 
             public RequestState()
             {
@@ -277,7 +278,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                     (IAsyncResult)myHttpWebRequest1.BeginGetResponse(new AsyncCallback(RespCallback), myRequestState);
 
                     allDone.WaitOne();
-
+                    log.Info("after allDone.WaitOne()");
                     // Release the HttpWebResponse resource.
                     if (myRequestState.response != null)
                     {
@@ -287,7 +288,10 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                     {
                         log.Info("myRequestState.response != null");
                     }
-
+                    if (myRequestState.error_exception != null)
+                    {
+                        OnError(myRequestState.error_exception);
+                    }
                 }
                 catch (System.IO.IOException e)
                 {
@@ -311,27 +315,27 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             {
                 var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
                 log.Info("start");
-
+                var myRequestState = (RequestState)asynchronousResult.AsyncState;
                 try
                 {
                     // State of request is asynchronous.
-                    RequestState myRequestState = (RequestState)asynchronousResult.AsyncState;
+
                     HttpWebRequest myHttpWebRequest2 = myRequestState.request;
-                    myRequestState.response = (HttpWebResponse)myHttpWebRequest2.EndGetResponse(asynchronousResult);
+                    myRequestState.response = (HttpWebResponse) myHttpWebRequest2.EndGetResponse(asynchronousResult);
 
                     // Read the response into a Stream object.
                     Stream responseStream = myRequestState.response.GetResponseStream();
                     myRequestState.streamResponse = responseStream;
 
                     // Begin the Reading of the contents of the HTML page and print it to the console.
-                    IAsyncResult asynchronousInputRead = responseStream.BeginRead(myRequestState.BufferRead, 0, BUFFER_SIZE, new AsyncCallback(ReadCallBack), myRequestState);
+                    IAsyncResult asynchronousInputRead = responseStream.BeginRead(myRequestState.BufferRead, 0,
+                        BUFFER_SIZE, new AsyncCallback(ReadCallBack), myRequestState);
                 }
                 catch (WebException e)
                 {
-                    // Need to handle the exception
-                    // ...
-                    log.Error("",e);
-                    OnError(e);
+                    log.Error("", e);
+                    myRequestState.error_exception = e;
+                    allDone.Set();
                 }
             }
 
@@ -339,9 +343,9 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             {
                 var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
                 log.Info("start");
+                var myRequestState = (RequestState)asyncResult.AsyncState;
                 try
                 {
-                    RequestState myRequestState = (RequestState)asyncResult.AsyncState;
                     Stream responseStream = myRequestState.streamResponse;
                     int read = responseStream.EndRead(asyncResult);
 
@@ -349,7 +353,8 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                     if (read > 0)
                     {
                         myRequestState.requestData.Append(Encoding.UTF8.GetString(myRequestState.BufferRead, 0, read));
-                        IAsyncResult asynchronousResult = responseStream.BeginRead(myRequestState.BufferRead, 0, BUFFER_SIZE, new AsyncCallback(ReadCallBack), myRequestState);
+                        IAsyncResult asynchronousResult = responseStream.BeginRead(myRequestState.BufferRead, 0,
+                            BUFFER_SIZE, new AsyncCallback(ReadCallBack), myRequestState);
                     }
                     else
                     {
@@ -361,15 +366,16 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                         }
 
                         responseStream.Close();
-                        allDone.Set();
                     }
                 }
                 catch (WebException e)
                 {
-                    // Need to handle the exception
-                    // ...
-
                     log.Error(e);
+                    myRequestState.error_exception = e;
+                }
+                finally
+                {
+                    allDone.Set();                    
                 }
             }
 
