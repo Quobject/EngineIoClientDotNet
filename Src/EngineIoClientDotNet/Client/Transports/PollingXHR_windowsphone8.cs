@@ -279,17 +279,24 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                     allDone.WaitOne();
 
                     // Release the HttpWebResponse resource.
-                    myRequestState.response.Close();
+                    if (myRequestState.response != null)
+                    {
+                        myRequestState.response.Close();
+                    }
+                    else
+                    {
+                        log.Info("myRequestState.response != null");
+                    }
 
                 }
                 catch (System.IO.IOException e)
                 {
-                    log.Error("Create call failed", e);
+                    log.Error("IOException Create call failed", e);
                     OnError(e);
                 }
                 catch (System.Net.WebException e)
                 {
-                    log.Error("Create call failed", e);
+                    log.Error("WebException Create call failed", e);
                     OnError(e);
                 }
                 catch (Exception e)
@@ -324,11 +331,14 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                     // Need to handle the exception
                     // ...
                     log.Error("",e);
+                    OnError(e);
                 }
             }
 
             private void ReadCallBack(IAsyncResult asyncResult)
             {
+                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+                log.Info("start");
                 try
                 {
                     RequestState myRequestState = (RequestState)asyncResult.AsyncState;
@@ -359,7 +369,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                     // Need to handle the exception
                     // ...
 
-                    Debug.WriteLine(e.Message);
+                    log.Error(e);
                 }
             }
 
