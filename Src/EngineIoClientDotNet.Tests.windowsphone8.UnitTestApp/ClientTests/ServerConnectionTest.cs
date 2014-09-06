@@ -1,6 +1,7 @@
 ﻿//using log4net;
 
 using System.Collections.Generic;
+using System.Threading;
 using EngineIoClientDotNet.Modules;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Quobject.EngineIoClientDotNet.Client;
@@ -49,6 +50,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             socket.Close();
         }
 
+        //AutoResetEvent _autoResetEvent;
 
         [TestMethod]
         public void Messages()
@@ -56,6 +58,8 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             LogManager.SetupLogManager();
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
+            //Setting the event to false.
+            //this._autoResetEvent = new AutoResetEvent(false);
 
             var events = new Queue<string>();
 
@@ -72,17 +76,23 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                 events.Enqueue(data);
                 if (events.Count > 1)
                 {
-                    socket.Close();
+                    log.Info("EVENT_MESSAGE 2"); 
+                    //this._autoResetEvent.Set(); 
                 }
             });
             socket.Open();
+            //this._autoResetEvent.WaitOne();
 
+            socket.Close();
 
             string result;
             result = events.Dequeue();
             Assert.AreEqual("hi", result);
             result = events.Dequeue();
             Assert.AreEqual("hello", result);
+
+            
+
         }
 
         [TestMethod]
@@ -109,9 +119,9 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             Assert.IsNotNull(handshake_data);
             Assert.IsNotNull(handshake_data.Upgrades);
-            Assert.IsNull(handshake_data.Upgrades.Count > 0);
-            Assert.IsNull(handshake_data.PingInterval > 0);
-            Assert.IsNull(handshake_data.PingTimeout > 0);
+            Assert.IsTrue(handshake_data.Upgrades.Count > 0);
+            Assert.IsTrue(handshake_data.PingInterval > 0);
+            Assert.IsTrue(handshake_data.PingTimeout > 0);
         }
 
 
@@ -148,9 +158,9 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             Assert.IsNotNull(testListener.HandshakeData);
             Assert.IsNotNull(testListener.HandshakeData.Upgrades);
-            Assert.IsNull(testListener.HandshakeData.Upgrades.Count > 0);
-            Assert.IsNull(testListener.HandshakeData.PingInterval > 0);
-            Assert.IsNull(testListener.HandshakeData.PingTimeout > 0);
+            Assert.IsTrue(testListener.HandshakeData.Upgrades.Count > 0);
+            Assert.IsTrue(testListener.HandshakeData.PingInterval > 0);
+            Assert.IsTrue(testListener.HandshakeData.PingTimeout > 0);
         }
 
 
