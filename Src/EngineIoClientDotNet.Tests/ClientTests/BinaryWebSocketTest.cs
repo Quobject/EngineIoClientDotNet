@@ -92,9 +92,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             }
             const string stringData = "cash money €€€";
 
-            var options = CreateOptions();
-            options.Transports = ImmutableList.Create<string>(Polling.NAME);
-
+            var options = CreateOptions();         
 
             var socket = new Socket(options);
 
