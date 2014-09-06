@@ -34,51 +34,52 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             var binaryData = new byte[5];
             for (int i = 0; i < binaryData.Length; i++)
             {
-                binaryData[i] = (byte)(i + 0);
+                binaryData[i] = (byte)i;
             }
 
 
             var options = CreateOptions();
             options.Transports = ImmutableList.Create<string>(Polling.NAME);
+
+
             var socket = new Socket(options);
 
             socket.On(Socket.EVENT_OPEN, () =>
             {
-                log.Info(Socket.EVENT_OPEN);
-            });
 
-            socket.On(Socket.EVENT_UPGRADE, () =>
-            {
-                log.Info(Socket.EVENT_UPGRADE);
-                socket.Send(binaryData);
-            });
-
-            socket.On(Socket.EVENT_MESSAGE, (d) =>
-            {
-                var data = d as string;
-                log.Info(string.Format("EVENT_MESSAGE data ={0} d = {1} ", data, d));
-
-                if (data == "hi")
+                log.Info("EVENT_OPEN");
+                socket.On(Socket.EVENT_MESSAGE, (d) =>
                 {
-                    return;
-                }
-                events.Enqueue(d);
-                this._autoResetEvent.Set();
+
+                    var data = d as string;
+                    log.Info(string.Format("EVENT_MESSAGE data ={0} d = {1} ", data, d));
+
+                    if (data == "hi")
+                    {
+                        return;
+                    }
+                    events.Enqueue(d);
+                    this._autoResetEvent.Set(); 
+                });
+                socket.Send(binaryData);
+                //socket.Send("cash money €€€");
             });
 
             socket.Open();
             this._autoResetEvent.WaitOne();
             socket.Close();
 
+            log.Info("ReceiveBinaryData end");
+
             var binaryData2 = new byte[5];
-            for (int i = 0; i < binaryData.Length; i++)
+            for (int i = 0; i < binaryData2.Length; i++)
             {
                 binaryData2[i] = (byte)(i + 1);
             }
 
-            object result = events.Dequeue();
+            object result;
+            result = events.Dequeue();
             CollectionAssert.AreEqual(binaryData, (byte[])result);
-
         }
 
 
@@ -109,32 +110,30 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             {
 
                 log.Info("EVENT_OPEN");
+                socket.On(Socket.EVENT_MESSAGE, (d) =>
+                {
 
+                    var data = d as string;
+                    log.Info(string.Format("EVENT_MESSAGE data ={0} d = {1} ", data, d));
+
+                    if (data == "hi")
+                    {
+                        return;
+                    }
+                    events.Enqueue(d);
+                    if (events.Count > 1)
+                    {
+                        this._autoResetEvent.Set(); 
+                    }
+                });
                 socket.Send(binaryData);
                 socket.Send(stringData);
-
-            });
-
-            socket.On(Socket.EVENT_MESSAGE, (d) =>
-            {
-
-                var data = d as string;
-                log.Info(string.Format("EVENT_MESSAGE data ={0} d = {1} ", data, d));
-
-                if (data == "hi")
-                {
-                    return;
-                }
-                events.Enqueue(d);
-                if (events.Count > 1)
-                {
-                    this._autoResetEvent.Set();
-                }
             });
 
             socket.Open();
             this._autoResetEvent.WaitOne();
             socket.Close();
+
 
             var binaryData2 = new byte[5];
             for (int i = 0; i < binaryData2.Length; i++)
@@ -145,12 +144,11 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             object result;
             result = events.Dequeue();
             CollectionAssert.AreEqual(binaryData, (byte[])result);
-
             result = events.Dequeue();
             Assert.AreEqual(stringData, (string)result);
-            log.Info("ReceiveBinaryDataAndMultibyteUTF8String end");
-        }
+            socket.Close();
 
+        }
 
 
     }

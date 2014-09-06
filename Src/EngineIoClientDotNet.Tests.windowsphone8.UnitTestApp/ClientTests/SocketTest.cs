@@ -68,7 +68,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             });
 
             socket.Open();
-            Task.Delay(10).Wait();
+            Task.Delay(4000).Wait();
             log.Info("After WaitOne");
             Assert.IsTrue(closed);
             Assert.IsTrue(error);
