@@ -23,20 +23,60 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             Name = NAME;
         }
 
-        protected override void DoOpen()
+        protected override async void DoOpen()
         {
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("DoOpen uri =" + this.Uri());
 
-            ws = new WebSocket4Net.WebSocket(this.Uri());
-            ws.EnableAutoSendPing = false;
-            //ws.AllowUnstrustedCertificate = true;            
-            ws.Opened += ws_Opened;
-            ws.Closed += ws_Closed;
-            ws.MessageReceived += ws_MessageReceived;
-            ws.DataReceived += ws_DataReceived;
-            ws.Error += ws_Error;
-            ws.Open();                            
+            var webSocket = new Windows.Networking.Sockets.MessageWebSocket();
+            // MessageWebSocket supports both utf8 and binary messages.
+            // When utf8 is specified as the messageType, then the developer
+            // promises to only send utf8-encoded data.
+            
+            webSocket.Control.MessageType = Windows.Networking.Sockets.SocketMessageType.Utf8;
+
+            webSocket.MessageReceived += webSocket_MessageReceived;
+            webSocket.Closed += webSocket_Closed;  
+            
+             var serverAddress = new Uri( this.Uri());
+
+      try
+      {
+          var t = webSocket.ConnectAsync(serverAddress);
+          t.GetResults();
+         
+         ConnectAsync(serverAddress);
+         
+         /Completed(function () {
+         var messageWebSocket = webSocket;
+         // The default DataWriter encoding is utf8.
+         messageWriter = new Windows.Storage.Streams.DataWriter(webSocket.OutputStream);
+         messageWriter.writeString(document.getElementById("inputField").value);
+         messageWriter.storeAsync().done("", sendError);
+
+      }, function (error) {
+         // The connection failed; add your own code to log or display 
+         // the error, or take a specific action.
+         });
+      } catch (error) {
+         // An error occurred while trying to connect; add your own code to  
+         // log or display the error, or take a specific action.
+      }
+                                          
+        }
+
+        void webSocket_Closed(IWebSocket sender, WebSocketClosedEventArgs args)
+        {
+            var log = LogManager.GetLogger(Global.CallerName());
+            log.Info("ws_Closed");
+            this.OnClose();
+        }
+
+        void webSocket_MessageReceived(MessageWebSocket sender, MessageWebSocketMessageReceivedEventArgs args)
+        {
+            var log = LogManager.GetLogger(Global.CallerName());
+            log.Info("ws_MessageReceived e.Message= " + args.Message);
+            this.OnData(e.Message);
         }
 
         void ws_DataReceived(object sender, DataReceivedEventArgs e)
@@ -53,19 +93,9 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             this.OnOpen();
         }
 
-        void ws_Closed(object sender, EventArgs e)
-        {
-            var log = LogManager.GetLogger(Global.CallerName());
-            log.Info("ws_Closed");
-            this.OnClose();
-        }
+     
 
-        void ws_MessageReceived(object sender, MessageReceivedEventArgs e)
-        {
-            var log = LogManager.GetLogger(Global.CallerName());
-            log.Info("ws_MessageReceived e.Message= " + e.Message);
-            this.OnData(e.Message);
-        }
+    
 
         void ws_Error(object sender, SuperSocket.ClientEngine.ErrorEventArgs e)
         {
