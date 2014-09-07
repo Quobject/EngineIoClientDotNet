@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Web;
 
 namespace Quobject.EngineIoClientDotNet.Modules
