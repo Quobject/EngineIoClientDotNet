@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Web;
+using System.Net;
+using System.Runtime.CompilerServices;
 
 namespace Quobject.EngineIoClientDotNet.Modules
 {
@@ -13,13 +14,13 @@ namespace Quobject.EngineIoClientDotNet.Modules
 
         public static string DecodeURIComponent(string str)
         {
-            return HttpUtility.UrlDecode(str);
+            return WebUtility.UrlDecode(str);
         }
 
         public static string CallerName([CallerMemberName]string caller = "")
         {
             return caller;
-        }                 
+        }     
 
     }
 }

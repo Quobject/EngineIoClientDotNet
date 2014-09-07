@@ -40,7 +40,8 @@
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
-    <Reference Include="WebSocket4Net">
+    <Reference Include="WebSocket4Net, Version=0.10.0.0, Culture=neutral, PublicKeyToken=eb4e154b696bf72a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\WebSocket4Net.0.10\lib\net45\WebSocket4Net.dll</HintPath>
     </Reference>
   </ItemGroup>

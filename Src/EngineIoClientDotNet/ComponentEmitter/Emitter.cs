@@ -139,7 +139,7 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
             ImmutableList<IListener> retrievedValue;
             if (!callbacks.TryGetValue(eventString, out retrievedValue))
             {
-                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+                var log = LogManager.GetLogger(Global.CallerName());
                 log.Info(string.Format("Emitter.Off Could not remove {0}", eventString));
             }
 

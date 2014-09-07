@@ -80,7 +80,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
         protected override void DoWrite(byte[] data, Action action)
         {
             var opts = new XHRRequest.RequestOptions {Method = "POST", Data = data};
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            var log = LogManager.GetLogger(Global.CallerName());
             log.Info("DoWrite data = " + data);
             //try
             //{
@@ -198,7 +198,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             public void Create()
             {
-                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+                var log = LogManager.GetLogger(Global.CallerName());
 
                 try
                 {
@@ -300,7 +300,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             private void OnData(string data)
             {
-                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+                var log = LogManager.GetLogger(Global.CallerName());
                 log.Info("OnData string = " + data);
                 this.Emit(EVENT_DATA, data);
                 this.OnSuccess();
@@ -308,7 +308,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             private void OnData(byte[] data)
             {
-                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+                var log = LogManager.GetLogger(Global.CallerName());
                 log.Info("OnData byte[] =" + System.Text.UTF8Encoding.UTF8.GetString(data));
                 this.Emit(EVENT_DATA, data);
                 this.OnSuccess();

@@ -168,7 +168,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         private void _onData(object data)
         {
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            var log = LogManager.GetLogger(Global.CallerName());
 
             //log.Info(string.Format("polling got data {0}",data));
             var callback = new DecodePayloadCallback(this);
@@ -220,7 +220,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         protected override void DoClose()
         {
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            var log = LogManager.GetLogger(Global.CallerName());
 
             var closeListener = new CloseListener(this);
 
@@ -266,7 +266,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         protected override void Write(ImmutableList<Packet> packets)
         {
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Write packets.Count = " + packets.Count);
 
             Writable = false;

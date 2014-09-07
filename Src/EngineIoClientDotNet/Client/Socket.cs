@@ -197,7 +197,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         private void SetTransport(Transport transport)
         {
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            var log = LogManager.GetLogger(Global.CallerName());
             log.Info(string.Format("SetTransport setting transport '{0}'", transport.Name));
 
             if (this.Transport != null)
@@ -342,7 +342,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         private void Flush()
         {
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            var log = LogManager.GetLogger(Global.CallerName());
 
             if (ReadyState != ReadyStateEnum.CLOSED && this.Transport.Writable && !Upgrading && WriteBuffer.Count != 0)
             {
@@ -359,7 +359,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         internal void OnPacket(Packet packet)
         {
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            var log = LogManager.GetLogger(Global.CallerName());
 
 
             if (ReadyState == ReadyStateEnum.OPENING || ReadyState == ReadyStateEnum.OPEN)
@@ -512,7 +512,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         private void OnOpen()
         {
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            var log = LogManager.GetLogger(Global.CallerName());
 
             //log.Info("socket open before call to flush()");
             ReadyState = ReadyStateEnum.OPEN;
@@ -534,7 +534,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         private void Probe(string name)
         {
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            var log = LogManager.GetLogger(Global.CallerName());
 
             log.Info(string.Format("Probe probing transport '{0}'", name));
 
@@ -625,7 +625,7 @@ namespace Quobject.EngineIoClientDotNet.Client
                     {
                         return;
                     }
-                    var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+                    var log = LogManager.GetLogger(Global.CallerName());
 
                     var msg = (Packet)args[0];
                     if (Packet.PONG == msg.Type && "probe" == (string)msg.Data)
@@ -743,7 +743,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
                 _freezeTransport.Call();
 
-                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+                var log = LogManager.GetLogger(Global.CallerName());
 
                 log.Info(string.Format("probe transport \"{0}\" failed because of error: {1}", error.Transport, err));
                 _socket.Emit(EVENT_UPGRADE_ERROR, error);
@@ -796,7 +796,7 @@ namespace Quobject.EngineIoClientDotNet.Client
                 var to = (Transport)args[0];
                 if (_transport[0] != null && to.Name != _transport[0].Name)
                 {
-                    var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+                    var log = LogManager.GetLogger(Global.CallerName());
 
                     log.Info(string.Format("'{0}' works - aborting '{1}'", to.Name, _transport[0].Name));
                     _freezeTransport.Call();
@@ -809,7 +809,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             if (this.ReadyState == ReadyStateEnum.OPENING || this.ReadyState == ReadyStateEnum.OPEN)
             {
                 this.OnClose("forced close");
-                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+                var log = LogManager.GetLogger(Global.CallerName());
 
                 log.Info("socket closing - telling transport to close");
                 if (PingTimeoutTimer != null)
@@ -826,7 +826,7 @@ namespace Quobject.EngineIoClientDotNet.Client
         {
             if (this.ReadyState == ReadyStateEnum.OPENING || this.ReadyState == ReadyStateEnum.OPEN)
             {
-                var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+                var log = LogManager.GetLogger(Global.CallerName());
 
                 log.Info(string.Format("OnClose socket close with reason: {0}", reason));
 
@@ -903,7 +903,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         internal void OnError(Exception exception)
         {
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            var log = LogManager.GetLogger(Global.CallerName());
 
             log.Error("socket error", exception);
             PriorWebsocketSuccess = false;
