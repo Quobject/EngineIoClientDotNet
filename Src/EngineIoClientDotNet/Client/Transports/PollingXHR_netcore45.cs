@@ -1,5 +1,8 @@
 ﻿//using log4net;
 
+using System.Linq;
+using System.Text;
+using System.Threading;
 using EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
 using Quobject.EngineIoClientDotNet.Modules;
@@ -188,6 +191,10 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             private string Method;
             private string Uri;
             private byte[] Data;
+
+            private ManualResetEvent allDone = new ManualResetEvent(false);
+            
+            //http://msdn.microsoft.com/en-us/library/windows/apps/system.net.httpwebrequest.aspx
             private HttpWebRequest Xhr;
 
             public XHRRequest(RequestOptions options)
@@ -224,57 +231,14 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 {
                     if (Data != null)
                     {
-                        Xhr.ContentLength = Data.Length;
+                        // start the asynchronous operation
+                        Xhr.BeginGetRequestStream(GetRequestStreamCallback, Xhr);
 
-                        using (var requestStream = Xhr.GetRequestStream())
-                        {
-                            requestStream.Write(Data, 0, Data.Length);
-
-                        }
-                    }
-
-                    using (var res = Xhr.GetResponse())
-                    {
-                        log.Info("Xhr.GetResponse ");
-
-                        var responseHeaders = new Dictionary<string, string>();
-                        for (int i = 0; i < res.Headers.Count; i++)
-                        {
-                            responseHeaders.Add(res.Headers.Keys[i], res.Headers[i]);
-                        }
-                        OnResponseHeaders(responseHeaders);
-
-                        var contentType = res.Headers["Content-Type"];
-
-
-
-                        using (var resStream = res.GetResponseStream())
-                        {
-                            Debug.Assert(resStream != null, "resStream != null");
-                            if (contentType.Equals("application/octet-stream",
-                                StringComparison.OrdinalIgnoreCase))
-                            {
-                                var buffer = new byte[16*1024];
-                                using (var ms = new MemoryStream())
-                                {
-                                    int read;
-                                    while ((read = resStream.Read(buffer, 0, buffer.Length)) > 0)
-                                    {
-                                        ms.Write(buffer, 0, read);
-                                    }
-                                    var a = ms.ToArray();
-                                    OnData(a);
-                                }
-                            }
-                            else
-                            {
-                                using (var sr = new StreamReader(resStream))
-                                {
-                                    OnData(sr.ReadToEnd());
-                                }
-                            }
-                        }
-                    }
+                        // Keep the main thread from continuing while the asynchronous 
+                        // operation completes. A real world application 
+                        // could do something useful such as updating its user interface. 
+                        allDone.WaitOne();                     
+                    }                 
                 }
                 catch (System.IO.IOException e)
                 {
@@ -294,6 +258,69 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             }
 
+            // from http://msdn.microsoft.com/query/dev11.query?appId=Dev11IDEF1&l=EN-US&k=k(System.Net.HttpWebRequest.BeginGetRequestStream);k(BeginGetRequestStream);k(TargetFrameworkMoniker-.NETCore,Version%3Dv4.5);k(DevLang-csharp)&rd=true
+            
+            private void GetRequestStreamCallback(IAsyncResult asynchronousResult)
+            {
+                try
+                {
+                    HttpWebRequest request = (HttpWebRequest)asynchronousResult.AsyncState;
+
+                    // End the operation
+                    Stream postStream = request.EndGetRequestStream(asynchronousResult);
+
+                    // Write to the request stream.
+                    postStream.Write(Data, 0, Data.Length);
+                    postStream.Flush();
+
+                    // Start the asynchronous operation to get the response
+                    request.BeginGetResponse(new AsyncCallback(GetResponseCallback), request);
+                }
+                catch (Exception e)
+                {
+                    var log = LogManager.GetLogger(Global.CallerName());
+                    log.Error("GetRequestStreamCallback", e);
+                    OnError(e);
+                }
+            }
+
+            private void GetResponseCallback(IAsyncResult asynchronousResult)
+            {
+                try
+                {
+                    var log = LogManager.GetLogger(Global.CallerName());
+
+                    var request = (HttpWebRequest) asynchronousResult.AsyncState;
+
+                    // End the operation
+                    var response = (HttpWebResponse) request.EndGetResponse(asynchronousResult);
+                    var streamResponse = response.GetResponseStream();
+                    var streamRead = new StreamReader(streamResponse);
+                    string responseString = streamRead.ReadToEnd();
+
+                    var responseHeaders = response.Headers.AllKeys.ToDictionary(key => key, key => response.Headers[key]);
+                    OnResponseHeaders(responseHeaders);
+
+
+                    var contentType = response.Headers["Content-Type"];
+                    OnData(responseString);
+
+
+                    // Close the stream object
+                    streamResponse.Dispose();
+                    streamRead.Dispose();
+
+                    // Release the HttpWebResponse
+                    response.Dispose();
+                    allDone.Set();
+                }
+                catch (Exception e)
+                {
+                    var log = LogManager.GetLogger(Global.CallerName());
+                    log.Error("GetResponseCallback", e);
+                    OnError(e);
+                }
+            }
 
             private void OnSuccess()
             {
@@ -310,10 +337,12 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             private void OnData(byte[] data)
             {
-                var log = LogManager.GetLogger(Global.CallerName());
-                log.Info("OnData byte[] =" + System.Text.UTF8Encoding.UTF8.GetString(data));
-                this.Emit(EVENT_DATA, data);
-                this.OnSuccess();
+                //var log = LogManager.GetLogger(Global.CallerName());
+                //log.Info("OnData byte[] =" + System.Text.UTF8Encoding.UTF8.GetString(data));
+
+                //this.Emit(EVENT_DATA, data);
+                //this.OnSuccess();
+                throw new NotImplementedException();
             }
 
             private void OnError(Exception err)

@@ -16,8 +16,14 @@ namespace Quobject.EngineIoClientDotNet.Thread
             this.timer = timer;
         }
 
+        public static EasyTimer SetTimeout(Action method, long delayInMilliseconds)
+        {
+            var t = SetTimeoutAsync(method, delayInMilliseconds);
+            t.Wait();
+            return t.Result;
+        }
 
-        public static async Task<EasyTimer> SetTimeout(Action method, long delayInMilliseconds)
+        public static async Task<EasyTimer> SetTimeoutAsync(Action method, long delayInMilliseconds)
         {
             //http://stackoverflow.com/questions/10579027/run-code-on-ui-thread-in-winrt
             var dispatcher = Windows.UI.Core.CoreWindow.GetForCurrentThread().Dispatcher;

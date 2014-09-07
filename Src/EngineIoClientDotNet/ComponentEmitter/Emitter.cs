@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 //using log4net;
 using System.Runtime.CompilerServices;
 using EngineIoClientDotNet.Modules;
+using Quobject.EngineIoClientDotNet.Modules;
 
 namespace Quobject.EngineIoClientDotNet.ComponentEmitter
 {

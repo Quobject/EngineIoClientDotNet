@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 //using log4net;
+using System.IO;
+using Windows.Storage.Streams;
 using EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Parser;
@@ -16,6 +18,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
         public static readonly string NAME = "websocket";
 
         //private WebSocket4Net.WebSocket ws;
+        private MessageWebSocket ws;
 
         public WebSocket(Options opts)
             : base(opts)
@@ -28,114 +31,114 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("DoOpen uri =" + this.Uri());
 
-            var webSocket = new Windows.Networking.Sockets.MessageWebSocket();
+            ws = new Windows.Networking.Sockets.MessageWebSocket();
             // MessageWebSocket supports both utf8 and binary messages.
             // When utf8 is specified as the messageType, then the developer
             // promises to only send utf8-encoded data.
             
-            webSocket.Control.MessageType = Windows.Networking.Sockets.SocketMessageType.Utf8;
+            ws.Control.MessageType = Windows.Networking.Sockets.SocketMessageType.Utf8;
 
-            webSocket.MessageReceived += webSocket_MessageReceived;
-            webSocket.Closed += webSocket_Closed;  
+            ws.MessageReceived += ws_MessageReceived;
+            ws.Closed += ws_Closed;  
             
-             var serverAddress = new Uri( this.Uri());
+            var serverAddress = new Uri( this.Uri());
 
-      try
-      {
-          var t = webSocket.ConnectAsync(serverAddress);
-          t.GetResults();
-         
-         ConnectAsync(serverAddress);
-         
-         /Completed(function () {
-         var messageWebSocket = webSocket;
-         // The default DataWriter encoding is utf8.
-         messageWriter = new Windows.Storage.Streams.DataWriter(webSocket.OutputStream);
-         messageWriter.writeString(document.getElementById("inputField").value);
-         messageWriter.storeAsync().done("", sendError);
-
-      }, function (error) {
-         // The connection failed; add your own code to log or display 
-         // the error, or take a specific action.
-         });
-      } catch (error) {
-         // An error occurred while trying to connect; add your own code to  
-         // log or display the error, or take a specific action.
-      }
-                                          
+            try
+            {
+                await ws.ConnectAsync(serverAddress);
+                ws_Opened();
+            }
+            catch (Exception e)
+            {
+                this.OnError("DoOpen", e);
+            }                                                          
         }
 
-        void webSocket_Closed(IWebSocket sender, WebSocketClosedEventArgs args)
+        void ws_MessageReceived(MessageWebSocket sender, MessageWebSocketMessageReceivedEventArgs args)
+        {
+            var log = LogManager.GetLogger(Global.CallerName());
+
+            try
+            {
+                using (var dataReader = args.GetDataReader())
+                {
+                    // The encoding and byte order need to match the settings of the writer 
+                    // we previously used.
+                    dataReader.UnicodeEncoding = Windows.Storage.Streams.UnicodeEncoding.Utf8;
+                    dataReader.ByteOrder = Windows.Storage.Streams.ByteOrder.LittleEndian;
+
+                    var data = dataReader.ReadString(dataReader.UnconsumedBufferLength);
+                    log.Info("ws_MessageReceived e.Message= " + data);
+                    this.OnData(data);
+                }
+            }
+            catch (Exception e)
+            {
+                this.OnError("ws_MessageReceived", e);
+            }
+        }
+   
+
+        private void ws_Opened()
+        {
+            var log = LogManager.GetLogger(Global.CallerName());
+            log.Info("ws_Opened");
+            this.OnOpen();
+        }
+
+        void ws_Closed(IWebSocket sender, WebSocketClosedEventArgs args)
         {
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("ws_Closed");
             this.OnClose();
-        }
+        }     
 
-        void webSocket_MessageReceived(MessageWebSocket sender, MessageWebSocketMessageReceivedEventArgs args)
-        {
-            var log = LogManager.GetLogger(Global.CallerName());
-            log.Info("ws_MessageReceived e.Message= " + args.Message);
-            this.OnData(e.Message);
-        }
 
-        void ws_DataReceived(object sender, DataReceivedEventArgs e)
-        {
-            var log = LogManager.GetLogger(Global.CallerName());
-            log.Info("ws_DataReceived " + e.Data);
-            this.OnData(e.Data);
-        }
-
-        private void ws_Opened(object sender, EventArgs e)
-        {
-            var log = LogManager.GetLogger(Global.CallerName());
-            log.Info("ws_Opened " + ws.SupportBinary);
-            this.OnOpen();
-        }
-
-     
-
-    
-
-        void ws_Error(object sender, SuperSocket.ClientEngine.ErrorEventArgs e)
-        {
-            this.OnError("websocket error", e.Exception);
-        }
-
-        protected override void Write(System.Collections.Immutable.ImmutableList<Parser.Packet> packets)
+        protected override async void Write(System.Collections.Immutable.ImmutableList<Parser.Packet> packets)
         {
             Writable = false;
-            foreach (var packet in packets)
-            {
-                Parser.Parser.EncodePacket(packet, new WriteEncodeCallback(this));
-            }
-            //Parser.Parser.EncodePayload(packets.ToArray(), new WriteEncodeCallback(this));
 
-            // fake drain
-            // defer to next tick to allow Socket to clear writeBuffer
-            EasyTimer.SetTimeout(() =>
+            try
             {
-                Writable = true;
-                Emit(EVENT_DRAIN);
-            }, 1);
+                foreach (var packet in packets)
+                {
+                    Parser.Parser.EncodePacket(packet, new WriteEncodeCallback(this));
+                }
+                //Parser.Parser.EncodePayload(packets.ToArray(), new WriteEncodeCallback(this));
+
+                // fake drain
+                // defer to next tick to allow Socket to clear writeBuffer
+                await EasyTimer.SetTimeoutAsync(() =>
+                {
+                    Writable = true;
+                    Emit(EVENT_DRAIN);
+                }, 1);
+            }
+            catch (Exception e)
+            {
+                this.OnError("Write", e);
+            }
         }
 
         public class WriteEncodeCallback : IEncodeCallback
         {
-            private WebSocket webSocket;
+            private readonly WebSocket webSocket;
 
             public WriteEncodeCallback(WebSocket webSocket)
             {
                 this.webSocket = webSocket;
             }
 
-            public void Call(object data)
+            public async void Call(object data)
             {
                 //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
 
                 if (data is string)
                 {                    
-                    webSocket.ws.Send((string)data);
+                    var writer = new DataWriter(this.webSocket.ws.OutputStream);
+                    writer.WriteString((string)data);
+                    await writer.StoreAsync();                                     
+                    await writer.FlushAsync();
                 }
                 else if (data is byte[])
                 {
@@ -151,7 +154,8 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                     //    log.Error(e);
                     //}
 
-                    webSocket.ws.Send(d, 0, d.Length);
+                    //webSocket.ws.Send(d, 0, d.Length);
+                    throw new NotImplementedException();
                 }
             }
         }
@@ -162,20 +166,19 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
         {
             if (ws != null)
             {
-                ws.Opened -= ws_Opened;
-                ws.Closed -= ws_Closed;
-                ws.MessageReceived -= ws_MessageReceived;
-                ws.DataReceived -= ws_DataReceived;
-                ws.Error -= ws_Error;
-                //try
-                //{
-                //    ws.Close();
-                //}
-                //catch (Exception e)
-                //{
-                //    var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
-                //    log.Info("DoClose ws.Close() Exception= " + e.Message);                                          
-                //}
+               
+                try
+                {
+                    ws.Closed -= ws_Closed;
+                    ws.MessageReceived -= ws_MessageReceived;
+                    ws.Close(1000, "DoClose");
+                    ws.Dispose();
+                }
+                catch (Exception e)
+                {
+                    var log = LogManager.GetLogger(Global.CallerName());
+                    log.Info("DoClose ws.Close() Exception= " + e.Message);
+                }
             }
         }
 
