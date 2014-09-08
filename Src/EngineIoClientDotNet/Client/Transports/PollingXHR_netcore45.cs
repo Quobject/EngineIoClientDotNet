@@ -229,16 +229,13 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
                 try
                 {
-                    if (Data != null)
-                    {
-                        // start the asynchronous operation
-                        Xhr.BeginGetRequestStream(GetRequestStreamCallback, Xhr);
+                    // start the asynchronous operation
+                    Xhr.BeginGetRequestStream(GetRequestStreamCallback, Xhr);
 
-                        // Keep the main thread from continuing while the asynchronous 
-                        // operation completes. A real world application 
-                        // could do something useful such as updating its user interface. 
-                        allDone.WaitOne();                     
-                    }                 
+                    // Keep the main thread from continuing while the asynchronous 
+                    // operation completes. A real world application 
+                    // could do something useful such as updating its user interface. 
+                    allDone.WaitOne();                     
                 }
                 catch (System.IO.IOException e)
                 {
@@ -267,11 +264,14 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                     HttpWebRequest request = (HttpWebRequest)asynchronousResult.AsyncState;
 
                     // End the operation
-                    Stream postStream = request.EndGetRequestStream(asynchronousResult);
 
                     // Write to the request stream.
-                    postStream.Write(Data, 0, Data.Length);
-                    postStream.Flush();
+                    if (Data != null)
+                    {
+                        Stream postStream = request.EndGetRequestStream(asynchronousResult);
+                        postStream.Write(Data, 0, Data.Length);
+                        postStream.Flush();                        
+                    }
 
                     // Start the asynchronous operation to get the response
                     request.BeginGetResponse(new AsyncCallback(GetResponseCallback), request);
