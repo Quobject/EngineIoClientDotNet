@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Diagnostics.Tracing;
 using System.IO;
+using Windows.Storage;
 
 namespace EngineIoClientDotNet.Modules
 {
@@ -62,7 +63,7 @@ namespace EngineIoClientDotNet.Modules
         [Conditional("DEBUG")]
         public void Info(string msg)
         {
-            MetroEventSource.Log.Info(msg);
+            MetroEventSource.Log.Info(string.Format("{0} [{3}] {1} - {2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), MyType, msg, Environment.CurrentManagedThreadId));
         }
 
         [Conditional("DEBUG")]
@@ -134,8 +135,16 @@ namespace EngineIoClientDotNet.Modules
         {
             this.m_Name = name;
 
-            Debug.WriteLine("StorageFileEventListener for {0} has name {1}", GetHashCode(), name);
+            //Debug.WriteLine("StorageFileEventListener for {0} has name {1}", GetHashCode(), name);
 
+            //Windows.ApplicationModel.Package package = Windows.ApplicationModel.Package.Current;
+            //Windows.Storage.StorageFolder installedLocation = package.InstalledLocation;
+
+            //String output = String.Format("Installed Location: {0}", installedLocation.Path);
+            //Debug.WriteLine(output);
+            //Windows.Storage.StorageFolder localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
+            //output = String.Format("ApplicationData Location: {0}", localFolder.Path);
+            //Debug.WriteLine(output);
             AssignLocalFile();
         }
 
@@ -143,16 +152,20 @@ namespace EngineIoClientDotNet.Modules
         {
             m_StorageFile = await ApplicationData.Current.LocalFolder.CreateFileAsync(m_Name.Replace(" ", "_") + ".log",
                                                                                       CreationCollisionOption.OpenIfExists);
+
+          
+
         }
 
         protected override async void OnEventWritten(EventWrittenEventArgs eventData)
         {
             // from http://msdn.microsoft.com/en-us/library/system.io.windowsruntimestorageextensions(v=vs.110).aspx
-            using (StreamWriter writer =
-                           new StreamWriter(await m_StorageFile.OpenStreamForWriteAsync()))
-            {
-                await writer.WriteLineAsync( eventData.Message);
-            }
+            //using (StreamWriter writer =
+            //               new StreamWriter(await m_StorageFile.OpenStreamForWriteAsync()))
+            //{
+            //    await writer.WriteLineAsync( (string)eventData.Payload[0]);
+            //}
+            Debug.WriteLine((string)eventData.Payload[0]);
         }
      
     }

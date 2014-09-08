@@ -109,7 +109,7 @@
     <Compile Include="Client\Transports\Polling.cs" />
     <Compile Include="ComponentEmitter\Emitter.cs" />
     <Compile Include="Modules\Global_netcore45.cs" />
-    <Compile Include="Modules\LogManager.cs" />
+    <Compile Include="Modules\LogManager_netcore45.cs" />
     <Compile Include="Modules\ParseQS.cs" />
     <Compile Include="Modules\ServerCertificate_netcore45.cs" />
     <Compile Include="Modules\UTF8.cs" />
