@@ -1,8 +1,6 @@
 ﻿//using log4net;
 
-using System.Linq;
-using System.Text;
-using System.Threading;
+using System.Net.Http;
 using EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
 using Quobject.EngineIoClientDotNet.Modules;
@@ -19,9 +17,10 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
     {
         private XHRRequest sendXhr;
 
-        public PollingXHR(Options options) : base(options)
+        public PollingXHR(Options options)
+            : base(options)
         {
-            
+
         }
 
         protected XHRRequest Request()
@@ -38,7 +37,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 opts = new XHRRequest.RequestOptions();
             }
             opts.Uri = Uri();
-           
+
 
             XHRRequest req = new XHRRequest(opts);
 
@@ -83,7 +82,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         protected override void DoWrite(byte[] data, Action action)
         {
-            var opts = new XHRRequest.RequestOptions {Method = "POST", Data = data};
+            var opts = new XHRRequest.RequestOptions { Method = "POST", Data = data };
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("DoWrite data = " + data);
             //try
@@ -109,11 +108,11 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             public SendEventErrorListener(PollingXHR pollingXHR)
             {
                 this.pollingXHR = pollingXHR;
-            }          
+            }
 
             public void Call(params object[] args)
             {
-                Exception err = args.Length > 0 && args[0] is Exception ? (Exception) args[0] : null;
+                Exception err = args.Length > 0 && args[0] is Exception ? (Exception)args[0] : null;
                 pollingXHR.OnError("xhr post error", err);
             }
         }
@@ -153,7 +152,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             {
                 this.pollingXHR = pollingXHR;
             }
-           
+
 
             public void Call(params object[] args)
             {
@@ -191,11 +190,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             private string Method;
             private string Uri;
             private byte[] Data;
-
-            private ManualResetEvent allDone = new ManualResetEvent(false);
-            
-            //http://msdn.microsoft.com/en-us/library/windows/apps/system.net.httpwebrequest.aspx
-            private HttpWebRequest Xhr;
+            private HttpClient httpClient;
 
             public XHRRequest(RequestOptions options)
             {
@@ -204,123 +199,77 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 Data = options.Data;
             }
 
-            public void Create()
+            public async void Create()
             {
                 var log = LogManager.GetLogger(Global.CallerName());
 
                 try
                 {
                     log.Info(string.Format("xhr open {0}: {1}", Method, Uri));
-                    Xhr = (HttpWebRequest) WebRequest.Create(Uri);
-                    Xhr.Method = Method;
+                    httpClient = new HttpClient();
+                    httpClient.MaxResponseContentBufferSize = 256000;
+                    httpClient.DefaultRequestHeaders.Add("user-agent",
+                        "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; WOW64; Trident/6.0)");
+                    //httpClient.Method = Method;
+
+
+          
+                    if (Data != null)
+                    {
+                        //httpClient.ContentType = "application/octet-stream";
+                        //httpClient.ContentLength = Data.Length;
+
+                        //using (var requestStream = httpClient.GetRequestStream())
+                        //{
+                        //    requestStream.Write(Data, 0, Data.Length);
+
+                        //}
+                    }
+
+                    if (Method == "GET")
+                    {
+                        HttpResponseMessage response = await httpClient.GetAsync(Uri);
+                        response.EnsureSuccessStatusCode();
+
+                        var t = response.Headers;
+
+                        var responseHeaders = new Dictionary<string, string>();
+                        foreach (var h in response.Headers)
+                        {
+                            string value = "";
+                            foreach (var c in h.Value)
+                            {
+                                value += c;
+                            }
+
+                            responseHeaders.Add(h.Key, value);
+                        }
+                        OnResponseHeaders(responseHeaders);
+
+                        var contentType = responseHeaders.ContainsKey("Content-Type")
+                                ? responseHeaders["Content-Type"]
+                                : null;
+
+                        if (contentType != null && contentType.Equals("application/octet-stream", StringComparison.OrdinalIgnoreCase))
+                        {
+                            var responseBodyAsByteArray = await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
+                            OnData(responseBodyAsByteArray);                                                      
+                        }
+                        else
+                        {
+                            var responseBodyAsText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);  
+                            OnData(responseBodyAsText);                          
+                        }
+                    }          
                 }
                 catch (Exception e)
                 {
                     log.Error(e);
                     OnError(e);
                     return;
-                }
-
-
-                if (Method == "POST")
-                {
-                    Xhr.ContentType = "application/octet-stream";
-                }
-
-                try
-                {
-                    // start the asynchronous operation
-                    Xhr.BeginGetRequestStream(GetRequestStreamCallback, Xhr);
-
-                    // Keep the main thread from continuing while the asynchronous 
-                    // operation completes. A real world application 
-                    // could do something useful such as updating its user interface. 
-                    allDone.WaitOne();                     
-                }
-                catch (System.IO.IOException e)
-                {
-                    log.Error("Create call failed", e);
-                    OnError(e);
-                }
-                catch (System.Net.WebException e)
-                {
-                    log.Error("Create call failed", e);
-                    OnError(e);
-                }
-                catch (Exception e)
-                {
-                    log.Error("Create call failed", e);
-                    OnError(e);
-                }
-
+                }                
             }
 
-            // from http://msdn.microsoft.com/query/dev11.query?appId=Dev11IDEF1&l=EN-US&k=k(System.Net.HttpWebRequest.BeginGetRequestStream);k(BeginGetRequestStream);k(TargetFrameworkMoniker-.NETCore,Version%3Dv4.5);k(DevLang-csharp)&rd=true
-            
-            private void GetRequestStreamCallback(IAsyncResult asynchronousResult)
-            {
-                try
-                {
-                    HttpWebRequest request = (HttpWebRequest)asynchronousResult.AsyncState;
-
-                    // End the operation
-
-                    // Write to the request stream.
-                    if (Data != null)
-                    {
-                        Stream postStream = request.EndGetRequestStream(asynchronousResult);
-                        postStream.Write(Data, 0, Data.Length);
-                        postStream.Flush();                        
-                    }
-
-                    // Start the asynchronous operation to get the response
-                    request.BeginGetResponse(new AsyncCallback(GetResponseCallback), request);
-                }
-                catch (Exception e)
-                {
-                    var log = LogManager.GetLogger(Global.CallerName());
-                    log.Error("GetRequestStreamCallback", e);
-                    OnError(e);
-                }
-            }
-
-            private void GetResponseCallback(IAsyncResult asynchronousResult)
-            {
-                try
-                {
-                    var log = LogManager.GetLogger(Global.CallerName());
-
-                    var request = (HttpWebRequest) asynchronousResult.AsyncState;
-
-                    // End the operation
-                    var response = (HttpWebResponse) request.EndGetResponse(asynchronousResult);
-                    var streamResponse = response.GetResponseStream();
-                    var streamRead = new StreamReader(streamResponse);
-                    string responseString = streamRead.ReadToEnd();
-
-                    var responseHeaders = response.Headers.AllKeys.ToDictionary(key => key, key => response.Headers[key]);
-                    OnResponseHeaders(responseHeaders);
-
-
-                    var contentType = response.Headers["Content-Type"];
-                    OnData(responseString);
-
-
-                    // Close the stream object
-                    streamResponse.Dispose();
-                    streamRead.Dispose();
-
-                    // Release the HttpWebResponse
-                    response.Dispose();
-                    allDone.Set();
-                }
-                catch (Exception e)
-                {
-                    var log = LogManager.GetLogger(Global.CallerName());
-                    log.Error("GetResponseCallback", e);
-                    OnError(e);
-                }
-            }
 
             private void OnSuccess()
             {
@@ -337,12 +286,10 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             private void OnData(byte[] data)
             {
-                //var log = LogManager.GetLogger(Global.CallerName());
-                //log.Info("OnData byte[] =" + System.Text.UTF8Encoding.UTF8.GetString(data));
-
-                //this.Emit(EVENT_DATA, data);
-                //this.OnSuccess();
-                throw new NotImplementedException();
+                var log = LogManager.GetLogger(Global.CallerName());
+                log.Info(string.Format("OnData byte[] ={0}", System.Text.Encoding.UTF8.GetString(data,0,data.Length)));
+                this.Emit(EVENT_DATA, data);
+                this.OnSuccess();
             }
 
             private void OnError(Exception err)
