@@ -57,7 +57,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ModulesTests
         [TestMethod]
         public void EncodeAndDecode()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
 

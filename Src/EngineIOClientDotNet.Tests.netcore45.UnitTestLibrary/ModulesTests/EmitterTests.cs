@@ -48,7 +48,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
         [TestMethod]
         public void On()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
 
@@ -72,7 +72,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
         [TestMethod]
         public void Once()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
 
@@ -125,7 +125,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
         [TestMethod]
         public void Off()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
 
@@ -148,7 +148,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
         [TestMethod]
         public void OffWithOnce()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
 
@@ -202,7 +202,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
         [TestMethod]
         public void OffWhenCalledfromEvent()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
 
@@ -225,7 +225,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
         [TestMethod]
         public void OffEvent()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
 
@@ -252,7 +252,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
         [TestMethod]
         public void OffAll()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
 
@@ -284,7 +284,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
         [TestMethod]
         public void Listeners()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
 
@@ -311,7 +311,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
         [TestMethod]
         public void HasListeners()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
 
@@ -327,7 +327,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
         [TestMethod]
         public void HasListenersWithoutHandlers()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
 

@@ -21,7 +21,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [TestMethod]
         public void OpenAndClose()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
             this._autoResetEvent = new AutoResetEvent(false);
@@ -58,7 +58,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [TestMethod]
         public void Messages()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
             //Setting the event to false.
@@ -101,7 +101,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [TestMethod]
         public void Handshake()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
 
@@ -117,7 +117,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             });
 
             socket.Open();
-            //System.Threading.Thread.Sleep(TimeSpan.FromSeconds(4));
+            Task.Delay(TimeSpan.FromSeconds(3)).Wait();
             socket.Close();
 
             Assert.IsNotNull(handshake_data);
@@ -136,7 +136,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             public void Call(params object[] args)
             {
-                LogManager.SetupLogManager();
+    
                 var log = LogManager.GetLogger(Global.CallerName());
                 log.Info(string.Format("open args[0]={0} args.Length={1}", args[0], args.Length));
                 HandshakeData = args[0] as HandshakeData;
@@ -147,7 +147,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         public void Handshake2()
         {
 
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
 
@@ -170,7 +170,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [TestMethod]
         public void Upgrade()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
             this._autoResetEvent = new AutoResetEvent(false);
@@ -211,7 +211,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [TestMethod]
         public void RememberWebsocket()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
             this._autoResetEvent = new AutoResetEvent(false);
@@ -254,7 +254,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [TestMethod]
         public void NotRememberWebsocket()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
             this._autoResetEvent = new AutoResetEvent(false);

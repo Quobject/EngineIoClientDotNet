@@ -18,7 +18,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [TestMethod]
         public void Usage1()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
 
@@ -41,7 +41,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [TestMethod]
         public void Usage2()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
 

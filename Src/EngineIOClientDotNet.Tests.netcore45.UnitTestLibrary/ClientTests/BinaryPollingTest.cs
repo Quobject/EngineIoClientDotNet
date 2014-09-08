@@ -25,7 +25,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [TestMethod]
         public void ReceiveBinaryData()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
             this._autoResetEvent = new AutoResetEvent(false);
@@ -87,7 +87,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [TestMethod]
         public void ReceiveBinaryDataAndMultibyteUTF8String()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
             this._autoResetEvent = new AutoResetEvent(false);

@@ -25,10 +25,10 @@ namespace EngineIoClientDotNet.Modules
             //Trace.Listeners.Add(myTextListener);
             // First time execution, initialize the logger 
             EventListener verboseListener = new StorageFileEventListener("MyListenerVerbose");
-            EventListener informationListener = new StorageFileEventListener("MyListenerInformation");
+            //EventListener informationListener = new StorageFileEventListener("MyListenerInformation");
 
             verboseListener.EnableEvents(MetroEventSource.Log, EventLevel.Verbose);
-            informationListener.EnableEvents(MetroEventSource.Log, EventLevel.Informational);
+            //informationListener.EnableEvents(MetroEventSource.Log, EventLevel.Informational);
         }
 
         public static LogManager GetLogger(string type)

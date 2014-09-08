@@ -15,7 +15,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ModulesTests
         [TestMethod]
         public void Decode()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
 
@@ -37,7 +37,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ModulesTests
         [TestMethod]
         public void Encode()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
 

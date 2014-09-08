@@ -14,7 +14,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [TestMethod]
         public void DecodeBadFormat()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
 
@@ -26,7 +26,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [TestMethod]
         public void DecodeInexistingTypes()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
 
@@ -38,7 +38,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [TestMethod]
         public void DecodeInvalidUTF8()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
 
@@ -64,7 +64,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [TestMethod]
         public void EncodeAndDecodeEmptyPayloads()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
 
@@ -76,7 +76,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [TestMethod]
         public void DecodePayloadBadPacketFormat()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
 
@@ -88,7 +88,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [TestMethod]
         public void DecodePayloadInvalidUTF8()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
 

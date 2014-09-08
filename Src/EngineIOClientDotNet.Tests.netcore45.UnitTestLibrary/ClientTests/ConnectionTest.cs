@@ -20,7 +20,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [TestMethod]
         public void ConnectToLocalhost()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
 
@@ -39,7 +39,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             public void Call(params object[] args)
             {
-                LogManager.SetupLogManager();
+    
                 var log = LogManager.GetLogger(Global.CallerName());
                 log.Info("open");
             }
@@ -67,7 +67,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             public void Call(params object[] args)
             {
-                LogManager.SetupLogManager();
+    
                 var log = LogManager.GetLogger(Global.CallerName());
                 log.Info("message = " + args[0]);
                 connectionTest.Message = (string) args[0];
@@ -81,7 +81,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [TestMethod]
         public void ConnectToLocalhost2()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
             this._autoResetEvent = new AutoResetEvent(false);
@@ -112,7 +112,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [TestMethod]
         public void TestmultibyteUtf8StringsWithPolling()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
             this._autoResetEvent = new AutoResetEvent(false);
@@ -155,7 +155,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [TestMethod]
         public void Testemoji()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
             this._autoResetEvent = new AutoResetEvent(false);
@@ -196,7 +196,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [TestMethod]
         public void NotSendPacketsIfSocketCloses()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
 

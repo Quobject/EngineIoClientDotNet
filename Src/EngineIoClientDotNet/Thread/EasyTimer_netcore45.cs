@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 
@@ -26,7 +27,9 @@ namespace Quobject.EngineIoClientDotNet.Thread
         public static async Task<EasyTimer> SetTimeoutAsync(Action method, long delayInMilliseconds)
         {
             //http://stackoverflow.com/questions/10579027/run-code-on-ui-thread-in-winrt
-            var dispatcher = Windows.UI.Core.CoreWindow.GetForCurrentThread().Dispatcher;
+          //  var dispatcher = Windows.UI.Core.CoreWindow.GetForCurrentThread().Dispatcher;
+            //var dispatcher = Window.Current.Dispatcher;
+            var dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
             EasyTimer result = null;
             await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
@@ -36,6 +39,7 @@ namespace Quobject.EngineIoClientDotNet.Thread
                 timer1.Tick += async (source, e) =>
                 {
                     timer1.Stop();
+                    //method();
                     await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => method());
                 };
 

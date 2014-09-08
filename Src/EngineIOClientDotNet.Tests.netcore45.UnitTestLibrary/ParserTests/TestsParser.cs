@@ -21,7 +21,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [TestMethod]
         public void EncodeTests()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
 
@@ -240,7 +240,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [TestMethod]
         public void EncodePayloads()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
 
@@ -273,7 +273,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [TestMethod]
         public void EncodeAndDecodePayloads()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
 
@@ -305,7 +305,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [TestMethod]
         public void EncodeAndDecodePayloads2()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
 
@@ -338,7 +338,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [TestMethod]
         public void EncodeAndDecodeEmptyPayloads()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
 
@@ -381,7 +381,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [TestMethod]
         public void EncodeAndDecodeBinaryContents()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
 
@@ -462,7 +462,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [TestMethod]
         public void EncodeMixedBinaryAndStringContents()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
 
