@@ -49,9 +49,10 @@ namespace Quobject.EngineIoClientDotNet.Thread
             return result;
         }
 
-        internal void Stop()
+        internal async void Stop()
         {
-            this.timer.Stop();
+            var dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
+            await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => timer.Stop());
         }
     }
 

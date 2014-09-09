@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -20,9 +21,13 @@ namespace Quobject.EngineIoClientDotNet.Modules
             return WebUtility.UrlDecode(str);
         }
 
-        public static string CallerName([CallerMemberName]string caller = "")
+        public static string CallerName([CallerMemberName]string caller = "",[CallerLineNumber]int number = 0,[CallerFilePath]string path = "")
         {
-            return caller;
+            Uri u = new Uri(path);
+            var s = path.Split('\\');
+            var fileName =s.LastOrDefault();
+
+            return string.Format("{0}:{1}#{2}",fileName,  number, caller) ;
         }     
 
     }

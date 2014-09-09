@@ -23,16 +23,8 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         public void ConnectToLocalhost()
         {
 
-
-
-
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
-
-
-            //GetValue().Wait();
-
-
 
             socket = new Socket(CreateOptions());
             socket.On(Socket.EVENT_OPEN, new TestListener());
@@ -42,21 +34,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             Assert.AreEqual("hi", this.Message);
         }
 
-        private static async Task GetValue()
-        {
-            HttpClient httpClient;
-
-            httpClient = new HttpClient();
-            httpClient.MaxResponseContentBufferSize = 256000;
-            httpClient.DefaultRequestHeaders.Add("user-agent",
-                "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; WOW64; Trident/6.0)");
-
-
-            HttpResponseMessage response =
-                await httpClient.GetAsync(@"http://127.0.0.1/engine.io/?EIO=3&transport=polling&t=635458399186163253-0&b64=1");
-            response.EnsureSuccessStatusCode();
-            var responseBodyAsText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-        }
+ 
 
 
         public class TestListener : IListener
