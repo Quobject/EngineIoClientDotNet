@@ -1,6 +1,8 @@
 ﻿//using log4net;
 
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
 using Quobject.EngineIoClientDotNet.Modules;
@@ -141,6 +143,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             sendXhr = Request();
             sendXhr.On(EVENT_DATA, new DoPollEventDataListener(this));
             sendXhr.On(EVENT_ERROR, new DoPollEventErrorListener(this));
+            //sendXhr.Create();
             sendXhr.Create();
         }
 
@@ -199,7 +202,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 Data = options.Data;
             }
 
-            public async void Create()
+            public void Create()
             {
                 var log = LogManager.GetLogger(Global.CallerName());
 
@@ -210,64 +213,88 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                     httpClient.MaxResponseContentBufferSize = 256000;
                     httpClient.DefaultRequestHeaders.Add("user-agent",
                         "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; WOW64; Trident/6.0)");
-                    //httpClient.Method = Method;
 
-
-          
-                    if (Data != null)
+                    HttpResponseMessage response = null;
+                    if (Method == "POST")
                     {
-                        //httpClient.ContentType = "application/octet-stream";
-                        //httpClient.ContentLength = Data.Length;
 
-                        //using (var requestStream = httpClient.GetRequestStream())
-                        //{
-                        //    requestStream.Write(Data, 0, Data.Length);
+                        if (Data == null)
+                        {
+                            return;
+                        }
+                        HttpContent content = new ByteArrayContent(Data);
+                        content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");                        
+                        
+                        var task = httpClient.PostAsync(Uri, content);
+                        task.Wait();
+                        if (task.IsFaulted)
+                        {
+                            throw new Exception(task.Exception.Message);
+                        }
+                        response = task.Result;
+                    }
+                    else if (Method == "GET")
+                    {
+                        var task = httpClient.GetAsync( Uri);
+                        task.Wait();
+                        if (task.IsFaulted)
+                        {
+                            throw new Exception(task.Exception.Message);
+                        }
+                        response = task.Result;
+                    }
+                    if (response == null)
+                    {
+                        log.Info("Response == null");
+                        return;
+                    }
+                    response.EnsureSuccessStatusCode();
+                    log.Info("Xhr.GetResponse ");
 
-                        //}
+                    var t = response.Headers;
+
+                    var responseHeaders = new Dictionary<string, string>();
+                    foreach (var h in response.Headers)
+                    {
+                        string value = "";
+                        foreach (var c in h.Value)
+                        {
+                            value += c;
+                        }
+
+                        responseHeaders.Add(h.Key, value);
+                    }
+                    OnResponseHeaders(responseHeaders);
+
+                    var contentType = responseHeaders.ContainsKey("Content-Type")
+                        ? responseHeaders["Content-Type"]
+                        : null;
+
+                    if (contentType != null &&
+                        contentType.Equals("application/octet-stream", StringComparison.OrdinalIgnoreCase))
+                    {
+                        var task = response.Content.ReadAsByteArrayAsync();
+                        task.ConfigureAwait(false);
+                        task.Wait();
+                        var responseBodyAsByteArray = task.Result;
+                        OnData(responseBodyAsByteArray);
+                    }
+                    else
+                    {
+                        var task = response.Content.ReadAsStringAsync();
+                        task.ConfigureAwait(false);
+                        task.Wait();
+                        var responseBodyAsText = task.Result;
+                        OnData(responseBodyAsText);
                     }
 
-                    if (Method == "GET")
-                    {
-                        HttpResponseMessage response = await httpClient.GetAsync(Uri);
-                        response.EnsureSuccessStatusCode();
-
-                        var t = response.Headers;
-
-                        var responseHeaders = new Dictionary<string, string>();
-                        foreach (var h in response.Headers)
-                        {
-                            string value = "";
-                            foreach (var c in h.Value)
-                            {
-                                value += c;
-                            }
-
-                            responseHeaders.Add(h.Key, value);
-                        }
-                        OnResponseHeaders(responseHeaders);
-
-                        var contentType = responseHeaders.ContainsKey("Content-Type")
-                                ? responseHeaders["Content-Type"]
-                                : null;
-
-                        if (contentType != null && contentType.Equals("application/octet-stream", StringComparison.OrdinalIgnoreCase))
-                        {
-                            var responseBodyAsByteArray = await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
-                            OnData(responseBodyAsByteArray);                                                      
-                        }
-                        else
-                        {
-                            var responseBodyAsText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);  
-                            OnData(responseBodyAsText);                          
-                        }
-                    }          
                 }
                 catch (Exception e)
                 {
                     log.Error(e);
                     OnError(e);
                     return;
-                }                
+                }
             }
 
 

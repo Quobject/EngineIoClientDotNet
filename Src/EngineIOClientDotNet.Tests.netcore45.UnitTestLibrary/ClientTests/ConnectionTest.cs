@@ -1,12 +1,14 @@
 ﻿//using log4net;
 
 using System;
+using System.Collections.Immutable;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using EngineIoClientDotNet.Modules;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Quobject.EngineIoClientDotNet.Client;
+using Quobject.EngineIoClientDotNet.Client.Transports;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
 using Quobject.EngineIoClientDotNet.Modules;
 
@@ -30,7 +32,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             socket.On(Socket.EVENT_OPEN, new TestListener());
             socket.On(Socket.EVENT_MESSAGE, new MessageListener(socket, this));
             socket.Open();
-            Task.Delay(TimeSpan.FromSeconds(3)).Wait();
+            Task.Delay(TimeSpan.FromSeconds(1)).Wait();
             Assert.AreEqual("hi", this.Message);
         }
 
@@ -88,10 +90,15 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
-            this._autoResetEvent = new AutoResetEvent(false);
+            //this._autoResetEvent = new AutoResetEvent(false);
             this.Message = "";
 
-            socket = new Socket(CreateOptions());
+            var options = CreateOptions();
+            options.Transports = ImmutableList.Create<string>(Polling.NAME);
+            socket = new Socket(options);
+
+
+            //socket = new Socket(CreateOptions());
             socket.On(Socket.EVENT_OPEN, () =>
             {
                 log.Info("open");
@@ -104,11 +111,10 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
                 log.Info("message2 = " + data);
                 this.Message = data;
-                this._autoResetEvent.Set(); 
+                //this._autoResetEvent.Set();
+                socket.Close();
             });
             socket.Open();
-            this._autoResetEvent.WaitOne();
-            socket.Close();
 
             Assert.AreEqual("hi", this.Message);
         }
@@ -119,19 +125,24 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
-            this._autoResetEvent = new AutoResetEvent(false);
 
             const string SendMessage = "cash money €€€";
 
+            //socket = new Socket(CreateOptions());
 
-            socket = new Socket(CreateOptions());
+            var options = CreateOptions();
+            options.Transports = ImmutableList.Create<string>(Polling.NAME);
+            socket = new Socket(options);
+
+
+
             socket.On(Socket.EVENT_OPEN, () =>
             {
                 log.Info("open");
 
                 socket.On(Socket.EVENT_MESSAGE, (d) =>
                 {
-                    var data = (string) d;
+                    var data = (string)d;
 
                     log.Info("TestMessage data = " + data);
 
@@ -141,14 +152,12 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                     }
 
                     this.Message = data;
-                    this._autoResetEvent.Set(); 
+                    //socket.Close();
                 });
                 socket.Send(SendMessage);
             });
 
-            socket.Open();
-            this._autoResetEvent.WaitOne();
-            socket.Close();
+            socket.Open(); 
 
             log.Info("TestmultibyteUtf8StringsWithPolling this.Message = " + this.Message);
             Assert.AreEqual(SendMessage, this.Message);

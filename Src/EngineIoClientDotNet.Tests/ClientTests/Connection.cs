@@ -11,9 +11,13 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
     {
         public static readonly int TIMEOUT = 300000;
 
-        protected Socket.Options CreateOptions()
+        static Connection()
         {
             LogManager.SetupLogManager();
+        }
+
+        protected Socket.Options CreateOptions()
+        {            
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
 
 
@@ -28,8 +32,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
 
         protected Socket.Options CreateOptionsSecure()
-        {
-            LogManager.SetupLogManager();
+        {            
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
 
             var config = ConfigBase.Load();

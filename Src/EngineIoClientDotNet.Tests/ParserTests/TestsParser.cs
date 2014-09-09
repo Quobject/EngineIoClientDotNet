@@ -18,7 +18,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [Fact]
         public void EncodeTests()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
@@ -240,7 +240,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [Fact]
         public void EncodePayloads()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
@@ -273,7 +273,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [Fact]
         public void EncodeAndDecodePayloads()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
@@ -305,7 +305,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [Fact]
         public void EncodeAndDecodePayloads2()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
@@ -338,7 +338,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [Fact]
         public void EncodeAndDecodeEmptyPayloads()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
@@ -379,7 +379,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [Fact]
         public void EncodeAndDecodeBinaryContents()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
@@ -459,7 +459,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [Fact]
         public void EncodeMixedBinaryAndStringContents()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 

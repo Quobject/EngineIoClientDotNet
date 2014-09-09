@@ -16,7 +16,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void FilterUpgrades()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
@@ -34,7 +34,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void SocketClosing()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 

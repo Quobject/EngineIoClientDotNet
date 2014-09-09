@@ -84,13 +84,14 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                 }
             });
             socket.Open();
-            this._autoResetEvent.WaitOne();
+            //this._autoResetEvent.WaitOne();
+            Task.Delay(TimeSpan.FromSeconds(4)).Wait();
             //await Task.Delay(4000);
             socket.Close();
 
             string result;
             result = events.Dequeue();
-            Assert.AreEqual("hi", result);
+            Assert.AreEqual("hi1", result);
             result = events.Dequeue();
             Assert.AreEqual("hello", result);
 
@@ -156,7 +157,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             var testListener = new TestHandshakeListener();
             socket.On(Socket.EVENT_HANDSHAKE, testListener);
             socket.Open();
-            //System.Threading.Thread.Sleep(TimeSpan.FromSeconds(4));
+            Task.Delay(TimeSpan.FromSeconds(3)).Wait();
             socket.Close();
 
             Assert.IsNotNull(testListener.HandshakeData);

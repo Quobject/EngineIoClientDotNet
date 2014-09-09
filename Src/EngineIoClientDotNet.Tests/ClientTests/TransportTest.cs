@@ -17,7 +17,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void Constructors()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
@@ -33,7 +33,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void Uri()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
@@ -51,7 +51,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void UriWithDefaultPort()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
@@ -74,7 +74,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void UriWithPort()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
@@ -97,7 +97,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void HttpsUriWithDefaultPort()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
@@ -118,7 +118,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void TimestampedUri()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
@@ -143,7 +143,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void WsUri()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
@@ -160,7 +160,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void WssUri()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
@@ -178,7 +178,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void WsTimestampedUri()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 

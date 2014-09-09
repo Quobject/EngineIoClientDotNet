@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 //using log4net;
 using System.IO;
+using System.Linq;
 using Windows.Storage.Streams;
 using EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Modules;
@@ -17,7 +18,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
     {
         public static readonly string NAME = "websocket";
 
-        //private WebSocket4Net.WebSocket ws;
+        // How to connect with a MessageWebSocket http://msdn.microsoft.com/en-us/library/windows/apps/xaml/hh994397.aspx
         private MessageWebSocket ws;
 
         public WebSocket(Options opts)
@@ -34,9 +35,8 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             ws = new Windows.Networking.Sockets.MessageWebSocket();
             // MessageWebSocket supports both utf8 and binary messages.
             // When utf8 is specified as the messageType, then the developer
-            // promises to only send utf8-encoded data.
-            
-            ws.Control.MessageType = Windows.Networking.Sockets.SocketMessageType.Utf8;
+            // promises to only send utf8-encoded data.            
+            //ws.Control.MessageType = Windows.Networking.Sockets.SocketMessageType.Utf8;
 
             ws.MessageReceived += ws_MessageReceived;
             ws.Closed += ws_Closed;  
@@ -104,7 +104,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 {
                     Parser.Parser.EncodePacket(packet, new WriteEncodeCallback(this));
                 }
-                //Parser.Parser.EncodePayload(packets.ToArray(), new WriteEncodeCallback(this));
+                Parser.Parser.EncodePayload(packets.ToArray(), new WriteEncodeCallback(this));
 
                 // fake drain
                 // defer to next tick to allow Socket to clear writeBuffer
@@ -144,18 +144,14 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 {
                     var d = (byte[])data;
 
-                    //try
-                    //{
-                    //    var dataString = BitConverter.ToString(d);
-                    //    //log.Info(string.Format("WriteEncodeCallback byte[] data {0}", dataString));
-                    //}
-                    //catch (Exception e)
-                    //{
-                    //    log.Error(e);
-                    //}
-
                     //webSocket.ws.Send(d, 0, d.Length);
-                    throw new NotImplementedException();
+                    var messageWriter = new DataWriter(webSocket.ws.OutputStream);
+
+                    // Buffer any data we want to send.
+                    messageWriter.WriteBytes(d);
+
+                    // Send the data as one complete message.
+                    await messageWriter.StoreAsync();
                 }
             }
         }

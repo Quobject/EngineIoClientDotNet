@@ -19,7 +19,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void ReceiveBinaryData()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
             Trace.WriteLine("dddd");
@@ -78,7 +78,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void ReceiveBinaryDataAndMultibyteUTF8String()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
             Trace.WriteLine("eeeee");

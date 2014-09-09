@@ -53,7 +53,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         public static ConfigBase Load()
         {
             //var configString = File.ReadAllText("./../../../../grunt/config.json");            
-            var configString = @"{""version"":""0.1.0.0"",""server"":{""port"":80,""ssl_port"":443,""hostname"":""192.168.178.32""},""win"":{""powershell"":""C:/WINDOWS/System32/WindowsPowerShell/v1.0/powershell.exe"",""msbuild"":""C:/Windows/Microsoft.NET/Framework/v4.0.30319/msbuild.exe"",""xunit_path"":""C:/vendors/xunit"",""nuget"":""C:/vendors/nuget/nuget.exe""},""linux"":{""msbuild"":""xbuild"",""xunit_path"":""/home/apollo/vendors/xunit""}}";
+            var configString = @"{""version"":""0.1.0.0"",""server"":{""port"":80,""ssl_port"":443,""hostname"":""testme.quobject.com""},""win"":{""powershell"":""C:/WINDOWS/System32/WindowsPowerShell/v1.0/powershell.exe"",""msbuild"":""C:/Windows/Microsoft.NET/Framework/v4.0.30319/msbuild.exe"",""xunit_path"":""C:/vendors/xunit"",""nuget"":""C:/vendors/nuget/nuget.exe""},""linux"":{""msbuild"":""xbuild"",""xunit_path"":""/home/apollo/vendors/xunit""}}";
             
             var config = JsonConvert.DeserializeObject<ConfigBase>(configString);
             return config;

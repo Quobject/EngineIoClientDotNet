@@ -45,7 +45,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
         [Fact]
         public void On()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
@@ -69,7 +69,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
         [Fact]
         public void Once()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
@@ -122,7 +122,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
         [Fact]
         public void Off()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
@@ -145,7 +145,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
         [Fact]
         public void OffWithOnce()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
@@ -199,7 +199,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
         [Fact]
         public void OffWhenCalledfromEvent()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
@@ -222,7 +222,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
         [Fact]
         public void OffEvent()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
@@ -249,7 +249,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
         [Fact]
         public void OffAll()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
@@ -281,7 +281,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
         [Fact]
         public void Listeners()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
@@ -305,7 +305,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
         [Fact]
         public void HasListeners()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
@@ -321,7 +321,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
         [Fact]
         public void HasListenersWithoutHandlers()
         {
-            LogManager.SetupLogManager();
+
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 

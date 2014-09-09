@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Web;
 
@@ -17,9 +18,13 @@ namespace Quobject.EngineIoClientDotNet.Modules
             return HttpUtility.UrlDecode(str);
         }
 
-        public static string CallerName([CallerMemberName]string caller = "")
+        public static string CallerName([CallerMemberName]string caller = "", [CallerLineNumber]int number = 0, [CallerFilePath]string path = "")
         {
-            return caller;
+            Uri u = new Uri(path);
+            var s = path.Split('\\');
+            var fileName = s.LastOrDefault();
+
+            return string.Format("{0}:{1}#{2}", fileName, caller, number);
         }                 
 
     }

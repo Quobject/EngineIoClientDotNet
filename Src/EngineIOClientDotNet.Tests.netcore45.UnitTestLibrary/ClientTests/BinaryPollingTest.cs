@@ -80,7 +80,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             object result;
             result = events.Dequeue();
-            CollectionAssert.AreEqual(binaryData, (byte[])result);
+            CollectionAssert.AreEqual(binaryData2, (byte[])result);
         }
 
 
