@@ -71,7 +71,7 @@
 
     function addBuildWithTitle(title, dir) {
       var
-        src_path = string.format('{0}/../../src/EngineIoClientDotNet/{1}{2}/', __dirname, output_path_base, dir),
+        src_path = string.format('{0}/../../Src/EngineIoClientDotNet/{1}{2}/', __dirname, output_path_base, dir),
         dst_path = package_lib_path + dir + '/',
         //src_file = string.format('{0}EngineIoClientDotNet.dll', src_path),
         src_file = src_path + string.format('{0}.dll', title),
