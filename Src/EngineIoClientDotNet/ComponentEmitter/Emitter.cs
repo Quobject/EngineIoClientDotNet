@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Immutable;
 //using log4net;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 using EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Modules;
 
@@ -125,8 +126,8 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
         /// <returns>a reference to this object.</returns>
         public Emitter Off()
         {
-            callbacks = ImmutableDictionary<string, ImmutableList<IListener>>.Empty;
-            _onceCallbacks = ImmutableDictionary<IListener, IListener>.Empty;
+            callbacks = ImmutableDictionary.Create<string, ImmutableList<IListener>>();
+            _onceCallbacks = ImmutableDictionary.Create<IListener, IListener>();
             return this;
         }
 
@@ -210,12 +211,16 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
 
     }
 
-    public interface IListener {
+    public interface IListener: System.IComparable<IListener>
+    {
+        int GetId();
         void Call(params object[] args);
     }
 
     public class ListenerImpl : IListener
     {
+        private static int id_counter = 0;
+        private int Id;
         private readonly Action fn1; 
         private readonly Action<object> fn;
 
@@ -223,12 +228,14 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
         {
 
             this.fn = fn;
+            this.Id = id_counter++;
         }
 
         public ListenerImpl(Action fn)
         {
 
             this.fn1 = fn;
+            this.Id = id_counter++;
         }
 
         public void Call(params object[] args)
@@ -242,10 +249,24 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
                 fn1();
             }
         }
+
+        
+
+        public int CompareTo(IListener other)
+        {
+            return this.GetId().CompareTo(other.GetId());
+        }
+
+        public int GetId()
+        {
+            return Id;
+        }
     }
 
     public class OnceListener : IListener
     {
+        private static int id_counter = 0;
+        private int Id;
         private readonly string _eventString;
         private readonly IListener _fn;
         private readonly Emitter _emitter;
@@ -255,12 +276,23 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
             this._eventString = eventString;
             this._fn = fn;
             this._emitter = emitter;
+            Id = id_counter++;
         }
 
         void IListener.Call(params object[] args)
         {
             _emitter.Off(_eventString, this);
             _fn.Call(args);
+        }
+
+        public int CompareTo(IListener other)
+        {
+            return this.GetId().CompareTo(other.GetId());
+        }
+
+        public int GetId()
+        {
+            return Id;
         }
     }
 }

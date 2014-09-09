@@ -229,6 +229,16 @@ namespace Quobject.EngineIoClientDotNet.Client
             {
                 socket.OnDrain();
             }
+
+            public int CompareTo(IListener other)
+            {
+                return this.GetId().CompareTo(other.GetId());
+            }
+
+            public int GetId()
+            {
+                return 0;
+            }
         }
 
         private class EventPacketListener : IListener
@@ -243,6 +253,16 @@ namespace Quobject.EngineIoClientDotNet.Client
             void IListener.Call(params object[] args)
             {
                 socket.OnPacket(args.Length > 0 ? (Packet)args[0] : null);
+            }
+
+            public int CompareTo(IListener other)
+            {
+                return this.GetId().CompareTo(other.GetId());
+            }
+
+            public int GetId()
+            {
+                return 0;
             }
         }
 
@@ -259,6 +279,16 @@ namespace Quobject.EngineIoClientDotNet.Client
             {
                 socket.OnError(args.Length > 0 ? (Exception)args[0] : null);
             }
+
+            public int CompareTo(IListener other)
+            {
+                return this.GetId().CompareTo(other.GetId());
+            }
+
+            public int GetId()
+            {
+                return 0;
+            }
         }
 
         private class EventCloseListener : IListener
@@ -273,6 +303,16 @@ namespace Quobject.EngineIoClientDotNet.Client
             public void Call(params object[] args)
             {
                 socket.OnClose("transport close");
+            }
+
+            public int CompareTo(IListener other)
+            {
+                return this.GetId().CompareTo(other.GetId());
+            }
+
+            public int GetId()
+            {
+                return 0;
             }
         }
 
@@ -431,6 +471,16 @@ namespace Quobject.EngineIoClientDotNet.Client
             {
                 socket.OnHeartbeat(args.Length > 0 ? (long)args[0] : 0);
             }
+
+            public int CompareTo(IListener other)
+            {
+                return this.GetId().CompareTo(other.GetId());
+            }
+
+            public int GetId()
+            {
+                return 0;
+            }
         }
 
 
@@ -560,8 +610,15 @@ namespace Quobject.EngineIoClientDotNet.Client
 
             var onUpgrade = new ProbingOnUpgradeListener(freezeTransport, parameters.Transport);
 
+
+
             parameters.Cleanup = parameters.Cleanup.Add(() =>
             {
+                if (parameters.Transport.Count < 1)
+                {
+                    return;
+                }
+
                 parameters.Transport[0].Off(Transport.EVENT_OPEN, onTransportOpen);
                 parameters.Transport[0].Off(Transport.EVENT_ERROR, onError);
                 parameters.Transport[0].Off(Transport.EVENT_CLOSE, onTransportClose);
@@ -627,21 +684,23 @@ namespace Quobject.EngineIoClientDotNet.Client
                     }
                     var log = LogManager.GetLogger(Global.CallerName());
 
-                    var msg = (Packet)args[0];
-                    if (Packet.PONG == msg.Type && "probe" == (string)msg.Data)
+                    var msg = (Packet) args[0];
+                    if (Packet.PONG == msg.Type && "probe" == (string) msg.Data)
                     {
                         //log.Info(
                         //    string.Format("probe transport '{0}' pong",
                         //        _onTransportOpenListener.Parameters.Transport[0].Name));
 
                         _onTransportOpenListener.Parameters.Socket.Upgrading = true;
-                        _onTransportOpenListener.Parameters.Socket.Emit(EVENT_UPGRADING, _onTransportOpenListener.Parameters.Transport[0]);
-                        Socket.PriorWebsocketSuccess = WebSocket.NAME == _onTransportOpenListener.Parameters.Transport[0].Name;
+                        _onTransportOpenListener.Parameters.Socket.Emit(EVENT_UPGRADING,
+                            _onTransportOpenListener.Parameters.Transport[0]);
+                        Socket.PriorWebsocketSuccess = WebSocket.NAME ==
+                                                       _onTransportOpenListener.Parameters.Transport[0].Name;
 
                         //log.Info(
                         //    string.Format("pausing current transport '{0}'",
                         //        _onTransportOpenListener.Parameters.Socket.Transport.Name));
-                        ((Polling)_onTransportOpenListener.Parameters.Socket.Transport).Pause(
+                        ((Polling) _onTransportOpenListener.Parameters.Socket.Transport).Pause(
                             () =>
                             {
                                 if (_onTransportOpenListener.Parameters.Failed[0])
@@ -658,7 +717,8 @@ namespace Quobject.EngineIoClientDotNet.Client
 
                                 _onTransportOpenListener.Parameters.Cleanup[0]();
 
-                                _onTransportOpenListener.Parameters.Socket.SetTransport(_onTransportOpenListener.Parameters.Transport[0]);
+                                _onTransportOpenListener.Parameters.Socket.SetTransport(
+                                    _onTransportOpenListener.Parameters.Transport[0]);
                                 ImmutableList<Packet> packetList =
                                     ImmutableList<Packet>.Empty.Add(new Packet(Packet.UPGRADE));
                                 _onTransportOpenListener.Parameters.Transport[0].Send(packetList);
@@ -668,20 +728,43 @@ namespace Quobject.EngineIoClientDotNet.Client
 
                                 _onTransportOpenListener.Parameters.Socket.Emit(EVENT_UPGRADE,
                                     _onTransportOpenListener.Parameters.Transport[0]);
-                                _onTransportOpenListener.Parameters.Transport = _onTransportOpenListener.Parameters.Transport.RemoveAt(0);
+                                _onTransportOpenListener.Parameters.Transport =
+                                    _onTransportOpenListener.Parameters.Transport.RemoveAt(0);
 
                             });
 
                     }
                     else
                     {
-                        log.Info( string.Format("probe transport '{0}' failed",_onTransportOpenListener.Parameters.Transport[0].Name));
+                        log.Info(string.Format("probe transport '{0}' failed",
+                            _onTransportOpenListener.Parameters.Transport[0].Name));
 
                         var err = new EngineIOException("probe error");
                         _onTransportOpenListener.Parameters.Socket.Emit(EVENT_UPGRADE_ERROR, err);
                     }
 
                 }
+
+
+                public int CompareTo(IListener other)
+                {
+                    return this.GetId().CompareTo(other.GetId());
+                }
+
+                public int GetId()
+                {
+                    return 0;
+                }
+            }
+
+            public int CompareTo(IListener other)
+            {
+                return this.GetId().CompareTo(other.GetId());
+            }
+
+            public int GetId()
+            {
+                return 0;
             }
         }
 
@@ -705,8 +788,23 @@ namespace Quobject.EngineIoClientDotNet.Client
 
                 Parameters.Cleanup[0]();
 
+                if (Parameters.Transport.Count < 1)
+                {
+                    return;
+                }
+
                 Parameters.Transport[0].Close();
                 Parameters.Transport = Parameters.Transport.SetItem(0, null);
+            }
+
+            public int CompareTo(IListener other)
+            {
+                return this.GetId().CompareTo(other.GetId());
+            }
+
+            public int GetId()
+            {
+                return 0;
             }
         }
 
@@ -748,6 +846,16 @@ namespace Quobject.EngineIoClientDotNet.Client
                 log.Info(string.Format("probe transport \"{0}\" failed because of error: {1}", error.Transport, err));
                 _socket.Emit(EVENT_UPGRADE_ERROR, error);
             }
+
+            public int CompareTo(IListener other)
+            {
+                return this.GetId().CompareTo(other.GetId());
+            }
+
+            public int GetId()
+            {
+                return 0;
+            }
         }
 
         private class ProbingOnTransportCloseListener : IListener
@@ -763,6 +871,16 @@ namespace Quobject.EngineIoClientDotNet.Client
             {
                 _onError.Call("transport closed");
             }
+
+            public int CompareTo(IListener other)
+            {
+                return this.GetId().CompareTo(other.GetId());
+            }
+
+            public int GetId()
+            {
+                return 0;
+            }
         }
 
         private class ProbingOnCloseListener : IListener
@@ -777,6 +895,16 @@ namespace Quobject.EngineIoClientDotNet.Client
             void IListener.Call(params object[] args)
             {
                 _onError.Call("socket closed");
+            }
+
+            public int CompareTo(IListener other)
+            {
+                return this.GetId().CompareTo(other.GetId());
+            }
+
+            public int GetId()
+            {
+                return 0;
             }
         }
 
@@ -801,6 +929,16 @@ namespace Quobject.EngineIoClientDotNet.Client
                     log.Info(string.Format("'{0}' works - aborting '{1}'", to.Name, _transport[0].Name));
                     _freezeTransport.Call();
                 }
+            }
+
+            public int CompareTo(IListener other)
+            {
+                return this.GetId().CompareTo(other.GetId());
+            }
+
+            public int GetId()
+            {
+                return 0;
             }
         }
 

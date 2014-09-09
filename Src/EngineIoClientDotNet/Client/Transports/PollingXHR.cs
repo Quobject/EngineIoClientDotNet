@@ -61,6 +61,16 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 // Never execute asynchronously for support to modify headers.
                 pollingXHR.Emit(EVENT_RESPONSE_HEADERS, args[0]);
             }
+
+            public int CompareTo(IListener other)
+            {
+                return this.GetId().CompareTo(other.GetId());
+            }
+
+            public int GetId()
+            {
+                return 0;
+            }
         }
 
         class EventResponseHeadersListener : IListener
@@ -74,6 +84,16 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             public void Call(params object[] args)
             {
                 pollingXHR.Emit(EVENT_REQUEST_HEADERS, args[0]);
+            }
+
+            public int CompareTo(IListener other)
+            {
+                return this.GetId().CompareTo(other.GetId());
+            }
+
+            public int GetId()
+            {
+                return 0;
             }
         }
 
@@ -113,6 +133,16 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 Exception err = args.Length > 0 && args[0] is Exception ? (Exception) args[0] : null;
                 pollingXHR.OnError("xhr post error", err);
             }
+
+            public int CompareTo(IListener other)
+            {
+                return this.GetId().CompareTo(other.GetId());
+            }
+
+            public int GetId()
+            {
+                return 0;
+            }
         }
 
         class SendEventSuccessListener : IListener
@@ -127,6 +157,16 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             public void Call(params object[] args)
             {
                 action();
+            }
+
+            public int CompareTo(IListener other)
+            {
+                return this.GetId().CompareTo(other.GetId());
+            }
+
+            public int GetId()
+            {
+                return 0;
             }
         }
 
@@ -164,6 +204,17 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                     pollingXHR.OnData((byte[])arg);
                 }
             }
+
+            public int CompareTo(IListener other)
+            {
+                return this.GetId().CompareTo(other.GetId());
+            }
+
+            public int GetId()
+            {
+                return 0;
+            }
+
         }
 
         class DoPollEventErrorListener : IListener
@@ -179,6 +230,16 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             {
                 Exception err = args.Length > 0 && args[0] is Exception ? (Exception)args[0] : null;
                 pollingXHR.OnError("xhr poll error", err);
+            }
+
+            public int CompareTo(IListener other)
+            {
+                return this.GetId().CompareTo(other.GetId());
+            }
+
+            public int GetId()
+            {
+                return 0;
             }
         }
 

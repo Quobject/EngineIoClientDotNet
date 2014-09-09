@@ -37,7 +37,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
-    <Reference Include="WebSocket4Net, Version=0.10.0.0, Culture=neutral, PublicKeyToken=eb4e154b696bf72a, processorArchitecture=MSIL">
+    <Reference Include="WebSocket4Net, Version=0.7.0.0, Culture=neutral, PublicKeyToken=eb4e154b696bf72a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\References\WebSocket4Net.dll</HintPath>
     </Reference>
@@ -55,6 +55,7 @@
     <Compile Include="Modules\Global.cs" />
     <Compile Include="Modules\LogManager.cs" />
     <Compile Include="Modules\ParseQS.cs" />
+    <Compile Include="Modules\ServerCertificate.cs" />
     <Compile Include="Modules\UTF8.cs" />
     <Compile Include="Modules\UTF8Exception.cs" />
     <Compile Include="Parser\Buffer.cs" />

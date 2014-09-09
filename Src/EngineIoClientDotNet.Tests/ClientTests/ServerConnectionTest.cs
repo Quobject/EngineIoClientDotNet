@@ -125,6 +125,17 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                 log.Info(string.Format("open args[0]={0} args.Length={1}", args[0], args.Length));
                 HandshakeData = args[0] as HandshakeData;
             }
+
+            public int CompareTo(IListener other)
+            {
+                return this.GetId().CompareTo(other.GetId());
+            }
+
+            public int GetId()
+            {
+                return 0;
+            }
+
         }
 
         [Fact]

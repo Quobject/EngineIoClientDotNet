@@ -89,6 +89,16 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                     pause();
                 }
             }
+
+            public int CompareTo(IListener other)
+            {
+                return this.GetId().CompareTo(other.GetId());
+            }
+
+            public int GetId()
+            {
+                return 0;
+            }
         }
 
         class PauseEventPollCompleteListener : IListener
@@ -113,6 +123,18 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                     pause();
                 }
             }
+
+            public int CompareTo(IListener other)
+            {
+                return this.GetId().CompareTo(other.GetId());
+            }
+
+            public int GetId()
+            {
+                return 0;
+            }
+
+
         }
 
 
@@ -215,6 +237,16 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 ImmutableList<Packet> packets = ImmutableList<Packet>.Empty;
                 packets = packets.Add(new Packet(Packet.CLOSE));
                 polling.Write(packets);
+            }
+
+            public int CompareTo(IListener other)
+            {
+                return this.GetId().CompareTo(other.GetId());
+            }
+
+            public int GetId()
+            {
+                return 0;
             }
         }
 
