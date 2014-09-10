@@ -15,6 +15,7 @@ namespace EngineIoClientDotNet.Modules
         private string MyType;
         private static TextWriterTraceListener myTextListener = null;
         private static readonly LogManager EmptyLogger = new LogManager(null);
+        private static StreamWriter myOutputWriter = null;
 
         #region Statics
 
@@ -22,12 +23,13 @@ namespace EngineIoClientDotNet.Modules
         {
             if (myTextListener == null)
             {
-                var myOutputWriter = new StreamWriter(myFileName, true);
+                myOutputWriter = new StreamWriter(myFileName, true);
                 myOutputWriter.AutoFlush = true;
                 myTextListener = new TextWriterTraceListener(myOutputWriter);
 
             }
             Trace.Listeners.Add(myTextListener);
+            Trace.AutoFlush = true;
         }
 
         public static LogManager GetLogger(string type)
@@ -64,6 +66,7 @@ namespace EngineIoClientDotNet.Modules
         {
             Trace.WriteLine(string.Format("{0} [{3}] {1} - {2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), MyType, msg, System.Threading.Thread.CurrentThread.ManagedThreadId));
             myTextListener.Flush();
+            myOutputWriter.Flush();
         }
 
         [Conditional("DEBUG")]
