@@ -25,7 +25,7 @@
 
     function addBuildWithTitle(title) {
       var   
-        dir_path = string.format('{0}/../../Src/EngineIoClientDotNet.Tests/', __dirname),
+        dir_path = string.format('{0}/../../Src/{1}/', __dirname,title),
         csproj = string.format('{0}{1}.csproj', dir_path, title),
         clean = os === 'win' ? string.format(clean_format, config.win.powershell, config.win.msbuild, csproj, configuration ):
           string.format(clean_format, config.linux.msbuild, csproj, configuration),

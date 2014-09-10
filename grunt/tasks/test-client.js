@@ -17,7 +17,7 @@
 
     function addTestDllWithTitle(title) {
       var 
-        dir_path = string.format('{0}/../../Src/EngineIoClientDotNet.Tests/', __dirname),      
+        dir_path = string.format('{0}/../../Src/{1}/', __dirname, title),      
         test_dll = string.format('{0}bin/{1}/{2}.dll', dir_path, configuration, title);
 
       tasks.push(  string.format(test_format_str,xunit_path, test_dll) );      
