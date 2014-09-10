@@ -29,7 +29,10 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             ws = new WebSocket4Net.WebSocket(this.Uri());
             ws.EnableAutoSendPing = false;
-            //ws.AllowUnstrustedCertificate = true;            
+            if (ServerCertificate.Ignore)
+            {
+                ws.AllowUnstrustedCertificate = true;                            
+            }
             ws.Opened += ws_Opened;
             ws.Closed += ws_Closed;
             ws.MessageReceived += ws_MessageReceived;
