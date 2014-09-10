@@ -1,42 +1,44 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngineIoClientDotNet.net45", "EngineIoClientDotNet\EngineIoClientDotNet.net45.csproj", "{842D8B13-DAF3-4919-80A0-03EFA3C17178}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngineIoClientDotNet.net45", "EngineIoClientDotNet.net45.csproj", "{842D8B13-DAF3-4919-80A0-03EFA3C17178}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngineIoClientDotNet.Tests.net45", "EngineIoClientDotNet.Tests\EngineIoClientDotNet.Tests.net45.csproj", "{BEFF0675-8A73-4012-9651-C253E06E0F87}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Collections.Immutable", "..\System.Collections.Immutable\System.Collections.Immutable.csproj", "{024A2111-4B19-44D7-917E-8514CF632469}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "grunt", "..\grunt\", "{7F5CBDD0-5537-4B8B-AD7E-9F7E88600084}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngineIoClientDotNet.Tests.net45", "..\EngineIoClientDotNet.net45.Tests\EngineIoClientDotNet.Tests.net45.csproj", "{BEFF0675-8A73-4012-9651-C253E06E0F87}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "grunt", "..\..\grunt\", "{7F5CBDD0-5537-4B8B-AD7E-9F7E88600084}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
 		Debug.AspNetCompiler.VirtualPath = "/grunt"
-		Debug.AspNetCompiler.PhysicalPath = "..\grunt\"
+		Debug.AspNetCompiler.PhysicalPath = "..\..\grunt\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\grunt\"
 		Debug.AspNetCompiler.Updateable = "true"
 		Debug.AspNetCompiler.ForceOverwrite = "true"
 		Debug.AspNetCompiler.FixedNames = "false"
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.VirtualPath = "/grunt"
-		Release.AspNetCompiler.PhysicalPath = "..\grunt\"
+		Release.AspNetCompiler.PhysicalPath = "..\..\grunt\"
 		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\grunt\"
 		Release.AspNetCompiler.Updateable = "true"
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "20956"
+		VWDPort = "8528"
 	EndProjectSection
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TestServer", "..\TestServer\", "{7E50397C-1221-49A9-A5F1-8254AC4BFBA4}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TestServer", "..\..\TestServer\", "{7E50397C-1221-49A9-A5F1-8254AC4BFBA4}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
 		Debug.AspNetCompiler.VirtualPath = "/TestServer"
-		Debug.AspNetCompiler.PhysicalPath = "..\TestServer\"
+		Debug.AspNetCompiler.PhysicalPath = "..\..\TestServer\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\TestServer\"
 		Debug.AspNetCompiler.Updateable = "true"
 		Debug.AspNetCompiler.ForceOverwrite = "true"
 		Debug.AspNetCompiler.FixedNames = "false"
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.VirtualPath = "/TestServer"
-		Release.AspNetCompiler.PhysicalPath = "..\TestServer\"
+		Release.AspNetCompiler.PhysicalPath = "..\..\TestServer\"
 		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\TestServer\"
 		Release.AspNetCompiler.Updateable = "true"
 		Release.AspNetCompiler.ForceOverwrite = "true"
@@ -55,6 +57,10 @@ Global
 		{842D8B13-DAF3-4919-80A0-03EFA3C17178}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{842D8B13-DAF3-4919-80A0-03EFA3C17178}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{842D8B13-DAF3-4919-80A0-03EFA3C17178}.Release|Any CPU.Build.0 = Release|Any CPU
+		{024A2111-4B19-44D7-917E-8514CF632469}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{024A2111-4B19-44D7-917E-8514CF632469}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{024A2111-4B19-44D7-917E-8514CF632469}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{024A2111-4B19-44D7-917E-8514CF632469}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BEFF0675-8A73-4012-9651-C253E06E0F87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BEFF0675-8A73-4012-9651-C253E06E0F87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEFF0675-8A73-4012-9651-C253E06E0F87}.Release|Any CPU.ActiveCfg = Release|Any CPU

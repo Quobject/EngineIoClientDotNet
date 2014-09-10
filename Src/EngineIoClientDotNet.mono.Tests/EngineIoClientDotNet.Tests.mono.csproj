@@ -69,7 +69,7 @@
     <Folder Include="ThreadTests\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EngineIoClientDotNet\EngineIoClientDotNet.mono.csproj">
+    <ProjectReference Include="..\EngineIoClientDotNet.mono\EngineIoClientDotNet.mono.csproj">
       <Project>{b6731266-b247-4a63-b10b-f938288248b6}</Project>
       <Name>EngineIoClientDotNet.mono</Name>
     </ProjectReference>

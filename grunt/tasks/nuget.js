@@ -20,7 +20,7 @@
 
     function restorePackagesWithTitle(title) {
       var
-        sln = string.format('./../src/{0}.sln', title),
+        sln = string.format('./../Src/{0}/{0}.sln', title),
         restore = string.format(format_str, nuget_path, sln);
 
       tasks.push(restore);

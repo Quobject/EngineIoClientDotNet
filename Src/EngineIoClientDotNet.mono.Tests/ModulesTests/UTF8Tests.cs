@@ -55,7 +55,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ModulesTests
         [Fact]
         public void EncodeAndDecode()
         {
-
+            LogManager.SetupLogManager();
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
