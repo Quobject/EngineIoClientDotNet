@@ -49,6 +49,16 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                 var log = LogManager.GetLogger(Global.CallerName());
                 log.Info("open");
             }
+
+            public int CompareTo(IListener other)
+            {
+                return this.GetId().CompareTo(other.GetId());
+            }
+
+            public int GetId()
+            {
+                return 0;
+            }
         }
 
         public class MessageListener : IListener
@@ -79,6 +89,16 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                 connectionTest.Message = (string) args[0];
                 socket.Close();
             }
+            public int CompareTo(IListener other)
+            {
+                return this.GetId().CompareTo(other.GetId());
+            }
+
+            public int GetId()
+            {
+                return 0;
+            }
+
         }
 
 

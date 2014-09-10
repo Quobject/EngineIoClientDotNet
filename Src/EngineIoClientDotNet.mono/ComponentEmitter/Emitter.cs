@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Immutable;
 //using log4net;
 using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
+
 using EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Modules;
 

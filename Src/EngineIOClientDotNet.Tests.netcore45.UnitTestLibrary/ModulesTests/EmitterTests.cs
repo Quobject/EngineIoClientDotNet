@@ -26,6 +26,16 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
                 _calls.Add("one");
                 _calls.Add(args[0]);
             }
+
+            public int CompareTo(IListener other)
+            {
+                return this.GetId().CompareTo(other.GetId());
+            }
+
+            public int GetId()
+            {
+                return 0;
+            }
         }
 
         public class TestListener2 : IListener
@@ -41,6 +51,16 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
             {
                 _calls.Add("two");
                 _calls.Add(args[0]);
+            }
+
+            public int CompareTo(IListener other)
+            {
+                return this.GetId().CompareTo(other.GetId());
+            }
+
+            public int GetId()
+            {
+                return 0;
             }
         }
 
@@ -105,6 +125,16 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
             {
                 _calls.Add("one");
             }
+
+            public int CompareTo(IListener other)
+            {
+                return this.GetId().CompareTo(other.GetId());
+            }
+
+            public int GetId()
+            {
+                return 0;
+            }
         }
 
         public class TestListener4 : IListener
@@ -119,6 +149,15 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
             public void Call(params object[] args)
             {
                 _calls.Add("two");
+            }
+            public int CompareTo(IListener other)
+            {
+                return this.GetId().CompareTo(other.GetId());
+            }
+
+            public int GetId()
+            {
+                return 0;
             }
         }
 
@@ -180,6 +219,16 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
             {
                 this._called[0] = true;
             }
+
+            public int CompareTo(IListener other)
+            {
+                return this.GetId().CompareTo(other.GetId());
+            }
+
+            public int GetId()
+            {
+                return 0;
+            }
         }
 
         public class TestListener6 : IListener
@@ -196,6 +245,16 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
             public void Call(params object[] args)
             {
                 _emitter.Off("tobi", _bListener);
+            }
+
+            public int CompareTo(IListener other)
+            {
+                return this.GetId().CompareTo(other.GetId());
+            }
+
+            public int GetId()
+            {
+                return 0;
             }
         }
 

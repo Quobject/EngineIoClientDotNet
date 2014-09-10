@@ -99,38 +99,107 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Client\EngineIOException.cs" />
-    <Compile Include="Client\HandshakeData.cs" />
-    <Compile Include="Client\Socket.cs" />
-    <Compile Include="Client\Transport.cs" />
-    <Compile Include="Client\Transports\PollingXHR_netcore45.cs" />
-    <Compile Include="Client\Transports\WebSocket_netcore45.cs" />
-    <Compile Include="Client\Transports\HttpURLConnection.cs" />
-    <Compile Include="Client\Transports\Polling.cs" />
-    <Compile Include="ComponentEmitter\Emitter.cs" />
-    <Compile Include="Modules\Global_netcore45.cs" />
-    <Compile Include="Modules\LogManager_netcore45.cs" />
-    <Compile Include="Modules\ParseQS.cs" />
-    <Compile Include="Modules\ServerCertificate_netcore45.cs" />
-    <Compile Include="Modules\UTF8.cs" />
-    <Compile Include="Modules\UTF8Exception.cs" />
-    <Compile Include="Parser\Buffer.cs" />
-    <Compile Include="Parser\ByteBuffer.cs" />
-    <Compile Include="Parser\IDecodePayloadCallback.cs" />
-    <Compile Include="Parser\IEncodeCallback.cs" />
-    <Compile Include="Parser\Packet.cs" />
-    <Compile Include="Parser\Parser.cs" />
+    <Compile Include="..\EngineIoClientDotNet.mono\Client\EngineIOException.cs">
+      <Link>Client\EngineIOException.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Client\HandshakeData.cs">
+      <Link>Client\HandshakeData.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Client\Socket.cs">
+      <Link>Client\Socket.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Client\Transport.cs">
+      <Link>Client\Transport.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Client\Transports\HttpURLConnection.cs">
+      <Link>Client\Transports\HttpURLConnection.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Client\Transports\Polling.cs">
+      <Link>Client\Transports\Polling.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Client\Transports\PollingXHR_netcore45.cs">
+      <Link>Client\Transports\PollingXHR_netcore45.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Client\Transports\WebSocket_netcore45.cs">
+      <Link>Client\Transports\WebSocket_netcore45.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\ComponentEmitter\Emitter.cs">
+      <Link>ComponentEmitter\Emitter.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Modules\Global_netcore45.cs">
+      <Link>Modules\Global_netcore45.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Modules\LogManager_netcore45.cs">
+      <Link>Modules\LogManager_netcore45.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Modules\ParseQS.cs">
+      <Link>Modules\ParseQS.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Modules\ServerCertificate_netcore45.cs">
+      <Link>Modules\ServerCertificate_netcore45.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Modules\UTF8.cs">
+      <Link>Modules\UTF8.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Modules\UTF8Exception.cs">
+      <Link>Modules\UTF8Exception.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Parser\Buffer.cs">
+      <Link>Parser\Buffer.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Parser\ByteBuffer.cs">
+      <Link>Parser\ByteBuffer.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Parser\IDecodePayloadCallback.cs">
+      <Link>Parser\IDecodePayloadCallback.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Parser\IEncodeCallback.cs">
+      <Link>Parser\IEncodeCallback.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Parser\Packet.cs">
+      <Link>Parser\Packet.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Parser\Parser.cs">
+      <Link>Parser\Parser.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Thread\EasyTimer_netcore45.cs">
+      <Link>Thread\EasyTimer_netcore45.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Collections.Immutable\System.Collections.Immutable\AvlNode.cs">
+      <Link>System.Collections.Immutable\AvlNode.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Collections.Immutable\System.Collections.Immutable\IImmutableDictionary.cs">
+      <Link>System.Collections.Immutable\IImmutableDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Collections.Immutable\System.Collections.Immutable\IImmutableList.cs">
+      <Link>System.Collections.Immutable\IImmutableList.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Collections.Immutable\System.Collections.Immutable\IImmutableQueue.cs">
+      <Link>System.Collections.Immutable\IImmutableQueue.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Collections.Immutable\System.Collections.Immutable\IImmutableSet.cs">
+      <Link>System.Collections.Immutable\IImmutableSet.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Collections.Immutable\System.Collections.Immutable\IImmutableStack.cs">
+      <Link>System.Collections.Immutable\IImmutableStack.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Collections.Immutable\System.Collections.Immutable\ImmutableDictionary.cs">
+      <Link>System.Collections.Immutable\ImmutableDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Collections.Immutable\System.Collections.Immutable\ImmutableList.cs">
+      <Link>System.Collections.Immutable\ImmutableList.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Collections.Immutable\System.Collections.Immutable\ImmutableQueue.cs">
+      <Link>System.Collections.Immutable\ImmutableQueue.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Collections.Immutable\System.Collections.Immutable\ImmutableStack.cs">
+      <Link>System.Collections.Immutable\ImmutableStack.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Thread\EasyTimer_netcore45.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.5\lib\netcore45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Collections.Immutable, Version=1.0.34.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.Bcl.Immutable.1.0.34\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>packages\Newtonsoft.Json.6.0.5\lib\netcore45\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
