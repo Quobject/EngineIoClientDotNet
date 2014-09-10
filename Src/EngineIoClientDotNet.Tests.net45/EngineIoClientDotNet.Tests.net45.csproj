@@ -54,49 +54,49 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\EngineIoClientDotNet.mono.Tests\ClientTests\BinaryPollingTest.cs">
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\BinaryPollingTest.cs">
       <Link>ClientTests\BinaryPollingTest.cs</Link>
     </Compile>
-    <Compile Include="..\EngineIoClientDotNet.mono.Tests\ClientTests\BinaryWebSocketTest.cs">
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\BinaryWebSocketTest.cs">
       <Link>ClientTests\BinaryWebSocketTest.cs</Link>
     </Compile>
-    <Compile Include="..\EngineIoClientDotNet.mono.Tests\ClientTests\Connection.cs">
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\Connection.cs">
       <Link>ClientTests\Connection.cs</Link>
     </Compile>
-    <Compile Include="..\EngineIoClientDotNet.mono.Tests\ClientTests\ConnectionTest.cs">
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\ConnectionTest.cs">
       <Link>ClientTests\ConnectionTest.cs</Link>
     </Compile>
-    <Compile Include="..\EngineIoClientDotNet.mono.Tests\ClientTests\HandshakeDataTests.cs">
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\HandshakeDataTests.cs">
       <Link>ClientTests\HandshakeDataTests.cs</Link>
     </Compile>
-    <Compile Include="..\EngineIoClientDotNet.mono.Tests\ClientTests\ServerConnectionTest.cs">
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\ServerConnectionTest.cs">
       <Link>ClientTests\ServerConnectionTest.cs</Link>
     </Compile>
-    <Compile Include="..\EngineIoClientDotNet.mono.Tests\ClientTests\SocketTest.cs">
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\SocketTest.cs">
       <Link>ClientTests\SocketTest.cs</Link>
     </Compile>
-    <Compile Include="..\EngineIoClientDotNet.mono.Tests\ClientTests\SSLServerConnectionTest.cs">
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\SSLServerConnectionTest.cs">
       <Link>ClientTests\SSLServerConnectionTest.cs</Link>
     </Compile>
-    <Compile Include="..\EngineIoClientDotNet.mono.Tests\ClientTests\TransportTest.cs">
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\TransportTest.cs">
       <Link>ClientTests\TransportTest.cs</Link>
     </Compile>
-    <Compile Include="..\EngineIoClientDotNet.mono.Tests\ClientTests\UsageTest.cs">
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\UsageTest.cs">
       <Link>ClientTests\UsageTest.cs</Link>
     </Compile>
-    <Compile Include="..\EngineIoClientDotNet.mono.Tests\ModulesTests\EmitterTests.cs">
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ModulesTests\EmitterTests.cs">
       <Link>ModulesTests\EmitterTests.cs</Link>
     </Compile>
-    <Compile Include="..\EngineIoClientDotNet.mono.Tests\ModulesTests\ParseQSTests.cs">
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ModulesTests\ParseQSTests.cs">
       <Link>ModulesTests\ParseQSTests.cs</Link>
     </Compile>
-    <Compile Include="..\EngineIoClientDotNet.mono.Tests\ModulesTests\UTF8Tests.cs">
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ModulesTests\UTF8Tests.cs">
       <Link>ModulesTests\UTF8Tests.cs</Link>
     </Compile>
-    <Compile Include="..\EngineIoClientDotNet.mono.Tests\ParserTests\DecodeTests.cs">
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ParserTests\DecodeTests.cs">
       <Link>ParserTests\DecodeTests.cs</Link>
     </Compile>
-    <Compile Include="..\EngineIoClientDotNet.mono.Tests\ParserTests\TestsParser.cs">
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ParserTests\TestsParser.cs">
       <Link>ParserTests\TestsParser.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

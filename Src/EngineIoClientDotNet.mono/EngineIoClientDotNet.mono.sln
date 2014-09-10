@@ -5,7 +5,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngineIoClientDotNet.mono",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Collections.Immutable", "..\System.Collections.Immutable\System.Collections.Immutable.csproj", "{024A2111-4B19-44D7-917E-8514CF632469}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngineIoClientDotNet.Tests.mono", "..\EngineIoClientDotNet.mono.Tests\EngineIoClientDotNet.Tests.mono.csproj", "{382C2A10-8043-49C6-9DE5-39CA25C2418C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngineIoClientDotNet.Tests.mono", "..\EngineIoClientDotNet.Tests.mono\EngineIoClientDotNet.Tests.mono.csproj", "{382C2A10-8043-49C6-9DE5-39CA25C2418C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
