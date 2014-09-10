@@ -7,7 +7,8 @@ module.exports = function (grunt) {
     os = node_os.platform() === 'win32' ? 'win' : 'linux',
     nuget_builds = [
       { "Name": "EngineIoClientDotNet.net45", "NuGetDir": "net45" },
-      { "Name": "EngineIoClientDotNet.windowsphone8", "NuGetDir": "windowsphone8" }
+      { "Name": "EngineIoClientDotNet.windowsphone8", "NuGetDir": "windowsphone8" },
+       { "Name": "EngineIoClientDotNet.netcore45", "NuGetDir": "netcore45" }
     ];
 
   grunt.log.writeln(util.inspect(config));
