@@ -17,19 +17,14 @@ namespace EngineIoClientDotNet.Modules
         private static readonly LogManager EmptyLogger = new LogManager(null);
         private static StreamWriter myOutputWriter = null;
 
+        private static System.IO.StreamWriter file;
+
         #region Statics
 
         public static void SetupLogManager()
         {
-            if (myTextListener == null)
-            {
-                myOutputWriter = new StreamWriter(myFileName, true);
-                myOutputWriter.AutoFlush = true;
-                myTextListener = new TextWriterTraceListener(myOutputWriter);
+          
 
-            }
-            Trace.Listeners.Add(myTextListener);
-            Trace.AutoFlush = true;
         }
 
         public static LogManager GetLogger(string type)
@@ -64,9 +59,16 @@ namespace EngineIoClientDotNet.Modules
         [Conditional("DEBUG")]
         public void Info(string msg)
         {
-            Trace.WriteLine(string.Format("{0} [{3}] {1} - {2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), MyType, msg, System.Threading.Thread.CurrentThread.ManagedThreadId));
-            myTextListener.Flush();
-            myOutputWriter.Flush();
+            //Trace.WriteLine(string.Format("{0} [{3}] {1} - {2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), MyType, msg, System.Threading.Thread.CurrentThread.ManagedThreadId));
+            var msg1 = string.Format("{0} [{3}] {1} - {2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), MyType, msg,
+                System.Threading.Thread.CurrentThread.ManagedThreadId);
+
+            if (LogManager.file == null)
+            {
+                LogManager.file = new System.IO.StreamWriter(myFileName, true);
+                LogManager.file.AutoFlush = true;
+            }
+            LogManager.file.WriteLine(msg1);
         }
 
         [Conditional("DEBUG")]
