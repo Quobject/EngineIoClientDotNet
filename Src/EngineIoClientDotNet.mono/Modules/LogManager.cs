@@ -23,6 +23,7 @@ namespace EngineIoClientDotNet.Modules
             if (myTextListener == null)
             {
                 var myOutputWriter = new StreamWriter(myFileName, true);
+                myOutputWriter.AutoFlush = true;
                 myTextListener = new TextWriterTraceListener(myOutputWriter);
 
             }

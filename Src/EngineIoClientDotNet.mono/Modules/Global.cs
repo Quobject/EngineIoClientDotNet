@@ -20,7 +20,6 @@ namespace Quobject.EngineIoClientDotNet.Modules
 
         public static string CallerName([CallerMemberName]string caller = "", [CallerLineNumber]int number = 0, [CallerFilePath]string path = "")
         {
-            Uri u = new Uri(path);
             var s = path.Split('\\');
             var fileName = s.LastOrDefault();
 
