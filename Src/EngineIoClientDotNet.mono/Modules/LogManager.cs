@@ -13,9 +13,7 @@ namespace EngineIoClientDotNet.Modules
     {
         private const string myFileName = "XunitTrace.txt";
         private string MyType;
-        private static TextWriterTraceListener myTextListener = null;
         private static readonly LogManager EmptyLogger = new LogManager(null);
-        private static StreamWriter myOutputWriter = null;
 
         private static System.IO.StreamWriter file;
 

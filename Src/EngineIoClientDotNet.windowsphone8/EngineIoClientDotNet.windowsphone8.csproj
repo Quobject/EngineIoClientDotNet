@@ -104,9 +104,6 @@
     <Compile Include="..\EngineIoClientDotNet.mono\Client\Transports\PollingXHR_windowsphone8.cs">
       <Link>Client\Transports\PollingXHR_windowsphone8.cs</Link>
     </Compile>
-    <Compile Include="..\EngineIoClientDotNet.mono\Client\Transports\WebSocket.cs">
-      <Link>Client\Transports\WebSocket.cs</Link>
-    </Compile>
     <Compile Include="..\EngineIoClientDotNet.mono\ComponentEmitter\Emitter.cs">
       <Link>ComponentEmitter\Emitter.cs</Link>
     </Compile>
@@ -179,6 +176,7 @@
     <Compile Include="..\System.Collections.Immutable\System.Collections.Immutable\ImmutableStack.cs">
       <Link>System.Collections.Immutable\ImmutableStack.cs</Link>
     </Compile>
+    <Compile Include="Client\Transports\WebSocket_windowsphone8.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
