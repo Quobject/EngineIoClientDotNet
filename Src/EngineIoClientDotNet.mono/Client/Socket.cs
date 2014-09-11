@@ -590,9 +590,10 @@ namespace Quobject.EngineIoClientDotNet.Client
 
             PriorWebsocketSuccess = false;
 
+            var transport = CreateTransport(name);
             var parameters = new ProbeParameters
             {
-                Transport = ImmutableList<Transport>.Empty.Add(CreateTransport(name)),
+                Transport = ImmutableList<Transport>.Empty.Add(transport),
                 Failed = ImmutableList<bool>.Empty.Add(false),
                 Cleanup = ImmutableList<Action>.Empty,
                 Socket = this
@@ -662,8 +663,8 @@ namespace Quobject.EngineIoClientDotNet.Client
                 }
 
                 var packet = new Packet(Packet.PING, "probe");
-                Parameters.Transport[0].Send(ImmutableList<Packet>.Empty.Add(packet));
                 Parameters.Transport[0].Once(Client.Transport.EVENT_PACKET, new ProbeEventPacketListener(this));
+                Parameters.Transport[0].Send(ImmutableList<Packet>.Empty.Add(packet));
             }
 
             private class ProbeEventPacketListener : IListener

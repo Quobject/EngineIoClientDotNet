@@ -118,7 +118,7 @@
     <Compile Include="ClientTests\SocketTest.cs" />
     <Compile Include="ClientTests\SSLServerConnectionTest.cs" />
     <Compile Include="ClientTests\UsageTest.cs" />
-    <Compile Include="ModulesTests\EmitterTests.cs" />
+    <Compile Include="ComponentEmitterTests\EmitterTests.cs" />
     <Compile Include="ModulesTests\ParseQSTests.cs" />
     <Compile Include="ModulesTests\UTF8Tests.cs" />
     <Compile Include="ParserTests\DecodeTests.cs" />
@@ -151,7 +151,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ComponentEmitterTests\" />
     <Folder Include="ThreadTests\" />
   </ItemGroup>
   <ItemGroup>

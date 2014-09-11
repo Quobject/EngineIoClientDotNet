@@ -53,10 +53,10 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                         return;
                     }
                     events.Enqueue(d);
-                    socket.Close();
+                    //socket.Close();
                 });
                 socket.Send(binaryData);
-                //socket.Send("cash money €€€");
+                socket.Send("cash money €€€");
             });
 
             socket.Open();

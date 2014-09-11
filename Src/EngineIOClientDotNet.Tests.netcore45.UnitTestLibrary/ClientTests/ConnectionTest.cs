@@ -35,7 +35,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             socket.On(Socket.EVENT_OPEN, new TestListener());
             socket.On(Socket.EVENT_MESSAGE, new MessageListener(socket, this));
             socket.Open();
-            Task.Delay(TimeSpan.FromSeconds(1)).Wait();
+            //Task.Delay(TimeSpan.FromSeconds(1)).Wait();
             Assert.AreEqual("hi", this.Message);
         }
 

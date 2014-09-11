@@ -2,7 +2,9 @@
 //using log4net;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Windows.Storage.Streams;
+using Windows.Web;
 using EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Parser;
@@ -19,7 +21,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
         public static readonly string NAME = "websocket";
 
         // How to connect with a MessageWebSocket http://msdn.microsoft.com/en-us/library/windows/apps/xaml/hh994397.aspx
-        private MessageWebSocket ws;
+        private StreamWebSocket ws;
 
         public WebSocket(Options opts)
             : base(opts)
@@ -27,25 +29,36 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             Name = NAME;
         }
 
-        protected override async void DoOpen()
+        protected override void DoOpen()
         {
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("DoOpen uri =" + this.Uri());
 
-            ws = new Windows.Networking.Sockets.MessageWebSocket();
-            // MessageWebSocket supports both utf8 and binary messages.
-            // When utf8 is specified as the messageType, then the developer
-            // promises to only send utf8-encoded data.            
-            //ws.Control.MessageType = Windows.Networking.Sockets.SocketMessageType.Utf8;
+            //How to connect with a StreamWebSocket (XAML) http://msdn.microsoft.com/en-us/library/ie/hh994398
+            ws = new Windows.Networking.Sockets.StreamWebSocket();
 
-            ws.MessageReceived += ws_MessageReceived;
-            ws.Closed += ws_Closed;  
-            
+            ws.Closed += ws_Closed;
+
+            //
+            // Start a background task to continuously read for incoming data
+            Task receiving = Task.Factory.StartNew(ReceiveData,
+               ws.InputStream.AsStreamForRead(), TaskCreationOptions.LongRunning);
+
             var serverAddress = new Uri( this.Uri());
 
             try
             {
-                await ws.ConnectAsync(serverAddress);
+                //await ws.ConnectAsync(serverAddress);
+                //  http://stackoverflow.com/questions/13027449/wait-for-a-thread-to-complete-in-metro               
+                //Task.WaitAny(ws.ConnectAsync(serverAddress).AsTask());
+                
+                var task =ws.ConnectAsync(serverAddress).AsTask();
+                task.Wait();
+                if (task.IsFaulted)
+                {
+                    throw new EngineIOException(task.Exception.Message,task.Exception);
+                }
+
                 ws_Opened();
             }
             catch (Exception e)
@@ -53,6 +66,39 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 this.OnError("DoOpen", e);
             }                                                          
         }
+
+        private byte[] readBuffer;
+        private async void ReceiveData(object state)
+        {
+            var log = LogManager.GetLogger(Global.CallerName());
+
+            int bytesReceived = 0;
+            try
+            {
+                Stream readStream = (Stream)state;
+
+                while (true) // Until closed and ReadAsync fails.
+                {
+                    int read = await readStream.ReadAsync(readBuffer, 0, readBuffer.Length);
+                    bytesReceived += read;
+                    log.Info("ws_MessageReceived e.Message= " + data);
+                    this.OnData(readBuffer);
+                    // Do something with the data.
+                }
+            }
+            catch (ObjectDisposedException e)
+            {
+                // Display a message that the read has stopped, or take a specific action
+                this.OnError("ObjectDisposedException", e);
+            }
+            catch (Exception ex)
+            {
+                WebErrorStatus status = WebSocketError.GetStatus(ex.GetBaseException().HResult);
+                // Add your specific error-handling code here.
+                this.OnError("ReceiveData", ex);
+            }
+        }
+
 
         void ws_MessageReceived(MessageWebSocket sender, MessageWebSocketMessageReceivedEventArgs args)
         {
@@ -94,7 +140,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
         }     
 
 
-        protected override async void Write(System.Collections.Immutable.ImmutableList<Parser.Packet> packets)
+        protected override void Write(System.Collections.Immutable.ImmutableList<Parser.Packet> packets)
         {
             Writable = false;
 
@@ -108,11 +154,11 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
                 // fake drain
                 // defer to next tick to allow Socket to clear writeBuffer
-                await EasyTimer.SetTimeoutAsync(() =>
+                EasyTimer.SetTimeoutAsync(() =>
                 {
                     Writable = true;
                     Emit(EVENT_DRAIN);
-                }, 1);
+                }, 1).Wait();
             }
             catch (Exception e)
             {
@@ -129,16 +175,27 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 this.webSocket = webSocket;
             }
 
-            public async void Call(object data)
+            public void Call(object data)
             {
                 //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
 
                 if (data is string)
                 {                    
                     var writer = new DataWriter(this.webSocket.ws.OutputStream);
-                    writer.WriteString((string)data);
-                    await writer.StoreAsync();                                     
-                    await writer.FlushAsync();
+                    writer.WriteString((string) data);
+
+                    var task = writer.StoreAsync().AsTask();
+                    task.Wait();
+                    if (task.IsFaulted)
+                    {
+                        throw new EngineIOException(task.Exception.Message,task.Exception);
+                    }
+                    //var task2 = writer.FlushAsync().AsTask();
+                    //task2.Wait();
+                    //if (task2.IsFaulted)
+                    //{
+                    //    throw new EngineIOException(task2.Exception.Message, task2.Exception);
+                    //}                    
                 }
                 else if (data is byte[])
                 {
@@ -151,7 +208,15 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                     messageWriter.WriteBytes(d);
 
                     // Send the data as one complete message.
-                    await messageWriter.StoreAsync();
+                    //await messageWriter.StoreAsync();
+
+                    var task = messageWriter.StoreAsync().AsTask();
+                    task.Wait();
+                    if (task.IsFaulted)
+                    {
+                        throw new EngineIOException(task.Exception.Message, task.Exception);
+                    }  
+
                 }
             }
         }
@@ -166,7 +231,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 try
                 {
                     ws.Closed -= ws_Closed;
-                    ws.MessageReceived -= ws_MessageReceived;
+                    //ws.MessageReceived -= ws_MessageReceived;
                     ws.Close(1000, "DoClose");
                     ws.Dispose();
                 }

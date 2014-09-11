@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
+using System.Threading.Tasks;
 using EngineIoClientDotNet.Modules;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Quobject.EngineIoClientDotNet.Client;
@@ -40,7 +41,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
 
             var options = CreateOptions();
-            options.Transports = ImmutableList.Create<string>(Polling.NAME);
+            //options.Transports = ImmutableList.Create<string>(Polling.NAME);
 
 
             var socket = new Socket(options);
@@ -48,28 +49,25 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             socket.On(Socket.EVENT_OPEN, () =>
             {
 
-                log.Info("EVENT_OPEN");
-                socket.On(Socket.EVENT_MESSAGE, (d) =>
-                {
-
-                    var data = d as string;
-                    log.Info(string.Format("EVENT_MESSAGE data ={0} d = {1} ", data, d));
-
-                    if (data == "hi")
-                    {
-                        return;
-                    }
-                    events.Enqueue(d);
-                    this._autoResetEvent.Set(); 
-                });
-                socket.Send(binaryData);
+                log.Info("EVENT_OPEN");            
                 //socket.Send("cash money €€€");
+                socket.Send(binaryData);
+            });
+
+            socket.On(Socket.EVENT_MESSAGE, (d) =>
+            {
+                var data = d as string;
+                log.Info(string.Format("EVENT_MESSAGE data ={0} d = {1} ", data, d));
+
+                if (data == "hi")
+                {
+                    return;
+                }
+                events.Enqueue(d);
+                socket.Close();
             });
 
             socket.Open();
-            this._autoResetEvent.WaitOne();
-            socket.Close();
-
             log.Info("ReceiveBinaryData end");
 
             var binaryData2 = new byte[5];
@@ -80,17 +78,15 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             object result;
             result = events.Dequeue();
-            CollectionAssert.AreEqual(binaryData2, (byte[])result);
+            CollectionAssert.AreEqual(binaryData, (byte[])result);
         }
 
 
         [TestMethod]
         public void ReceiveBinaryDataAndMultibyteUTF8String()
         {
-
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
-            this._autoResetEvent = new AutoResetEvent(false);
 
             var events = new Queue<object>();
 
@@ -124,7 +120,8 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                     events.Enqueue(d);
                     if (events.Count > 1)
                     {
-                        this._autoResetEvent.Set(); 
+                        //this._autoResetEvent.Set(); 
+                        //socket.Close();
                     }
                 });
                 socket.Send(binaryData);
@@ -132,7 +129,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             });
 
             socket.Open();
-            this._autoResetEvent.WaitOne();
             socket.Close();
 
 
@@ -147,7 +143,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             CollectionAssert.AreEqual(binaryData, (byte[])result);
             result = events.Dequeue();
             Assert.AreEqual(stringData, (string)result);
-            socket.Close();
 
         }
 

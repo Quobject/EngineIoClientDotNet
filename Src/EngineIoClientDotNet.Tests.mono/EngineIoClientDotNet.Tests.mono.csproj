@@ -57,7 +57,7 @@
     <Compile Include="ClientTests\SSLServerConnectionTest.cs" />
     <Compile Include="ClientTests\TransportTest.cs" />
     <Compile Include="ClientTests\UsageTest.cs" />
-    <Compile Include="ModulesTests\EmitterTests.cs" />
+    <Compile Include="ComponentEmitterTests\EmitterTests.cs" />
     <Compile Include="ModulesTests\ParseQSTests.cs" />
     <Compile Include="ModulesTests\UTF8Tests.cs" />
     <Compile Include="ParserTests\DecodeTests.cs" />
@@ -65,7 +65,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ComponentEmitterTests\" />
     <Folder Include="ThreadTests\" />
   </ItemGroup>
   <ItemGroup>

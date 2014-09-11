@@ -1,5 +1,6 @@
 ﻿//using log4net;
 
+using System.Threading;
 using EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Client;
 using Quobject.EngineIoClientDotNet.Client.Transports;
@@ -13,12 +14,18 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 {
     public class ServerConnectionTest : Connection
     {
+
+        AutoResetEvent _autoResetEvent;
+
+
         [Fact]
         public async Task OpenAndClose()
         {
 
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
+
+            this._autoResetEvent = new AutoResetEvent(false);
 
             var events = new ConcurrentQueue<string>();
 
@@ -34,9 +41,13 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             {
                 log.Info("EVENT_CLOSE");
                 events.Enqueue(Socket.EVENT_CLOSE);
+                this._autoResetEvent.Set();
             });
-            socket.Open();
 
+            socket.Open();
+            log.Info("AFTER socket.Open()");
+            this._autoResetEvent.WaitOne();
+            log.Info("AFTER WaitOne()");
             string result;
             events.TryDequeue(out result);
             Assert.Equal(Socket.EVENT_OPEN, result);
@@ -88,7 +99,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
-
+            //this._autoResetEvent = new AutoResetEvent(false);
 
             HandshakeData handshake_data = null;
 
@@ -98,10 +109,13 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             {
                 log.Info(Socket.EVENT_HANDSHAKE + string.Format(" data = {0}", data));
                 handshake_data = data as HandshakeData;
+                //this._autoResetEvent.Set();
             });
 
             socket.Open();
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(5));
+            //log.Info("AFTER socket.Open()");
+            //this._autoResetEvent.WaitOne();
+            //log.Info("AFTER WaitOne()");
             socket.Close();
 
             Assert.NotNull(handshake_data);

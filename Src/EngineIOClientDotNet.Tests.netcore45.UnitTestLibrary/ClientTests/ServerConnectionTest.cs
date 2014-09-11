@@ -118,7 +118,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             });
 
             socket.Open();
-            Task.Delay(TimeSpan.FromSeconds(3)).Wait();
             socket.Close();
 
             Assert.IsNotNull(handshake_data);
