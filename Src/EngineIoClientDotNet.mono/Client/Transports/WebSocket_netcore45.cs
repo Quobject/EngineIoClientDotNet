@@ -21,7 +21,8 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
         public static readonly string NAME = "websocket";
 
         // How to connect with a MessageWebSocket http://msdn.microsoft.com/en-us/library/windows/apps/xaml/hh994397.aspx
-        private StreamWebSocket ws;
+        private MessageWebSocket ws;
+        private DataWriter dataWriter;
 
         public WebSocket(Options opts)
             : base(opts)
@@ -35,15 +36,11 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             log.Info("DoOpen uri =" + this.Uri());
 
             //How to connect with a StreamWebSocket (XAML) http://msdn.microsoft.com/en-us/library/ie/hh994398
-            ws = new Windows.Networking.Sockets.StreamWebSocket();
+            ws = new Windows.Networking.Sockets.MessageWebSocket();
 
             ws.Closed += ws_Closed;
-
-            //
-            // Start a background task to continuously read for incoming data
-            Task receiving = Task.Factory.StartNew(ReceiveData,
-               ws.InputStream.AsStreamForRead(), TaskCreationOptions.LongRunning);
-
+            ws.MessageReceived += ws_MessageReceived;
+       
             var serverAddress = new Uri( this.Uri());
 
             try
@@ -67,37 +64,37 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             }                                                          
         }
 
-        private byte[] readBuffer;
-        private async void ReceiveData(object state)
-        {
-            var log = LogManager.GetLogger(Global.CallerName());
+        //private byte[] readBuffer;
+        //private async void ReceiveData(object state)
+        //{
+        //    var log = LogManager.GetLogger(Global.CallerName());
 
-            int bytesReceived = 0;
-            try
-            {
-                Stream readStream = (Stream)state;
+        //    int bytesReceived = 0;
+        //    try
+        //    {
+        //        Stream readStream = (Stream)state;
 
-                while (true) // Until closed and ReadAsync fails.
-                {
-                    int read = await readStream.ReadAsync(readBuffer, 0, readBuffer.Length);
-                    bytesReceived += read;
-                    log.Info("ws_MessageReceived e.Message= " + data);
-                    this.OnData(readBuffer);
-                    // Do something with the data.
-                }
-            }
-            catch (ObjectDisposedException e)
-            {
-                // Display a message that the read has stopped, or take a specific action
-                this.OnError("ObjectDisposedException", e);
-            }
-            catch (Exception ex)
-            {
-                WebErrorStatus status = WebSocketError.GetStatus(ex.GetBaseException().HResult);
-                // Add your specific error-handling code here.
-                this.OnError("ReceiveData", ex);
-            }
-        }
+        //        while (true) // Until closed and ReadAsync fails.
+        //        {
+        //            int read = await readStream.ReadAsync(readBuffer, 0, readBuffer.Length);
+        //            bytesReceived += read;
+        //            log.Info("ws_MessageReceived e.Message= " + data);
+        //            this.OnData(readBuffer);
+        //            // Do something with the data.
+        //        }
+        //    }
+        //    catch (ObjectDisposedException e)
+        //    {
+        //        // Display a message that the read has stopped, or take a specific action
+        //        this.OnError("ObjectDisposedException", e);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        WebErrorStatus status = WebSocketError.GetStatus(ex.GetBaseException().HResult);
+        //        // Add your specific error-handling code here.
+        //        this.OnError("ReceiveData", ex);
+        //    }
+        //}
 
 
         void ws_MessageReceived(MessageWebSocket sender, MessageWebSocketMessageReceivedEventArgs args)
@@ -179,10 +176,20 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             {
                 //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
 
+                var writer = webSocket.dataWriter;
+
+                if (writer == null)
+                {
+                    webSocket.dataWriter = new DataWriter(this.webSocket.ws.OutputStream);
+                    writer = webSocket.dataWriter;
+                }
+
                 if (data is string)
                 {                    
-                    var writer = new DataWriter(this.webSocket.ws.OutputStream);
+                    
                     writer.WriteString((string) data);
+                    //writer.wr
+                    //writer.FlushAsync()
 
                     var task = writer.StoreAsync().AsTask();
                     task.Wait();
@@ -202,15 +209,14 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                     var d = (byte[])data;
 
                     //webSocket.ws.Send(d, 0, d.Length);
-                    var messageWriter = new DataWriter(webSocket.ws.OutputStream);
-
+                    
                     // Buffer any data we want to send.
-                    messageWriter.WriteBytes(d);
+                    writer.WriteBytes(d);
 
                     // Send the data as one complete message.
                     //await messageWriter.StoreAsync();
 
-                    var task = messageWriter.StoreAsync().AsTask();
+                    var task = writer.StoreAsync().AsTask();
                     task.Wait();
                     if (task.IsFaulted)
                     {
@@ -226,14 +232,17 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
         protected override void DoClose()
         {
             if (ws != null)
-            {
-               
+            {               
                 try
                 {
                     ws.Closed -= ws_Closed;
                     //ws.MessageReceived -= ws_MessageReceived;
+                    dataWriter.Dispose();
+                    dataWriter = null;
+
                     ws.Close(1000, "DoClose");
                     ws.Dispose();
+                    ws = null;
                 }
                 catch (Exception e)
                 {
