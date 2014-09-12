@@ -25,6 +25,26 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "grunt", "..\..\grunt\", "{7
 		VWDPort = "8528"
 	EndProjectSection
 EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TestServer", "..\..\TestServer\", "{7E50397C-1221-49A9-A5F1-8254AC4BFBA4}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/TestServer"
+		Debug.AspNetCompiler.PhysicalPath = "..\..\TestServer\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\TestServer\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/TestServer"
+		Release.AspNetCompiler.PhysicalPath = "..\..\TestServer\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\TestServer\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "48775"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +107,16 @@ Global
 		{7F5CBDD0-5537-4B8B-AD7E-9F7E88600084}.Release|ARM.ActiveCfg = Debug|Any CPU
 		{7F5CBDD0-5537-4B8B-AD7E-9F7E88600084}.Release|x64.ActiveCfg = Debug|Any CPU
 		{7F5CBDD0-5537-4B8B-AD7E-9F7E88600084}.Release|x86.ActiveCfg = Debug|Any CPU
+		{7E50397C-1221-49A9-A5F1-8254AC4BFBA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E50397C-1221-49A9-A5F1-8254AC4BFBA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E50397C-1221-49A9-A5F1-8254AC4BFBA4}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{7E50397C-1221-49A9-A5F1-8254AC4BFBA4}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7E50397C-1221-49A9-A5F1-8254AC4BFBA4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7E50397C-1221-49A9-A5F1-8254AC4BFBA4}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E50397C-1221-49A9-A5F1-8254AC4BFBA4}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{7E50397C-1221-49A9-A5F1-8254AC4BFBA4}.Release|ARM.ActiveCfg = Debug|Any CPU
+		{7E50397C-1221-49A9-A5F1-8254AC4BFBA4}.Release|x64.ActiveCfg = Debug|Any CPU
+		{7E50397C-1221-49A9-A5F1-8254AC4BFBA4}.Release|x86.ActiveCfg = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
