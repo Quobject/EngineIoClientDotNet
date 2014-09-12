@@ -81,7 +81,6 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             {
                 Parser.Parser.EncodePacket(packet, new WriteEncodeCallback(this));
             }
-            //Parser.Parser.EncodePayload(packets.ToArray(), new WriteEncodeCallback(this));
 
             // fake drain
             // defer to next tick to allow Socket to clear writeBuffer

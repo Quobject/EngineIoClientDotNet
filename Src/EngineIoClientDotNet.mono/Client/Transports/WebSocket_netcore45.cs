@@ -37,7 +37,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             //How to connect with a StreamWebSocket (XAML) http://msdn.microsoft.com/en-us/library/ie/hh994398
             ws = new Windows.Networking.Sockets.MessageWebSocket();
-
+            ws.Control.MessageType = SocketMessageType.Utf8;
             ws.Closed += ws_Closed;
             ws.MessageReceived += ws_MessageReceived;
        
@@ -147,7 +147,6 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 {
                     Parser.Parser.EncodePacket(packet, new WriteEncodeCallback(this));
                 }
-                Parser.Parser.EncodePayload(packets.ToArray(), new WriteEncodeCallback(this));
 
                 // fake drain
                 // defer to next tick to allow Socket to clear writeBuffer
@@ -181,6 +180,10 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 if (writer == null)
                 {
                     webSocket.dataWriter = new DataWriter(this.webSocket.ws.OutputStream);
+
+                    webSocket.dataWriter.UnicodeEncoding = Windows.Storage.Streams.UnicodeEncoding.Utf8;
+                    webSocket.dataWriter.ByteOrder = Windows.Storage.Streams.ByteOrder.LittleEndian;
+
                     writer = webSocket.dataWriter;
                 }
 
