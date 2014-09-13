@@ -34,14 +34,15 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             socket.On(Socket.EVENT_OPEN, () =>
             {
-                log.Info(Socket.EVENT_OPEN);
-                socket.On(Socket.EVENT_UPGRADE, () =>
-                {
-
-                    log.Info(Socket.EVENT_UPGRADE);
-                    socket.Send(binaryData);
-                });
+                log.Info(Socket.EVENT_OPEN);                
             });
+
+            socket.On(Socket.EVENT_UPGRADE, () =>
+            {
+                log.Info(Socket.EVENT_UPGRADE);
+                socket.Send(binaryData);
+            });
+
 
             socket.On(Socket.EVENT_MESSAGE, (d) =>
             {

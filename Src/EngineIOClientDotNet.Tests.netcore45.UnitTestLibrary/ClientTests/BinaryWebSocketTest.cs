@@ -1,5 +1,6 @@
 ﻿//using log4net;
 
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using EngineIoClientDotNet.Modules;
@@ -17,16 +18,13 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
     [TestClass]
     public class BinaryWebSocketTest : Connection
     {
-
-        AutoResetEvent _autoResetEvent;
+       
 
         [TestMethod]
         public void ReceiveBinaryData()
         {
-
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
-            this._autoResetEvent = new AutoResetEvent(false);
 
             var events = new Queue<object>();
 
@@ -61,18 +59,19 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                     return;
                 }
                 events.Enqueue(d);
-                this._autoResetEvent.Set(); 
+                socket.Close();
             });
 
             socket.Open();
-            this._autoResetEvent.WaitOne();
-            socket.Close();
+            
 
             var binaryData2 = new byte[5];
             for (int i = 0; i < binaryData.Length; i++)
             {
                 binaryData2[i] = (byte) (i + 1);
             }
+
+            Task.Delay(TimeSpan.FromSeconds(10)).Wait();
 
             object result = events.Dequeue();
             CollectionAssert.AreEqual(binaryData, (byte[]) result);
@@ -86,7 +85,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
-            this._autoResetEvent = new AutoResetEvent(false);
 
             var events = new Queue<object>();
 
@@ -123,19 +121,19 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                 events.Enqueue(d);
                 if (events.Count > 1)
                 {
-                    this._autoResetEvent.Set(); 
+                    socket.Close();
                 }
             });
 
             socket.Open();
-            this._autoResetEvent.WaitOne();           
-            socket.Close();
+            
 
             var binaryData2 = new byte[5];
             for (int i = 0; i < binaryData2.Length; i++)
             {
                 binaryData2[i] = (byte) (i + 1);
             }
+            Task.Delay(TimeSpan.FromSeconds(3)).Wait();
 
             object result;
             result = events.Dequeue();            

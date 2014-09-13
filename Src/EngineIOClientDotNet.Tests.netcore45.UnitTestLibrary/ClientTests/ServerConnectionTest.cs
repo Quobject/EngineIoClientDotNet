@@ -91,7 +91,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             string result;
             result = events.Dequeue();
-            Assert.AreEqual("hi1", result);
+            Assert.AreEqual("hi", result);
             result = events.Dequeue();
             Assert.AreEqual("hello", result);
 
