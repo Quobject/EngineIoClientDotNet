@@ -206,6 +206,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             if (ReadyState != ReadyStateEnum.CLOSED)
             {
                 IsPolling = false;
+                log.Info("ReadyState != ReadyStateEnum.CLOSED");
                 Emit(EVENT_POLL_COMPLETE);
 
                 if (ReadyState == ReadyStateEnum.OPEN)

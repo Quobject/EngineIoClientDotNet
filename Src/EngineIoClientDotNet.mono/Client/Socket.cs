@@ -1,5 +1,6 @@
 ﻿//using log4net;
 
+using System.Diagnostics.Eventing.Reader;
 using EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Client.Transports;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
@@ -156,7 +157,10 @@ namespace Quobject.EngineIoClientDotNet.Client
             ReadyState = ReadyStateEnum.OPENING;
             var transport = CreateTransport(transportName);
             SetTransport(transport);
-            transport.Open();
+            EventTasks.Exec((n) =>
+            {
+                transport.Open();
+            });
             return this;
         }
 
@@ -573,6 +577,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
 
             if (ReadyState == ReadyStateEnum.OPEN && Upgrade && Transport is Polling)
+            //if (ReadyState == ReadyStateEnum.OPEN && Upgrade && this.Transport)
             {
                 log.Info("OnOpen starting upgrade probes");
                 foreach (var upgrade in Upgrades)

@@ -34,7 +34,7 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
         /// <returns>a reference to this object.</returns>
         public Emitter Emit(string eventString, params object[] args) 
         {
-            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            //var log = LogManager.GetLogger(Global.CallerName());
             //log.Info("Emitter emit event = " + eventString);
             if (this.callbacks.ContainsKey(eventString))
             {

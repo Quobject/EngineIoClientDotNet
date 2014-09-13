@@ -258,7 +258,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 Data = options.Data;
             }
 
-            public async void Create()
+            public void Create()
             {
                 var log = LogManager.GetLogger(Global.CallerName());
 
@@ -289,8 +289,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
                         using (var requestStream = Xhr.GetRequestStream())
                         {
-                            await requestStream.WriteAsync(Data, 0, Data.Length);
-
+                            requestStream.WriteAsync(Data, 0, Data.Length).Wait();
                         }
                     }
 

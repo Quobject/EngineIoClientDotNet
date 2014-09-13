@@ -40,7 +40,9 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             socket.On(Socket.EVENT_UPGRADE, () =>
             {
                 log.Info(Socket.EVENT_UPGRADE);
-                socket.Send(binaryData);
+                //socket.Send(binaryData);
+                socket.Send("why");
+
             });
 
 
