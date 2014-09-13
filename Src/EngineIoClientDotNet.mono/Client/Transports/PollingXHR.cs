@@ -179,7 +179,12 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             sendXhr = Request();
             sendXhr.On(EVENT_DATA, new DoPollEventDataListener(this));
             sendXhr.On(EVENT_ERROR, new DoPollEventErrorListener(this));
-            sendXhr.Create();
+            PollTasks.Exec((n) =>
+            {
+                var log = LogManager.GetLogger(Global.CallerName());
+                log.Info("sendXhr.Create();");
+                sendXhr.Create();
+            });
         }
 
         class DoPollEventDataListener : IListener
