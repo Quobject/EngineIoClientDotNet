@@ -48,9 +48,9 @@
       <Project>{842d8b13-daf3-4919-80a0-03efa3c17178}</Project>
       <Name>EngineIoClientDotNet.net45</Name>
     </ProjectReference>
-    <ProjectReference Include="..\System.Collections.Immutable\System.Collections.Immutable.csproj">
+    <ProjectReference Include="..\Quobject.Collections.Immutable\Quobject.Collections.Immutable.csproj">
       <Project>{024a2111-4b19-44d7-917e-8514cf632469}</Project>
-      <Name>System.Collections.Immutable</Name>
+      <Name>Quobject.Collections.Immutable</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -84,8 +84,8 @@
     <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\UsageTest.cs">
       <Link>ClientTests\UsageTest.cs</Link>
     </Compile>
-    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ModulesTests\EmitterTests.cs">
-      <Link>ModulesTests\EmitterTests.cs</Link>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ComponentEmitterTests\EmitterTests.cs">
+      <Link>ComponentEmitterTests\EmitterTests.cs</Link>
     </Compile>
     <Compile Include="..\EngineIoClientDotNet.Tests.mono\ModulesTests\ParseQSTests.cs">
       <Link>ModulesTests\ParseQSTests.cs</Link>

@@ -111,13 +111,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\System.Collections.Immutable\System.Collections.Immutable.csproj">
-      <Project>{024a2111-4b19-44d7-917e-8514cf632469}</Project>
-      <Name>System.Collections.Immutable</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\Quobject.Collections.Immutable\Quobject.Collections.Immutable.csproj">
+      <Project>{024a2111-4b19-44d7-917e-8514cf632469}</Project>
+      <Name>Quobject.Collections.Immutable</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
