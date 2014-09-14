@@ -588,6 +588,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             //if (ReadyState == ReadyStateEnum.OPEN && Upgrade && this.Transport)
             {
                 log.Info("OnOpen starting upgrade probes");
+                _errorCount = 0;
                 foreach (var upgrade in Upgrades)
                 {
                     Probe(upgrade);
@@ -1056,14 +1057,22 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         }
 
+        private int _errorCount = 0;
+
         internal void OnError(Exception exception)
         {
             var log = LogManager.GetLogger(Global.CallerName());
 
             log.Error("socket error", exception);
             PriorWebsocketSuccess = false;
-            Emit(EVENT_ERROR, exception);
-            OnClose("transport error", exception);
+
+            //prevent endless loop
+            if (_errorCount == 0)
+            {
+                _errorCount++;
+                Emit(EVENT_ERROR, exception);
+                OnClose("transport error", exception);                
+            }
         }
 
 
