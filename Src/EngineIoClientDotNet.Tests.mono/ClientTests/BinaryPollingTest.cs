@@ -37,8 +37,8 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
         //        log.Info("EVENT_OPEN");
 
-        //        //socket.Send(binaryData);
-        //        //socket.Send("cash money €€€");
+        //        socket.Send(binaryData);
+        //        socket.Send("cash money €€€");
         //    });
 
         //    socket.On(Socket.EVENT_MESSAGE, (d) =>
@@ -52,11 +52,11 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         //            return;
         //        }
         //        events.Enqueue(d);
-        //        //socket.Close();
+        //        socket.Close();
         //    });
 
         //    socket.Open();
-        //    Task.Delay(2000).Wait();
+        //    Task.Delay(20000).Wait();
         //    socket.Close();
         //    log.Info("ReceiveBinaryData end");
 

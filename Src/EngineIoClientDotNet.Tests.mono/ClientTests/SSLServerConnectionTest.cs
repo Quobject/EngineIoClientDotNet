@@ -26,8 +26,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             socket.On(Socket.EVENT_OPEN, () =>
             {
                 log.Info("EVENT_OPEN");
-                events.Enqueue(Socket.EVENT_OPEN);
-                socket.Close();
+                events.Enqueue(Socket.EVENT_OPEN);    
 
             });
             socket.On(Socket.EVENT_CLOSE, () =>
@@ -36,19 +35,21 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                 events.Enqueue(Socket.EVENT_CLOSE);
             });
             socket.Open();
+            await Task.Delay(1000);
+
 
             string result;
             events.TryDequeue(out result);
             Assert.Equal(Socket.EVENT_OPEN, result);
             events.TryDequeue(out result);
             Assert.Equal(Socket.EVENT_CLOSE, result);
-            await Task.Delay(1);
+
             socket.Close();
         }
 
 
         [Fact]
-        public void Messages()
+        public async void Messages()
         {
 
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
@@ -73,7 +74,8 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                 }
             });
             socket.Open();
-
+            Task.Delay(1000).Wait();
+            //socket.Close();
 
             string result;
             events.TryDequeue(out result);
@@ -240,7 +242,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
 
         [Fact]
-        public void NotRememberWebsocket()
+        public async void NotRememberWebsocket()
         {
 
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
@@ -277,6 +279,9 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             });
 
             socket1.Open();
+            Task.Delay(1000).Wait();
+            //socket.Close();
+
             Assert.Equal(Polling.NAME, socket1TransportName);
             Assert.Equal(Polling.NAME, socket2TransportName);
         }

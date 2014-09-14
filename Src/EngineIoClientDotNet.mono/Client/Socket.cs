@@ -158,7 +158,8 @@ namespace Quobject.EngineIoClientDotNet.Client
             ReadyState = ReadyStateEnum.OPENING;
             var transport = CreateTransport(transportName);
             SetTransport(transport);
-            EventTasks.Exec((n) =>
+//            EventTasks.Exec((n) =>
+            Task.Run(() =>
             {
                 transport.Open();
             });

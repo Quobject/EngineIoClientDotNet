@@ -113,9 +113,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             });
 
             socket.Open();
-            //log.Info("AFTER socket.Open()");
-            //this._autoResetEvent.WaitOne();
-            //log.Info("AFTER WaitOne()");
+
             socket.Close();
 
             Assert.NotNull(handshake_data);
