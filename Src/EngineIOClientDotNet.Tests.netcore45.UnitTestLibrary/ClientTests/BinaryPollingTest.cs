@@ -1,5 +1,6 @@
 ﻿//using log4net;
 
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
@@ -9,7 +10,7 @@ using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Quobject.EngineIoClientDotNet.Client;
 using Quobject.EngineIoClientDotNet.Client.Transports;
 
-using System.Collections.Immutable;
+using Quobject.Collections.Immutable;
 
 using System.IO;
 using System;
@@ -21,7 +22,69 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
     public class BinaryPollingTest : Connection
     {
 
-        AutoResetEvent _autoResetEvent;
+         private ManualResetEvent _manualResetEvent = null;
+
+        //[TestMethod]
+        //public void PingTest()
+        //{
+
+        //    var log = LogManager.GetLogger(Global.CallerName());
+        //    log.Info("Start");
+
+        //    var binaryData = new byte[5];
+        //    for (int i = 0; i < binaryData.Length; i++)
+        //    {
+        //        binaryData[i] = (byte)i;
+        //    }
+
+        //    var events = new ConcurrentQueue<object>();
+
+
+        //    var options = CreateOptions();
+        //    //options.Transports = ImmutableList.Create<string>(Polling.NAME);
+
+        //    var socket = new Socket(options);
+
+        //    socket.On(Socket.EVENT_OPEN, () =>
+        //    {
+
+        //        log.Info("EVENT_OPEN");
+
+        //        socket.Send(binaryData);
+        //        socket.Send("cash money €€€");
+        //    });
+
+        //    socket.On(Socket.EVENT_MESSAGE, (d) =>
+        //    {
+
+        //        var data = d as string;
+        //        log.Info(string.Format("EVENT_MESSAGE data ={0} d = {1} ", data, d));
+
+        //        if (data == "hi")
+        //        {
+        //            return;
+        //        }
+        //        events.Enqueue(d);
+        //        //socket.Close();
+        //    });
+
+        //    socket.Open();
+        //    Task.Delay(20000).Wait();
+        //    socket.Close();
+        //    log.Info("ReceiveBinaryData end");
+
+        //    var binaryData2 = new byte[5];
+        //    for (int i = 0; i < binaryData2.Length; i++)
+        //    {
+        //        binaryData2[i] = (byte)(i + 1);
+        //    }
+
+        //    object result;
+        //    events.TryDequeue(out result);
+        //    Assert.AreEqual("1", "1");
+        //}
+
+
 
         [TestMethod]
         public void ReceiveBinaryData()
@@ -29,7 +92,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
-            this._autoResetEvent = new AutoResetEvent(false);
+            _manualResetEvent = new ManualResetEvent(false);
 
             var events = new Queue<object>();
 
@@ -41,7 +104,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
 
             var options = CreateOptions();
-            //options.Transports = ImmutableList.Create<string>(Polling.NAME);
+            options.Transports = ImmutableList.Create<string>(Polling.NAME);
 
 
             var socket = new Socket(options);
@@ -64,10 +127,12 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                     return;
                 }
                 events.Enqueue(d);
-                socket.Close();
+                _manualResetEvent.Set();
             });
 
             socket.Open();
+	        _manualResetEvent.WaitOne();           
+            socket.Close();
             log.Info("ReceiveBinaryData end");
 
             var binaryData2 = new byte[5];
@@ -87,6 +152,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         {
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
+            _manualResetEvent = new ManualResetEvent(false);
 
             var events = new Queue<object>();
 
@@ -107,28 +173,30 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             {
 
                 log.Info("EVENT_OPEN");
-                socket.On(Socket.EVENT_MESSAGE, (d) =>
-                {
 
-                    var data = d as string;
-                    log.Info(string.Format("EVENT_MESSAGE data ={0} d = {1} ", data, d));
-
-                    if (data == "hi")
-                    {
-                        return;
-                    }
-                    events.Enqueue(d);
-                    if (events.Count > 1)
-                    {
-                        //this._autoResetEvent.Set(); 
-                        //socket.Close();
-                    }
-                });
-                socket.Send(binaryData);
+                socket.Send(binaryData); 
                 socket.Send(stringData);
             });
 
+            socket.On(Socket.EVENT_MESSAGE, (d) =>
+            {
+
+                var data = d as string;
+                log.Info(string.Format("EVENT_MESSAGE data ={0} d = {1} ", data, d));
+
+                if (data == "hi")
+                {
+                    return;
+                }
+                events.Enqueue(d);
+                if (events.Count > 1)
+                {
+                    _manualResetEvent.Set();
+                }
+            });
+
             socket.Open();
+            _manualResetEvent.WaitOne();
             socket.Close();
 
 
@@ -140,9 +208,23 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             object result;
             result = events.Dequeue();
-            CollectionAssert.AreEqual(binaryData, (byte[])result);
+            if (result is string)
+            {
+                Assert.AreEqual(stringData, (string)result);                
+            }
+            else
+            {
+                CollectionAssert.AreEqual(binaryData, (byte[])result);                
+            }
             result = events.Dequeue();
-            Assert.AreEqual(stringData, (string)result);
+            if (result is string)
+            {
+                Assert.AreEqual(stringData, (string)result);
+            }
+            else
+            {
+                CollectionAssert.AreEqual(binaryData, (byte[])result);
+            }
 
         }
 

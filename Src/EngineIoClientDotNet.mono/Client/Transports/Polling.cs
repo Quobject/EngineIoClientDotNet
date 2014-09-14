@@ -30,7 +30,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         public void Pause(Action onPause)
         {
-            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            //var log = LogManager.GetLogger(Global.CallerName());
 
             ReadyState = ReadyStateEnum.PAUSED;
             Action pause = () =>
@@ -80,7 +80,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             public void Call(params object[] args)
             {
-                //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+                //var log = LogManager.GetLogger(Global.CallerName());
 
                 //log.Info("pre-pause writing complete");
                 if (--total[0] == 0)
@@ -114,7 +114,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             
             public void Call(params object[] args)
             {
-                //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+                //var log = LogManager.GetLogger(Global.CallerName());
 
                 //log.Info("pre-pause polling complete");
                 if (--total[0] == 0)
@@ -139,7 +139,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         private void Poll()
         {
-            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            //var log = LogManager.GetLogger(Global.CallerName());
 
             //log.Info("polling");
             IsPolling = true;
@@ -231,7 +231,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             public void Call(params object[] args)
             {
-                //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+                //var log = LogManager.GetLogger(Global.CallerName());
 
                 //log.Info("writing close packet");
                 ImmutableList<Packet> packets = ImmutableList<Packet>.Empty;
@@ -282,7 +282,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             public void Call(object data)
             {
-                //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+                //var log = LogManager.GetLogger(Global.CallerName());
                 //log.Info("SendEncodeCallback data = " + data);
 
                 var byteData = (byte[]) data;

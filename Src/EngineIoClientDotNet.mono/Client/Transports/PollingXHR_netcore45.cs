@@ -176,9 +176,8 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         protected override void DoPoll()
         {
-            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
-
-            //log.Info("xhr poll");
+            var log = LogManager.GetLogger(Global.CallerName());
+            log.Info("xhr poll");
             sendXhr = Request();
             sendXhr.On(EVENT_DATA, new DoPollEventDataListener(this));
             sendXhr.On(EVENT_ERROR, new DoPollEventErrorListener(this));
@@ -336,7 +335,8 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                         task.ConfigureAwait(false);
                         task.Wait();
                         var responseBodyAsByteArray = task.Result;
-                        OnData(responseBodyAsByteArray);
+                        Task.Run(() => OnData(responseBodyAsByteArray)).Wait();
+                        //OnData(responseBodyAsByteArray);
                     }
                     else
                     {
@@ -344,7 +344,8 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                         task.ConfigureAwait(false);
                         task.Wait();
                         var responseBodyAsText = task.Result;
-                        OnData(responseBodyAsText);
+                        Task.Run(() => OnData(responseBodyAsText)).Wait();
+                        //OnData(responseBodyAsText);
                     }
 
                 }

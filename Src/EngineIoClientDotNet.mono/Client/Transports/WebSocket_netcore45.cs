@@ -10,7 +10,7 @@ using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Parser;
 using Quobject.EngineIoClientDotNet.Thread;
 using System;
-using System.Collections.Immutable;
+using Quobject.Collections.Immutable;
 //using WebSocket4Net;
 using Windows.Networking.Sockets;
 
@@ -103,16 +103,35 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             try
             {
-                using (var dataReader = args.GetDataReader())
+                if (args.MessageType == SocketMessageType.Utf8)
                 {
-                    // The encoding and byte order need to match the settings of the writer 
-                    // we previously used.
-                    dataReader.UnicodeEncoding = Windows.Storage.Streams.UnicodeEncoding.Utf8;
-                    dataReader.ByteOrder = Windows.Storage.Streams.ByteOrder.LittleEndian;
+                    using (var dataReader = args.GetDataReader())
+                    {
 
-                    var data = dataReader.ReadString(dataReader.UnconsumedBufferLength);
-                    log.Info("ws_MessageReceived e.Message= " + data);
-                    this.OnData(data);
+                        // The encoding and byte order need to match the settings of the writer 
+                        // we previously used.
+                        dataReader.UnicodeEncoding = Windows.Storage.Streams.UnicodeEncoding.Utf8;
+                        dataReader.ByteOrder = Windows.Storage.Streams.ByteOrder.LittleEndian;
+
+                        var data = dataReader.ReadString(dataReader.UnconsumedBufferLength);
+                        log.Info("ws_MessageReceived e.Message= " + data);
+                        this.OnData(data);
+                    }
+                }else if  (args.MessageType == SocketMessageType.Binary)
+                {
+                    using (var dataReader = args.GetDataReader())
+                    {
+                        dataReader.ByteOrder = Windows.Storage.Streams.ByteOrder.LittleEndian;
+                        byte[] bytes = new byte[dataReader.UnconsumedBufferLength];
+                        dataReader.ReadBytes(bytes);
+
+                        log.Info("ws_MessageReceived e.Message= " + bytes);
+                        this.OnData(bytes);
+                    }
+                }
+                else
+                {
+                    throw new InvalidDataException("MessageWebSocketMessageReceivedEventArgs wrong MessageType ");
                 }
             }
             catch (Exception e)
@@ -137,7 +156,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
         }     
 
 
-        protected override void Write(System.Collections.Immutable.ImmutableList<Parser.Packet> packets)
+        protected override void Write(ImmutableList<Parser.Packet> packets)
         {
             Writable = false;
 
@@ -150,11 +169,11 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
                 // fake drain
                 // defer to next tick to allow Socket to clear writeBuffer
-                EasyTimer.SetTimeoutAsync(() =>
+                EasyTimer.SetTimeout(() =>
                 {
                     Writable = true;
                     Emit(EVENT_DRAIN);
-                }, 1).Wait();
+                }, 1);
             }
             catch (Exception e)
             {
@@ -173,7 +192,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             public void Call(object data)
             {
-                //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+                //var log = LogManager.GetLogger(Global.CallerName());
 
                 var writer = webSocket.dataWriter;
 

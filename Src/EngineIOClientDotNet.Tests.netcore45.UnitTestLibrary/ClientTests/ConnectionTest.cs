@@ -1,7 +1,7 @@
 ﻿//using log4net;
 
 using System;
-using System.Collections.Immutable;
+using Quobject.Collections.Immutable;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -105,7 +105,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         }
 
 
-        AutoResetEvent _autoResetEvent;
+         private ManualResetEvent _manualResetEvent = null;
 
         [TestMethod]
         public void ConnectToLocalhost2()
@@ -194,7 +194,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
-            this._autoResetEvent = new AutoResetEvent(false);
+            _manualResetEvent = new ManualResetEvent(false);
 
             const string SendMessage = "\uD800-\uDB7F\uDB80-\uDBFF\uDC00-\uDFFF\uE000-\uF8FF";
 
@@ -218,11 +218,11 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                 }
 
                 this.Message = data;
-                this._autoResetEvent.Set();
+	_manualResetEvent.Set();
             });
 
             socket.Open();
-            this._autoResetEvent.WaitOne();
+	_manualResetEvent.WaitOne();		
             socket.Close();
             Assert.AreEqual(SendMessage , this.Message);
 

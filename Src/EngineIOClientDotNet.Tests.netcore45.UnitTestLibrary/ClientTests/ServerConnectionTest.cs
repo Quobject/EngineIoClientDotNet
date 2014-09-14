@@ -24,7 +24,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
-            this._autoResetEvent = new AutoResetEvent(false);
+            _manualResetEvent = new ManualResetEvent(false);
 
             var events = new Queue<string>();
 
@@ -40,11 +40,11 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             {
                 log.Info("EVENT_CLOSE");
                 events.Enqueue(Socket.EVENT_CLOSE);
-                this._autoResetEvent.Set(); 
+	_manualResetEvent.Set(); 
             });
             socket.Open();
             log.Info("After open");
-            this._autoResetEvent.WaitOne();
+	_manualResetEvent.WaitOne();		
             string result;
             log.Info("Before dequeue events.count="+events.Count);
             result = events.Dequeue();
@@ -53,7 +53,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             Assert.AreEqual(Socket.EVENT_CLOSE, result);
         }
 
-        AutoResetEvent _autoResetEvent;
+         private ManualResetEvent _manualResetEvent = null;
 
         [TestMethod]
         public void Messages()
@@ -62,7 +62,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
             //Setting the event to false.
-            this._autoResetEvent = new AutoResetEvent(false);
+            _manualResetEvent = new ManualResetEvent(false);
 
             var events = new Queue<string>();
 
@@ -80,7 +80,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                 if (events.Count > 1)
                 {
                     log.Info("EVENT_MESSAGE 2"); 
-                    this._autoResetEvent.Set(); 
+    	_manualResetEvent.Set(); 
                 }
             });
             socket.Open();
@@ -183,7 +183,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
-            this._autoResetEvent = new AutoResetEvent(false);
+            _manualResetEvent = new ManualResetEvent(false);
 
             var events = new Queue<object>();
 
@@ -198,11 +198,11 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             {
                 log.Info(Socket.EVENT_UPGRADE + string.Format(" data = {0}", data));
                 events.Enqueue(data);
-                this._autoResetEvent.Set(); 
+	_manualResetEvent.Set(); 
             });
 
             socket.Open();
-            this._autoResetEvent.WaitOne();
+	_manualResetEvent.WaitOne();		
 
             object test = null;
             test = events.Dequeue();
@@ -224,7 +224,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
-            this._autoResetEvent = new AutoResetEvent(false);
+            _manualResetEvent = new ManualResetEvent(false);
 
             var socket1 = new Socket(CreateOptions());
             string socket1TransportName = null;
@@ -248,13 +248,13 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                     var socket2 = new Socket(options);
                     socket2.Open();
                     socket2TransportName = socket2.Transport.Name;
-                    this._autoResetEvent.Set(); 
+    	_manualResetEvent.Set(); 
                     socket2.Close();
                 }
             });
 
             socket1.Open();
-            this._autoResetEvent.WaitOne();
+	_manualResetEvent.WaitOne();		
             Assert.AreEqual(Polling.NAME, socket1TransportName);
             Assert.AreEqual(WebSocket.NAME, socket2TransportName);
         }
@@ -267,7 +267,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
-            this._autoResetEvent = new AutoResetEvent(false);
+            _manualResetEvent = new ManualResetEvent(false);
 
             var socket1 = new Socket(CreateOptions());
             string socket1TransportName = null;
@@ -294,14 +294,14 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                         log.Info("EVENT_OPEN socket 2");
                         socket2TransportName = socket2.Transport.Name;
                         socket2.Close();
-                        this._autoResetEvent.Set(); 
+        	_manualResetEvent.Set(); 
                     });
                     socket2.Open();
                 }
             });
 
             socket1.Open();
-            this._autoResetEvent.WaitOne();
+	_manualResetEvent.WaitOne();		
             Assert.AreEqual(Polling.NAME, socket1TransportName);
             Assert.AreEqual(Polling.NAME, socket2TransportName);
         }

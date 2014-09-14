@@ -6,7 +6,7 @@ using EngineIoClientDotNet.Modules;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Quobject.EngineIoClientDotNet.Client;
 using System;
-using System.Collections.Immutable;
+using Quobject.Collections.Immutable;
 using Quobject.EngineIoClientDotNet.Modules;
 
 

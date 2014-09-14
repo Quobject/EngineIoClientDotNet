@@ -20,7 +20,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "grunt", "..\..\grunt\", "{7
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "8528"
+		VWDPort = "8678"
 	EndProjectSection
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TestServer", "..\..\TestServer\", "{7E50397C-1221-49A9-A5F1-8254AC4BFBA4}"
@@ -40,7 +40,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TestServer", "..\..\TestSer
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "48775"
+		VWDPort = "8671"
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngineIoClientDotNet.Tests.net45", "..\EngineIoClientDotNet.Tests.net45\EngineIoClientDotNet.Tests.net45.csproj", "{BEFF0675-8A73-4012-9651-C253E06E0F87}"

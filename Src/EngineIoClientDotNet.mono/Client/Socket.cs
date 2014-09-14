@@ -356,7 +356,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         internal void OnDrain()
         {
-            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            //var log = LogManager.GetLogger(Global.CallerName());
             //log.Info(string.Format("OnDrain1 PrevBufferLen={0} WriteBuffer.Count={1}", PrevBufferLen, WriteBuffer.Count));
 
             for (int i = 0; i < this.PrevBufferLen; i++)
@@ -494,7 +494,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         private void SetPing()
         {
-            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            //var log = LogManager.GetLogger(Global.CallerName());
 
             if (this.PingIntervalTimer != null)
             {
@@ -564,7 +564,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             }
 
             Emit(EVENT_PACKET_CREATE, packet);
-            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            //var log = LogManager.GetLogger(Global.CallerName());
             //log.Info(string.Format("SendPacket WriteBuffer.Add(packet) packet ={0}",packet.Type));
             WriteBuffer = WriteBuffer.Add(packet);
             CallbackBuffer = CallbackBuffer.Add(fn);
@@ -809,7 +809,7 @@ namespace Quobject.EngineIoClientDotNet.Client
                 }
 
                 Parameters.Transport[0].Close();
-                Parameters.Transport = Parameters.Transport.SetItem(0, null);
+                Parameters.Transport = ImmutableList<Transport>.Empty;
             }
 
             public int CompareTo(IListener other)

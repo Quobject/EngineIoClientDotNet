@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Quobject.EngineIoClientDotNet.Client;
 using Quobject.EngineIoClientDotNet.Client.Transports;
 
-using System.Collections.Immutable;
+using Quobject.Collections.Immutable;
 using System.Threading.Tasks;
 using Quobject.EngineIoClientDotNet.Modules;
 
@@ -18,13 +18,15 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
     [TestClass]
     public class BinaryWebSocketTest : Connection
     {
-       
+
+        private ManualResetEvent _manualResetEvent = null;
 
         [TestMethod]
         public void ReceiveBinaryData()
         {
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
+            _manualResetEvent = new ManualResetEvent(false);
 
             var events = new Queue<object>();
 
@@ -46,8 +48,8 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             socket.On(Socket.EVENT_UPGRADE, () =>
             {
                 log.Info(Socket.EVENT_UPGRADE);
-//                socket.Send(binaryData);
-                socket.Send("why");
+                socket.Send(binaryData);
+                //socket.Send("why");
             });
 
             socket.On(Socket.EVENT_MESSAGE, (d) =>
@@ -60,19 +62,18 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                     return;
                 }
                 events.Enqueue(d);
-                socket.Close();
+                _manualResetEvent.Set();
             });
 
             socket.Open();
-            
+            _manualResetEvent.WaitOne();
+            socket.Close();
 
             var binaryData2 = new byte[5];
             for (int i = 0; i < binaryData.Length; i++)
             {
                 binaryData2[i] = (byte) (i + 1);
             }
-
-            Task.Delay(TimeSpan.FromSeconds(10)).Wait();
 
             object result = events.Dequeue();
             CollectionAssert.AreEqual(binaryData, (byte[]) result);
@@ -86,6 +87,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
+            _manualResetEvent = new ManualResetEvent(false);
 
             var events = new Queue<object>();
 
@@ -122,19 +124,19 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                 events.Enqueue(d);
                 if (events.Count > 1)
                 {
-                    socket.Close();
+                    _manualResetEvent.Set();
                 }
             });
 
             socket.Open();
-            
+            _manualResetEvent.WaitOne();
+            socket.Close();	            
 
             var binaryData2 = new byte[5];
             for (int i = 0; i < binaryData2.Length; i++)
             {
                 binaryData2[i] = (byte) (i + 1);
             }
-            Task.Delay(TimeSpan.FromSeconds(3)).Wait();
 
             object result;
             result = events.Dequeue();            
