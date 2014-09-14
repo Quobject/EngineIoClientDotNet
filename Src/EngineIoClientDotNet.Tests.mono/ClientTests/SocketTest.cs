@@ -1,9 +1,10 @@
-﻿//using log4net;
+﻿
 
+using System.Threading.Tasks;
 using EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Client;
 using System;
-using System.Collections.Immutable;
+using Quobject.Collections.Immutable;
 using Xunit;
 
 namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
@@ -32,7 +33,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         }
 
         [Fact]
-        public void SocketClosing()
+        public async Task SocketClosing()
         {
 
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
@@ -65,7 +66,8 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             });
 
             socket.Open();
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(1));
+            //System.Threading.Thread.Sleep(TimeSpan.FromSeconds(1));
+            await Task.Delay(1000);
             Assert.True(closed);
             Assert.True(error);
         }

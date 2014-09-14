@@ -1,8 +1,7 @@
-﻿//using log4net;
+﻿
 
-using System.Diagnostics.Eventing.Reader;
-using System.Threading.Tasks;
 using EngineIoClientDotNet.Modules;
+using Quobject.Collections.Immutable;
 using Quobject.EngineIoClientDotNet.Client.Transports;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
 using Quobject.EngineIoClientDotNet.Modules;
@@ -10,7 +9,7 @@ using Quobject.EngineIoClientDotNet.Parser;
 using Quobject.EngineIoClientDotNet.Thread;
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
+using System.Threading.Tasks;
 
 
 namespace Quobject.EngineIoClientDotNet.Client

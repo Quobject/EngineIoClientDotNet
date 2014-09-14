@@ -1,5 +1,5 @@
 ﻿//
-// IImmutableQueue.cs
+// IImmutableSet.cs
 //
 // Author:
 //       Mike Krüger <mkrueger@xamarin.com>
@@ -23,23 +23,40 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+
+using System.Collections;
 using System.Collections.Generic;
 
-namespace System.Collections.Immutable
+namespace Quobject.Collections.Immutable
 {
-    public interface IImmutableQueue<T> : IEnumerable<T>, IEnumerable
+    public interface IImmutableSet<T> : IReadOnlyCollection<T>, IEnumerable<T>, IEnumerable
     {
-        bool IsEmpty
-        {
-            get;
-        }
+        IImmutableSet<T> Add(T value);
 
-        IImmutableQueue<T> Clear();
+        IImmutableSet<T> Clear();
 
-        IImmutableQueue<T> Dequeue();
+        bool Contains(T value);
 
-        IImmutableQueue<T> Enqueue(T value);
+        IImmutableSet<T> Except(IEnumerable<T> other);
 
-        T Peek();
+        IImmutableSet<T> Intersect(IEnumerable<T> other);
+
+        bool IsProperSubsetOf(IEnumerable<T> other);
+
+        bool IsProperSupersetOf(IEnumerable<T> other);
+
+        bool IsSubsetOf(IEnumerable<T> other);
+
+        bool IsSupersetOf(IEnumerable<T> other);
+
+        bool Overlaps(IEnumerable<T> other);
+
+        IImmutableSet<T> Remove(T value);
+
+        bool SetEquals(IEnumerable<T> other);
+
+        IImmutableSet<T> SymmetricExcept(IEnumerable<T> other);
+
+        IImmutableSet<T> Union(IEnumerable<T> other);
     }
 }

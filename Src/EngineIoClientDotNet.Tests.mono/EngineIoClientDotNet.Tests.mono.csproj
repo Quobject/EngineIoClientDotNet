@@ -72,9 +72,9 @@
       <Project>{b6731266-b247-4a63-b10b-f938288248b6}</Project>
       <Name>EngineIoClientDotNet.mono</Name>
     </ProjectReference>
-    <ProjectReference Include="..\System.Collections.Immutable\System.Collections.Immutable.csproj">
+    <ProjectReference Include="..\Quobject.Collections.Immutable\Quobject.Collections.Immutable.csproj">
       <Project>{024a2111-4b19-44d7-917e-8514cf632469}</Project>
-      <Name>System.Collections.Immutable</Name>
+      <Name>Quobject.Collections.Immutable</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,5 +1,5 @@
 //
-// AssemblyInfo.cs
+// ImmutableDictionary.cs
 //
 // Author:
 //       Mike Krüger <mkrueger@xamarin.com>
@@ -23,29 +23,34 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System.Reflection;
 
-// Information about this assembly is defined by the following attributes. 
-// Change them to the values specific to your project.
+using System.Collections;
+using System.Collections.Generic;
 
-[assembly: AssemblyTitle("System.Collections.Immutable")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("Xamarin Inc. (http://xamarin.com)")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
+namespace Quobject.Collections.Immutable
+{
+    public interface IImmutableDictionary<TKey, TValue> : IReadOnlyDictionary<TKey, TValue>, IReadOnlyCollection<KeyValuePair<TKey, TValue>>, IEnumerable<KeyValuePair<TKey, TValue>>, IEnumerable
+    {
+        IEqualityComparer<TValue> ValueComparer
+        {
+            get;
+        }
 
-// The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".
-// The form "{Major}.{Minor}.*" will automatically update the build and revision,
-// and "{Major}.{Minor}.{Build}.*" will update just the revision.
+        IImmutableDictionary<TKey, TValue> Add(TKey key, TValue value);
 
-[assembly: AssemblyVersion("1.0.*")]
+        IImmutableDictionary<TKey, TValue> AddRange(IEnumerable<KeyValuePair<TKey, TValue>> pairs);
 
-// The following attributes are used to specify the signing key for the assembly, 
-// if desired. See the Mono documentation for more information about signing.
+        IImmutableDictionary<TKey, TValue> Clear();
 
-//[assembly: AssemblyDelaySign(false)]
-//[assembly: AssemblyKeyFile("")]
+        bool Contains(KeyValuePair<TKey, TValue> pair);
+
+        IImmutableDictionary<TKey, TValue> Remove(TKey key);
+
+        IImmutableDictionary<TKey, TValue> RemoveRange(IEnumerable<TKey> keys);
+
+        IImmutableDictionary<TKey, TValue> SetItem(TKey key, TValue value);
+
+        IImmutableDictionary<TKey, TValue> SetItems(IEnumerable<KeyValuePair<TKey, TValue>> items);
+    }
+}
 

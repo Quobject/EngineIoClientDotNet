@@ -1,11 +1,10 @@
 ﻿using EngineIoClientDotNet.Modules;
+using Quobject.Collections.Immutable;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
 using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Parser;
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
-using Quobject.EngineIoClientDotNet.Thread;
 
 
 namespace Quobject.EngineIoClientDotNet.Client

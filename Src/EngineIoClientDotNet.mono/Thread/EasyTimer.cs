@@ -1,8 +1,8 @@
-﻿using System;
+﻿using EngineIoClientDotNet.Modules;
+using Quobject.EngineIoClientDotNet.Modules;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
-using EngineIoClientDotNet.Modules;
-using Quobject.EngineIoClientDotNet.Modules;
 using Timer = System.Timers.Timer;
 
 namespace Quobject.EngineIoClientDotNet.Thread

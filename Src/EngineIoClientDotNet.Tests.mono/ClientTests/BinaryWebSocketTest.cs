@@ -1,10 +1,11 @@
-﻿//using log4net;
+﻿
 
+using System.Threading;
 using EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Client;
 using Quobject.EngineIoClientDotNet.Client.Transports;
 using System.Collections.Concurrent;
-using System.Collections.Immutable;
+using Quobject.Collections.Immutable;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -12,12 +13,14 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 {
     public class BinaryWebSocketTest : Connection
     {
+        private ManualResetEvent _manualResetEvent = null;
         [Fact]
-        public async Task ReceiveBinaryData()
+        public void ReceiveBinaryData()
         {
 
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
+            _manualResetEvent = new ManualResetEvent(false);
 
             var events = new ConcurrentQueue<object>();
 
@@ -40,9 +43,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             socket.On(Socket.EVENT_UPGRADE, () =>
             {
                 log.Info(Socket.EVENT_UPGRADE);
-                socket.Send(binaryData);
-                //socket.Send("why");
-
+                socket.Send(binaryData);            
             });
 
 
@@ -57,11 +58,11 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                     return;
                 }
                 events.Enqueue(d);
+                _manualResetEvent.Set();
             });
 
             socket.Open();
-
-            await Task.Delay(1000);
+            _manualResetEvent.WaitOne();
             socket.Close();
             log.Info("ReceiveBinaryData end");
 
@@ -79,12 +80,12 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
 
         [Fact]
-        public async Task ReceiveBinaryDataAndMultibyteUTF8String()
+        public void ReceiveBinaryDataAndMultibyteUTF8String()
         {
 
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
-
+            _manualResetEvent = new ManualResetEvent(false);
 
             var events = new ConcurrentQueue<object>();
 
@@ -122,13 +123,13 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                 events.Enqueue(d);
                 if (events.Count > 1)
                 {
-                    socket.Close();
+                    _manualResetEvent.Set();
                 }
             });
 
             socket.Open();
-            await Task.Delay(1000);
-            //socket.Close();
+            _manualResetEvent.WaitOne();
+            socket.Close();
 
             var binaryData2 = new byte[5];
             for (int i = 0; i < binaryData2.Length; i++)
@@ -141,7 +142,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             Assert.Equal(binaryData, result);
             events.TryDequeue(out result);
             Assert.Equal(stringData, (string) result);
-            await Task.Delay(1000);
             log.Info("ReceiveBinaryDataAndMultibyteUTF8String end");
         }
 

@@ -68,9 +68,9 @@
     <Compile Include="Thread\EasyTimer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\System.Collections.Immutable\System.Collections.Immutable.csproj">
+    <ProjectReference Include="..\Quobject.Collections.Immutable\Quobject.Collections.Immutable.csproj">
       <Project>{024a2111-4b19-44d7-917e-8514cf632469}</Project>
-      <Name>System.Collections.Immutable</Name>
+      <Name>Quobject.Collections.Immutable</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

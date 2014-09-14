@@ -1,4 +1,4 @@
-﻿//using log4net;
+﻿
 
 using EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Client;

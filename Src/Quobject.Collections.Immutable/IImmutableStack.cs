@@ -1,5 +1,5 @@
 ﻿//
-// IImmutableList.cs
+// IImmutableStack.cs
 //
 // Author:
 //       Mike Krüger <mkrueger@xamarin.com>
@@ -23,45 +23,25 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+
+using System.Collections;
 using System.Collections.Generic;
 
-namespace System.Collections.Immutable
+namespace Quobject.Collections.Immutable
 {
-    public interface IImmutableList<T> : IReadOnlyList<T>, IReadOnlyCollection<T>, IEnumerable<T>, IEnumerable
+    public interface IImmutableStack<T> : IEnumerable<T>, IEnumerable
     {
-        IEqualityComparer<T> ValueComparer
+        bool IsEmpty
         {
             get;
         }
 
-        IImmutableList<T> Add(T value);
+        IImmutableStack<T> Clear();
 
-        IImmutableList<T> AddRange(IEnumerable<T> items);
+        T Peek();
 
-        IImmutableList<T> Clear();
+        IImmutableStack<T> Pop();
 
-        bool Contains(T value);
-
-        int IndexOf(T value);
-
-        IImmutableList<T> Insert(int index, T element);
-
-        IImmutableList<T> InsertRange(int index, IEnumerable<T> items);
-
-        IImmutableList<T> Remove(T value);
-
-        IImmutableList<T> RemoveAll(Predicate<T> match);
-
-        IImmutableList<T> RemoveAt(int index);
-
-        IImmutableList<T> RemoveRange(int index, int count);
-
-        IImmutableList<T> RemoveRange(IEnumerable<T> items);
-
-        IImmutableList<T> Replace(T oldValue, T newValue);
-
-        IImmutableList<T> SetItem(int index, T value);
-
-        IImmutableList<T> WithComparer(IEqualityComparer<T> equalityComparer);
+        IImmutableStack<T> Push(T value);
     }
 }

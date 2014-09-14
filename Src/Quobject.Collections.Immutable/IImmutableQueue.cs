@@ -1,5 +1,5 @@
-//
-// ImmutableDictionary.cs
+﻿//
+// IImmutableQueue.cs
 //
 // Author:
 //       Mike Krüger <mkrueger@xamarin.com>
@@ -23,32 +23,25 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+
+using System.Collections;
 using System.Collections.Generic;
 
-namespace System.Collections.Immutable
+namespace Quobject.Collections.Immutable
 {
-    public interface IImmutableDictionary<TKey, TValue> : IReadOnlyDictionary<TKey, TValue>, IReadOnlyCollection<KeyValuePair<TKey, TValue>>, IEnumerable<KeyValuePair<TKey, TValue>>, IEnumerable
+    public interface IImmutableQueue<T> : IEnumerable<T>, IEnumerable
     {
-        IEqualityComparer<TValue> ValueComparer
+        bool IsEmpty
         {
             get;
         }
 
-        IImmutableDictionary<TKey, TValue> Add(TKey key, TValue value);
+        IImmutableQueue<T> Clear();
 
-        IImmutableDictionary<TKey, TValue> AddRange(IEnumerable<KeyValuePair<TKey, TValue>> pairs);
+        IImmutableQueue<T> Dequeue();
 
-        IImmutableDictionary<TKey, TValue> Clear();
+        IImmutableQueue<T> Enqueue(T value);
 
-        bool Contains(KeyValuePair<TKey, TValue> pair);
-
-        IImmutableDictionary<TKey, TValue> Remove(TKey key);
-
-        IImmutableDictionary<TKey, TValue> RemoveRange(IEnumerable<TKey> keys);
-
-        IImmutableDictionary<TKey, TValue> SetItem(TKey key, TValue value);
-
-        IImmutableDictionary<TKey, TValue> SetItems(IEnumerable<KeyValuePair<TKey, TValue>> items);
+        T Peek();
     }
 }
-
