@@ -29,7 +29,6 @@ namespace Quobject.EngineIoClientDotNet.Thread
             //Console.WriteLine("after post");
             //actionBlock.Completion.ContinueWith( n => Console.WriteLine("finished"));
             actionBlock.Complete();
-
         }
     }
 

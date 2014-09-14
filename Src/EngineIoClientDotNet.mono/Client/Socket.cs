@@ -1,6 +1,7 @@
 ﻿//using log4net;
 
 using System.Diagnostics.Eventing.Reader;
+using System.Threading.Tasks;
 using EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Client.Transports;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
@@ -443,6 +444,8 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         private void OnHandshake(HandshakeData handshakeData)
         {
+            var log = LogManager.GetLogger(Global.CallerName());
+            log.Info("OnHandshake");
             Emit(EVENT_HANDSHAKE, handshakeData);
             Id = handshakeData.Sid;
             Transport.Query.Add("sid", handshakeData.Sid);
@@ -497,18 +500,18 @@ namespace Quobject.EngineIoClientDotNet.Client
             {
                 PingIntervalTimer.Stop();
             }
+            var log = LogManager.GetLogger(Global.CallerName());
+            log.Info(string.Format("writing ping packet - expecting pong within {0}ms", PingTimeout));
 
             PingIntervalTimer = EasyTimer.SetTimeout(() =>
             {
-                var log = LogManager.GetLogger(Global.CallerName());
-                log.Info(string.Format("writing ping packet - expecting pong within {0}ms", PingTimeout));
 
-                PollTasks.Exec((n) =>
-                {
+                //PollTasks.Exec((n) =>
+                //{
                     Ping();
                     OnHeartbeat(PingTimeout);
-                });
-            }, PingInterval);
+                //});
+            }, (int)PingInterval);
         }
 
         private void Ping()
@@ -1032,6 +1035,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             if (this.PingTimeoutTimer != null)
             {
                 PingTimeoutTimer.Stop();
+                PingTimeoutTimer = null;
             }
 
             if (timeout <= 0)
@@ -1041,12 +1045,14 @@ namespace Quobject.EngineIoClientDotNet.Client
 
             PingTimeoutTimer = EasyTimer.SetTimeout(() =>
             {
+                var log = LogManager.GetLogger(Global.CallerName());
+                log.Info("PingTimeoutTimer timeout");
                 if (ReadyState == ReadyStateEnum.CLOSED)
                 {
                     return;
                 }
                 OnClose("ping timeout");
-            }, timeout);
+            },(int) timeout);
 
         }
 

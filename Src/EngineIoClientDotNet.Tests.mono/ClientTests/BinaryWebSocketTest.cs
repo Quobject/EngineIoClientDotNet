@@ -40,8 +40,8 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             socket.On(Socket.EVENT_UPGRADE, () =>
             {
                 log.Info(Socket.EVENT_UPGRADE);
-                //socket.Send(binaryData);
-                socket.Send("why");
+                socket.Send(binaryData);
+                //socket.Send("why");
 
             });
 
@@ -62,7 +62,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             socket.Open();
 
             await Task.Delay(1000);
-
+            socket.Close();
             log.Info("ReceiveBinaryData end");
 
             var binaryData2 = new byte[5];
@@ -74,7 +74,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             object result;
             events.TryDequeue(out result);
             Assert.Equal(binaryData, result);
-            socket.Close();
+
         }
 
 

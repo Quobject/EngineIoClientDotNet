@@ -1,8 +1,11 @@
-﻿using Quobject.EngineIoClientDotNet.ComponentEmitter;
+﻿using EngineIoClientDotNet.Modules;
+using Quobject.EngineIoClientDotNet.ComponentEmitter;
+using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Parser;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using Quobject.EngineIoClientDotNet.Thread;
 
 
 namespace Quobject.EngineIoClientDotNet.Client
@@ -121,12 +124,15 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         public Transport Send(ImmutableList<Packet> packets)
         {
-            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
-            //log.Info("Send called with packets.Count: " + packets.Count);
+            var log = LogManager.GetLogger(Global.CallerName());
+            log.Info("Send called with packets.Count: " + packets.Count);
             var count = packets.Count;
             if (ReadyState == ReadyStateEnum.OPEN)
             {
-                Write(packets);
+                //PollTasks.Exec((n) =>
+                //{
+                    Write(packets);
+                //});
             }
             else
             {

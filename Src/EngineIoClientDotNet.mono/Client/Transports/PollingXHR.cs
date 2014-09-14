@@ -1,5 +1,6 @@
 ﻿//using log4net;
 
+using System.Threading.Tasks;
 using EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
 using Quobject.EngineIoClientDotNet.Modules;
@@ -173,18 +174,13 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         protected override void DoPoll()
         {
-            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
-
-            //log.Info("xhr poll");
+            var log = LogManager.GetLogger(Global.CallerName());
+            log.Info("xhr DoPoll");
             sendXhr = Request();
             sendXhr.On(EVENT_DATA, new DoPollEventDataListener(this));
             sendXhr.On(EVENT_ERROR, new DoPollEventErrorListener(this));
-            PollTasks.Exec((n) =>
-            {
-                var log = LogManager.GetLogger(Global.CallerName());
-                log.Info("sendXhr.Create();");
-                sendXhr.Create();
-            });
+
+            sendXhr.Create();
         }
 
         class DoPollEventDataListener : IListener
@@ -298,48 +294,53 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                         }
                     }
 
-                    using (var res = Xhr.GetResponse())
+                    Task.Run(() =>
                     {
-                        log.Info("Xhr.GetResponse ");
-
-                        var responseHeaders = new Dictionary<string, string>();
-                        for (int i = 0; i < res.Headers.Count; i++)
+                        using (var res = Xhr.GetResponse())
                         {
-                            responseHeaders.Add(res.Headers.Keys[i], res.Headers[i]);
-                        }
-                        OnResponseHeaders(responseHeaders);
+                            log.Info("Xhr.GetResponse ");
 
-                        var contentType = res.Headers["Content-Type"];
-
-
-
-                        using (var resStream = res.GetResponseStream())
-                        {
-                            Debug.Assert(resStream != null, "resStream != null");
-                            if (contentType.Equals("application/octet-stream",
-                                StringComparison.OrdinalIgnoreCase))
+                            var responseHeaders = new Dictionary<string, string>();
+                            for (int i = 0; i < res.Headers.Count; i++)
                             {
-                                var buffer = new byte[16*1024];
-                                using (var ms = new MemoryStream())
+                                responseHeaders.Add(res.Headers.Keys[i], res.Headers[i]);
+                            }
+                            OnResponseHeaders(responseHeaders);
+
+                            var contentType = res.Headers["Content-Type"];
+
+
+
+                            using (var resStream = res.GetResponseStream())
+                            {
+                                Debug.Assert(resStream != null, "resStream != null");
+                                if (contentType.Equals("application/octet-stream",
+                                    StringComparison.OrdinalIgnoreCase))
                                 {
-                                    int read;
-                                    while ((read = resStream.Read(buffer, 0, buffer.Length)) > 0)
+                                    var buffer = new byte[16 * 1024];
+                                    using (var ms = new MemoryStream())
                                     {
-                                        ms.Write(buffer, 0, read);
+                                        int read;
+                                        while ((read = resStream.Read(buffer, 0, buffer.Length)) > 0)
+                                        {
+                                            ms.Write(buffer, 0, read);
+                                        }
+                                        var a = ms.ToArray();
+                                        OnData(a);
                                     }
-                                    var a = ms.ToArray();
-                                    OnData(a);
                                 }
-                            }
-                            else
-                            {
-                                using (var sr = new StreamReader(resStream))
+                                else
                                 {
-                                    OnData(sr.ReadToEnd());
+                                    using (var sr = new StreamReader(resStream))
+                                    {
+                                        OnData(sr.ReadToEnd());
+                                    }
                                 }
                             }
                         }
-                    }
+
+                    }).Wait();
+
                 }
                 catch (System.IO.IOException e)
                 {
