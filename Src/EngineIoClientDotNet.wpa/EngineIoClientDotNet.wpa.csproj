@@ -1,0 +1,203 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{52922E0F-7300-4970-BA75-E22EF008BEA1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EngineIoClientDotNet.wpa</RootNamespace>
+    <AssemblyName>EngineIoClientDotNet.wpa</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <TargetPlatformVersion>8.1</TargetPlatformVersion>
+    <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{76F1466A-8B6D-4E39-A767-685A06062A39};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_PHONE_APP</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_PHONE_APP</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_PHONE_APP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <OutputPath>bin\ARM\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_PHONE_APP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_PHONE_APP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_PHONE_APP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\EngineIoClientDotNet.mono\Client\EngineIOException.cs">
+      <Link>Client\EngineIOException.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Client\HandshakeData.cs">
+      <Link>Client\HandshakeData.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Client\Socket.cs">
+      <Link>Client\Socket.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Client\Transport.cs">
+      <Link>Client\Transport.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Client\Transports\HttpURLConnection.cs">
+      <Link>Client\Transports\HttpURLConnection.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Client\Transports\Polling.cs">
+      <Link>Client\Transports\Polling.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Client\Transports\PollingXHR_netcore45.cs">
+      <Link>Client\Transports\PollingXHR_netcore45.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Client\Transports\WebSocket_netcore45.cs">
+      <Link>Client\Transports\WebSocket_netcore45.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\ComponentEmitter\Emitter.cs">
+      <Link>ComponentEmitter\Emitter.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Modules\Global_netcore45.cs">
+      <Link>Modules\Global_netcore45.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Modules\LogManager_netcore45.cs">
+      <Link>Modules\LogManager_netcore45.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Modules\ParseQS.cs">
+      <Link>Modules\ParseQS.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Modules\ServerCertificate_netcore45.cs">
+      <Link>Modules\ServerCertificate_netcore45.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Modules\UTF8.cs">
+      <Link>Modules\UTF8.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Modules\UTF8Exception.cs">
+      <Link>Modules\UTF8Exception.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Parser\Buffer.cs">
+      <Link>Parser\Buffer.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Parser\ByteBuffer.cs">
+      <Link>Parser\ByteBuffer.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Parser\IDecodePayloadCallback.cs">
+      <Link>Parser\IDecodePayloadCallback.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Parser\IEncodeCallback.cs">
+      <Link>Parser\IEncodeCallback.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Parser\Packet.cs">
+      <Link>Parser\Packet.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Parser\Parser.cs">
+      <Link>Parser\Parser.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Thread\EasyTimer.cs">
+      <Link>Thread\EasyTimer.cs</Link>
+    </Compile>
+    <Compile Include="..\Quobject.Collections.Immutable\AvlNode.cs">
+      <Link>Quobject.Collections.Immutable\AvlNode.cs</Link>
+    </Compile>
+    <Compile Include="..\Quobject.Collections.Immutable\IImmutableDictionary.cs">
+      <Link>Quobject.Collections.Immutable\IImmutableDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\Quobject.Collections.Immutable\IImmutableList.cs">
+      <Link>Quobject.Collections.Immutable\IImmutableList.cs</Link>
+    </Compile>
+    <Compile Include="..\Quobject.Collections.Immutable\IImmutableQueue.cs">
+      <Link>Quobject.Collections.Immutable\IImmutableQueue.cs</Link>
+    </Compile>
+    <Compile Include="..\Quobject.Collections.Immutable\IImmutableSet.cs">
+      <Link>Quobject.Collections.Immutable\IImmutableSet.cs</Link>
+    </Compile>
+    <Compile Include="..\Quobject.Collections.Immutable\IImmutableStack.cs">
+      <Link>Quobject.Collections.Immutable\IImmutableStack.cs</Link>
+    </Compile>
+    <Compile Include="..\Quobject.Collections.Immutable\ImmutableDictionary.cs">
+      <Link>Quobject.Collections.Immutable\ImmutableDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\Quobject.Collections.Immutable\ImmutableList.cs">
+      <Link>Quobject.Collections.Immutable\ImmutableList.cs</Link>
+    </Compile>
+    <Compile Include="..\Quobject.Collections.Immutable\ImmutableQueue.cs">
+      <Link>Quobject.Collections.Immutable\ImmutableQueue.cs</Link>
+    </Compile>
+    <Compile Include="..\Quobject.Collections.Immutable\ImmutableStack.cs">
+      <Link>Quobject.Collections.Immutable\ImmutableStack.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>packages\Newtonsoft.Json.6.0.5\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
+    <VisualStudioVersion>12.0</VisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(TargetPlatformIdentifier)' == '' ">
+    <TargetPlatformIdentifier>WindowsPhoneApp</TargetPlatformIdentifier>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
