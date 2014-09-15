@@ -143,38 +143,38 @@
     <Compile Include="..\EngineIoClientDotNet.mono\Parser\Parser.cs">
       <Link>Parser\Parser.cs</Link>
     </Compile>
-    <Compile Include="..\EngineIoClientDotNet.mono\Thread\EasyTimer_windowsphone8.cs">
-      <Link>Thread\EasyTimer_windowsphone8.cs</Link>
+    <Compile Include="..\EngineIoClientDotNet.mono\Thread\EasyTimer.cs">
+      <Link>Thread\EasyTimer.cs</Link>
     </Compile>
-    <Compile Include="..\System.Collections.Immutable\System.Collections.Immutable\AvlNode.cs">
-      <Link>System.Collections.Immutable\AvlNode.cs</Link>
+    <Compile Include="..\Quobject.Collections.Immutable\AvlNode.cs">
+      <Link>Quobject.Collections.Immutable\AvlNode.cs</Link>
     </Compile>
-    <Compile Include="..\System.Collections.Immutable\System.Collections.Immutable\IImmutableDictionary.cs">
-      <Link>System.Collections.Immutable\IImmutableDictionary.cs</Link>
+    <Compile Include="..\Quobject.Collections.Immutable\IImmutableDictionary.cs">
+      <Link>Quobject.Collections.Immutable\IImmutableDictionary.cs</Link>
     </Compile>
-    <Compile Include="..\System.Collections.Immutable\System.Collections.Immutable\IImmutableList.cs">
-      <Link>System.Collections.Immutable\IImmutableList.cs</Link>
+    <Compile Include="..\Quobject.Collections.Immutable\IImmutableList.cs">
+      <Link>Quobject.Collections.Immutable\IImmutableList.cs</Link>
     </Compile>
-    <Compile Include="..\System.Collections.Immutable\System.Collections.Immutable\IImmutableQueue.cs">
-      <Link>System.Collections.Immutable\IImmutableQueue.cs</Link>
+    <Compile Include="..\Quobject.Collections.Immutable\IImmutableQueue.cs">
+      <Link>Quobject.Collections.Immutable\IImmutableQueue.cs</Link>
     </Compile>
-    <Compile Include="..\System.Collections.Immutable\System.Collections.Immutable\IImmutableSet.cs">
-      <Link>System.Collections.Immutable\IImmutableSet.cs</Link>
+    <Compile Include="..\Quobject.Collections.Immutable\IImmutableSet.cs">
+      <Link>Quobject.Collections.Immutable\IImmutableSet.cs</Link>
     </Compile>
-    <Compile Include="..\System.Collections.Immutable\System.Collections.Immutable\IImmutableStack.cs">
-      <Link>System.Collections.Immutable\IImmutableStack.cs</Link>
+    <Compile Include="..\Quobject.Collections.Immutable\IImmutableStack.cs">
+      <Link>Quobject.Collections.Immutable\IImmutableStack.cs</Link>
     </Compile>
-    <Compile Include="..\System.Collections.Immutable\System.Collections.Immutable\ImmutableDictionary.cs">
-      <Link>System.Collections.Immutable\ImmutableDictionary.cs</Link>
+    <Compile Include="..\Quobject.Collections.Immutable\ImmutableDictionary.cs">
+      <Link>Quobject.Collections.Immutable\ImmutableDictionary.cs</Link>
     </Compile>
-    <Compile Include="..\System.Collections.Immutable\System.Collections.Immutable\ImmutableList.cs">
-      <Link>System.Collections.Immutable\ImmutableList.cs</Link>
+    <Compile Include="..\Quobject.Collections.Immutable\ImmutableList.cs">
+      <Link>Quobject.Collections.Immutable\ImmutableList.cs</Link>
     </Compile>
-    <Compile Include="..\System.Collections.Immutable\System.Collections.Immutable\ImmutableQueue.cs">
-      <Link>System.Collections.Immutable\ImmutableQueue.cs</Link>
+    <Compile Include="..\Quobject.Collections.Immutable\ImmutableQueue.cs">
+      <Link>Quobject.Collections.Immutable\ImmutableQueue.cs</Link>
     </Compile>
-    <Compile Include="..\System.Collections.Immutable\System.Collections.Immutable\ImmutableStack.cs">
-      <Link>System.Collections.Immutable\ImmutableStack.cs</Link>
+    <Compile Include="..\Quobject.Collections.Immutable\ImmutableStack.cs">
+      <Link>Quobject.Collections.Immutable\ImmutableStack.cs</Link>
     </Compile>
     <Compile Include="Client\Transports\WebSocket_windowsphone8.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

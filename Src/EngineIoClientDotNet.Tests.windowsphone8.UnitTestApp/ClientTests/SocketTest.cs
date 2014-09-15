@@ -4,9 +4,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using EngineIoClientDotNet.Modules;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+using Quobject.Collections.Immutable;
 using Quobject.EngineIoClientDotNet.Client;
 using System;
-using System.Collections.Immutable;
+
 
 
 namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
@@ -37,7 +38,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
 
         [TestMethod]
-        public void SocketClosing()
+        public async Task SocketClosing()
         {
             LogManager.SetupLogManager();
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
@@ -68,7 +69,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             });
 
             socket.Open();
-            Task.Delay(4000).Wait();
+            await Task.Delay(1000);
             log.Info("After WaitOne");
             Assert.IsTrue(closed);
             Assert.IsTrue(error);

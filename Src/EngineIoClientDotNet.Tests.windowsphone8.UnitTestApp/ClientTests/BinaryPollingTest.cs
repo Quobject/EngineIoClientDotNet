@@ -5,10 +5,11 @@ using System.Diagnostics;
 using System.Threading;
 using EngineIoClientDotNet.Modules;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+using Quobject.Collections.Immutable;
 using Quobject.EngineIoClientDotNet.Client;
 using Quobject.EngineIoClientDotNet.Client.Transports;
 
-using System.Collections.Immutable;
+
 
 using System.IO;
 using System;

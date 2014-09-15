@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 //using log4net;
 using EngineIoClientDotNet.Modules;
+using Quobject.Collections.Immutable;
 using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Parser;
 using Quobject.EngineIoClientDotNet.Thread;
 using System;
-using System.Collections.Immutable;
+
 using WebSocket4Net;
 
 namespace Quobject.EngineIoClientDotNet.Client.Transports
@@ -74,7 +75,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             this.OnError("websocket error", e.Exception);
         }
 
-        protected override void Write(System.Collections.Immutable.ImmutableList<Parser.Packet> packets)
+        protected override void Write(ImmutableList<Parser.Packet> packets)
         {
             Writable = false;
             foreach (var packet in packets)

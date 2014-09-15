@@ -1,5 +1,6 @@
 ﻿//using log4net;
 
+using System.Threading;
 using EngineIoClientDotNet.Modules;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Quobject.EngineIoClientDotNet.Client;
@@ -36,13 +37,15 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             //System.Threading.Thread.Sleep(TimeSpan.FromSeconds(2));
         }
 
+        private ManualResetEvent _manualResetEvent = null;
+
         [TestMethod]
         public void Usage2()
         {
             LogManager.SetupLogManager();
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
-
+            _manualResetEvent = new ManualResetEvent(false);
 
             var options = CreateOptions();
             var socket = new Socket(options);
@@ -52,11 +55,10 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             socket.On(Socket.EVENT_OPEN, () =>
             {
                 socket.On(Socket.EVENT_MESSAGE, (data) => Console.WriteLine((string)data));
+                _manualResetEvent.Set();
             });
             socket.Open();
-
-
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(2));
+            _manualResetEvent.WaitOne();
             socket.Close();
 
             

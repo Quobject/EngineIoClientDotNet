@@ -1,10 +1,14 @@
 ﻿//using log4net;
 
 using System;
+using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using EngineIoClientDotNet.Modules;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+using Quobject.Collections.Immutable;
 using Quobject.EngineIoClientDotNet.Client;
+using Quobject.EngineIoClientDotNet.Client.Transports;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
 
 
@@ -16,18 +20,80 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         private Socket socket;
         public string Message;
 
+        //[TestMethod]
+        //public async Task PingTest()
+        //{
+
+        //    var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+        //    log.Info("Start");
+
+        //    var binaryData = new byte[5];
+        //    for (int i = 0; i < binaryData.Length; i++)
+        //    {
+        //        binaryData[i] = (byte)i;
+        //    }
+
+        //    var events = new Queue<object>();
+
+
+        //    var options = CreateOptions();
+        //    options.Transports = ImmutableList.Create<string>(Polling.NAME);
+
+        //    var socket = new Socket(options);
+
+        //    socket.On(Socket.EVENT_OPEN, () =>
+        //    {
+
+        //        log.Info("EVENT_OPEN");
+
+        //        socket.Send(binaryData);
+        //        socket.Send("cash money €€€");
+        //    });
+
+        //    socket.On(Socket.EVENT_MESSAGE, (d) =>
+        //    {
+
+        //        var data = d as string;
+        //        log.Info(string.Format("EVENT_MESSAGE data ={0} d = {1} ", data, d));
+
+        //        if (data == "hi")
+        //        {
+        //            return;
+        //        }
+        //        events.Enqueue(d);
+        //        //socket.Close();
+        //    });
+
+        //    socket.Open();
+        //    await Task.Delay(20000);
+        //    socket.Close();
+        //    log.Info("ReceiveBinaryData end");
+
+        //    var binaryData2 = new byte[5];
+        //    for (int i = 0; i < binaryData2.Length; i++)
+        //    {
+        //        binaryData2[i] = (byte)(i + 1);
+        //    }
+           
+        //    Assert.AreEqual("1", "1");
+        //}
+
+        private ManualResetEvent _manualResetEvent = null;
+
         [TestMethod]
         public void ConnectToLocalhost()
         {
             LogManager.SetupLogManager();
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
+            _manualResetEvent = new ManualResetEvent(false);
 
             socket = new Socket(CreateOptions());
             socket.On(Socket.EVENT_OPEN, new TestListener());
             socket.On(Socket.EVENT_MESSAGE, new MessageListener(socket, this));
             socket.Open();
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(1));
+            _manualResetEvent.WaitOne();
+            socket.Close();
             Assert.AreEqual("hi", this.Message);
         }
 
@@ -80,7 +146,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                 var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
                 log.Info("message = " + args[0]);
                 connectionTest.Message = (string) args[0];
-                socket.Close();
+                connectionTest._manualResetEvent.Set();
             }
 
             public int CompareTo(IListener other)
@@ -213,7 +279,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
 
         [TestMethod]
-        public void NotSendPacketsIfSocketCloses()
+        public async Task NotSendPacketsIfSocketCloses()
         {
             LogManager.SetupLogManager();
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
@@ -237,7 +303,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             });
             socket.Open();
             socket.Close();
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(2));
+            await Task.Delay(2000);
             log.Info("NotSendPacketsIfSocketCloses end noPacket = " + noPacket);
             Assert.IsTrue(noPacket);
         }

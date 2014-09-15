@@ -17,6 +17,9 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
     [TestClass]
     public class ServerConnectionTest : Connection
     {
+        private ManualResetEvent _manualResetEvent = null;
+
+
         [TestMethod]
         public void OpenAndClose()
         {
@@ -84,7 +87,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             });
             socket.Open();
             this._autoResetEvent.WaitOne();
-            //await Task.Delay(4000);
             socket.Close();
 
             string result;
@@ -103,7 +105,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             LogManager.SetupLogManager();
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
-
+            _manualResetEvent = new ManualResetEvent(false);
 
             HandshakeData handshake_data = null;
 
@@ -113,10 +115,11 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             {
                 log.Info(Socket.EVENT_HANDSHAKE + string.Format(" data = {0}", data));
                 handshake_data = data as HandshakeData;
+                _manualResetEvent.Set();
             });
 
             socket.Open();
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(4));
+            _manualResetEvent.WaitOne();	
             socket.Close();
 
             Assert.IsNotNull(handshake_data);
@@ -130,6 +133,12 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         public class TestHandshakeListener : IListener
         {
             public HandshakeData HandshakeData;
+            private ServerConnectionTest serverConnectionTest;
+
+            public TestHandshakeListener(ServerConnectionTest serverConnectionTest)
+            {
+                this.serverConnectionTest = serverConnectionTest;
+            }
 
 
 
@@ -139,6 +148,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                 var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
                 log.Info(string.Format("open args[0]={0} args.Length={1}", args[0], args.Length));
                 HandshakeData = args[0] as HandshakeData;
+                serverConnectionTest._manualResetEvent.Set();
             }
 
             public int CompareTo(IListener other)
@@ -159,13 +169,14 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             LogManager.SetupLogManager();
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
+            _manualResetEvent = new ManualResetEvent(false);
 
 
             var socket = new Socket(CreateOptions());
-            var testListener = new TestHandshakeListener();
+            var testListener = new TestHandshakeListener(this);
             socket.On(Socket.EVENT_HANDSHAKE, testListener);
             socket.Open();
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(4));
+            _manualResetEvent.WaitOne();
             socket.Close();
 
             Assert.IsNotNull(testListener.HandshakeData);

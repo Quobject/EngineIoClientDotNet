@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
+using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Thread;
 using System;
 using System.Collections.Generic;
@@ -178,9 +179,9 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         protected override void DoPoll()
         {
-            //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            var log = LogManager.GetLogger(Global.CallerName());
 
-            //log.Info("xhr poll");
+            log.Info("xhr poll");
             sendXhr = Request();
             sendXhr.On(EVENT_DATA, new DoPollEventDataListener(this));
             sendXhr.On(EVENT_ERROR, new DoPollEventErrorListener(this));
