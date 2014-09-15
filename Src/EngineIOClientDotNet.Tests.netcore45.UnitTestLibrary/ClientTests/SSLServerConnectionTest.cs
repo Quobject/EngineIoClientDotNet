@@ -40,11 +40,11 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             {
                 log.Info("EVENT_CLOSE");
                 events.Enqueue(Socket.EVENT_CLOSE);
-	_manualResetEvent.Set();
+                _manualResetEvent.Set();
             });
             socket.Open();
             log.Info("After open");
-	_manualResetEvent.WaitOne();		
+            _manualResetEvent.WaitOne();
             string result;
             log.Info("Before dequeue events.count=" + events.Count);
             result = events.Dequeue();
@@ -53,10 +53,10 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             Assert.AreEqual(Socket.EVENT_CLOSE, result);
         }
 
-         private ManualResetEvent _manualResetEvent = null;
+        private ManualResetEvent _manualResetEvent = null;
 
         [TestMethod]
-        public void Messages()
+        public async Task Messages()
         {
 
             var log = LogManager.GetLogger(Global.CallerName());
@@ -80,12 +80,12 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                 if (events.Count > 1)
                 {
                     log.Info("EVENT_MESSAGE 2");
-    	_manualResetEvent.Set();
+                    _manualResetEvent.Set();
                 }
             });
             socket.Open();
-	_manualResetEvent.WaitOne();		
             //await Task.Delay(4000);
+            _manualResetEvent.WaitOne();
             socket.Close();
 
             string result;
@@ -104,7 +104,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
-
+            _manualResetEvent = new ManualResetEvent(false);
 
             HandshakeData handshake_data = null;
 
@@ -114,10 +114,11 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             {
                 log.Info(Socket.EVENT_HANDSHAKE + string.Format(" data = {0}", data));
                 handshake_data = data as HandshakeData;
+                _manualResetEvent.Set();
             });
 
             socket.Open();
-            //System.Threading.Thread.Sleep(TimeSpan.FromSeconds(4));
+            _manualResetEvent.WaitOne();
             socket.Close();
 
             Assert.IsNotNull(handshake_data);
@@ -136,7 +137,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             public void Call(params object[] args)
             {
-    
+
                 var log = LogManager.GetLogger(Global.CallerName());
                 log.Info(string.Format("open args[0]={0} args.Length={1}", args[0], args.Length));
                 HandshakeData = args[0] as HandshakeData;
@@ -166,7 +167,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             var testListener = new TestHandshakeListener();
             socket.On(Socket.EVENT_HANDSHAKE, testListener);
             socket.Open();
-            //System.Threading.Thread.Sleep(TimeSpan.FromSeconds(4));
+            Task.Delay(TimeSpan.FromSeconds(3)).Wait();
             socket.Close();
 
             Assert.IsNotNull(testListener.HandshakeData);
@@ -198,11 +199,11 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             {
                 log.Info(Socket.EVENT_UPGRADE + string.Format(" data = {0}", data));
                 events.Enqueue(data);
-	_manualResetEvent.Set();
+                _manualResetEvent.Set();
             });
 
             socket.Open();
-	_manualResetEvent.WaitOne();		
+            _manualResetEvent.WaitOne();
 
             object test = null;
             test = events.Dequeue();
@@ -248,13 +249,13 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                     var socket2 = new Socket(options);
                     socket2.Open();
                     socket2TransportName = socket2.Transport.Name;
-    	_manualResetEvent.Set();
+                    _manualResetEvent.Set();
                     socket2.Close();
                 }
             });
 
             socket1.Open();
-	_manualResetEvent.WaitOne();		
+            _manualResetEvent.WaitOne();
             Assert.AreEqual(Polling.NAME, socket1TransportName);
             Assert.AreEqual(WebSocket.NAME, socket2TransportName);
         }
@@ -294,14 +295,14 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                         log.Info("EVENT_OPEN socket 2");
                         socket2TransportName = socket2.Transport.Name;
                         socket2.Close();
-        	_manualResetEvent.Set();
+                        _manualResetEvent.Set();
                     });
                     socket2.Open();
                 }
             });
 
             socket1.Open();
-	_manualResetEvent.WaitOne();		
+            _manualResetEvent.WaitOne();
             Assert.AreEqual(Polling.NAME, socket1TransportName);
             Assert.AreEqual(Polling.NAME, socket2TransportName);
         }

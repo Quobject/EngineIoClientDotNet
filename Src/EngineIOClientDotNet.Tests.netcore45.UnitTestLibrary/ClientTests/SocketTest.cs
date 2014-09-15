@@ -17,6 +17,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
     {
         private Socket socket;
         public string Message;
+        private ManualResetEvent _manualResetEvent = null;
 
         [TestMethod]
         public void FilterUpgrades()
@@ -42,8 +43,9 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         {
 
             var log = LogManager.GetLogger(Global.CallerName());
-            log.Info("Start");          
-
+            log.Info("Start");
+            _manualResetEvent = new ManualResetEvent(false);
+            var manualResetEventError = new ManualResetEvent(false);
             var closed = false;
             var error = false;
 
@@ -54,23 +56,24 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             {
                 log.Info("EVENT_OPEN");
                 //socket.Send("test send");
-                
             });
             socket.On(Socket.EVENT_CLOSE, () =>
             {
                 log.Info("EVENT_CLOSE = ");
-                closed = true;                
+                closed = true;
+                _manualResetEvent.Set();
             });
 
             socket.Once(Socket.EVENT_ERROR, () =>
             {
                 log.Info("EVENT_ERROR = ");
-                error = true;                
+                error = true;
+                manualResetEventError.Set();
             });
 
             socket.Open();
-            Task.Delay(4000).Wait();
-            log.Info("After WaitOne");
+            _manualResetEvent.WaitOne();
+            manualResetEventError.WaitOne();
             Assert.IsTrue(closed);
             Assert.IsTrue(error);
         }

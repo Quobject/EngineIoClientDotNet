@@ -56,7 +56,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
          private ManualResetEvent _manualResetEvent = null;
 
         [TestMethod]
-        public void Messages()
+        public async Task Messages()
         {
 
             var log = LogManager.GetLogger(Global.CallerName());
@@ -80,13 +80,12 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                 if (events.Count > 1)
                 {
                     log.Info("EVENT_MESSAGE 2"); 
-    	_manualResetEvent.Set(); 
+    	            _manualResetEvent.Set(); 
                 }
             });
             socket.Open();
-            //this._autoResetEvent.WaitOne();
-            Task.Delay(TimeSpan.FromSeconds(4)).Wait();
             //await Task.Delay(4000);
+            _manualResetEvent.WaitOne();
             socket.Close();
 
             string result;
@@ -105,7 +104,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Start");
-
+            _manualResetEvent = new ManualResetEvent(false);
 
             HandshakeData handshake_data = null;
 
@@ -115,9 +114,11 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             {
                 log.Info(Socket.EVENT_HANDSHAKE + string.Format(" data = {0}", data));
                 handshake_data = data as HandshakeData;
+                _manualResetEvent.Set();
             });
 
             socket.Open();
+            _manualResetEvent.WaitOne();
             socket.Close();
 
             Assert.IsNotNull(handshake_data);
