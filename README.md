@@ -3,7 +3,7 @@
 
 Engine.IO Client Library for .Net
 
-This is the Engine.IO Client Library for C#, which is ported from the [JavaScript client](https://github.com/LearnBoost/engine.io-client).
+This is the Engine.IO Client Library for C#, which is ported from the [JavaScript client](https://github.com/Automattic/engine.io-client).
 
 
 ## Installation
@@ -13,7 +13,7 @@ Install-Package EngineIoClientDotNet
 ```
 
 ## Usage
-EngineIoClientDotNet has a similar api to those of the [JavaScript client](https://github.com/LearnBoost/engine.io-client).
+EngineIoClientDotNet has a similar api to those of the [JavaScript client](https://github.com/Automattic/engine.io-client).
 
 You can use `Socket` to connect:
 
