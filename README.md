@@ -7,7 +7,10 @@ This is the Engine.IO Client Library for C#, which is ported from the [JavaScrip
 
 
 ## Installation
-
+Nuget install:
+```
+Install-Package EngineIoClientDotNet
+```
 
 ## Usage
 EngineIoClientDotNet has a similar api to those of the [JavaScript client](https://github.com/LearnBoost/engine.io-client).

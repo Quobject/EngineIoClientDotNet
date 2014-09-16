@@ -4,9 +4,26 @@
     <id>EngineIoClientDotNet</id>
     <version>@VERSION@</version>
     <title>EngineIoClientDotNet</title>
-    <description>Engine.IO Client Library for .Net</description>
     <authors>Matthias Ludwig</authors>
+    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <dependencies>
+      <group>
+        <dependency id="Json.NET" version="6.0.5" />
+      </group>
+      <group targetFramework="net45">
+        <dependency id="WebSocket4Net" version="0.10" />
+      </group>
+      <group targetFramework="windowsphone8">
+        <dependency id="WebSocket4Net" version="0.10" />
+      </group>
+    </dependencies>
     <projectUrl>https://github.com/Quobject/EngineIoClientDotNet/</projectUrl>
+    <description>This is the Engine.IO Client Library for C#.</description>
+    <summary>This library supports all of the features the JS client does, including events, options and upgrading transport. EngineIoClientDotNet has a similar api to those of the JavaScript client.</summary>
     <tags>engine.io.client</tags>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Web" targetFramework="net45" />
+    </frameworkAssemblies>
   </metadata>
 </package>

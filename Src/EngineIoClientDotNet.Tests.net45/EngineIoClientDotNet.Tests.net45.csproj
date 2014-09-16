@@ -48,10 +48,6 @@
       <Project>{842d8b13-daf3-4919-80a0-03efa3c17178}</Project>
       <Name>EngineIoClientDotNet.net45</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Quobject.Collections.Immutable\Quobject.Collections.Immutable.csproj">
-      <Project>{024a2111-4b19-44d7-917e-8514cf632469}</Project>
-      <Name>Quobject.Collections.Immutable</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\BinaryPollingTest.cs">

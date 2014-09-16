@@ -121,7 +121,6 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="EngineIoClientDotNet.Tests.wpa.UnitTestApp_TemporaryKey.pfx" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -133,7 +132,7 @@
     <Content Include="Assets\WideLogo.scale-240.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EngineIoClientDotNet.wpa\EngineIoClientDotNet.wpa.csproj">
+    <ProjectReference Include="..\EngineIoClientDotNet.wpa81\EngineIoClientDotNet.wpa81.csproj">
       <Project>{52922e0f-7300-4970-ba75-e22ef008bea1}</Project>
       <Name>EngineIoClientDotNet.wpa</Name>
     </ProjectReference>

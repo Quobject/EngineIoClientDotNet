@@ -8,7 +8,8 @@ module.exports = function (grunt) {
     nuget_builds = [
       { "Name": "EngineIoClientDotNet.net45", "NuGetDir": "net45" },
       { "Name": "EngineIoClientDotNet.windowsphone8", "NuGetDir": "windowsphone8" },
-      { "Name": "EngineIoClientDotNet.netcore45", "NuGetDir": "netcore45" }
+      { "Name": "EngineIoClientDotNet.netcore45", "NuGetDir": "netcore45" },
+      { "Name": "EngineIoClientDotNet.wpa81", "NuGetDir": "wpa81" }
     ];
 
   grunt.log.writeln(util.inspect(config));
@@ -19,8 +20,8 @@ module.exports = function (grunt) {
   grunt.initConfig({      
     os: os,
     config: config,
-    msbuild_configuration: 'Debug',
-    //msbuild_configuration: 'Release',
+    //msbuild_configuration: 'Debug',
+    msbuild_configuration: 'Release',
     nuget_builds: nuget_builds,
     release_path: './../Releases/<%= config.version %>/',
     working_path: './../Working/',

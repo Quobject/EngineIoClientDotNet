@@ -9,8 +9,8 @@
     <ProjectGuid>{52922E0F-7300-4970-BA75-E22EF008BEA1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EngineIoClientDotNet.wpa</RootNamespace>
-    <AssemblyName>EngineIoClientDotNet.wpa</AssemblyName>
+    <RootNamespace>EngineIoClientDotNet.wpa81</RootNamespace>
+    <AssemblyName>EngineIoClientDotNet.wpa81</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformVersion>8.1</TargetPlatformVersion>
     <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>

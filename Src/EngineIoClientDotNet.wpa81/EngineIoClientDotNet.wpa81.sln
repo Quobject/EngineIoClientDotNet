@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngineIoClientDotNet.wpa", "EngineIoClientDotNet.wpa.csproj", "{52922E0F-7300-4970-BA75-E22EF008BEA1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngineIoClientDotNet.wpa81", "EngineIoClientDotNet.wpa81.csproj", "{52922E0F-7300-4970-BA75-E22EF008BEA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngineIoClientDotNet.Tests.wpa.UnitTestApp", "..\EngineIoClientDotNet.Tests.wpa.UnitTestApp\EngineIoClientDotNet.Tests.wpa.UnitTestApp.csproj", "{69763655-9437-4297-95E4-0D77A47A72CC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngineIoClientDotNet.Tests.wpa81.UnitTestApp", "..\EngineIoClientDotNet.Tests.wpa81.UnitTestApp\EngineIoClientDotNet.Tests.wpa81.UnitTestApp.csproj", "{69763655-9437-4297-95E4-0D77A47A72CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,8 +23,8 @@ Global
 		{52922E0F-7300-4970-BA75-E22EF008BEA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52922E0F-7300-4970-BA75-E22EF008BEA1}.Debug|ARM.ActiveCfg = Debug|ARM
 		{52922E0F-7300-4970-BA75-E22EF008BEA1}.Debug|ARM.Build.0 = Debug|ARM
-		{52922E0F-7300-4970-BA75-E22EF008BEA1}.Debug|Mixed Platforms.ActiveCfg = Debug|ARM
-		{52922E0F-7300-4970-BA75-E22EF008BEA1}.Debug|Mixed Platforms.Build.0 = Debug|ARM
+		{52922E0F-7300-4970-BA75-E22EF008BEA1}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{52922E0F-7300-4970-BA75-E22EF008BEA1}.Debug|Mixed Platforms.Build.0 = Debug|x86
 		{52922E0F-7300-4970-BA75-E22EF008BEA1}.Debug|x86.ActiveCfg = Debug|x86
 		{52922E0F-7300-4970-BA75-E22EF008BEA1}.Debug|x86.Build.0 = Debug|x86
 		{52922E0F-7300-4970-BA75-E22EF008BEA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,9 +39,9 @@ Global
 		{69763655-9437-4297-95E4-0D77A47A72CC}.Debug|ARM.ActiveCfg = Debug|ARM
 		{69763655-9437-4297-95E4-0D77A47A72CC}.Debug|ARM.Build.0 = Debug|ARM
 		{69763655-9437-4297-95E4-0D77A47A72CC}.Debug|ARM.Deploy.0 = Debug|ARM
-		{69763655-9437-4297-95E4-0D77A47A72CC}.Debug|Mixed Platforms.ActiveCfg = Debug|ARM
-		{69763655-9437-4297-95E4-0D77A47A72CC}.Debug|Mixed Platforms.Build.0 = Debug|ARM
-		{69763655-9437-4297-95E4-0D77A47A72CC}.Debug|Mixed Platforms.Deploy.0 = Debug|ARM
+		{69763655-9437-4297-95E4-0D77A47A72CC}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{69763655-9437-4297-95E4-0D77A47A72CC}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{69763655-9437-4297-95E4-0D77A47A72CC}.Debug|Mixed Platforms.Deploy.0 = Debug|x86
 		{69763655-9437-4297-95E4-0D77A47A72CC}.Debug|x86.ActiveCfg = Debug|x86
 		{69763655-9437-4297-95E4-0D77A47A72CC}.Debug|x86.Build.0 = Debug|x86
 		{69763655-9437-4297-95E4-0D77A47A72CC}.Debug|x86.Deploy.0 = Debug|x86

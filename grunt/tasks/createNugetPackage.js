@@ -20,7 +20,7 @@
       dst_path,
       template_file_content,
       i,
-      files;
+      tasks = [];
 
     //function createPackageWithTitle(title) {
     //  var
@@ -71,7 +71,7 @@
 
     function addBuildWithTitle(title, dir) {
       var
-        src_path = string.format('{0}/../../Src/EngineIoClientDotNet/{1}{2}/', __dirname, output_path_base, dir),
+        src_path = string.format('{0}/../../Src/{1}/{2}{3}/', __dirname,title, output_path_base, dir),
         dst_path = package_lib_path + dir + '/',
         //src_file = string.format('{0}EngineIoClientDotNet.dll', src_path),
         src_file = src_path + string.format('{0}.dll', title),
@@ -89,9 +89,11 @@
     for (i = 0; i < nuget_builds.length; i++) {
       addBuildWithTitle(nuget_builds[i].Name, nuget_builds[i].NuGetDir);
     }
-
-    //grunt.log.writeln('tasks = %s', JSON.stringify(tasks));
-    //grunt.config('shell.exec.command', tasks.join('&&'));
-    //grunt.task.run('shell');       
+    tasks.push('C:/WINDOWS/System32/WindowsPowerShell/v1.0/powershell.exe pwd');
+    tasks.push(string.format('{0} pack EngineIoClientDotNet.nuspec', config.win.nuget));
+    grunt.log.writeln('tasks = %s', JSON.stringify(tasks));
+    grunt.config('shell.exec.options.execOptions.cwd', package_path);
+    grunt.config('shell.exec.command', tasks.join('&&'));
+    grunt.task.run('shell');       
   });
 };

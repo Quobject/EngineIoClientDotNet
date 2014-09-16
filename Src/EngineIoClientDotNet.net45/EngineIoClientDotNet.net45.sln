@@ -45,8 +45,6 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TestServer", "..\..\TestSer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngineIoClientDotNet.Tests.net45", "..\EngineIoClientDotNet.Tests.net45\EngineIoClientDotNet.Tests.net45.csproj", "{BEFF0675-8A73-4012-9651-C253E06E0F87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quobject.Collections.Immutable", "..\Quobject.Collections.Immutable\Quobject.Collections.Immutable.csproj", "{024A2111-4B19-44D7-917E-8514CF632469}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,10 +67,6 @@ Global
 		{BEFF0675-8A73-4012-9651-C253E06E0F87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEFF0675-8A73-4012-9651-C253E06E0F87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BEFF0675-8A73-4012-9651-C253E06E0F87}.Release|Any CPU.Build.0 = Release|Any CPU
-		{024A2111-4B19-44D7-917E-8514CF632469}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{024A2111-4B19-44D7-917E-8514CF632469}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{024A2111-4B19-44D7-917E-8514CF632469}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{024A2111-4B19-44D7-917E-8514CF632469}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
