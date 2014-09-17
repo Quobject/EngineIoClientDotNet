@@ -14,14 +14,14 @@ namespace Quobject.EngineIoClientDotNet.Parser
     /// </remarks>
     public class Packet
     {
-        public static String OPEN = "open";
-        public static String CLOSE = "close";
-        public static String PING = "ping";
-        public static String PONG = "pong";
-        public static String UPGRADE = "upgrade";
-        public static String MESSAGE = "message";
-        public static String NOOP = "noop";
-        public static String ERROR = "error";
+        public static readonly string OPEN = "open";
+        public static readonly string CLOSE = "close";
+        public static readonly string PING = "ping";
+        public static readonly string PONG = "pong";
+        public static readonly string UPGRADE = "upgrade";
+        public static readonly string MESSAGE = "message";
+        public static readonly string NOOP = "noop";
+        public static readonly string ERROR = "error";
 
         private static readonly int MAX_INT_CHAR_LENGTH = int.MaxValue.ToString().Length;
 
