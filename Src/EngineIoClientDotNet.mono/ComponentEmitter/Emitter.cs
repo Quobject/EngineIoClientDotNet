@@ -28,7 +28,7 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
         /// <param name="eventString">an event name.</param>
         /// <param name="args"></param>
         /// <returns>a reference to this object.</returns>
-        public Emitter Emit(string eventString, params object[] args) 
+        public virtual Emitter Emit(string eventString, params object[] args) 
         {
             //var log = LogManager.GetLogger(Global.CallerName());
             //log.Info("Emitter emit event = " + eventString);
