@@ -54,9 +54,6 @@
     <Compile Include="..\EngineIoClientDotNet.mono\Client\Transport.cs">
       <Link>ComponentEmitter\Transport.cs</Link>
     </Compile>
-    <Compile Include="..\EngineIoClientDotNet.mono\Client\Transports\HttpURLConnection.cs">
-      <Link>Client\Transports\HttpURLConnection.cs</Link>
-    </Compile>
     <Compile Include="..\EngineIoClientDotNet.mono\Client\Transports\Polling.cs">
       <Link>Client\Transports\Polling.cs</Link>
     </Compile>
