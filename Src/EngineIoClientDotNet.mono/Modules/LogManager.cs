@@ -64,7 +64,7 @@ namespace EngineIoClientDotNet.Modules
         }
 
         [Conditional("DEBUG")]
-        internal void Error(string p, Exception exception)
+        public void Error(string p, Exception exception)
         {
             this.Info(string.Format("ERROR {0} {1} {2}", p, exception.Message, exception.StackTrace));
             if (exception.InnerException != null)
