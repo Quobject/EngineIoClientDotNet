@@ -1,4 +1,4 @@
-﻿using EngineIoClientDotNet.Modules;
+﻿
 using Quobject.Collections.Immutable;
 using Quobject.EngineIoClientDotNet.Modules;
 using System;

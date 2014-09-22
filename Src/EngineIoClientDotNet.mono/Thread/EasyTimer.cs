@@ -1,4 +1,4 @@
-﻿using EngineIoClientDotNet.Modules;
+﻿
 using Quobject.EngineIoClientDotNet.Modules;
 using System;
 using System.Threading;

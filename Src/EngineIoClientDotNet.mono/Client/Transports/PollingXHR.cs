@@ -1,6 +1,6 @@
 ﻿
 
-using EngineIoClientDotNet.Modules;
+
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
 using Quobject.EngineIoClientDotNet.Modules;
 using System;

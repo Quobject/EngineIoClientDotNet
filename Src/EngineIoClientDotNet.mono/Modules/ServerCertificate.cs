@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace EngineIoClientDotNet.Modules
+namespace Quobject.EngineIoClientDotNet.Modules
 {
     public class ServerCertificate
     {

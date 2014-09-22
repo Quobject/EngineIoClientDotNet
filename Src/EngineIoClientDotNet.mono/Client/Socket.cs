@@ -1,6 +1,6 @@
 ﻿
 
-using EngineIoClientDotNet.Modules;
+
 using Quobject.Collections.Immutable;
 using Quobject.EngineIoClientDotNet.Client.Transports;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
