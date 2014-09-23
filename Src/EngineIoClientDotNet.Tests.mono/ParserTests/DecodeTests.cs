@@ -1,4 +1,4 @@
-﻿using EngineIoClientDotNet.Modules;
+﻿using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Parser;
 using Xunit;
 

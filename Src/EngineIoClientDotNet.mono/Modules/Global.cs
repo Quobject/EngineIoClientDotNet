@@ -22,8 +22,20 @@ namespace Quobject.EngineIoClientDotNet.Modules
         {
             var s = path.Split('\\');
             var fileName = s.LastOrDefault();
+            if (path.Contains("SocketIoClientDotNet.Tests"))
+            {
+                path = "SocketIoClientDotNet.Tests";
+            }
+            else if (path.Contains("SocketIoClientDotNet"))
+            {
+                path = "SocketIoClientDotNet";
+            }
+            else if (path.Contains("EngineIoClientDotNet"))
+            {
+                path = "EngineIoClientDotNet";
+            }
 
-            return string.Format("{0}:{1}#{2}", fileName, caller, number);
+            return string.Format("{0}-{1}:{2}#{3}",path, fileName, caller, number);
         }                 
 
     }

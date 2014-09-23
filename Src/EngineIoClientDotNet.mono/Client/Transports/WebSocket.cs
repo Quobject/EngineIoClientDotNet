@@ -21,7 +21,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         protected override void DoOpen()
         {
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            var log = LogManager.GetLogger(Global.CallerName());
             log.Info("DoOpen uri =" + this.Uri());
 
             ws = new WebSocket4Net.WebSocket(this.Uri());
@@ -40,28 +40,28 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         void ws_DataReceived(object sender, DataReceivedEventArgs e)
         {
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            var log = LogManager.GetLogger(Global.CallerName());
             log.Info("ws_DataReceived " + e.Data);
             this.OnData(e.Data);
         }
 
         private void ws_Opened(object sender, EventArgs e)
         {
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            var log = LogManager.GetLogger(Global.CallerName());
             log.Info("ws_Opened " + ws.SupportBinary);
             this.OnOpen();
         }
 
         void ws_Closed(object sender, EventArgs e)
         {
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            var log = LogManager.GetLogger(Global.CallerName());
             log.Info("ws_Closed");
             this.OnClose();
         }
 
         void ws_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            var log = LogManager.GetLogger(Global.CallerName());
             log.Info("ws_MessageReceived e.Message= " + e.Message);
             this.OnData(e.Message);
         }
@@ -99,7 +99,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             public void Call(object data)
             {
-                //var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+                //var log = LogManager.GetLogger(Global.CallerName());
 
                 if (data is string)
                 {                    
@@ -141,7 +141,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 //}
                 //catch (Exception e)
                 //{
-                //    var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+                //    var log = LogManager.GetLogger(Global.CallerName());
                 //    log.Info("DoClose ws.Close() Exception= " + e.Message);                                          
                 //}
             }

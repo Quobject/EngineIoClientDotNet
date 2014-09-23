@@ -1,6 +1,6 @@
 ﻿
 
-using EngineIoClientDotNet.Modules;
+using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Client;
 using System;
 using Xunit;

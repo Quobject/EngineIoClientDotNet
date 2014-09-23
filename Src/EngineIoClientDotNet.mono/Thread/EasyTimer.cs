@@ -39,8 +39,8 @@ namespace Quobject.EngineIoClientDotNet.Thread
 
         public void Stop()
         {
-            var log = LogManager.GetLogger(Global.CallerName());
-            log.Info("EasyTimer stop");
+            //var log = LogManager.GetLogger(Global.CallerName());
+            //log.Info("EasyTimer stop");
             if (ts != null)
             {
                 ts.Cancel();                

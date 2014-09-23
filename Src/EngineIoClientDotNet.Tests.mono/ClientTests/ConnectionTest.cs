@@ -4,7 +4,7 @@ using System;
 using System.Threading;
 using Quobject.Collections.Immutable;
 using System.Threading.Tasks;
-using EngineIoClientDotNet.Modules;
+using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Client;
 using Quobject.EngineIoClientDotNet.Client.Transports;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;

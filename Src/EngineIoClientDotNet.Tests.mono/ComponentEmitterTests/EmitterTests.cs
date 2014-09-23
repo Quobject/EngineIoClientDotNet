@@ -1,4 +1,4 @@
-﻿using EngineIoClientDotNet.Modules;
+﻿using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
 using System;
 using System.Collections.Generic;

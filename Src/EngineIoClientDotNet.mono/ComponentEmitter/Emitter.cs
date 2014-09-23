@@ -238,7 +238,8 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
         {
             if (fn != null)
             {
-                fn(args[0]);
+                var arg = args.Length > 0 ? args[0] : null;
+                fn(arg);
             }
             else
             {
