@@ -389,6 +389,7 @@ namespace Quobject.EngineIoClientDotNet.Client
         {
             var log = LogManager.GetLogger(Global.CallerName());
 
+            log.Info(string.Format("ReadyState={0} Transport.Writeable={1} Upgrading={2} WriteBuffer.Count={3}",ReadyState,Transport.Writable,Upgrading, WriteBuffer.Count));
             if (ReadyState != ReadyStateEnum.CLOSED && this.Transport.Writable && !Upgrading && WriteBuffer.Count != 0)
             {
                 log.Info(string.Format("Flush {0} packets in socket", WriteBuffer.Count));
@@ -402,14 +403,14 @@ namespace Quobject.EngineIoClientDotNet.Client
             }
         }
 
-        internal void OnPacket(Packet packet)
+        public void OnPacket(Packet packet)
         {
             var log = LogManager.GetLogger(Global.CallerName());
 
 
             if (ReadyState == ReadyStateEnum.OPENING || ReadyState == ReadyStateEnum.OPEN)
             {
-                //log.Info(string.Format("socket received: type '{0}', data '{1}', type '{2}", packet.Type, packet.Data, typeOfData));
+                log.Info(string.Format("socket received: type '{0}', data '{1}'", packet.Type, packet.Data));
 
                 Emit(EVENT_PACKET, packet);
                 Emit(EVENT_HEARTBEAT);

@@ -94,7 +94,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             {
                 binaryData[i] = (byte) i;
             }
-            const string stringData = "cash money €€€";
+            const string stringData = "Ä ä Ü ü ß";
 
             var options = CreateOptions();         
 
@@ -105,9 +105,15 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
                 log.Info("EVENT_OPEN");
 
+
+
+            });
+
+            socket.On(Socket.EVENT_UPGRADE, () =>
+            {
+                log.Info(Socket.EVENT_UPGRADE);
                 socket.Send(binaryData);
                 socket.Send(stringData);
-
             });
 
             socket.On(Socket.EVENT_MESSAGE, (d) =>
