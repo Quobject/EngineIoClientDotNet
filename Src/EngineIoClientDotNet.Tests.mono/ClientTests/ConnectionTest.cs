@@ -187,8 +187,9 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             _manualResetEvent = new ManualResetEvent(false);
             const string SendMessage = "\uD800-\uDB7F\uDB80-\uDBFF\uDC00-\uDFFF\uE000-\uF8FF";
 
+            var options = CreateOptions();
+            socket = new Socket(options);
 
-            socket = new Socket(CreateOptions());
             socket.On(Socket.EVENT_OPEN, () =>
             {
                 log.Info("open");

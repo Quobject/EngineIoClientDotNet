@@ -966,10 +966,6 @@ namespace Quobject.EngineIoClientDotNet.Client
                 var log = LogManager.GetLogger(Global.CallerName());
 
                 log.Info("socket closing - telling transport to close");
-                if (PingTimeoutTimer != null)
-                {
-                    PingTimeoutTimer.Stop();
-                }
                 Transport.Close();
 
             }
@@ -989,6 +985,11 @@ namespace Quobject.EngineIoClientDotNet.Client
                 {
                     this.PingIntervalTimer.Stop();
                 }
+                if (this.PingTimeoutTimer != null)
+                {
+                    this.PingTimeoutTimer.Stop();
+                }
+
 
                 EasyTimer.SetTimeout(() =>
                 {

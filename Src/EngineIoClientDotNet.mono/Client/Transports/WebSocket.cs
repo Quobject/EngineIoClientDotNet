@@ -56,6 +56,11 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
         {
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("ws_Closed");
+            ws.Opened -= ws_Opened;
+            ws.Closed -= ws_Closed;
+            ws.MessageReceived -= ws_MessageReceived;
+            ws.DataReceived -= ws_DataReceived;
+            ws.Error -= ws_Error;
             this.OnClose();
         }
 
@@ -130,20 +135,16 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
         {
             if (ws != null)
             {
-                ws.Opened -= ws_Opened;
-                ws.Closed -= ws_Closed;
-                ws.MessageReceived -= ws_MessageReceived;
-                ws.DataReceived -= ws_DataReceived;
-                ws.Error -= ws_Error;
-                //try
-                //{
-                //    ws.Close();
-                //}
-                //catch (Exception e)
-                //{
-                //    var log = LogManager.GetLogger(Global.CallerName());
-                //    log.Info("DoClose ws.Close() Exception= " + e.Message);                                          
-                //}
+          
+                try
+                {
+                    ws.Close();
+                }
+                catch (Exception e)
+                {
+                    var log = LogManager.GetLogger(Global.CallerName());
+                    log.Info("DoClose ws.Close() Exception= " + e.Message);
+                }
             }
         }
 

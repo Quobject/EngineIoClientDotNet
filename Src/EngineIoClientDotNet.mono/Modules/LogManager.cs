@@ -52,15 +52,19 @@ namespace Quobject.EngineIoClientDotNet.Modules
         public void Info(string msg)
         {
             //Trace.WriteLine(string.Format("{0} [{3}] {1} - {2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), MyType, msg, System.Threading.Thread.CurrentThread.ManagedThreadId));
-            var msg1 = string.Format("{0} [{3}] {1} - {2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), MyType, msg,
-                System.Threading.Thread.CurrentThread.ManagedThreadId);
 
             if (LogManager.file == null)
             {
                 LogManager.file = new System.IO.StreamWriter(myFileName, true);
                 LogManager.file.AutoFlush = true;
             }
+
+            msg = Global.StripInvalidUnicodeCharacters(msg);
+            var msg1 = string.Format("{0} [{3}] {1} - {2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), MyType,
+                msg,
+                System.Threading.Thread.CurrentThread.ManagedThreadId);
             LogManager.file.WriteLine(msg1);
+
         }
 
         [Conditional("DEBUG")]

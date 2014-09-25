@@ -191,7 +191,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
         {
             var log = LogManager.GetLogger(Global.CallerName());
 
-            //log.Info(string.Format("polling got data {0}",data));
+            log.Info(string.Format("polling got data {0}",data));
             var callback = new DecodePayloadCallback(this);
             if (data is string)
             {
