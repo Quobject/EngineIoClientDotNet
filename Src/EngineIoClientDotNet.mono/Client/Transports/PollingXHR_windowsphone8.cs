@@ -426,7 +426,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                         responseStream.Close();
                     }
                 }
-                catch (WebException e)
+                catch (Exception e)
                 {
                     log.Error(e);
                     myRequestState.error_exception = e;

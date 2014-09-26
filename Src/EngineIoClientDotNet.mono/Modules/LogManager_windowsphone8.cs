@@ -46,14 +46,26 @@ namespace Quobject.EngineIoClientDotNet.Modules
         [Conditional("DEBUG")]
         public void Info(string msg)
         {
-            Debug.WriteLine(string.Format("{0} [{3}] {1} - {2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), MyType, msg, System.Threading.Thread.CurrentThread.ManagedThreadId));
+         
+            msg = Global.StripInvalidUnicodeCharacters(msg);
+            var msg1 = string.Format("{0} [{3}] {1} - {2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), MyType,
+                msg,
+                System.Threading.Thread.CurrentThread.ManagedThreadId);
+            Debug.WriteLine(msg1);
+
         }
 
         [Conditional("DEBUG")]
-        internal void Error(string p, Exception exception)
+        public void Error(string p, Exception exception)
         {
-            this.Info(string.Format("ERROR {0} {1} {2}",p,exception.Message, exception.StackTrace));
+            this.Info(string.Format("ERROR {0} {1} {2}", p, exception.Message, exception.StackTrace));
+            if (exception.InnerException != null)
+            {
+                this.Info(string.Format("ERROR exception.InnerException {0} {1} {2}", p, exception.InnerException.Message, exception.InnerException.StackTrace));
+            }
+
         }
+
 
         [Conditional("DEBUG")]
         internal void Error(Exception e)

@@ -2,13 +2,14 @@
 
 using System.Collections.Generic;
 using System.Threading;
-using EngineIoClientDotNet.Modules;
+
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Quobject.EngineIoClientDotNet.Client;
 using Quobject.EngineIoClientDotNet.Client.Transports;
 
 
 using System.Threading.Tasks;
+using Quobject.EngineIoClientDotNet.Modules;
 
 
 namespace Quobject.EngineIoClientDotNet_Tests.ClientTests

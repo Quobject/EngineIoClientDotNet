@@ -1,9 +1,10 @@
 ﻿using System.Windows;
-using EngineIoClientDotNet.Modules;
+
 using Newtonsoft.Json;
 using Quobject.EngineIoClientDotNet.Client;
 using System;
 using System.IO;
+using Quobject.EngineIoClientDotNet.Modules;
 
 
 namespace Quobject.EngineIoClientDotNet_Tests.ClientTests

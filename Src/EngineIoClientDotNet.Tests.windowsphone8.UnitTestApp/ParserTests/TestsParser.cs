@@ -1,5 +1,6 @@
-﻿using EngineIoClientDotNet.Modules;
+﻿
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Parser;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;

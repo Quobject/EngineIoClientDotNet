@@ -742,15 +742,23 @@ namespace Quobject.EngineIoClientDotNet.Client
                                     _onTransportOpenListener.Parameters.Transport[0]);
                                 ImmutableList<Packet> packetList =
                                     ImmutableList<Packet>.Empty.Add(new Packet(Packet.UPGRADE));
-                                _onTransportOpenListener.Parameters.Transport[0].Send(packetList);
+                                try
+                                {
+                                    _onTransportOpenListener.Parameters.Transport[0].Send(packetList);
 
-                                _onTransportOpenListener.Parameters.Socket.Flush();
-                                _onTransportOpenListener.Parameters.Socket.Upgrading = false;
+                                    _onTransportOpenListener.Parameters.Socket.Flush();
+                                    _onTransportOpenListener.Parameters.Socket.Upgrading = false;
 
-                                _onTransportOpenListener.Parameters.Socket.Emit(EVENT_UPGRADE,
-                                    _onTransportOpenListener.Parameters.Transport[0]);
-                                _onTransportOpenListener.Parameters.Transport =
-                                    _onTransportOpenListener.Parameters.Transport.RemoveAt(0);
+                                    _onTransportOpenListener.Parameters.Socket.Emit(EVENT_UPGRADE,
+                                        _onTransportOpenListener.Parameters.Transport[0]);
+                                    _onTransportOpenListener.Parameters.Transport =
+                                        _onTransportOpenListener.Parameters.Transport.RemoveAt(0);
+
+                                }
+                                catch (Exception e)
+                                {
+                                    log.Error("",e);
+                                }
 
                             });
 

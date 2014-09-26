@@ -154,6 +154,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             else
             {
                 throw new EngineIOException("Transport not open");
+                //log.Info("Transport not open");
             }
             return this;
         }

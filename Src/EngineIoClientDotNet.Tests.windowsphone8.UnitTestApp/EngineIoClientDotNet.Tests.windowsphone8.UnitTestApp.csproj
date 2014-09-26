@@ -80,7 +80,6 @@
     <Compile Include="ClientTests\HandshakeDataTests.cs" />
     <Compile Include="ClientTests\ServerConnectionTest.cs" />
     <Compile Include="ClientTests\SocketTest.cs" />
-    <Compile Include="ClientTests\SSLServerConnectionTest.cs" />
     <Compile Include="ClientTests\UsageTest.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="ModulesTests\EmitterTests.cs" />

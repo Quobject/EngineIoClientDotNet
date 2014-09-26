@@ -1,4 +1,4 @@
-﻿using EngineIoClientDotNet.Modules;
+﻿
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Quobject.EngineIoClientDotNet.Modules;
 using System;
