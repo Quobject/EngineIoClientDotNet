@@ -1,12 +1,9 @@
 ﻿
 
-using System.Threading;
-using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Client;
-using Quobject.EngineIoClientDotNet.Client.Transports;
+using Quobject.EngineIoClientDotNet.Modules;
 using System.Collections.Concurrent;
-using Quobject.Collections.Immutable;
-using System.Threading.Tasks;
+using System.Threading;
 using Xunit;
 
 namespace Quobject.EngineIoClientDotNet_Tests.ClientTests

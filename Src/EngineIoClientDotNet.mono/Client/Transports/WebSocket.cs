@@ -1,6 +1,5 @@
 ﻿using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Parser;
-using Quobject.EngineIoClientDotNet.Thread;
 using System;
 using System.Collections.Generic;
 using WebSocket4Net;

@@ -1,5 +1,5 @@
-﻿using Quobject.EngineIoClientDotNet.Modules;
-using Quobject.EngineIoClientDotNet.ComponentEmitter;
+﻿using Quobject.EngineIoClientDotNet.ComponentEmitter;
+using Quobject.EngineIoClientDotNet.Modules;
 using System;
 using System.Collections.Generic;
 using System.Linq;

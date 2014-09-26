@@ -1,7 +1,6 @@
-﻿using Quobject.EngineIoClientDotNet.Modules;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Quobject.EngineIoClientDotNet.Client;
-using System;
+using Quobject.EngineIoClientDotNet.Modules;
 using System.IO;
 
 

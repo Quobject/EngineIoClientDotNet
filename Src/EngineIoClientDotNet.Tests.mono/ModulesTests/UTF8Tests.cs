@@ -1,5 +1,4 @@
 ﻿using Quobject.EngineIoClientDotNet.Modules;
-using Quobject.EngineIoClientDotNet.Modules;
 using System;
 using Xunit;
 

@@ -1,5 +1,4 @@
 ﻿
-using Quobject.EngineIoClientDotNet.Modules;
 using System;
 using System.Threading;
 using System.Threading.Tasks;

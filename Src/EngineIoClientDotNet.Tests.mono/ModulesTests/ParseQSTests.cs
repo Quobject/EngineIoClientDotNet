@@ -1,7 +1,6 @@
-﻿using Quobject.EngineIoClientDotNet.Modules;
+﻿using Quobject.Collections.Immutable;
 using Quobject.EngineIoClientDotNet.Modules;
 using System.Collections.Generic;
-using Quobject.Collections.Immutable;
 using Xunit;
 
 
