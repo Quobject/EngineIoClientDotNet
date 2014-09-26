@@ -295,6 +295,8 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
                     Task.Run(() =>
                     {
+                        var log2 = LogManager.GetLogger(Global.CallerName());
+                        log2.Info("Task.Run Create start");
                         using (var res = Xhr.GetResponse())
                         {
                             log.Info("Xhr.GetResponse ");
@@ -337,6 +339,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                                 }
                             }
                         }
+                        log2.Info("Task.Run Create finish");
 
                     }).Wait();
 

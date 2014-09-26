@@ -86,11 +86,11 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             // fake drain
             // defer to next tick to allow Socket to clear writeBuffer
-            EasyTimer.SetTimeout(() =>
-            {
-                Writable = true;
-                Emit(EVENT_DRAIN);
-            }, 1);
+            //EasyTimer.SetTimeout(() =>
+            //{
+            Writable = true;
+            Emit(EVENT_DRAIN);
+            //}, 1);
         }
 
         public class WriteEncodeCallback : IEncodeCallback

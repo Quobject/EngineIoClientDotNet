@@ -55,7 +55,7 @@ namespace Quobject.EngineIoClientDotNet.Client
         private int PrevBufferLen;
         private long PingInterval;
         private long PingTimeout;
-        private string Id;
+        public string Id;
         private string Hostname;
         private string Path;
         private string TimestampParam;
@@ -160,7 +160,10 @@ namespace Quobject.EngineIoClientDotNet.Client
 //            EventTasks.Exec((n) =>
             Task.Run(() =>
             {
+                var log2 = LogManager.GetLogger(Global.CallerName());
+                log2.Info("Task.Run Open start");
                 transport.Open();
+                log2.Info("Task.Run Open finish");
             });
             return this;
         }
@@ -385,7 +388,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             }
         }
 
-        private void Flush()
+        private bool Flush()
         {
             var log = LogManager.GetLogger(Global.CallerName());
 
@@ -396,10 +399,12 @@ namespace Quobject.EngineIoClientDotNet.Client
                 PrevBufferLen = WriteBuffer.Count;
                 Transport.Send(WriteBuffer);
                 Emit(EVENT_FLUSH);
+                return true;
             }
             else
             {
                 log.Info(string.Format("Flush Not Send"));
+                return false;
             }
         }
 
@@ -506,12 +511,12 @@ namespace Quobject.EngineIoClientDotNet.Client
 
             PingIntervalTimer = EasyTimer.SetTimeout(() =>
             {
+                var log2 = LogManager.GetLogger(Global.CallerName());
+                log2.Info("EasyTimer SetPing start");
 
-                //PollTasks.Exec((n) =>
-                //{
-                    Ping();
-                    OnHeartbeat(PingTimeout);
-                //});
+                Ping();
+                OnHeartbeat(PingTimeout);
+                log2.Info("EasyTimer SetPing finish");
             }, (int)PingInterval);
         }
 
@@ -962,8 +967,9 @@ namespace Quobject.EngineIoClientDotNet.Client
         {
             if (this.ReadyState == ReadyStateEnum.OPENING || this.ReadyState == ReadyStateEnum.OPEN)
             {
-                this.OnClose("forced close");
                 var log = LogManager.GetLogger(Global.CallerName());
+                log.Info("Start");                
+                this.OnClose("forced close");
 
                 log.Info("socket closing - telling transport to close");
                 Transport.Close();
@@ -989,7 +995,11 @@ namespace Quobject.EngineIoClientDotNet.Client
                 {
                     this.PingTimeoutTimer.Stop();
                 }
+                
 
+                //WriteBuffer = WriteBuffer.Clear();
+                //CallbackBuffer = CallbackBuffer.Clear();
+                //PrevBufferLen = 0;
 
                 EasyTimer.SetTimeout(() =>
                 {
@@ -997,6 +1007,8 @@ namespace Quobject.EngineIoClientDotNet.Client
                     CallbackBuffer = CallbackBuffer.Clear();
                     PrevBufferLen = 0;
                 }, 1);
+
+              
 
                 // stop event from firing again for transport
                 this.Transport.Off(EVENT_CLOSE);
@@ -1048,13 +1060,15 @@ namespace Quobject.EngineIoClientDotNet.Client
 
             PingTimeoutTimer = EasyTimer.SetTimeout(() =>
             {
-                var log = LogManager.GetLogger(Global.CallerName());
-                log.Info("PingTimeoutTimer timeout");
+                var log2 = LogManager.GetLogger(Global.CallerName());
+                log2.Info("EasyTimer OnHeartbeat start");
                 if (ReadyState == ReadyStateEnum.CLOSED)
                 {
+                    log2.Info("EasyTimer OnHeartbeat ReadyState == ReadyStateEnum.CLOSED finish");
                     return;
                 }
                 OnClose("ping timeout");
+                log2.Info("EasyTimer OnHeartbeat finish");
             },(int) timeout);
 
         }

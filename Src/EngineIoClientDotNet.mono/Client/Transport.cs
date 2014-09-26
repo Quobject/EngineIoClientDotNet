@@ -31,7 +31,25 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         protected static int Timestamps = 0;
 
-        public bool Writable;
+        private bool _writeable ;
+        public bool Writable {
+            get { return _writeable; } 
+            set
+            {
+                var log = LogManager.GetLogger(Global.CallerName());
+                log.Info(string.Format("Writable: {0} sid={1}", value, this.Socket.Id));
+                _writeable = value;
+            } 
+        }
+
+        private int myVar;
+
+        public int MyProperty
+        {
+            get { return myVar; }
+            set { myVar = value; }
+        }
+        
         public string Name;
         public Dictionary<string, string> Query;
 
