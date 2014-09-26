@@ -1,16 +1,11 @@
 ﻿//using log4net;
 
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using EngineIoClientDotNet.Modules;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Quobject.EngineIoClientDotNet.Client;
-using Quobject.EngineIoClientDotNet.Client.Transports;
-
-using Quobject.Collections.Immutable;
-using System.Threading.Tasks;
 using Quobject.EngineIoClientDotNet.Modules;
+using System.Collections.Generic;
+using System.Threading;
+
 
 
 namespace Quobject.EngineIoClientDotNet_Tests.ClientTests

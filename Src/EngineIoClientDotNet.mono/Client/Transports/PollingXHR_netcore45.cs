@@ -1,17 +1,12 @@
 ﻿//using log4net;
 
+using Quobject.EngineIoClientDotNet.ComponentEmitter;
+using Quobject.EngineIoClientDotNet.Modules;
+using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using EngineIoClientDotNet.Modules;
-using Quobject.EngineIoClientDotNet.ComponentEmitter;
-using Quobject.EngineIoClientDotNet.Modules;
-using Quobject.EngineIoClientDotNet.Thread;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Net;
 
 namespace Quobject.EngineIoClientDotNet.Client.Transports
 {

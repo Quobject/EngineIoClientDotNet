@@ -1,17 +1,14 @@
 ﻿//using log4net;
 
-using System;
-using Quobject.Collections.Immutable;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
-using Windows.ApplicationModel.Core;
-using EngineIoClientDotNet.Modules;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+using Quobject.Collections.Immutable;
 using Quobject.EngineIoClientDotNet.Client;
 using Quobject.EngineIoClientDotNet.Client.Transports;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
 using Quobject.EngineIoClientDotNet.Modules;
+using System.Threading;
+using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
 
 
 namespace Quobject.EngineIoClientDotNet_Tests.ClientTests

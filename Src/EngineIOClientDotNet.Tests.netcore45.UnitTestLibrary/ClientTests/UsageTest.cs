@@ -1,11 +1,9 @@
 ﻿//using log4net;
 
-using System.Diagnostics;
-using EngineIoClientDotNet.Modules;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Quobject.EngineIoClientDotNet.Client;
-using System;
 using Quobject.EngineIoClientDotNet.Modules;
+using System.Diagnostics;
 
 
 namespace Quobject.EngineIoClientDotNet_Tests.ClientTests

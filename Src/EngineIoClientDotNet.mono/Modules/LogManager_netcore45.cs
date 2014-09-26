@@ -1,17 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace EngineIoClientDotNet.Modules
+namespace Quobject.EngineIoClientDotNet.Modules
 {
     public class LogManager
     {
-        private const string myFileName = "XunitTrace.txt";
         private string MyType;
         private static readonly LogManager EmptyLogger = new LogManager(null);
 
@@ -19,26 +12,17 @@ namespace EngineIoClientDotNet.Modules
 
         public static void SetupLogManager()
         {
-            //do nothing
         }
 
         public static LogManager GetLogger(string type)
         {
-#if DEBUG
             var result = new LogManager(type);
             return result;
-#else
-            return EmptyLogger;
-#endif
         }
 
         public static LogManager GetLogger(Type type)
         {
-#if DEBUG
             return GetLogger(type.ToString());
-#else
-            return EmptyLogger;
-#endif
         }
 
         public static LogManager GetLogger(System.Reflection.MethodBase methodBase)
@@ -62,14 +46,26 @@ namespace EngineIoClientDotNet.Modules
         [Conditional("DEBUG")]
         public void Info(string msg)
         {
-            Debug.WriteLine(string.Format("{0} [{3}] {1} - {2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), MyType, msg, Environment.CurrentManagedThreadId));
+
+            msg = Global.StripInvalidUnicodeCharacters(msg);
+            var msg1 = string.Format("{0} [{3}] {1} - {2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), MyType,
+                msg,
+                Environment.CurrentManagedThreadId);
+            Debug.WriteLine(msg1);
+
         }
 
         [Conditional("DEBUG")]
-        internal void Error(string p, Exception exception)
+        public void Error(string p, Exception exception)
         {
             this.Info(string.Format("ERROR {0} {1} {2}", p, exception.Message, exception.StackTrace));
+            if (exception.InnerException != null)
+            {
+                this.Info(string.Format("ERROR exception.InnerException {0} {1} {2}", p, exception.InnerException.Message, exception.InnerException.StackTrace));
+            }
+
         }
+
 
         [Conditional("DEBUG")]
         internal void Error(Exception e)

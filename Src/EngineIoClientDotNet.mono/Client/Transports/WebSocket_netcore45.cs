@@ -1,18 +1,14 @@
-﻿using System.Collections.Generic;
-//using log4net;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Windows.Storage.Streams;
-using Windows.Web;
-using EngineIoClientDotNet.Modules;
+﻿using Quobject.Collections.Immutable;
 using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Parser;
 using Quobject.EngineIoClientDotNet.Thread;
 using System;
-using Quobject.Collections.Immutable;
+using System.Collections.Generic;
+//using log4net;
+using System.IO;
 //using WebSocket4Net;
 using Windows.Networking.Sockets;
+using Windows.Storage.Streams;
 
 namespace Quobject.EngineIoClientDotNet.Client.Transports
 {

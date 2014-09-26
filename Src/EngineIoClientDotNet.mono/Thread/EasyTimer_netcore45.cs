@@ -1,12 +1,8 @@
 ﻿
+using Quobject.EngineIoClientDotNet.Modules;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.Core;
-using Windows.UI.Core;
-using Windows.UI.Xaml;
-using EngineIoClientDotNet.Modules;
-using Quobject.EngineIoClientDotNet.Modules;
 
 namespace Quobject.EngineIoClientDotNet.Thread
 {

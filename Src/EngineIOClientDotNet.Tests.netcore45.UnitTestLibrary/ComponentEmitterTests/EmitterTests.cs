@@ -1,10 +1,9 @@
-﻿using EngineIoClientDotNet.Modules;
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+﻿using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
+using Quobject.EngineIoClientDotNet.Modules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Quobject.EngineIoClientDotNet.Modules;
 
 
 namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
