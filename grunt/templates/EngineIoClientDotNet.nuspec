@@ -9,7 +9,7 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <dependencies>
       <group>
-        <dependency id="Json.NET" version="6.0.5" />
+        <dependency id="Newtonsoft.Json" version="6.0.5" />
       </group>
       <group targetFramework="net45">
         <dependency id="WebSocket4Net" version="0.10" />
