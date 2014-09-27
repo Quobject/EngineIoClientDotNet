@@ -41,7 +41,7 @@ namespace Quobject.EngineIoClientDotNet.Thread
             return new EasyTimer(ts);
         }
 
-        internal void Stop()
+        public void Stop()
         {
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("EasyTimer stop");
