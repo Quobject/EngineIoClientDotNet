@@ -52,7 +52,7 @@
       <Link>Client\Socket.cs</Link>
     </Compile>
     <Compile Include="..\EngineIoClientDotNet.mono\Client\Transport.cs">
-      <Link>ComponentEmitter\Transport.cs</Link>
+      <Link>Client\Transport.cs</Link>
     </Compile>
     <Compile Include="..\EngineIoClientDotNet.mono\Client\Transports\Polling.cs">
       <Link>Client\Transports\Polling.cs</Link>

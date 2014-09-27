@@ -1,4 +1,4 @@
-﻿//using log4net;
+﻿
 
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Quobject.EngineIoClientDotNet.Client;
@@ -54,7 +54,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
          private ManualResetEvent _manualResetEvent = null;
 
         [TestMethod]
-        public async Task Messages()
+        public void Messages()
         {
 
             var log = LogManager.GetLogger(Global.CallerName());

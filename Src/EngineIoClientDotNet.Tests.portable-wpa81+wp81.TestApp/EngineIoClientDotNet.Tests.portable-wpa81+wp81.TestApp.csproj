@@ -4,17 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{69763655-9437-4297-95E4-0D77A47A72CC}</ProjectGuid>
+    <ProjectGuid>{7A453124-AD88-4167-80C0-19C09C4D809D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EngineIoClientDotNet.Tests.wpa.UnitTestApp</RootNamespace>
-    <AssemblyName>EngineIoClientDotNet.Tests.wpa.UnitTestApp</AssemblyName>
+    <RootNamespace>EngineIoClientDotNet.Tests.portable_wpa81_wp81.TestApp</RootNamespace>
+    <AssemblyName>EngineIoClientDotNet.Tests.portable-wpa81+wp81.TestApp</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformVersion>8.1</TargetPlatformVersion>
     <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{76F1466A-8B6D-4E39-A767-685A06062A39};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <PackageCertificateKeyFile>EngineIoClientDotNet.Tests.wpa.UnitTestApp_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>EngineIoClientDotNet.Tests.portable-wpa81+wp81.TestApp_TemporaryKey.pfx</PackageCertificateKeyFile>
     <AppxBundle>Never</AppxBundle>
     <IsTargetingWindowsPhonePlatform>true</IsTargetingWindowsPhonePlatform>
     <AllowCrossPlatformRetargeting>False</AllowCrossPlatformRetargeting>
@@ -94,9 +94,6 @@
     <Compile Include="..\EngineIOClientDotNet.Tests.netcore45.UnitTestLibrary\ClientTests\SocketTest.cs">
       <Link>ClientTests\SocketTest.cs</Link>
     </Compile>
-    <Compile Include="..\EngineIOClientDotNet.Tests.netcore45.UnitTestLibrary\ClientTests\SSLServerConnectionTest.cs">
-      <Link>ClientTests\SSLServerConnectionTest.cs</Link>
-    </Compile>
     <Compile Include="..\EngineIOClientDotNet.Tests.netcore45.UnitTestLibrary\ClientTests\UsageTest.cs">
       <Link>ClientTests\UsageTest.cs</Link>
     </Compile>
@@ -121,6 +118,7 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <None Include="EngineIoClientDotNet.Tests.portable-wpa81+wp81.TestApp_TemporaryKey.pfx" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -132,15 +130,18 @@
     <Content Include="Assets\WideLogo.scale-240.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EngineIoClientDotNet.wpa81\EngineIoClientDotNet.wpa81.csproj">
-      <Project>{52922e0f-7300-4970-ba75-e22ef008bea1}</Project>
-      <Name>EngineIoClientDotNet.wpa</Name>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\EngineIoClientDotNet.portable-wpa81+wp81\packages\Newtonsoft.Json.6.0.5\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EngineIoClientDotNet.portable-wpa81+wp81\EngineIoClientDotNet.portable-wpa81+wp81.csproj">
+      <Project>{da844ebd-17e9-4d6e-8093-c29d73feb5ad}</Project>
+      <Name>EngineIoClientDotNet.portable-wpa81+wp81</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\EngineIoClientDotNet.wpa\packages\Newtonsoft.Json.6.0.5\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
-    </Reference>
+    <Folder Include="ThreadTests\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

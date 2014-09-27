@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
 
-  <Identity Name="c74448dd-824e-4000-93fe-7913cea73be4"
+  <Identity Name="ee96bbf4-1c22-400e-a98f-9c5ba79946cd"
             Publisher="CN=Matthias"
             Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="c74448dd-824e-4000-93fe-7913cea73be4" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="ee96bbf4-1c22-400e-a98f-9c5ba79946cd" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>EngineIoClientDotNet.Tests.wpa.UnitTestApp</DisplayName>
+    <DisplayName>EngineIoClientDotNet.Tests.portable-wpa81+wp81.TestApp</DisplayName>
     <PublisherDisplayName>Matthias</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -25,10 +25,10 @@
         Executable="vstest.executionengine.appcontainer.exe" 
         EntryPoint="Microsoft.VisualStudio.TestPlatform.TestExecutor.AppContainer.App">
         <m3:VisualElements
-            DisplayName="EngineIoClientDotNet.Tests.wpa.UnitTestApp"
+            DisplayName="EngineIoClientDotNet.Tests.portable-wpa81+wp81.TestApp"
             Square150x150Logo="Assets\Logo.png"
             Square44x44Logo="Assets\SmallLogo.png"
-            Description="EngineIoClientDotNet.Tests.wpa.UnitTestApp"
+            Description="EngineIoClientDotNet.Tests.portable-wpa81+wp81.TestApp"
             ForegroundText="light"
             BackgroundColor="#464646">
             <m3:DefaultTile Wide310x150Logo="Assets\WideLogo.png" Square71x71Logo="Assets\Square71x71Logo.png"/>

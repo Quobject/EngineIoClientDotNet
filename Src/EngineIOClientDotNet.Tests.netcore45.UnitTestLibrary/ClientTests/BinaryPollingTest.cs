@@ -1,4 +1,4 @@
-﻿//using log4net;
+﻿
 
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Quobject.Collections.Immutable;

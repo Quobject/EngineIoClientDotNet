@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("EngineIoClientDotNet.Tests.wpa.UnitTestApp")]
+[assembly: AssemblyTitle("EngineIoClientDotNet.Tests.portable-wpa81+wp81.TestApp")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("EngineIoClientDotNet.Tests.wpa.UnitTestApp")]
+[assembly: AssemblyProduct("EngineIoClientDotNet.Tests.portable-wpa81+wp81.TestApp")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
