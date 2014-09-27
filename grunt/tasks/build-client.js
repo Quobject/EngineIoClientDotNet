@@ -17,7 +17,7 @@
         //'-WindowStyle Normal ' + //-WindowStyle (Hidden | Normal) | -NoNewWindow
         '-FilePath {1} ' +
         '-ArgumentList \' {2} /t:clean;Rebuild  /p:Configuration={3} /p:OutputPath={4} \' ' :
-        '{0} {1} /t:clean;Rebuild /p:Configuration={2} ',
+        '{0} {1} /t:Rebuild /p:Configuration={2} ',
       //build_format = os === 'win' ? '{0} start-process ' +
       //  '-NoNewWindow ' +
       //  //'-WindowStyle Normal ' + //-WindowStyle (Hidden | Normal) | -NoNewWindow

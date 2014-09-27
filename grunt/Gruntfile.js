@@ -20,8 +20,8 @@ module.exports = function (grunt) {
   grunt.initConfig({      
     os: os,
     config: config,
-    //msbuild_configuration: 'Debug',
-    msbuild_configuration: 'Release',
+    msbuild_configuration: 'Debug',
+    //msbuild_configuration: 'Release',
     nuget_builds: nuget_builds,
     release_path: './../Releases/<%= config.version %>/',
     working_path: './../Working/',

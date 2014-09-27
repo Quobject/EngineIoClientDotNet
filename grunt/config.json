@@ -1,8 +1,8 @@
 ﻿{  
   "version":"0.9.4",
   "server":{  
-    "port":80,
-    "ssl_port":443,
+    "port":3000,
+    "ssl_port":3001,
     "hostname":"testme.quobject.com"
   },
   "win":{  
