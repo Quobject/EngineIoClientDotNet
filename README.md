@@ -46,6 +46,7 @@ socket.Open();
 ## Features
 This library supports all of the features the JS client does, including events, options and upgrading transport.
 
+
 ## Tests
 Run tests on windows or linux:
 ```
@@ -63,7 +64,11 @@ In linux this will stop after starting test server. Start xunit tests within a n
 ```
 grunt testClient
 ```
+## Framework Versions
+.Net Framework 4.5, Windows 8, Windows 8.1, Windows Phone 8, Windows Phone 8.1, Mono
+
 
 ## License
 
 MIT
+
