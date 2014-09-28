@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EngineIoClientDotNet</RootNamespace>
-    <AssemblyName>EngineIoClientDotNet.net45</AssemblyName>
+    <AssemblyName>EngineIoClientDotNet</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

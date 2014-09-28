@@ -74,7 +74,7 @@
         src_path = string.format('{0}/../../Src/{1}/{2}{3}/', __dirname,title, output_path_base, dir),
         dst_path = package_lib_path + dir + '/',
         //src_file = string.format('{0}EngineIoClientDotNet.dll', src_path),
-        src_file = src_path + string.format('{0}.dll', title),
+        src_file = string.format('{0}EngineIoClientDotNet.dll', src_path), 
         dst_file = string.format('{0}EngineIoClientDotNet.dll', dst_path);
       
       grunt.log.writeln(string.format('src_file={0} dst_file={1}', src_file, dst_file));

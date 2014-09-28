@@ -10,7 +10,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Quobject.EngineIoClientDotNet</RootNamespace>
-    <AssemblyName>EngineIoClientDotNet.portable-wpa81+wp81</AssemblyName>
+    <AssemblyName>EngineIoClientDotNet</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformVersion>8.1</TargetPlatformVersion>
     <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>
