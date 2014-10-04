@@ -7,7 +7,7 @@ namespace Quobject.EngineIoClientDotNet.Parser
     {
         private readonly MemoryStream _memoryStream;
 
-        private int _limit = 0;
+        private long _limit = 0;
 
 
         public ByteBuffer(int length)
@@ -55,7 +55,7 @@ namespace Quobject.EngineIoClientDotNet.Parser
         /// </summary>
         /// <param name="index">The index from which the byte will be read</param>
         /// <returns>The byte at the given index</returns>
-        internal byte Get(int index)
+        internal byte Get(long index)
         {
             if (index > Capacity)
             {
@@ -114,7 +114,7 @@ namespace Quobject.EngineIoClientDotNet.Parser
         /// position then it is discarded.       
         /// </summary>
         /// <param name="newPosition">The new position value; must be non-negative and no larger than the current limit</param>
-        internal void Position(int newPosition)
+        internal void Position(long newPosition)
         {
             _memoryStream.Position = newPosition;
         }
@@ -127,7 +127,7 @@ namespace Quobject.EngineIoClientDotNet.Parser
         /// A buffer's limit is the index of the first element that should not be read or written. A buffer's limit is never negative and is never greater than its capacity.
         /// </summary>
         /// <param name="newLimit">The new limit value; must be non-negative and no larger than this buffer's capacity</param>
-        internal void Limit(int newLimit)
+        internal void Limit(long newLimit)
         {
             _limit = newLimit;
             if (_memoryStream.Position > newLimit)
@@ -140,9 +140,9 @@ namespace Quobject.EngineIoClientDotNet.Parser
         /// Returns the number of elements between the current position and the limit.
         /// </summary>
         /// <returns>The number of elements remaining in this buffer</returns>
-        internal int Remaining()
+        internal long Remaining()
         {
-            return (int) (_limit - _memoryStream.Position);
+            return (_limit - _memoryStream.Position);
         }
 
 
