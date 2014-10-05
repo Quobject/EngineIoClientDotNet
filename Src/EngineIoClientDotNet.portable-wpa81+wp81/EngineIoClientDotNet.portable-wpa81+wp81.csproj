@@ -139,8 +139,8 @@
     <Compile Include="..\EngineIoClientDotNet.mono\Parser\Parser.cs">
       <Link>Parser\Parser.cs</Link>
     </Compile>
-    <Compile Include="..\EngineIoClientDotNet.mono\Thread\EasyTimer_netcore45.cs">
-      <Link>Thread\EasyTimer_netcore45.cs</Link>
+    <Compile Include="..\EngineIoClientDotNet.mono\Thread\EasyTimer.cs">
+      <Link>Thread\EasyTimer.cs</Link>
     </Compile>
     <Compile Include="..\Quobject.Collections.Immutable\AvlNode.cs">
       <Link>Quobject.Collections.Immutable\AvlNode.cs</Link>

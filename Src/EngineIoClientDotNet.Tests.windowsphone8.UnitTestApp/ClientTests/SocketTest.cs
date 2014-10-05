@@ -48,7 +48,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             var ManualResetEvent = new ManualResetEvent(false);
 
             var closed = false;
-            var error = false;
+            //var error = false;
 
             var options = CreateOptions();
 
@@ -69,7 +69,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             socket.Once(Socket.EVENT_ERROR, () =>
             {
                 log.Info("EVENT_ERROR = ");
-                error = true;                
+                //error = true;                
             });
 
             socket.Open();

@@ -124,7 +124,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             });
 
             socket.Open();
-	        _manualResetEvent.WaitOne();           
+            _manualResetEvent.WaitOne();           
             socket.Close();
             log.Info("ReceiveBinaryData end");
 

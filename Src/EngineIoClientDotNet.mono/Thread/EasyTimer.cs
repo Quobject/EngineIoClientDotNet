@@ -45,6 +45,17 @@ namespace Quobject.EngineIoClientDotNet.Thread
                 ts.Cancel();                
             }           
         }
+
+
+        public static void TaskRun(Action action)
+        {
+            Task.Run(action).Wait();
+        }
+
+        public static void TaskRunNoWait(Action action)
+        {
+            Task.Run(action);
+        }
     }
 
 
