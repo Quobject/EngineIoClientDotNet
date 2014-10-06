@@ -104,15 +104,13 @@
     <Compile Include="..\EngineIoClientDotNet.mono\Parser\IEncodeCallback.cs">
       <Link>Parser\IEncodeCallback.cs</Link>
     </Compile>
-    <Compile Include="..\EngineIoClientDotNet.mono\Parser\Packet.cs">
-      <Link>Parser\Packet.cs</Link>
-    </Compile>
     <Compile Include="..\EngineIoClientDotNet.mono\Parser\Parser.cs">
       <Link>Parser\Parser.cs</Link>
     </Compile>
     <Compile Include="..\EngineIoClientDotNet.mono\Thread\EasyTimer_net35.cs">
       <Link>Thread\EasyTimer_net35.cs</Link>
     </Compile>
+    <Compile Include="Parser\Packet_net35.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

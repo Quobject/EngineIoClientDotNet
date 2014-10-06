@@ -11,6 +11,10 @@
       <group>
         <dependency id="Newtonsoft.Json" version="6.0.5" />
       </group>
+      <group targetFramework="net35">
+        <dependency id="System.Threading.Tasks" version="3.0.1" />
+        <dependency id="WebSocket4Net" version="0.10" />
+      </group>
       <group targetFramework="net45">
         <dependency id="WebSocket4Net" version="0.10" />
       </group>

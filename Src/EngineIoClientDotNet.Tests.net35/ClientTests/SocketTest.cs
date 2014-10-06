@@ -67,7 +67,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             });
 
             socket.Open();
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(1));
+            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(5));
             //Task.Delay(1000);
             Assert.True(closed);
             Assert.True(error);

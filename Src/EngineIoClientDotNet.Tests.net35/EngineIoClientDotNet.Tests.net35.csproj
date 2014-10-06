@@ -51,51 +51,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\BinaryPollingTest.cs">
-      <Link>ClientTests\BinaryPollingTest.cs</Link>
-    </Compile>
-    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\BinaryWebSocketTest.cs">
-      <Link>ClientTests\BinaryWebSocketTest.cs</Link>
-    </Compile>
-    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\Connection.cs">
-      <Link>ClientTests\Connection.cs</Link>
-    </Compile>
-    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\ConnectionTest.cs">
-      <Link>ClientTests\ConnectionTest.cs</Link>
-    </Compile>
-    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\HandshakeDataTests.cs">
-      <Link>ClientTests\HandshakeDataTests.cs</Link>
-    </Compile>
-    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\ServerConnectionTest.cs">
-      <Link>ClientTests\ServerConnectionTest.cs</Link>
-    </Compile>
-    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\SocketTest.cs">
-      <Link>ClientTests\SocketTest.cs</Link>
-    </Compile>
-    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\SSLServerConnectionTest.cs">
-      <Link>ClientTests\SSLServerConnectionTest.cs</Link>
-    </Compile>
-    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\TransportTest.cs">
-      <Link>ClientTests\TransportTest.cs</Link>
-    </Compile>
-    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\UsageTest.cs">
-      <Link>ClientTests\UsageTest.cs</Link>
-    </Compile>
-    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ComponentEmitterTests\EmitterTests.cs">
-      <Link>ComponentEmitterTests\EmitterTests.cs</Link>
-    </Compile>
-    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ModulesTests\ParseQSTests.cs">
-      <Link>ModulesTests\ParseQSTests.cs</Link>
-    </Compile>
-    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ModulesTests\UTF8Tests.cs">
-      <Link>ModulesTests\UTF8Tests.cs</Link>
-    </Compile>
-    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ParserTests\DecodeTests.cs">
-      <Link>ParserTests\DecodeTests.cs</Link>
-    </Compile>
-    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ParserTests\TestsParser.cs">
-      <Link>ParserTests\TestsParser.cs</Link>
-    </Compile>
+    <Compile Include="ClientTests\BinaryPollingTest.cs" />
+    <Compile Include="ClientTests\BinaryWebSocketTest.cs" />
+    <Compile Include="ClientTests\Connection.cs" />
+    <Compile Include="ClientTests\ConnectionTest.cs" />
+    <Compile Include="ClientTests\HandshakeDataTests.cs" />
+    <Compile Include="ClientTests\ServerConnectionTest.cs" />
+    <Compile Include="ClientTests\SocketTest.cs" />
+    <Compile Include="ClientTests\SSLServerConnectionTest.cs" />
+    <Compile Include="ClientTests\TransportTest.cs" />
+    <Compile Include="ClientTests\UsageTest.cs" />
+    <Compile Include="ComponentEmitterTests\EmitterTests.cs" />
+    <Compile Include="ModulesTests\ParseQSTests.cs" />
+    <Compile Include="ModulesTests\UTF8Tests.cs" />
+    <Compile Include="ParserTests\DecodeTests.cs" />
+    <Compile Include="ParserTests\TestsParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -107,6 +77,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

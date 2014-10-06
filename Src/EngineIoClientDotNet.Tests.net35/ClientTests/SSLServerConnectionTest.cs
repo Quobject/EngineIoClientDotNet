@@ -206,7 +206,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             object test = null;
             test = events.Dequeue();
-            test = events.Dequeue();
             Assert.NotNull(test);
             Assert.IsAssignableFrom<Transport>(test);
 

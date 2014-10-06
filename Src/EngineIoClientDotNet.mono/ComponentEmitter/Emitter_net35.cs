@@ -16,7 +16,7 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
     {
         private ConcurrentDictionary<string, List<IListener>> callbacks;
 
-        private ConcurrentDictionary<IListener, IListener> _onceCallbacks;
+        private ConcurrentDictionary<IListener, IListener> _onceCallbacks; 
 
 
         public Emitter()
@@ -36,8 +36,10 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
             //log.Info("Emitter emit event = " + eventString);
             if (this.callbacks.ContainsKey(eventString))
             {
-                List<IListener> callbacksLocal = this.callbacks[eventString];                
-                foreach (var fn in callbacksLocal)
+                List<IListener> callbacksLocal = this.callbacks[eventString];
+                var listCopy = new List<IListener>();
+                listCopy.AddRange(callbacksLocal);
+                foreach (var fn in listCopy)
                 {
                     fn.Call(args);
                 }                    
