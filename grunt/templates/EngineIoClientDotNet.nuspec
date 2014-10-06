@@ -7,20 +7,26 @@
     <authors>Matthias Ludwig</authors>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <dependencies>
-      <group>
+    <dependencies>	  
+     <group targetFramework="netcore45">
+        <dependency id="Newtonsoft.Json" version="6.0.5" />
+      </group>
+      <group targetFramework="portable-wpa81+wp81">
         <dependency id="Newtonsoft.Json" version="6.0.5" />
       </group>
       <group targetFramework="net35">
-        <dependency id="System.Threading.Tasks" version="3.0.1" />
         <dependency id="WebSocket4Net" version="0.10" />
+        <dependency id="Newtonsoft.Json" version="6.0.5" />
+        <dependency id="System.Threading.Tasks" version="3.0.1" />
       </group>
       <group targetFramework="net45">
         <dependency id="WebSocket4Net" version="0.10" />
+        <dependency id="Newtonsoft.Json" version="6.0.5" />
       </group>
       <group targetFramework="windowsphone8">
         <dependency id="WebSocket4Net" version="0.10" />
-      </group>
+        <dependency id="Newtonsoft.Json" version="6.0.5" />
+      </group>	  
     </dependencies>
     <projectUrl>https://github.com/Quobject/EngineIoClientDotNet/</projectUrl>
     <description>This is the Engine.IO Client Library for C#.</description>
