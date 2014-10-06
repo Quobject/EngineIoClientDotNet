@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{35791CEC-7945-4047-AB25-B252851D5131}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EngineIoClientDotNet.Tests.net35</RootNamespace>
+    <AssemblyName>EngineIoClientDotNet.Tests.net35</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\EngineIoClientDotNet.net35\packages\Newtonsoft.Json.6.0.5\lib\net35\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Threading.Tasks.NET35">
+      <HintPath>..\EngineIoClientDotNet.net35\packages\System.Threading.Tasks.3.0.1\lib\net35\System.Threading.Tasks.NET35.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WebSocket4Net">
+      <HintPath>..\EngineIoClientDotNet.net35\packages\WebSocket4Net.0.10\lib\net35\WebSocket4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit">
+      <HintPath>..\EngineIoClientDotNet.net35\packages\xunit.1.9.2\lib\net20\xunit.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\BinaryPollingTest.cs">
+      <Link>ClientTests\BinaryPollingTest.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\BinaryWebSocketTest.cs">
+      <Link>ClientTests\BinaryWebSocketTest.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\Connection.cs">
+      <Link>ClientTests\Connection.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\ConnectionTest.cs">
+      <Link>ClientTests\ConnectionTest.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\HandshakeDataTests.cs">
+      <Link>ClientTests\HandshakeDataTests.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\ServerConnectionTest.cs">
+      <Link>ClientTests\ServerConnectionTest.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\SocketTest.cs">
+      <Link>ClientTests\SocketTest.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\SSLServerConnectionTest.cs">
+      <Link>ClientTests\SSLServerConnectionTest.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\TransportTest.cs">
+      <Link>ClientTests\TransportTest.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\UsageTest.cs">
+      <Link>ClientTests\UsageTest.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ComponentEmitterTests\EmitterTests.cs">
+      <Link>ComponentEmitterTests\EmitterTests.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ModulesTests\ParseQSTests.cs">
+      <Link>ModulesTests\ParseQSTests.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ModulesTests\UTF8Tests.cs">
+      <Link>ModulesTests\UTF8Tests.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ParserTests\DecodeTests.cs">
+      <Link>ParserTests\DecodeTests.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ParserTests\TestsParser.cs">
+      <Link>ParserTests\TestsParser.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EngineIoClientDotNet.net35\EngineIoClientDotNet.net35.csproj">
+      <Project>{568d67d0-3253-4601-9b04-7730a9ec5cc0}</Project>
+      <Name>EngineIoClientDotNet.net35</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
