@@ -100,7 +100,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         protected override void DoWrite(byte[] data, Action action)
         {
-            var opts = new XHRRequest.RequestOptions {Method = "POST", Data = data};
+            var opts = new XHRRequest.RequestOptions { Method = "POST", Data = data, CookieHeaderValue = Cookie };
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("DoWrite data = " + data);
             //try
@@ -175,7 +175,9 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
         {
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("xhr DoPoll");
-            sendXhr = Request();
+            var opts = new XHRRequest.RequestOptions { CookieHeaderValue = Cookie };
+
+            sendXhr = Request(opts);
             sendXhr.On(EVENT_DATA, new DoPollEventDataListener(this));
             sendXhr.On(EVENT_ERROR, new DoPollEventErrorListener(this));
 
@@ -249,6 +251,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             private string Method;
             private string Uri;
             private byte[] Data;
+            private string CookieHeaderValue;
             private HttpWebRequest Xhr;
 
             public XHRRequest(RequestOptions options)
@@ -256,6 +259,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 Method = options.Method ?? "GET";
                 Uri = options.Uri;
                 Data = options.Data;
+                CookieHeaderValue = options.CookieHeaderValue;
             }
 
             public void Create()
@@ -267,6 +271,15 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                     log.Info(string.Format("xhr open {0}: {1}", Method, Uri));
                     Xhr = (HttpWebRequest) WebRequest.Create(Uri);
                     Xhr.Method = Method;
+                    if (CookieHeaderValue != null)
+                    {
+                        Xhr.Headers.Add("Cookie", CookieHeaderValue);
+                        log.Info("added header " + CookieHeaderValue);
+                    }
+                    else
+                    {
+                        log.Info("not added header " + CookieHeaderValue);
+                    }
                 }
                 catch (Exception e)
                 {
@@ -404,6 +417,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 public string Uri;
                 public string Method;
                 public byte[] Data;
+                public string CookieHeaderValue;
             }
         }
 

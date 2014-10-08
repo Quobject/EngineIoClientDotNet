@@ -13,11 +13,17 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
         public static readonly string NAME = "websocket";
 
         private WebSocket4Net.WebSocket ws;
+        private List<KeyValuePair<string, string>> Cookies;
 
         public WebSocket(Options opts)
             : base(opts)
         {
             Name = NAME;
+            Cookies = new List<KeyValuePair<string, string>>();
+            foreach (var cookie in opts.Cookies)
+            {
+                Cookies.Add(new KeyValuePair<string, string>(cookie.Key, cookie.Value));
+            }
         }
 
         protected override void DoOpen()
@@ -25,7 +31,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("DoOpen uri =" + this.Uri());
 
-            ws = new WebSocket4Net.WebSocket(this.Uri());
+            ws = new WebSocket4Net.WebSocket(this.Uri(), "", Cookies);
             ws.EnableAutoSendPing = false;
             //if (ServerCertificate.Ignore)
             //{

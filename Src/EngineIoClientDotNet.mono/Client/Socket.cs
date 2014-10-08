@@ -1,6 +1,4 @@
-﻿
-
-
+﻿using System.Text;
 using Quobject.Collections.Immutable;
 using Quobject.EngineIoClientDotNet.Client.Transports;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
@@ -64,6 +62,7 @@ namespace Quobject.EngineIoClientDotNet.Client
         private Dictionary<string, string> Query;
         private ImmutableList<Packet> WriteBuffer = ImmutableList<Packet>.Empty;
         private ImmutableList<Action> CallbackBuffer = ImmutableList<Action>.Empty;
+        private Dictionary<string, string> Cookies = new Dictionary<string, string>();
         /*package*/
         public Transport Transport;
         private EasyTimer PingTimeoutTimer;
@@ -136,6 +135,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             Transports = options.Transports ?? ImmutableList<string>.Empty.Add(Polling.NAME).Add(WebSocket.NAME);
             PolicyPort = options.PolicyPort != 0 ? options.PolicyPort : 843;
             RememberUpgrade = options.RememberUpgrade;
+            Cookies = options.Cookies;
             if (options.IgnoreServerCertificateValidation)
             {
                 ServerCertificate.IgnoreServerCertificateValidation();
@@ -190,6 +190,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             options.Agent = this.Agent;
             options.ForceBase64 = this.ForceBase64;
             options.ForceJsonp = this.ForceJsonp;
+            options.Cookies = this.Cookies;
 
             if (name == WebSocket.NAME)
             {
@@ -354,6 +355,8 @@ namespace Quobject.EngineIoClientDotNet.Client
 
                 return opts;
             }
+
+    
         }
 
 

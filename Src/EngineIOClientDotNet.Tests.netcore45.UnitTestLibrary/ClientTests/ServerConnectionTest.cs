@@ -38,11 +38,11 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             {
                 log.Info("EVENT_CLOSE");
                 events.Enqueue(Socket.EVENT_CLOSE);
-	_manualResetEvent.Set(); 
+    _manualResetEvent.Set(); 
             });
             socket.Open();
             log.Info("After open");
-	_manualResetEvent.WaitOne();		
+    _manualResetEvent.WaitOne();		
             string result;
             log.Info("Before dequeue events.count="+events.Count);
             result = events.Dequeue();
@@ -78,7 +78,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                 if (events.Count > 1)
                 {
                     log.Info("EVENT_MESSAGE 2"); 
-    	            _manualResetEvent.Set(); 
+                    _manualResetEvent.Set(); 
                 }
             });
             socket.Open();
@@ -197,11 +197,11 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             {
                 log.Info(Socket.EVENT_UPGRADE + string.Format(" data = {0}", data));
                 events.Enqueue(data);
-	_manualResetEvent.Set(); 
+    _manualResetEvent.Set(); 
             });
 
             socket.Open();
-	_manualResetEvent.WaitOne();		
+    _manualResetEvent.WaitOne();		
 
             object test = null;
             test = events.Dequeue();
@@ -247,13 +247,13 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                     var socket2 = new Socket(options);
                     socket2.Open();
                     socket2TransportName = socket2.Transport.Name;
-    	_manualResetEvent.Set(); 
+        _manualResetEvent.Set(); 
                     socket2.Close();
                 }
             });
 
             socket1.Open();
-	_manualResetEvent.WaitOne();		
+    _manualResetEvent.WaitOne();		
             Assert.AreEqual(Polling.NAME, socket1TransportName);
             Assert.AreEqual(WebSocket.NAME, socket2TransportName);
         }
@@ -293,17 +293,109 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                         log.Info("EVENT_OPEN socket 2");
                         socket2TransportName = socket2.Transport.Name;
                         socket2.Close();
-        	_manualResetEvent.Set(); 
+                        _manualResetEvent.Set(); 
                     });
                     socket2.Open();
                 }
             });
 
             socket1.Open();
-	_manualResetEvent.WaitOne();		
+            _manualResetEvent.WaitOne();		
             Assert.AreEqual(Polling.NAME, socket1TransportName);
             Assert.AreEqual(Polling.NAME, socket2TransportName);
         }
+
+        [TestMethod]
+        public void Cookie()
+        {
+            var log = LogManager.GetLogger(Global.CallerName());
+            log.Info("Start");
+            _manualResetEvent = new ManualResetEvent(false);
+
+            var events = new Queue<string>();
+
+            var options = CreateOptions();
+            options.Cookies.Add("foo", "bar");
+            var socket = new Socket(options);
+            socket.On(Socket.EVENT_OPEN, () =>
+            {
+                log.Info("EVENT_OPEN");
+                socket.Send("cookie");
+            });
+            socket.On(Socket.EVENT_MESSAGE, (d) =>
+            {
+                var data = (string)d;
+                log.Info("EVENT_MESSAGE data = " + data);
+                events.Enqueue(data);
+                if (events.Count > 1)
+                {
+                    _manualResetEvent.Set();
+                }
+            });
+            socket.Open();
+            _manualResetEvent.WaitOne();
+            socket.Close();
+
+            string result;
+            result = events.Dequeue();
+            Assert.AreEqual("hi", result);
+            result = events.Dequeue();
+            Assert.AreEqual("got cookie", result);
+        }
+
+
+        [TestMethod]
+        public void UpgradeCookie()
+        {
+
+            var log = LogManager.GetLogger(Global.CallerName());
+            log.Info("Start");
+            _manualResetEvent = new ManualResetEvent(false);
+
+            var events = new Queue<object>();
+
+            var options = CreateOptions();
+            options.Cookies.Add("foo", "bar");
+            var socket = new Socket(options);
+
+            socket.On(Socket.EVENT_UPGRADING, (data) =>
+            {
+                log.Info(Socket.EVENT_UPGRADING + string.Format(" data = {0}", data));
+                events.Enqueue(data);
+            });
+
+            socket.On(Socket.EVENT_UPGRADE, (data) =>
+            {
+                log.Info(Socket.EVENT_UPGRADE + string.Format(" data = {0}", data));
+                events.Enqueue(data);
+                socket.Send("cookie");
+            });
+
+            socket.On(Socket.EVENT_MESSAGE, (d) =>
+            {
+
+                if (events.Count > 1)
+                {
+                    var data = (string)d;
+                    log.Info("EVENT_MESSAGE data = " + data);
+                    events.Enqueue(data);
+                    _manualResetEvent.Set();
+                }
+            });
+
+            socket.Open();
+            _manualResetEvent.WaitOne();
+
+            object test = null;
+            test = events.Dequeue();
+            Assert.IsNotNull(test);
+
+            test = events.Dequeue();
+            Assert.IsNotNull(test);
+            test = events.Dequeue();
+            Assert.AreEqual("got cookie", test);
+        }
+
 
     }
 

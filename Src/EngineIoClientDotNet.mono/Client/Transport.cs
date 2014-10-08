@@ -1,4 +1,5 @@
 ﻿
+using System.Text;
 using Quobject.Collections.Immutable;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
 using Quobject.EngineIoClientDotNet.Modules;
@@ -63,6 +64,7 @@ namespace Quobject.EngineIoClientDotNet.Client
         protected bool Agent = false;
         protected bool ForceBase64 = false;
         protected bool ForceJsonp = false;
+        protected string Cookie;
 
 
         protected ReadyStateEnum ReadyState = ReadyStateEnum.CLOSED;
@@ -80,6 +82,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             this.Agent = options.Agent;
             this.ForceBase64 = options.ForceBase64;
             this.ForceJsonp = options.ForceJsonp;
+            this.Cookie = options.GetCookiesAsString();
         }
 
         protected Transport OnError(string message, Exception exception)
@@ -183,6 +186,23 @@ namespace Quobject.EngineIoClientDotNet.Client
             public Dictionary<string, string> Query;
             public bool IgnoreServerCertificateValidation = false;
             internal Socket Socket;
+            public Dictionary<string, string> Cookies = new Dictionary<string, string>();
+
+            public string GetCookiesAsString()
+            {
+                var result = new StringBuilder();
+                var first = true;
+                foreach (var item in Cookies)
+                {
+                    if (!first)
+                    {
+                        result.Append("; ");
+                    }
+                    result.Append(string.Format("{0}={1}", item.Key, item.Value));
+                    first = false;
+                }
+                return result.ToString();
+            }
         }
     }
 }

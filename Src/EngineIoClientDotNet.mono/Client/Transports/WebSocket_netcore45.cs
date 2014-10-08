@@ -19,11 +19,13 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
         // How to connect with a MessageWebSocket http://msdn.microsoft.com/en-us/library/windows/apps/xaml/hh994397.aspx
         private MessageWebSocket ws;
         private DataWriter dataWriter;
+        private string CookieHeaderValue;
 
         public WebSocket(Options opts)
             : base(opts)
         {
             Name = NAME;
+            CookieHeaderValue = opts.GetCookiesAsString();
         }
 
         protected override void DoOpen()
@@ -33,6 +35,11 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             //How to connect with a StreamWebSocket (XAML) http://msdn.microsoft.com/en-us/library/ie/hh994398
             ws = new Windows.Networking.Sockets.MessageWebSocket();
+
+            if (!string.IsNullOrEmpty(CookieHeaderValue))
+            {
+                ws.SetRequestHeader("cookie", CookieHeaderValue);                
+            }           
             ws.Control.MessageType = SocketMessageType.Utf8;
             ws.Closed += ws_Closed;
             ws.MessageReceived += ws_MessageReceived;

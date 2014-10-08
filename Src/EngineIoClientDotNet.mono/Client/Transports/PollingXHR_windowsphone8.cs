@@ -103,7 +103,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         protected override void DoWrite(byte[] data, Action action)
         {
-            var opts = new XHRRequest.RequestOptions {Method = "POST", Data = data};
+            var opts = new XHRRequest.RequestOptions { Method = "POST", Data = data, CookieHeaderValue = Cookie };
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("DoWrite data = " + data);
             //try
@@ -179,7 +179,8 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             var log = LogManager.GetLogger(Global.CallerName());
 
             log.Info("xhr poll");
-            sendXhr = Request();
+            var opts = new XHRRequest.RequestOptions { CookieHeaderValue = Cookie };
+            sendXhr = Request(opts);
             sendXhr.On(EVENT_DATA, new DoPollEventDataListener(this));
             sendXhr.On(EVENT_ERROR, new DoPollEventErrorListener(this));
             sendXhr.Create().Wait();
@@ -253,6 +254,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             const int BUFFER_SIZE = 1024;
             public StringBuilder requestData;
             public byte[] BufferRead;
+
             public HttpWebRequest request;
             public HttpWebResponse response;
             public Stream streamResponse;
@@ -274,12 +276,15 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             private string Uri;
             private byte[] Data;
             private HttpWebRequest myHttpWebRequest1;
+            private string CookieHeaderValue;
 
             public XHRRequest(RequestOptions options)
             {
                 Method = options.Method ?? "GET";
                 Uri = options.Uri;
                 Data = options.Data;
+                CookieHeaderValue = options.CookieHeaderValue;
+
             }
 
             public async Task Create()
@@ -291,6 +296,10 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                     log.Info(string.Format("xhr open {0}: {1}", Method, Uri));
                     myHttpWebRequest1 = (HttpWebRequest)WebRequest.Create(Uri);
                     myHttpWebRequest1.Method = Method;
+                    if (!string.IsNullOrEmpty(CookieHeaderValue))
+                    {
+                        myHttpWebRequest1.Headers["Cookie"] = CookieHeaderValue;
+                    }
 
                     if (Method == "POST")
                     {
@@ -479,6 +488,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 public string Uri;
                 public string Method;
                 public byte[] Data;
+                public string CookieHeaderValue;
             }
         }
 

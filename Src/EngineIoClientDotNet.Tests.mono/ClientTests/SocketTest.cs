@@ -70,5 +70,15 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             Assert.True(closed);
             Assert.True(error);
         }
+
+        [Fact]
+        public void SocketOptionCookies()
+        {
+            var options = new Socket.Options();
+            options.Cookies.Add("foo","bar");
+            Assert.Equal("foo=bar", options.GetCookiesAsString());
+            options.Cookies.Add("name2","value2");
+            Assert.Equal("foo=bar; name2=value2", options.GetCookiesAsString());
+        }
     }
 }

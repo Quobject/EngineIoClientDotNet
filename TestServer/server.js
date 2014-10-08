@@ -2,6 +2,7 @@ var
   ssl = true,
   express = require('express'),
   config = require('./../grunt/config.json'),
+  util =  require('util'),
   app = express(),
   fs = require('fs'),
   options = {
@@ -29,9 +30,15 @@ var
   });
 
 
+http.on('request', function(request, response) {
+  //console.log('request ' +util.inspect( request.headers));
+ 
+});
+
 
 server.on('connection', function(socket){
   socket.send('hi');
+
 
   // Bounce any received messages back
   socket.on('message', function (data) {
@@ -43,6 +50,19 @@ server.on('connection', function(socket){
       socket.send(abv);
       return;
     }
+
+    if (data === 'cookie') {
+      console.log('cookie ' + util.inspect(socket.request.headers));
+      if (socket.request.headers !== undefined) {
+        if (socket.request.headers.cookie === "foo=bar") {
+          socket.send('got cookie');
+          return;
+        }
+      }
+      socket.send('no cookie');
+      return;
+    }
+
     console.log('got message data = "' + data + '"');
     console.log('got message data stringify = "' + JSON.stringify(data) + '"');
     var result = new Int8Array(data);
@@ -51,6 +71,7 @@ server.on('connection', function(socket){
     socket.send(data);
 
   });
+
 });
 
 
