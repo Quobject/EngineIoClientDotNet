@@ -12,7 +12,8 @@ var
   },
   server,
   https,
-  http;
+  http,
+  primus_server;
 
 
   console.log("https port = " + config.server.ssl_port);
@@ -24,9 +25,16 @@ var
 
   console.log("http port = " + config.server.port);
   http = require('http').createServer(app);
-  server = require('engine.io').attach(http, {'pingInterval': 500});
+  server = require('engine.io').attach(http, { 'pingInterval': 500 });
+  primus_server = require('engine.io').attach(http, { 'pingInterval': 500, 'path' : '/primus/engine.io' });
   http.listen( config.server.port, function() {
     console.log('Engine.IO server listening on port', config.server.port);
+  });
+
+
+  primus_server.on('connection', function (socket) {
+    console.log('primus_server connection');
+    socket.send('hi');
   });
 
 
@@ -34,6 +42,8 @@ http.on('request', function(request, response) {
   //console.log('request ' +util.inspect( request.headers));
  
 });
+
+
 
 
 server.on('connection', function(socket){

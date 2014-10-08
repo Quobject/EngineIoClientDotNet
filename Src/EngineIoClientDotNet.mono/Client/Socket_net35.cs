@@ -106,8 +106,21 @@ namespace Quobject.EngineIoClientDotNet.Client
         }
 
         public Socket(string uri, Options options)
-            : this(uri == null ? null : new Uri(uri), options)
+            : this(uri == null ? null : String2Uri(uri), options)
         {
+            
+        }
+
+        private static Uri String2Uri(string uri)
+        {
+            if (uri.StartsWith("http") || uri.StartsWith("ws"))
+            {
+                return new Uri(uri);
+            }
+            else
+            {
+                return new Uri("http://" + uri);
+            }
         }
 
         public Socket(Uri uri, Options options)
@@ -346,7 +359,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             public string QueryString;
  
 
-			
+            
             public static Options FromURI(Uri uri, Options opts)
             {
                 if (opts == null)
@@ -365,8 +378,8 @@ namespace Quobject.EngineIoClientDotNet.Client
 
                 return opts;
             }
-			
-	
+            
+    
         }
 
 

@@ -80,5 +80,16 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             options.Cookies.Add("name2","value2");
             Assert.Equal("foo=bar; name2=value2", options.GetCookiesAsString());
         }
+
+        [Fact]
+        public void DefaultProtocol()
+        {
+
+            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+            log.Info("Start");
+
+            var socket = new Socket("testme.quobject.com");
+            Assert.NotNull(socket);
+        }
     }
 }

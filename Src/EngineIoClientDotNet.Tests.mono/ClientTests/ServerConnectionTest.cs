@@ -397,6 +397,47 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             Assert.Equal("got cookie", test);
         }
 
+        //[Fact]
+        //public void PrimusEndpoint()
+        //{
+        //    var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+        //    log.Info("Start");
+        //    _manualResetEvent = new ManualResetEvent(false);
+
+        //    var events = new Queue<string>();
+
+        //    var options = CreateOptions();
+        //    options.Cookies.Add("foo", "bar");
+        //    options.Hostname = "testme.quobject.com/";
+        //    options.Path = "primus";
+        //    var socket = new Socket(options);
+        //    //var socket = new Socket("testme.quobject.com");
+        //    socket.On(Socket.EVENT_OPEN, () =>
+        //    {
+        //        log.Info("EVENT_OPEN");
+        //        socket.Send("cookie");
+        //    });
+        //    socket.On(Socket.EVENT_MESSAGE, (d) =>
+        //    {
+        //        var data = (string)d;
+        //        log.Info("EVENT_MESSAGE data = " + data);
+        //        events.Enqueue(data);
+        //        if (events.Count > 1)
+        //        {
+        //            _manualResetEvent.Set();
+        //        }
+        //    });
+        //    socket.Open();
+        //    _manualResetEvent.WaitOne();
+        //    socket.Close();
+
+        //    string result;
+        //    result = events.Dequeue();
+        //    Assert.Equal("hi", result);
+        //    result = events.Dequeue();
+        //    Assert.Equal("got cookie", result);
+        //}
+
     }
 
 }
