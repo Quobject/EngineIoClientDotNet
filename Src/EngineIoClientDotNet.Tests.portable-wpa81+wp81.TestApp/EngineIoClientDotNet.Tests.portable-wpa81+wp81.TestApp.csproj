@@ -112,6 +112,7 @@
     <Compile Include="..\EngineIOClientDotNet.Tests.netcore45.UnitTestLibrary\ParserTests\TestsParser.cs">
       <Link>ParserTests\TestsParser.cs</Link>
     </Compile>
+    <Compile Include="ClientTests\IssuesTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

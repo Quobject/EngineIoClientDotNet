@@ -67,37 +67,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             }                                                          
         }
 
-        //private byte[] readBuffer;
-        //private async void ReceiveData(object state)
-        //{
-        //    var log = LogManager.GetLogger(Global.CallerName());
-
-        //    int bytesReceived = 0;
-        //    try
-        //    {
-        //        Stream readStream = (Stream)state;
-
-        //        while (true) // Until closed and ReadAsync fails.
-        //        {
-        //            int read = await readStream.ReadAsync(readBuffer, 0, readBuffer.Length);
-        //            bytesReceived += read;
-        //            log.Info("ws_MessageReceived e.Message= " + data);
-        //            this.OnData(readBuffer);
-        //            // Do something with the data.
-        //        }
-        //    }
-        //    catch (ObjectDisposedException e)
-        //    {
-        //        // Display a message that the read has stopped, or take a specific action
-        //        this.OnError("ObjectDisposedException", e);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        WebErrorStatus status = WebSocketError.GetStatus(ex.GetBaseException().HResult);
-        //        // Add your specific error-handling code here.
-        //        this.OnError("ReceiveData", ex);
-        //    }
-        //}
+  
 
 
         void ws_MessageReceived(MessageWebSocket sender, MessageWebSocketMessageReceivedEventArgs args)
@@ -262,8 +232,12 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 {
                     ws.Closed -= ws_Closed;
                     //ws.MessageReceived -= ws_MessageReceived;
-                    dataWriter.Dispose();
-                    dataWriter = null;
+                   
+                    if (dataWriter != null)
+                    {
+                        dataWriter.Dispose();
+                        dataWriter = null;
+                    }
 
                     ws.Close(1000, "DoClose");
                     ws.Dispose();

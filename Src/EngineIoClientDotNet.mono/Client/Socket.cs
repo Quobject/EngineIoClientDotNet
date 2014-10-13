@@ -538,8 +538,18 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         private void Ping()
         {
+            //Send("primus::ping::" + GetJavaTime());
             SendPacket(Packet.PING);
         }
+
+        //private static string GetJavaTime()
+        //{
+        //    var st = new DateTime(1970, 1, 1);
+        //    var t = (DateTime.Now.ToUniversalTime() - st);
+        //    var returnstring = t.TotalMilliseconds.ToString();
+        //    returnstring = returnstring.Replace(".", "-");
+        //    return returnstring;
+        //}
 
         public void Write(string msg, Action fn = null)
         {

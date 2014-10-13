@@ -71,6 +71,10 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             }
 
             object result = events.Dequeue();
+            if (result is string)
+            {
+                log.Info(result as string);                
+            }
             CollectionAssert.AreEqual(binaryData, (byte[]) result);
 
         }
