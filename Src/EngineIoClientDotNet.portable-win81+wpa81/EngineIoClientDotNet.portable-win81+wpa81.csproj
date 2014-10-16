@@ -8,8 +8,8 @@
     <ProjectGuid>{9FAABC51-3020-444F-B0FE-2D84EE2A26B1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EngineIoClientDotNet.portable_win81_wpa81</RootNamespace>
-    <AssemblyName>EngineIoClientDotNet.portable-win81+wpa81</AssemblyName>
+    <RootNamespace>Quobject.EngineIoClientDotNet</RootNamespace>
+    <AssemblyName>EngineIoClientDotNet</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>

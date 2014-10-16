@@ -16,7 +16,7 @@
         '-NoNewWindow ' +
         //'-WindowStyle Normal ' + //-WindowStyle (Hidden | Normal) | -NoNewWindow
         '-FilePath {1} ' +
-        '-ArgumentList \' {2} /t:clean;Rebuild  /p:Configuration={3} /p:OutputPath={4} /fl \' ' :
+        '-ArgumentList \' {2} /t:clean;Rebuild  /p:Configuration={3} /p:OutputPath={4} \' ' :
         '{0} {1} /t:Rebuild /p:Configuration={2} ',
       //build_format = os === 'win' ? '{0} start-process ' +
       //  '-NoNewWindow ' +
@@ -26,7 +26,7 @@
       //  '{0} {1} /p:Configuration={2}',
       i;
 
-    function addBuildWithTitle(title, dir) {
+    function addBuildWithTitle(title, dir, copyOnly) {
       var   
         dir_path = string.format('{0}/../../Src/{1}/', __dirname, title),
         csproj = string.format('{0}{1}.csproj', dir_path, title),
@@ -41,14 +41,15 @@
       template_file_content = S(template_file_content).replaceAll('@VERSION@', config.version).s;
       //grunt.log.writeln('template_file_content = "%s"', template_file_content);
       fs.writeFileSync(string.format('{0}Properties/AssemblyInfo.cs', dir_path), template_file_content);
-
-      tasks.push(clean);
+      if (!copyOnly) {
+        tasks.push(clean);
+      }
       //tasks.push(build);    
     }
 
     if (os === 'win') {
       for (i = 0; i < nuget_builds.length; i++) {
-        addBuildWithTitle(nuget_builds[i].Name, nuget_builds[i].NuGetDir);
+        addBuildWithTitle(nuget_builds[i].Name, nuget_builds[i].NuGetDir, nuget_builds[i].copyOnly);
       }      
     } else {
       addBuildWithTitle('EngineIoClientDotNet.mono');
@@ -59,7 +60,7 @@
     grunt.task.run('shell');
 
     if (configuration === 'Release') {
-      grunt.task.run('clean:release');
+      //grunt.task.run('clean:release');
       if (os === 'win') {
         grunt.task.run('copy:release');      
       } else {
