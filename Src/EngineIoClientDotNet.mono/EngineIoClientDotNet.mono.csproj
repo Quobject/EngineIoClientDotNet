@@ -30,18 +30,48 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\References\Newtonsoft.Json.dll</HintPath>
+      <HintPath>packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="WebSocket4Net, Version=0.7.0.0, Culture=neutral, PublicKeyToken=eb4e154b696bf72a, processorArchitecture=MSIL">
+    <Reference Include="WebSocket4Net, Version=0.10.0.0, Culture=neutral, PublicKeyToken=eb4e154b696bf72a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\References\WebSocket4Net.dll</HintPath>
+      <HintPath>packages\WebSocket4Net.0.10\lib\net45\WebSocket4Net.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Quobject.Collections.Immutable\AvlNode.cs">
+      <Link>Quobject.Collections.Immutable\AvlNode.cs</Link>
+    </Compile>
+    <Compile Include="..\Quobject.Collections.Immutable\IImmutableDictionary.cs">
+      <Link>Quobject.Collections.Immutable\IImmutableDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\Quobject.Collections.Immutable\IImmutableList.cs">
+      <Link>Quobject.Collections.Immutable\IImmutableList.cs</Link>
+    </Compile>
+    <Compile Include="..\Quobject.Collections.Immutable\IImmutableQueue.cs">
+      <Link>Quobject.Collections.Immutable\IImmutableQueue.cs</Link>
+    </Compile>
+    <Compile Include="..\Quobject.Collections.Immutable\IImmutableSet.cs">
+      <Link>Quobject.Collections.Immutable\IImmutableSet.cs</Link>
+    </Compile>
+    <Compile Include="..\Quobject.Collections.Immutable\IImmutableStack.cs">
+      <Link>Quobject.Collections.Immutable\IImmutableStack.cs</Link>
+    </Compile>
+    <Compile Include="..\Quobject.Collections.Immutable\ImmutableDictionary.cs">
+      <Link>Quobject.Collections.Immutable\ImmutableDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\Quobject.Collections.Immutable\ImmutableList.cs">
+      <Link>Quobject.Collections.Immutable\ImmutableList.cs</Link>
+    </Compile>
+    <Compile Include="..\Quobject.Collections.Immutable\ImmutableQueue.cs">
+      <Link>Quobject.Collections.Immutable\ImmutableQueue.cs</Link>
+    </Compile>
+    <Compile Include="..\Quobject.Collections.Immutable\ImmutableStack.cs">
+      <Link>Quobject.Collections.Immutable\ImmutableStack.cs</Link>
+    </Compile>
     <Compile Include="Client\EngineIOException.cs" />
     <Compile Include="Client\HandshakeData.cs" />
     <Compile Include="Client\Socket.cs" />
@@ -66,10 +96,7 @@
     <Compile Include="Thread\EasyTimer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Quobject.Collections.Immutable\Quobject.Collections.Immutable.csproj">
-      <Project>{024a2111-4b19-44d7-917e-8514cf632469}</Project>
-      <Name>Quobject.Collections.Immutable</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
