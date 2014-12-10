@@ -16,7 +16,7 @@ namespace Quobject.EngineIoClientDotNet.Modules
 
         public static string DecodeURIComponent(string str)
         {
-			return Uri.UnescapeDataString(str);
+            return Uri.UnescapeDataString(str);
         }
 
         public static string CallerName(string caller = "", int number = 0, string path = "")
