@@ -141,6 +141,16 @@ namespace Quobject.EngineIoClientDotNet.Client
             Hostname = options.Hostname;
             Port = options.Port;
             Query = options.QueryString != null ? ParseQS.Decode(options.QueryString) : new Dictionary<string, string>();
+
+            if (options.Query != null)
+            {
+                foreach (var item in options.Query)
+                {
+                    Query.Add(item.Key,item.Value);
+                }
+            }
+
+
             Upgrade = options.Upgrade;
             Path = (options.Path ?? "/engine.io").Replace("/$", "") + "/";
             TimestampParam = (options.TimestampParam ?? "t");

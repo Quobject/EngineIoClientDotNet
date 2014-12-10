@@ -26,7 +26,15 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             var events = new ConcurrentQueue<string>();
 
-            var socket = new Socket(CreateOptions());
+            var options = CreateOptions();
+            options.Query = new Dictionary<string, string>
+            {
+                {
+                    "access_token", "akaka"
+                }
+            };
+            options.QueryString = "akka=ekek";
+            var socket = new Socket(options);
             socket.On(Socket.EVENT_OPEN, () =>
             {
                 log.Info("EVENT_OPEN");
