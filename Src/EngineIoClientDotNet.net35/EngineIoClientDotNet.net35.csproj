@@ -40,7 +40,6 @@
     <Reference Include="System.Threading.Tasks.NET35">
       <HintPath>packages\System.Threading.Tasks.3.0.1\lib\net35\System.Threading.Tasks.NET35.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
