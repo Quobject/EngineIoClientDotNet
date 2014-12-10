@@ -11,6 +11,8 @@ namespace Quobject.EngineIoClientDotNet.Modules
 
         private static System.IO.StreamWriter file;
 
+        public static bool Enabled = false;
+
         #region Statics
 
         public static void SetupLogManager()
@@ -52,6 +54,10 @@ namespace Quobject.EngineIoClientDotNet.Modules
         public void Info(string msg)
         {
             //Trace.WriteLine(string.Format("{0} [{3}] {1} - {2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), MyType, msg, System.Threading.Thread.CurrentThread.ManagedThreadId));
+            if (!Enabled)
+            {
+                return;
+            }
 
             if (LogManager.file == null)
             {

@@ -79,7 +79,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void ReceiveBinaryData()
         {
-
+            LogManager.Enabled = true;
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
             _manualResetEvent = new ManualResetEvent(false);
