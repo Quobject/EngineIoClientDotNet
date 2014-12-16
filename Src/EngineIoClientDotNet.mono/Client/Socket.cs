@@ -390,10 +390,17 @@ namespace Quobject.EngineIoClientDotNet.Client
 
             for (int i = 0; i < this.PrevBufferLen; i++)
             {
-                var callback = this.CallbackBuffer[i];
-                if (callback != null)
+                try
                 {
-                    callback();
+                    var callback = this.CallbackBuffer[i];
+                    if (callback != null)
+                    {
+                        callback();
+                    }
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    //ignore
                 }
             }
             //log.Info(string.Format("OnDrain2 PrevBufferLen={0} WriteBuffer.Count={1}", PrevBufferLen, WriteBuffer.Count));

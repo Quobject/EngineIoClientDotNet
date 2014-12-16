@@ -391,10 +391,17 @@ namespace Quobject.EngineIoClientDotNet.Client
            
             for (int i = 0; i < this.PrevBufferLen; i++)
             {
-                var callback = this.CallbackBuffer[i];
-                if (callback != null)
+                try
                 {
-                    callback();
+                    var callback = this.CallbackBuffer[i];
+                    if (callback != null)
+                    {
+                        callback();
+                    }
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    //ignore
                 }
             }
 

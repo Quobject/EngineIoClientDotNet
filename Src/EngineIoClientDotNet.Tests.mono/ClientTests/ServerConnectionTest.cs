@@ -1,6 +1,8 @@
 ﻿
 
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Quobject.EngineIoClientDotNet.Client;
 using Quobject.EngineIoClientDotNet.Client.Transports;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
@@ -63,6 +65,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void Messages()
         {
+            LogManager.Enabled = true;
 
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
@@ -444,6 +447,58 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         //    Assert.Equal("hi", result);
         //    result = events.Dequeue();
         //    Assert.Equal("got cookie", result);
+        //}
+
+
+       // [Fact]
+        //public void  MessagesMulti()
+        //{
+        //    LogManager.Enabled = true;
+
+        //    var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+        //    log.Info("Start");
+        //    _manualResetEvent = new ManualResetEvent(false);
+
+        //    var events = new ConcurrentQueue<string>();
+
+        //    int count = 200;
+
+        //    var socket = new Socket(CreateOptions());
+        //    socket.On(Socket.EVENT_OPEN, () =>
+        //    {
+        //        log.Info("EVENT_OPEN");
+
+        //        Task.Run(() =>
+        //        {
+        //            for (int i = 0; i < count; i++)
+        //            {
+        //                socket.Send("multi");
+        //                Task.Delay(TimeSpan.FromSeconds(1)).Wait();
+        //            }
+                    
+        //        });
+
+                
+        //    });
+        //    socket.On(Socket.EVENT_MESSAGE, (d) =>
+        //    {
+        //        var data = (string)d;
+        //        log.Info("EVENT_MESSAGE data = " + data);
+        //        events.Enqueue(data);
+        //        if (events.Count > count)
+        //        {
+        //            _manualResetEvent.Set();
+        //        }
+        //    });
+        //    socket.Open();
+        //    _manualResetEvent.WaitOne();
+        //    socket.Close();
+
+        //    string result;
+        //    events.TryDequeue(out result);
+        //    Assert.Equal("hi", result);
+        //    events.TryDequeue(out result);
+        //    Assert.Equal("multi", result);
         //}
 
     }

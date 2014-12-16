@@ -50,8 +50,16 @@ server.on('connection', function(socket){
   socket.send('hi');
 
 
+
+
   // Bounce any received messages back
   socket.on('message', function (data) {
+
+    console.log('got message1 data = "' + data + '"');
+    console.log('got message data stringify = "' + JSON.stringify(data) + '"');
+    var result = new Int8Array(data);
+    console.log('got message data Int8Array = "' + JSON.stringify(result) + '"\n\n');
+
     if (data === 'give binary') {
       var abv = new Int8Array(5);
       for (var i = 0; i < 5; i++) {
@@ -73,16 +81,14 @@ server.on('connection', function(socket){
       return;
     }
 
-    console.log('got message data = "' + data + '"');
-    console.log('got message data stringify = "' + JSON.stringify(data) + '"');
-    var result = new Int8Array(data);
-    console.log('got message data Int8Array = "' + JSON.stringify(result) + '"\n\n');
 
     socket.send(data);
 
   });
 
 });
+
+
 
 
 ssl_server.on('connection', function(socket){
