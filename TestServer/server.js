@@ -1,41 +1,42 @@
 var
-  ssl = true,
-  express = require('express'),
-  config = require('./../grunt/config.json'),
-  util =  require('util'),
-  app = express(),
-  fs = require('fs'),
-  options = {
-    key: fs.readFileSync(__dirname + '/testme.quobject.com.key'),
-    cert: fs.readFileSync(__dirname + '/testme.quobject.com.cert'),
-    requestCert: true
-  },
-  server,
-  https,
-  http,
-  primus_server;
+ssl = true,
+express = require('express'),
+config = require('./../grunt/config.json'),
+util =  require('util'),
+app = express(),
+fs = require('fs'),
+options = {
+  key: fs.readFileSync(__dirname + '/testme.quobject.com.key'),
+  cert: fs.readFileSync(__dirname + '/testme.quobject.com.cert'),
+  requestCert: true
+},
+server,
+https,
+http,
+primus_server,
+ssl_server ;
 
 
-  console.log("https port = " + config.server.ssl_port);
-  https = require('https').createServer(options, app);
-  ssl_server = require('engine.io').attach(https, {'pingInterval': 500});
-  https.listen(config.server.ssl_port, function(d) {
-    console.log('Engine.IO server listening on port', config.server.ssl_port);
-  });
+console.log("https port = " + config.server.ssl_port);
+https = require('https').createServer(options, app);
+ssl_server = require('engine.io').attach(https, {'pingInterval': 500});
+https.listen(config.server.ssl_port, function(d) {
+  console.log('Engine.IO server listening on port', config.server.ssl_port);
+});
 
-  console.log("http port = " + config.server.port);
-  http = require('http').createServer(app);
-  server = require('engine.io').attach(http, { 'pingInterval': 500 });
-  primus_server = require('engine.io').attach(http, { 'pingInterval': 500, 'path' : '/primus/engine.io' });
-  http.listen( config.server.port, function() {
-    console.log('Engine.IO server listening on port', config.server.port);
-  });
+console.log("http port = " + config.server.port);
+http = require('http').createServer(app);
+server = require('engine.io').attach(http, { 'pingInterval': 500 });
+primus_server = require('engine.io').attach(http, { 'pingInterval': 500, 'path' : '/primus/engine.io' });
+http.listen( config.server.port, function() {
+  console.log('Engine.IO server listening on port', config.server.port);
+});
 
 
-  primus_server.on('connection', function (socket) {
-    console.log('primus_server connection');
-    socket.send('hi');
-  });
+primus_server.on('connection', function (socket) {
+  console.log('primus_server connection');
+  socket.send('hi');
+});
 
 
 http.on('request', function(request, response) {

@@ -39,7 +39,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
-            Packet p = Parser.DecodePacket("4\uffff");
+            Packet p = Parser.DecodePacket("4\uffff", true);
             Assert.Equal(Packet.ERROR, p.Type);
             Assert.Equal(PARSER_ERROR, p.Data);
         }
