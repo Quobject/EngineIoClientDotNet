@@ -80,7 +80,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             options.Cookies.Add("foo", "bar");
             Assert.Equal("foo=bar", options.GetCookiesAsString());
             options.Cookies.Add("name2", "value2");
-            Assert.Equal("foo=bar, name2=value2", options.GetCookiesAsString());
+            Assert.Equal("foo=bar; name2=value2", options.GetCookiesAsString());
         }
     }
 }

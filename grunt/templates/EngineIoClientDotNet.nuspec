@@ -19,6 +19,10 @@
         <dependency id="Newtonsoft.Json" version="6.0.8" />
         <dependency id="System.Threading.Tasks" version="3.1.1" />
       </group>
+      <group targetFramework="net40">
+        <dependency id="WebSocket4Net" version="0.11" />
+        <dependency id="Newtonsoft.Json" version="6.0.8" />
+      </group>
       <group targetFramework="net45">
         <dependency id="WebSocket4Net" version="0.11" />
         <dependency id="Newtonsoft.Json" version="6.0.8" />
