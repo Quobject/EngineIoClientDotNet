@@ -37,7 +37,7 @@ socket.On(Socket.EVENT_OPEN, () =>
 {
 	socket.On(Socket.EVENT_MESSAGE, (data) =>
 	{
-		socket.On(Socket.EVENT_MESSAGE, (data) => Console.WriteLine((string)data));
+		Console.WriteLine((string)data);
 	});
 });
 socket.Open();            
