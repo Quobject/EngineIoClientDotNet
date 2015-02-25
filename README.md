@@ -12,6 +12,9 @@ Nuget install:
 Install-Package EngineIoClientDotNet
 ```
 
+* NuGet Package: [![EngineIoClientDotNet](https://img.shields.io/nuget/dt/EngineIoClientDotNet.svg)](https://www.nuget.org/packages/EngineIoClientDotNet/)
+
+
 ## Usage
 EngineIoClientDotNet has a similar api to those of the [JavaScript client](https://github.com/Automattic/engine.io-client).
 
