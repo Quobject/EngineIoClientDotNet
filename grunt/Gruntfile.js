@@ -2,7 +2,9 @@
 module.exports = function (grunt) {
   var
     node_os = require('os'),
-    config = require('./config.json'),
+    fs = require('fs'),
+    strip_json = require('strip-json-comments'),
+    config = JSON.parse(strip_json(String(fs.readFileSync('./config.json')))),
     util = require('util'),
     os = node_os.platform() === 'win32' ? 'win' : 'linux',
     nuget_builds = [

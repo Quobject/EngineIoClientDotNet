@@ -1,11 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngineIoClientDotNet.net45", "EngineIoClientDotNet.net45.csproj", "{842D8B13-DAF3-4919-80A0-03EFA3C17178}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "grunt", "..\..\grunt\", "{7F5CBDD0-5537-4B8B-AD7E-9F7E88600084}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "grunt(1)", "..\..\grunt\", "{7F5CBDD0-5537-4B8B-AD7E-9F7E88600084}"
 	ProjectSection(WebsiteProperties) = preProject
-		Frontpage = "false"
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
 		Debug.AspNetCompiler.VirtualPath = "/grunt"
 		Debug.AspNetCompiler.PhysicalPath = "..\..\grunt\"
@@ -22,9 +23,10 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "grunt", "..\..\grunt\", "{7
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "8678"
+		SlnRelativePath = "..\..\grunt\"
 	EndProjectSection
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TestServer", "..\..\TestServer\", "{7E50397C-1221-49A9-A5F1-8254AC4BFBA4}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TestServer(1)", "..\..\TestServer\", "{7E50397C-1221-49A9-A5F1-8254AC4BFBA4}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
 		Debug.AspNetCompiler.VirtualPath = "/TestServer"
@@ -42,9 +44,15 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TestServer", "..\..\TestSer
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "8671"
+		SlnRelativePath = "..\..\TestServer\"
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngineIoClientDotNet.Tests.net45", "..\EngineIoClientDotNet.Tests.net45\EngineIoClientDotNet.Tests.net45.csproj", "{BEFF0675-8A73-4012-9651-C253E06E0F87}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{238B4362-A8D9-40BC-863F-236FFD88643D}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

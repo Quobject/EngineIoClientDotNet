@@ -400,13 +400,25 @@ namespace Quobject.EngineIoClientDotNet.Client
                 }
                 catch (ArgumentOutOfRangeException)
                 {
-                    //ignore
+                    WriteBuffer = WriteBuffer.Clear();
+                    CallbackBuffer = CallbackBuffer.Clear();
+                    PrevBufferLen = 0;
                 }
             }
             //log.Info(string.Format("OnDrain2 PrevBufferLen={0} WriteBuffer.Count={1}", PrevBufferLen, WriteBuffer.Count));
 
-            WriteBuffer = WriteBuffer.RemoveRange(0, PrevBufferLen);
-            CallbackBuffer = CallbackBuffer.RemoveRange(0, PrevBufferLen);
+
+            try
+            {
+                WriteBuffer = WriteBuffer.RemoveRange(0, PrevBufferLen);
+                CallbackBuffer = CallbackBuffer.RemoveRange(0, PrevBufferLen);
+            }
+            catch (Exception)
+            {
+                WriteBuffer = WriteBuffer.Clear();
+                CallbackBuffer = CallbackBuffer.Clear();
+            }
+           
 
             this.PrevBufferLen = 0;
             //log.Info(string.Format("OnDrain3 PrevBufferLen={0} WriteBuffer.Count={1}", PrevBufferLen, WriteBuffer.Count));
