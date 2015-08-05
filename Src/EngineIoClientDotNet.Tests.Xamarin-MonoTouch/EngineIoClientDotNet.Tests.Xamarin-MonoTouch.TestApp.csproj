@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\EngineIoClientDotNet.Xamarin-MonoTouch\packages\xunit.core.2.0.0\build\MonoTouch\xunit.core.props" Condition="Exists('..\EngineIoClientDotNet.Xamarin-MonoTouch\packages\xunit.core.2.0.0\build\Xamarin.MonoTouch\xunit.core.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
+    <ProjectGuid>{A67E3D93-2C9F-4E45-AEED-A6E7AA629D59}</ProjectGuid>
+    <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Quobject.EngineIoClientDotNet_Tests</RootNamespace>
+    <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+    <AssemblyName>EngineIoClientDotNetTestsXamarinMonoTouch</AssemblyName>
+    <NuGetPackageImportStamp>ece89e4f</NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhoneSimulator\Debug</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <MtouchArch>i386</MtouchArch>
+    <MtouchLink>None</MtouchLink>
+    <MtouchDebug>true</MtouchDebug>
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\iPhoneSimulator\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <MtouchLink>None</MtouchLink>
+    <MtouchArch>i386</MtouchArch>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhone\Debug</OutputPath>
+    <DefineConstants>DEBUG;USE_XUNIT</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <MtouchArch>ARMv7</MtouchArch>
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <MtouchDebug>true</MtouchDebug>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\iPhone\Release</OutputPath>
+    <DefineConstants>USE_XUNIT</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+    <MtouchArch>ARMv7</MtouchArch>
+    <ConsolePause>false</ConsolePause>
+    <CodesignKey>iPhone Developer</CodesignKey>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\clienttests\BinaryPollingTest.cs">
+      <Link>ClientTests\BinaryPollingTest.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\clienttests\BinaryWebSocketTest.cs">
+      <Link>ClientTests\BinaryWebSocketTest.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\clienttests\Connection.cs">
+      <Link>ClientTests\Connection.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\clienttests\ConnectionTest.cs">
+      <Link>ClientTests\ConnectionTest.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\clienttests\HandshakeDataTests.cs">
+      <Link>ClientTests\HandshakeDataTests.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\clienttests\ServerConnectionTest.cs">
+      <Link>ClientTests\ServerConnectionTest.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\clienttests\SocketTest.cs">
+      <Link>ClientTests\SocketTest.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\clienttests\SSLServerConnectionTest.cs">
+      <Link>ClientTests\SSLServerConnectionTest.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\TransportTest.cs">
+      <Link>ClientTests\TransportTest.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\clienttests\UsageTest.cs">
+      <Link>ClientTests\UsageTest.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\componentemittertests\EmitterTests.cs">
+      <Link>ComponentEmitterTests\EmitterTests.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\modulestests\ParseQSTests.cs">
+      <Link>ModulesTests\ParseQSTests.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\modulestests\UTF8Tests.cs">
+      <Link>ModulesTests\UTF8Tests.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\parsertests\DecodeTests.cs">
+      <Link>ParserTests\DecodeTests.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\parsertests\TestsParser.cs">
+      <Link>ParserTests\TestsParser.cs</Link>
+    </Compile>
+    <Compile Include="Main.cs" />
+    <Compile Include="AppDelegate.cs" />
+    <None Include="Info.plist" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <InterfaceDefinition Include="Resources\LaunchScreen.xib" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\EngineIoClientDotNet.Xamarin-MonoTouch\packages\Newtonsoft.Json.7.0.1\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="monotouch" />
+    <Reference Include="WebSocket4Net, Version=0.12.0.0, Culture=neutral, PublicKeyToken=eb4e154b696bf72a, processorArchitecture=MSIL">
+      <HintPath>..\EngineIoClientDotNet.Xamarin-MonoTouch\packages\WebSocket4Net.0.13.1\lib\monotouch10\WebSocket4Net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Core, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\EngineIoClientDotNet.Xamarin-MonoTouch\packages\Xamarin.Forms.1.4.4.6392\lib\MonoTouch10\Xamarin.Forms.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Platform, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\EngineIoClientDotNet.Xamarin-MonoTouch\packages\Xamarin.Forms.1.4.4.6392\lib\MonoTouch10\Xamarin.Forms.Platform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Platform.iOS.Classic, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\EngineIoClientDotNet.Xamarin-MonoTouch\packages\Xamarin.Forms.1.4.4.6392\lib\MonoTouch10\Xamarin.Forms.Platform.iOS.Classic.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Xaml, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\EngineIoClientDotNet.Xamarin-MonoTouch\packages\Xamarin.Forms.1.4.4.6392\lib\MonoTouch10\Xamarin.Forms.Xaml.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\EngineIoClientDotNet.Xamarin-MonoTouch\packages\xunit.abstractions.2.0.0\lib\portable-net45+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="xunit.assert, Version=2.0.0.2929, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\EngineIoClientDotNet.Xamarin-MonoTouch\packages\xunit.assert.2.0.0\lib\portable-net45+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.assert.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="xunit.core, Version=2.0.0.2929, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\EngineIoClientDotNet.Xamarin-MonoTouch\packages\xunit.extensibility.core.2.0.0\lib\portable-net45+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="xunit.execution.MonoTouch, Version=2.0.0.2929, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\EngineIoClientDotNet.Xamarin-MonoTouch\packages\xunit.extensibility.execution.2.0.0\lib\MonoTouch\xunit.execution.MonoTouch.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="xunit.runner.devices, Version=2.0.0.1062, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\EngineIoClientDotNet.Xamarin-MonoTouch\packages\xunit.runner.devices.1.0.0\lib\MonoTouch\xunit.runner.devices.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="xunit.runner.utility.MonoTouch, Version=2.0.0.2929, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\EngineIoClientDotNet.Xamarin-MonoTouch\packages\xunit.runner.utility.2.0.0\lib\MonoTouch\xunit.runner.utility.MonoTouch.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Entitlements.plist" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EngineIoClientDotNet.Xamarin-MonoTouch\EngineIoClientDotNet.Xamarin-MonoTouch.csproj">
+      <Project>{491f98d3-b919-452a-a604-f087061403a7}</Project>
+      <Name>EngineIoClientDotNet.Xamarin-MonoTouch</Name>
+      <IsAppExtension>false</IsAppExtension>
+      <IsWatchApp>false</IsWatchApp>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\EngineIoClientDotNet.Xamarin-MonoTouch\packages\xunit.core.2.0.0\build\MonoTouch\xunit.core.props')" Text="$([System.String]::Format('$(ErrorText)', '..\EngineIoClientDotNet.Xamarin-MonoTouch\packages\xunit.core.2.0.0\build\MonoTouch\xunit.core.props'))" />
+    <Error Condition="!Exists('..\EngineIoClientDotNet.Xamarin-MonoTouch\packages\xunit.runner.devices.1.0.0\build\MonoTouch\xunit.runner.devices.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\EngineIoClientDotNet.Xamarin-MonoTouch\packages\xunit.runner.devices.1.0.0\build\MonoTouch\xunit.runner.devices.targets'))" />
+    <Error Condition="!Exists('..\EngineIoClientDotNet.Xamarin-MonoTouch\packages\Xamarin.Forms.1.4.4.6392\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\EngineIoClientDotNet.Xamarin-MonoTouch\packages\Xamarin.Forms.1.4.4.6392\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets'))" />
+  </Target>
+  <Import Project="..\EngineIoClientDotNet.Xamarin-MonoTouch\packages\xunit.runner.devices.1.0.0\build\MonoTouch\xunit.runner.devices.targets" Condition="Exists('..\EngineIoClientDotNet.Xamarin-MonoTouch\packages\xunit.runner.devices.1.0.0\build\MonoTouch\xunit.runner.devices.targets')" />
+  <Import Project="..\EngineIoClientDotNet.Xamarin-MonoTouch\packages\Xamarin.Forms.1.4.4.6392\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\EngineIoClientDotNet.Xamarin-MonoTouch\packages\Xamarin.Forms.1.4.4.6392\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
+</Project>

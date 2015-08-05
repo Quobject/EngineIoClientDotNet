@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\EngineIoClientDotNet.Xamarin-Android\packages\xunit.core.2.0.0\build\monoandroid\xunit.core.props" Condition="Exists('..\EngineIoClientDotNet.Xamarin-Android\packages\xunit.core.2.0.0\build\monoandroid\xunit.core.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C5CD5898-63A6-46CB-A1D0-B6FBCE505DC3}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EngineIoClientDotNet.Tests.Xamarin_Android</RootNamespace>
+    <AssemblyName>EngineIoClientDotNet.Tests.Xamarin-Android</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <AndroidApplication>true</AndroidApplication>
+    <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
+    <NuGetPackageImportStamp>e1a141c4</NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
+    <AndroidLinkMode>None</AndroidLinkMode>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
+    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FormsViewGroup, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\EngineIoClientDotNet.Xamarin-Android\packages\Xamarin.Forms.1.4.4.6392\lib\MonoAndroid10\FormsViewGroup.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Mono.Android" />
+    <Reference Include="mscorlib" />
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\EngineIoClientDotNet.Xamarin-Android\packages\Newtonsoft.Json.7.0.1\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WebSocket4Net, Version=0.12.0.0, Culture=neutral, PublicKeyToken=eb4e154b696bf72a, processorArchitecture=MSIL">
+      <HintPath>..\EngineIoClientDotNet.Xamarin-Android\packages\WebSocket4Net.0.13.1\lib\monoandroid23\WebSocket4Net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v4, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\EngineIoClientDotNet.Xamarin-Android\packages\Xamarin.Android.Support.v4.21.0.3.0\lib\MonoAndroid10\Xamarin.Android.Support.v4.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Core, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\EngineIoClientDotNet.Xamarin-Android\packages\Xamarin.Forms.1.4.4.6392\lib\MonoAndroid10\Xamarin.Forms.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Platform, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\EngineIoClientDotNet.Xamarin-Android\packages\Xamarin.Forms.1.4.4.6392\lib\MonoAndroid10\Xamarin.Forms.Platform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Platform.Android, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\EngineIoClientDotNet.Xamarin-Android\packages\Xamarin.Forms.1.4.4.6392\lib\MonoAndroid10\Xamarin.Forms.Platform.Android.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Xaml, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\EngineIoClientDotNet.Xamarin-Android\packages\Xamarin.Forms.1.4.4.6392\lib\MonoAndroid10\Xamarin.Forms.Xaml.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\EngineIoClientDotNet.Xamarin-Android\packages\xunit.abstractions.2.0.0\lib\portable-net45+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="xunit.assert, Version=2.0.0.2929, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\EngineIoClientDotNet.Xamarin-Android\packages\xunit.assert.2.0.0\lib\portable-net45+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.assert.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="xunit.core, Version=2.0.0.2929, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\EngineIoClientDotNet.Xamarin-Android\packages\xunit.extensibility.core.2.0.0\lib\portable-net45+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="xunit.execution.MonoAndroid, Version=2.0.0.2929, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\EngineIoClientDotNet.Xamarin-Android\packages\xunit.extensibility.execution.2.0.0\lib\monoandroid\xunit.execution.MonoAndroid.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="xunit.runner.devices, Version=2.0.0.1062, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\EngineIoClientDotNet.Xamarin-Android\packages\xunit.runner.devices.1.0.0\lib\MonoAndroid\xunit.runner.devices.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="xunit.runner.utility.MonoAndroid, Version=2.0.0.2929, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\EngineIoClientDotNet.Xamarin-Android\packages\xunit.runner.utility.2.0.0\lib\monoandroid\xunit.runner.utility.MonoAndroid.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\clienttests\BinaryPollingTest.cs">
+      <Link>ClientTests\BinaryPollingTest.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\clienttests\BinaryWebSocketTest.cs">
+      <Link>ClientTests\BinaryWebSocketTest.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\clienttests\Connection.cs">
+      <Link>ClientTests\Connection.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\clienttests\ConnectionTest.cs">
+      <Link>ClientTests\ConnectionTest.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\clienttests\HandshakeDataTests.cs">
+      <Link>ClientTests\HandshakeDataTests.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\clienttests\ServerConnectionTest.cs">
+      <Link>ClientTests\ServerConnectionTest.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\clienttests\SocketTest.cs">
+      <Link>ClientTests\SocketTest.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\clienttests\SSLServerConnectionTest.cs">
+      <Link>ClientTests\SSLServerConnectionTest.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\TransportTest.cs">
+      <Link>ClientTests\TransportTest.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\clienttests\UsageTest.cs">
+      <Link>ClientTests\UsageTest.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\componentemittertests\EmitterTests.cs">
+      <Link>ComponentEmitterTests\EmitterTests.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\modulestests\ParseQSTests.cs">
+      <Link>ModulesTests\ParseQSTests.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\modulestests\UTF8Tests.cs">
+      <Link>ModulesTests\UTF8Tests.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\parsertests\DecodeTests.cs">
+      <Link>ParserTests\DecodeTests.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\parsertests\TestsParser.cs">
+      <Link>ParserTests\TestsParser.cs</Link>
+    </Compile>
+    <Compile Include="MainActivity.cs" />
+    <Compile Include="Resources\Resource.Designer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\AndroidManifest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EngineIoClientDotNet.Xamarin-Android\EngineIoClientDotNet.Xamarin-Android.csproj">
+      <Project>{491f98d3-b919-452a-a604-f087061403b8}</Project>
+      <Name>EngineIoClientDotNet.Xamarin-Android</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\EngineIoClientDotNet.Xamarin-Android\packages\xunit.core.2.0.0\build\monoandroid\xunit.core.props')" Text="$([System.String]::Format('$(ErrorText)', '..\EngineIoClientDotNet.Xamarin-Android\packages\xunit.core.2.0.0\build\monoandroid\xunit.core.props'))" />
+    <Error Condition="!Exists('..\EngineIoClientDotNet.Xamarin-Android\packages\xunit.runner.devices.1.0.0\build\MonoAndroid\xunit.runner.devices.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\EngineIoClientDotNet.Xamarin-Android\packages\xunit.runner.devices.1.0.0\build\MonoAndroid\xunit.runner.devices.targets'))" />
+    <Error Condition="!Exists('..\EngineIoClientDotNet.Xamarin-Android\packages\Xamarin.Forms.1.4.4.6392\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\EngineIoClientDotNet.Xamarin-Android\packages\Xamarin.Forms.1.4.4.6392\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets'))" />
+  </Target>
+  <Import Project="..\EngineIoClientDotNet.Xamarin-Android\packages\xunit.runner.devices.1.0.0\build\MonoAndroid\xunit.runner.devices.targets" Condition="Exists('..\EngineIoClientDotNet.Xamarin-Android\packages\xunit.runner.devices.1.0.0\build\MonoAndroid\xunit.runner.devices.targets')" />
+  <Import Project="..\EngineIoClientDotNet.Xamarin-Android\packages\Xamarin.Forms.1.4.4.6392\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\EngineIoClientDotNet.Xamarin-Android\packages\Xamarin.Forms.1.4.4.6392\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+     Other similar extension points exist, see Microsoft.Common.targets.
+		<Target Name="BeforeBuild">
+		</Target>
+		<Target Name="AfterBuild">
+		</Target>
+ -->
+</Project>

@@ -13,6 +13,9 @@ module.exports = function (grunt) {
       { "Name": "EngineIoClientDotNet.net45", "NuGetDir": "net45" },
       { "Name": "EngineIoClientDotNet.windowsphone8", "NuGetDir": "windowsphone8" },
       { "Name": "EngineIoClientDotNet.netcore45", "NuGetDir": "netcore45" },
+      { "Name": "EngineIoClientDotNet.Xamarin-iOS", "NuGetDir": "xamarinios10" },
+      { "Name": "EngineIoClientDotNet.Xamarin-MonoTouch", "NuGetDir": "monotouch10" },
+      { "Name": "EngineIoClientDotNet.Xamarin-Android", "NuGetDir": "monoandroid10" },
       { "Name": "EngineIoClientDotNet.portable-wpa81+wp81", "NuGetDir": "portable-wpa81+wp81" },
       { "Name": "EngineIoClientDotNet.portable-win81+wpa81", "NuGetDir": "portable-win81+wpa81", copyOnly: true }
     ];
