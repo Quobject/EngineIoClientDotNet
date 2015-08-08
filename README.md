@@ -25,8 +25,7 @@ var socket = new Socket("ws://localhost");
 socket.On(Socket.EVENT_OPEN, () =>
 {
 	socket.Send("hi", () =>
-	{
-		socket.Send("hi");
+	{		
 		socket.Close();
 	});
 });
