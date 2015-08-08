@@ -12,7 +12,7 @@ module.exports = function (grunt) {
       { "Name": "EngineIoClientDotNet.net40", "NuGetDir": "net40", "SourceDir": "net40" },
       { "Name": "EngineIoClientDotNet.net45", "NuGetDir": "net45", "SourceDir": "net45" },
       { "Name": "EngineIoClientDotNet.windowsphone8", "NuGetDir": "windowsphone8", "SourceDir": "windowsphone8" },
-      { "Name": "EngineIoClientDotNet.netcore45", "NuGetDir": "netcore45", "SourceDir": "netcore45", copyOnly: true },
+      { "Name": "EngineIoClientDotNet.netcore45", "NuGetDir": "netcore45", "SourceDir": "", copyOnly: true },
       { "Name": "EngineIoClientDotNet.Xamarin-iOS", "NuGetDir": "xamarinios10", "SourceDir": "xamarinios10" },
       { "Name": "EngineIoClientDotNet.Xamarin-MonoTouch", "NuGetDir": "monotouch10", "SourceDir": "monotouch10" },
       { "Name": "EngineIoClientDotNet.Xamarin-Android", "NuGetDir": "monoandroid10", "SourceDir": "", copyOnly: true },

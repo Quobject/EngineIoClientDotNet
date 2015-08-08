@@ -1,15 +1,6 @@
 ﻿<Properties StartupItem="..\EngineIoClientDotNet.Tests.Xamarin-Android\EngineIoClientDotNet.Tests.Xamarin-Android.TestApp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" PreferredExecutionTarget="Android.Xamarin_Android_API_21" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="..\EngineIoClientDotNet.Tests.Xamarin-Android\ClientTests\Connection.cs">
-    <Files>
-      <File FileName="..\EngineIoClientDotNet.Tests.Xamarin-Android\MainActivity.cs" Line="1" Column="1" />
-      <File FileName="..\EngineIoClientDotNet.Tests.Xamarin-Android\packages.config" Line="1" Column="1" />
-      <File FileName="..\EngineIoClientDotNet.Tests.mono\clienttests\Connection.cs" Line="53" Column="9" />
-      <File FileName="..\EngineIoClientDotNet.Tests.mono\clienttests\ConnectionTest.cs" Line="170" Column="4" />
-      <File FileName="..\EngineIoClientDotNet.Tests.mono\clienttests\BinaryWebSocketTest.cs" Line="11" Column="50" />
-      <File FileName="..\EngineIoClientDotNet.Tests.Xamarin-Android\ClientTests\Connection.cs" Line="36" Column="4" />
-    </Files>
-  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
