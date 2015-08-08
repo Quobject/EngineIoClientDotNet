@@ -1,7 +1,9 @@
 var
 ssl = true,
 express = require('express'),
-config = require('./../grunt/config.json'),
+fs = require('fs'),
+strip_json = require('strip-json-comments'),
+config = JSON.parse(strip_json(String(fs.readFileSync('./../grunt/config.json')))),
 util =  require('util'),
 app = express(),
 fs = require('fs'),

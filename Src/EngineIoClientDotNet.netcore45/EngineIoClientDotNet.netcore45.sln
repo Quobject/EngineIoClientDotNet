@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngineIoClientDotNet.netcore45", "EngineIoClientDotNet.netcore45.csproj", "{3934974C-1854-408C-B7F3-918A0F68AF93}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngineIOClientDotNet.Tests.netcore45.UnitTestLibrary", "..\EngineIOClientDotNet.Tests.netcore45.UnitTestLibrary\EngineIOClientDotNet.Tests.netcore45.UnitTestLibrary.csproj", "{ED840F5B-2B18-4BDE-933E-BA865295783A}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "grunt(2)", "..\..\grunt\", "{7F5CBDD0-5537-4B8B-AD7E-9F7E88600084}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "grunt", "..\..\grunt\", "{7F5CBDD0-5537-4B8B-AD7E-9F7E88600084}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
 		Debug.AspNetCompiler.VirtualPath = "/grunt"
@@ -28,7 +28,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "grunt(2)", "..\..\grunt\", 
 		SlnRelativePath = "..\..\grunt\"
 	EndProjectSection
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TestServer(2)", "..\..\TestServer\", "{7E50397C-1221-49A9-A5F1-8254AC4BFBA4}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TestServer", "..\..\TestServer\", "{7E50397C-1221-49A9-A5F1-8254AC4BFBA4}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
 		Debug.AspNetCompiler.VirtualPath = "/TestServer"

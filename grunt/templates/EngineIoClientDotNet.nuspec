@@ -15,22 +15,34 @@
         <dependency id="Newtonsoft.Json" version="7.0.1" />
       </group>
       <group targetFramework="net35">
-        <dependency id="WebSocket4Net" version="0.12" />
+        <dependency id="WebSocket4Net" version="0.13.1" />
         <dependency id="Newtonsoft.Json" version="7.0.1" />
         <dependency id="System.Threading.Tasks" version="3.1.1" />
       </group>
       <group targetFramework="net40">
-        <dependency id="WebSocket4Net" version="0.12" />
+        <dependency id="WebSocket4Net" version="0.13.1" />
         <dependency id="Newtonsoft.Json" version="7.0.1" />
       </group>
       <group targetFramework="net45">
-        <dependency id="WebSocket4Net" version="0.12" />
+        <dependency id="WebSocket4Net" version="0.13.1" />
         <dependency id="Newtonsoft.Json" version="7.0.1" />
       </group>
       <group targetFramework="windowsphone8">
-        <dependency id="WebSocket4Net" version="0.12" />
+        <dependency id="WebSocket4Net" version="0.13.1" />
         <dependency id="Newtonsoft.Json" version="7.0.1" />
-      </group>	  
+      </group>
+      <group targetFramework="monoandroid10">
+        <dependency id="WebSocket4Net" version="0.13.1" />
+        <dependency id="Newtonsoft.Json" version="7.0.1" />
+      </group>
+      <group targetFramework="xamarinios10">
+        <dependency id="WebSocket4Net" version="0.13.1" />
+        <dependency id="Newtonsoft.Json" version="7.0.1" />
+      </group>
+      <group targetFramework="monotouch10">
+        <dependency id="WebSocket4Net" version="0.13.1" />
+        <dependency id="Newtonsoft.Json" version="7.0.1" />
+      </group>
     </dependencies>
     <projectUrl>https://github.com/Quobject/EngineIoClientDotNet/</projectUrl>
     <description>This is the Engine.IO Client Library for C#.</description>

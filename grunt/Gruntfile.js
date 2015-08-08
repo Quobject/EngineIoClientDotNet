@@ -8,16 +8,16 @@ module.exports = function (grunt) {
     util = require('util'),
     os = node_os.platform() === 'win32' ? 'win' : 'linux',
     nuget_builds = [
-      { "Name": "EngineIoClientDotNet.net35", "NuGetDir": "net35" },
-      { "Name": "EngineIoClientDotNet.net40", "NuGetDir": "net40" },
-      { "Name": "EngineIoClientDotNet.net45", "NuGetDir": "net45" },
-      { "Name": "EngineIoClientDotNet.windowsphone8", "NuGetDir": "windowsphone8" },
-      { "Name": "EngineIoClientDotNet.netcore45", "NuGetDir": "netcore45" },
-      { "Name": "EngineIoClientDotNet.Xamarin-iOS", "NuGetDir": "xamarinios10" },
-      { "Name": "EngineIoClientDotNet.Xamarin-MonoTouch", "NuGetDir": "monotouch10" },
-      { "Name": "EngineIoClientDotNet.Xamarin-Android", "NuGetDir": "monoandroid10" },
-      { "Name": "EngineIoClientDotNet.portable-wpa81+wp81", "NuGetDir": "portable-wpa81+wp81" },
-      { "Name": "EngineIoClientDotNet.portable-win81+wpa81", "NuGetDir": "portable-win81+wpa81", copyOnly: true }
+      { "Name": "EngineIoClientDotNet.net35", "NuGetDir": "net35", "SourceDir":"net35" },
+      { "Name": "EngineIoClientDotNet.net40", "NuGetDir": "net40", "SourceDir": "net40" },
+      { "Name": "EngineIoClientDotNet.net45", "NuGetDir": "net45", "SourceDir": "net45" },
+      { "Name": "EngineIoClientDotNet.windowsphone8", "NuGetDir": "windowsphone8", "SourceDir": "windowsphone8" },
+      { "Name": "EngineIoClientDotNet.netcore45", "NuGetDir": "netcore45", "SourceDir": "netcore45", copyOnly: true },
+      { "Name": "EngineIoClientDotNet.Xamarin-iOS", "NuGetDir": "xamarinios10", "SourceDir": "xamarinios10" },
+      { "Name": "EngineIoClientDotNet.Xamarin-MonoTouch", "NuGetDir": "monotouch10", "SourceDir": "monotouch10" },
+      { "Name": "EngineIoClientDotNet.Xamarin-Android", "NuGetDir": "monoandroid10", "SourceDir": "", copyOnly: true },
+      { "Name": "EngineIoClientDotNet.portable-wpa81+wp81", "NuGetDir": "portable-wpa81+wp81", "SourceDir": "" },
+      { "Name": "EngineIoClientDotNet.portable-win81+wpa81", "NuGetDir": "portable-win81+wpa81", "SourceDir": "portable-win81+wpa81", copyOnly: true }
     ];
 
   grunt.log.writeln(util.inspect(config));
