@@ -1,0 +1,15 @@
+﻿<Properties StartupItem="../EngineIoClientDotNet.Tests.Xamarin-iOS/EngineIoClientDotNet.Tests.Xamarin-iOS.TestApp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget.Tensor5S" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="../EngineIoClientDotNet.mono/Modules/LogManager.cs">
+    <Files>
+      <File FileName="../EngineIoClientDotNet.Tests.mono/ClientTests/Connection.cs" Line="1" Column="1" />
+      <File FileName="../EngineIoClientDotNet.Tests.mono/ClientTests/Connection_device.cs" Line="1" Column="1" />
+      <File FileName="../EngineIoClientDotNet.mono/Modules/LogManager.cs" Line="62" Column="41" />
+      <File FileName="../EngineIoClientDotNet.Tests.mono/ClientTests/ServerConnectionTest.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
