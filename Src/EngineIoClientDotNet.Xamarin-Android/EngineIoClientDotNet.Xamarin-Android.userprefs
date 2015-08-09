@@ -1,6 +1,13 @@
 ﻿<Properties StartupItem="..\EngineIoClientDotNet.Tests.Xamarin-Android\EngineIoClientDotNet.Tests.Xamarin-Android.TestApp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" PreferredExecutionTarget="Android.Xamarin_Android_API_21" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="..\EngineIoClientDotNet.Tests.Xamarin-Android\MainActivity.cs">
+    <Files>
+      <File FileName="c:\Development\quobject.visualstudio.com\EngineIoClientDotNet\Src\EngineIoClientDotNet.Tests.mono\ClientTests\BinaryPollingTest.cs" Line="10" Column="1" />
+      <File FileName="Properties\AssemblyInfo.cs" Line="7" Column="1" />
+      <File FileName="..\EngineIoClientDotNet.Tests.Xamarin-Android\packages.config" Line="14" Column="108" />
+      <File FileName="..\EngineIoClientDotNet.Tests.Xamarin-Android\MainActivity.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
