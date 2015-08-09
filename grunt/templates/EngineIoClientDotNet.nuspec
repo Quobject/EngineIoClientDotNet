@@ -28,7 +28,7 @@
         <dependency id="Newtonsoft.Json" version="7.0.1" />
       </group>
       <group targetFramework="windowsphone8">
-        <dependency id="WebSocket4Net" version="0.13.1" />
+        <dependency id="WebSocket4Net" version="0.12.0" />
         <dependency id="Newtonsoft.Json" version="7.0.1" />
       </group>
       <group targetFramework="monoandroid10">
