@@ -43,6 +43,10 @@
         <dependency id="WebSocket4Net" version="0.13.1" />
         <dependency id="Newtonsoft.Json" version="7.0.1" />
       </group>
+      <group targetFramework="portable-net45+win+wp80+MonoAndroid10+xamarinios10+MonoTouch10">
+        <dependency id="WebSocket4Net" version="0.13.1" />
+        <dependency id="Newtonsoft.Json" version="7.0.1" />
+      </group>
     </dependencies>
     <projectUrl>https://github.com/Quobject/EngineIoClientDotNet/</projectUrl>
     <description>This is the Engine.IO Client Library for C#.</description>
