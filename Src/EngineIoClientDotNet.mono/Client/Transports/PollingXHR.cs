@@ -35,13 +35,14 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 opts = new XHRRequest.RequestOptions();
             }
             opts.Uri = Uri();
-           
+
+            opts.ExtraHeaders = this.ExtraHeaders;
 
             XHRRequest req = new XHRRequest(opts);
 
+
             req.On(EVENT_REQUEST_HEADERS, new EventRequestHeadersListener(this)).
                 On(EVENT_RESPONSE_HEADERS, new EventResponseHeadersListener(this));
-
 
             return req;
         }
@@ -252,6 +253,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             private byte[] Data;
             private string CookieHeaderValue;
             private HttpWebRequest Xhr;
+            private Dictionary<string, string> ExtraHeaders;
 
             public XHRRequest(RequestOptions options)
             {
@@ -259,6 +261,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 Uri = options.Uri;
                 Data = options.Data;
                 CookieHeaderValue = options.CookieHeaderValue;
+                ExtraHeaders = options.ExtraHeaders;
             }
 
             public void Create()
@@ -273,6 +276,13 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                     if (CookieHeaderValue != null)
                     {
                         Xhr.Headers.Add("Cookie", CookieHeaderValue);                        
+                    }
+                    if (ExtraHeaders != null)
+                    {
+                        foreach (var header in ExtraHeaders)
+                        {
+                            Xhr.Headers.Add(header.Key, header.Value);
+                        }
                     }
                 }
                 catch (Exception e)
@@ -412,6 +422,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 public string Method;
                 public byte[] Data;
                 public string CookieHeaderValue;
+                public Dictionary<string, string> ExtraHeaders;
             }
         }
 

@@ -66,6 +66,8 @@ namespace Quobject.EngineIoClientDotNet.Client
         protected bool ForceJsonp = false;
         protected string Cookie;
 
+        protected Dictionary<string, string> ExtraHeaders;
+
 
         protected ReadyStateEnum ReadyState = ReadyStateEnum.CLOSED;
 
@@ -83,6 +85,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             this.ForceBase64 = options.ForceBase64;
             this.ForceJsonp = options.ForceJsonp;
             this.Cookie = options.GetCookiesAsString();
+            this.ExtraHeaders = options.ExtraHeaders;
         }
 
         protected Transport OnError(string message, Exception exception)
@@ -187,6 +190,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             public bool IgnoreServerCertificateValidation = false;
             internal Socket Socket;
             public Dictionary<string, string> Cookies = new Dictionary<string, string>();
+            public Dictionary<string, string> ExtraHeaders = new Dictionary<string, string>();
 
             public string GetCookiesAsString()
             {
