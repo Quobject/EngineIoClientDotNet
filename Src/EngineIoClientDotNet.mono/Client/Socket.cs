@@ -73,6 +73,8 @@ namespace Quobject.EngineIoClientDotNet.Client
         private bool ForceBase64 = false;
         private bool ForceJsonp = false;
 
+        public Dictionary<string, string> ExtraHeaders;
+
 
         //public static void SetupLog4Net()
         //{
@@ -163,6 +165,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             {
                 ServerCertificate.IgnoreServerCertificateValidation();
             }
+            ExtraHeaders = options.ExtraHeaders;
 
         }
 
@@ -214,6 +217,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             options.ForceBase64 = this.ForceBase64;
             options.ForceJsonp = this.ForceJsonp;
             options.Cookies = this.Cookies;
+            options.ExtraHeaders = this.ExtraHeaders;
 
             if (name == WebSocket.NAME)
             {
