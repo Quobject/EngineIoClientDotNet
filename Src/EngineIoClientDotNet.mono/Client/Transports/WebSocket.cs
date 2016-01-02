@@ -12,7 +12,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         private WebSocket4Net.WebSocket ws;
         private List<KeyValuePair<string, string>> Cookies;
-        private List<KeyValuePair<string, string>> ExtraHeaders;
+        private List<KeyValuePair<string, string>> MyExtraHeaders;
 
         public WebSocket(Options opts)
             : base(opts)
@@ -23,10 +23,10 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             {
                 Cookies.Add(new KeyValuePair<string, string>(cookie.Key, cookie.Value));
             }
-            ExtraHeaders = new List<KeyValuePair<string, string>>();
+            MyExtraHeaders = new List<KeyValuePair<string, string>>();
             foreach (var header in opts.ExtraHeaders)
             {
-                ExtraHeaders.Add(new KeyValuePair<string, string>(header.Key, header.Value));
+                MyExtraHeaders.Add(new KeyValuePair<string, string>(header.Key, header.Value));
             }
         }
 
@@ -35,7 +35,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("DoOpen uri =" + this.Uri());
 
-            ws = new WebSocket4Net.WebSocket(this.Uri(), "", Cookies, ExtraHeaders);
+            ws = new WebSocket4Net.WebSocket(this.Uri(), "", Cookies, MyExtraHeaders);
             ws.EnableAutoSendPing = false;
             if (ServerCertificate.Ignore)
             {

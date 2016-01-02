@@ -134,22 +134,31 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
         /// <returns>a reference to this object.</returns>
         public Emitter Off(string eventString)
         {
-            ImmutableList<IListener> retrievedValue;
-            if (!callbacks.TryGetValue(eventString, out retrievedValue))
+            try
             {
-                var log = LogManager.GetLogger(Global.CallerName());
-                log.Info(string.Format("Emitter.Off Could not remove {0}", eventString));
+
+                ImmutableList<IListener> retrievedValue;
+                if (!callbacks.TryGetValue(eventString, out retrievedValue))
+                {
+                    var log = LogManager.GetLogger(Global.CallerName());
+                    log.Info(string.Format("Emitter.Off Could not remove {0}", eventString));
+                }
+
+                if (retrievedValue != null)
+                {
+                    callbacks = callbacks.Remove(eventString);
+
+                    foreach (var listener in retrievedValue)
+                    {
+                        _onceCallbacks.Remove(listener);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                this.Off();
             }
 
-            if (retrievedValue != null)
-            {
-                callbacks = callbacks.Remove(eventString);
-
-                foreach (var listener in retrievedValue)
-                {
-                    _onceCallbacks.Remove(listener);
-                }
-            }           
             return this;
         }
 
@@ -162,21 +171,29 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
         /// <returns>a reference to this object.</returns>
         public Emitter Off(string eventString, IListener fn)
         {
-            if (this.callbacks.ContainsKey(eventString))
+            try
             {
-                ImmutableList<IListener> callbacksLocal = this.callbacks[eventString];
-                IListener offListener;
-                _onceCallbacks.TryGetValue(fn,out offListener);
-                _onceCallbacks = _onceCallbacks.Remove(fn);
-
-
-                if (callbacksLocal.Count > 0 && callbacksLocal.Contains(offListener ?? fn))
+                if (this.callbacks.ContainsKey(eventString))
                 {
-                    callbacksLocal = callbacksLocal.Remove(offListener ?? fn);
-                    this.callbacks = this.callbacks.Remove(eventString);
-                    this.callbacks = this.callbacks.Add(eventString, callbacksLocal);
+                    ImmutableList<IListener> callbacksLocal = this.callbacks[eventString];
+                    IListener offListener;
+                    _onceCallbacks.TryGetValue(fn, out offListener);
+                    _onceCallbacks = _onceCallbacks.Remove(fn);
+
+
+                    if (callbacksLocal.Count > 0 && callbacksLocal.Contains(offListener ?? fn))
+                    {
+                        callbacksLocal = callbacksLocal.Remove(offListener ?? fn);
+                        this.callbacks = this.callbacks.Remove(eventString);
+                        this.callbacks = this.callbacks.Add(eventString, callbacksLocal);
+                    }
                 }
+
+            }catch(Exception)
+            {
+                this.Off();
             }
+            
             return this;
         }
 

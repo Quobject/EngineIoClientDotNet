@@ -1070,21 +1070,23 @@ namespace Quobject.EngineIoClientDotNet.Client
 
                 EasyTimer.SetTimeout(() =>
                 {
-                    WriteBuffer = WriteBuffer.Clear();
-                    CallbackBuffer = CallbackBuffer.Clear();
+                    WriteBuffer = ImmutableList<Packet>.Empty;
+                    CallbackBuffer = ImmutableList<Action>.Empty;
                     PrevBufferLen = 0;
                 }, 1);
 
               
+                if (this.Transport != null)
+                {
+                    // stop event from firing again for transport
+                    this.Transport.Off(EVENT_CLOSE);
 
-                // stop event from firing again for transport
-                this.Transport.Off(EVENT_CLOSE);
+                    // ensure transport won't stay open
+                    this.Transport.Close();
 
-                // ensure transport won't stay open
-                this.Transport.Close();
-
-                // ignore further transport communication
-                this.Transport.Off();
+                    // ignore further transport communication
+                    this.Transport.Off();
+                }
 
                 // set ready state
                 this.ReadyState = ReadyStateEnum.CLOSED;

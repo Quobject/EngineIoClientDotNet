@@ -1,10 +1,4 @@
-﻿
-
-
-
-using System.Collections.Concurrent;
-using System.Text;
-using Quobject.EngineIoClientDotNet.Client.Transports;
+﻿using Quobject.EngineIoClientDotNet.Client.Transports;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
 using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Parser;
@@ -1047,21 +1041,24 @@ namespace Quobject.EngineIoClientDotNet.Client
 
                 EasyTimer.SetTimeout(() =>
                 {
-                    WriteBuffer.Clear();
-                    CallbackBuffer.Clear();
+                    WriteBuffer = new List<Packet>();
+                    CallbackBuffer = new List<Action>();
+
                     PrevBufferLen = 0;
                 }, 1);
 
-              
 
-                // stop event from firing again for transport
-                this.Transport.Off(EVENT_CLOSE);
+                if (this.Transport != null)
+                {
+                    // stop event from firing again for transport
+                    this.Transport.Off(EVENT_CLOSE);
 
-                // ensure transport won't stay open
-                this.Transport.Close();
+                    // ensure transport won't stay open
+                    this.Transport.Close();
 
-                // ignore further transport communication
-                this.Transport.Off();
+                    // ignore further transport communication
+                    this.Transport.Off();
+                }
 
                 // set ready state
                 this.ReadyState = ReadyStateEnum.CLOSED;

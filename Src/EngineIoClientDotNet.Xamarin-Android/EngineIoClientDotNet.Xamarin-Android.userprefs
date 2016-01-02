@@ -1,16 +1,17 @@
 ﻿<Properties StartupItem="..\EngineIoClientDotNet.Tests.Xamarin-Android\EngineIoClientDotNet.Tests.Xamarin-Android.TestApp.csproj">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" PreferredExecutionTarget="Android.Xamarin_Android_API_21" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="..\EngineIoClientDotNet.Tests.Xamarin-Android\MainActivity.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="c:\EngineIoClientDotNet\Src\EngineIoClientDotNet.mono\Client\HandshakeData.cs">
     <Files>
-      <File FileName="c:\Development\quobject.visualstudio.com\EngineIoClientDotNet\Src\EngineIoClientDotNet.Tests.mono\ClientTests\BinaryPollingTest.cs" Line="10" Column="1" />
-      <File FileName="Properties\AssemblyInfo.cs" Line="7" Column="1" />
-      <File FileName="..\EngineIoClientDotNet.Tests.Xamarin-Android\packages.config" Line="14" Column="108" />
-      <File FileName="..\EngineIoClientDotNet.Tests.Xamarin-Android\MainActivity.cs" Line="1" Column="1" />
+      <File FileName="..\EngineIoClientDotNet.mono\Client\Socket.cs" Line="1" Column="1" />
+      <File FileName="packages.config" Line="5" Column="12" />
+      <File FileName="c:\EngineIoClientDotNet\Src\EngineIoClientDotNet.mono\Client\HandshakeData.cs" Line="1" Column="7" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.ItemProperties.EngineIoClientDotNet.Tests.Xamarin-Android.TestApp AndroidDeviceId-Release="4df1851e59576fa3" />
+  <DisabledProjects>
+    <String>..\EngineIoClientDotNet.Tests.Xamarin-Android\EngineIoClientDotNet.Tests.Xamarin-Android.TestApp.csproj</String>
+  </DisabledProjects>
 </Properties>

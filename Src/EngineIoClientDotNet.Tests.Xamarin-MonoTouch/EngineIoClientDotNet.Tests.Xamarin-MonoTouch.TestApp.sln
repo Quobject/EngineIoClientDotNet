@@ -1,0 +1,13 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngineIoClientDotNet.Tests.Xamarin-MonoTouch.TestApp", "EngineIoClientDotNet.Tests.Xamarin-MonoTouch.TestApp.csproj", "{A67E3D93-2C9F-4E45-AEED-A6E7AA629D59}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngineIoClientDotNet.Xamarin-MonoTouch", "..\EngineIoClientDotNet.Xamarin-MonoTouch\EngineIoClientDotNet.Xamarin-MonoTouch.csproj", "{491F98D3-B919-452A-A604-F087061403A7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+	EndGlobalSection
+EndGlobal
