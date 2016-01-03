@@ -1,6 +1,27 @@
 ﻿<Properties StartupItem="EngineIoClientDotNet.Xamarin-MonoTouch.csproj">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="../EngineIoClientDotNet.mono/Client/Transports/WebSocket.cs">
+    <Files>
+      <File FileName="../EngineIoClientDotNet.mono/Client/HandshakeData.cs" Line="1" Column="7" />
+      <File FileName="packages.config" Line="5" Column="12" />
+      <File FileName="../EngineIoClientDotNet.mono/Client/Transports/WebSocket.cs" Line="5" Column="7" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="EngineIoClientDotNet.Xamarin-MonoTouch" expanded="True">
+            <Node name="EngineIoClientDotNet.Xamarin-MonoTouch" expanded="True" selected="True">
+              <Node name="References" expanded="True" />
+              <Node name="Packages" expanded="True" />
+              <Node name="Client" expanded="True">
+                <Node name="Transports" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

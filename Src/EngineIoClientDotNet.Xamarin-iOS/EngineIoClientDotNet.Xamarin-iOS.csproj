@@ -33,17 +33,15 @@
     <CodesignKey>iPhone Developer</CodesignKey>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>packages\Newtonsoft.Json.7.0.1\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="WebSocket4Net, Version=0.13.0.0, Culture=neutral, PublicKeyToken=eb4e154b696bf72a, processorArchitecture=MSIL">
-      <HintPath>packages\WebSocket4Net.0.13.1\lib\Xamarin.iOS10\WebSocket4Net.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Xamarin.iOS" />
+    <Reference Include="WebSocket4Net">
+      <HintPath>packages\WebSocket4Net.0.14.1\lib\Xamarin.iOS10\WebSocket4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>packages\Newtonsoft.Json.8.0.1\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Quobject.Collections.Immutable\AvlNode.cs">
@@ -76,11 +74,11 @@
     <Compile Include="..\Quobject.Collections.Immutable\ImmutableStack.cs">
       <Link>Quobject.Collections.Immutable\ImmutableStack.cs</Link>
     </Compile>
-    <Compile Include="..\EngineIoClientDotNet.mono\Client\EngineIOException.cs">
-      <Link>Client\EngineIOException.cs</Link>
-    </Compile>
     <Compile Include="..\EngineIoClientDotNet.mono\Client\HandshakeData.cs">
       <Link>Client\HandshakeData.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Client\EngineIOException.cs">
+      <Link>Client\EngineIOException.cs</Link>
     </Compile>
     <Compile Include="..\EngineIoClientDotNet.mono\Client\Socket.cs">
       <Link>Client\Socket.cs</Link>
