@@ -3,7 +3,7 @@
   <MonoDevelop.Ide.Workbench ActiveDocument="c:\EngineIoClientDotNet\Src\EngineIoClientDotNet.mono\Client\HandshakeData.cs">
     <Files>
       <File FileName="..\EngineIoClientDotNet.mono\Client\Socket.cs" Line="1" Column="1" />
-      <File FileName="packages.config" Line="5" Column="12" />
+      <File FileName="packages.config" Line="1" Column="1" />
       <File FileName="c:\EngineIoClientDotNet\Src\EngineIoClientDotNet.mono\Client\HandshakeData.cs" Line="1" Column="7" />
     </Files>
   </MonoDevelop.Ide.Workbench>
