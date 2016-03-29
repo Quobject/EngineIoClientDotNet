@@ -86,9 +86,12 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
         protected override void Write(List<Parser.Packet> packets)
         {
             Writable = false;
-            foreach (var packet in packets)
+            lock (packets)
             {
-                Parser.Parser.EncodePacket(packet, new WriteEncodeCallback(this));
+                foreach (var packet in packets)
+                {
+                    Parser.Parser.EncodePacket(packet, new WriteEncodeCallback(this));
+                }
             }
 
             // fake drain
