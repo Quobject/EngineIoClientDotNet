@@ -621,14 +621,17 @@ namespace Quobject.EngineIoClientDotNet.Client
             SendPacket(new Packet(type, data), fn);
         }
 
-        private async void SendPacket(Packet packet, Action fn)
+        private void SendPacket(Packet packet, Action fn)
         {
             if (fn == null)
             {
                 fn = () => { };
             }
 
-            await WaitForUpgrade();
+            if (Upgrading)
+            {
+                WaitForUpgrade().Wait();
+            }
 
             Emit(EVENT_PACKET_CREATE, packet);
             //var log = LogManager.GetLogger(Global.CallerName());
