@@ -403,9 +403,23 @@ namespace Quobject.EngineIoClientDotNet.Client
 
             lock (WriteBuffer)
             {
-                WriteBuffer.RemoveRange(0, PrevBufferLen);
+                try
+                {
+                    WriteBuffer.RemoveRange(0, PrevBufferLen);
+                }
+                catch (ArgumentException)
+                {
+                    //ignore
+                }
             }
-            CallbackBuffer.RemoveRange(0, PrevBufferLen);
+            try
+            {
+                CallbackBuffer.RemoveRange(0, PrevBufferLen);
+            }
+            catch (ArgumentException)
+            {
+                //ignore
+            }
 
 
             this.PrevBufferLen = 0;
@@ -426,7 +440,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             var log = LogManager.GetLogger(Global.CallerName());
 
             log.Info(string.Format("ReadyState={0} Transport.Writeable={1} Upgrading={2} WriteBuffer.Count={3}",ReadyState,Transport.Writable,Upgrading, WriteBuffer.Count));
-            if (ReadyState != ReadyStateEnum.CLOSED && this.Transport.Writable && !Upgrading && WriteBuffer.Count != 0)
+            if (ReadyState != ReadyStateEnum.CLOSED && this.Transport != null && this.Transport.Writable && !Upgrading && WriteBuffer.Count != 0)
             {
                 log.Info(string.Format("Flush {0} packets in socket", WriteBuffer.Count));
                 PrevBufferLen = WriteBuffer.Count;
@@ -1016,7 +1030,14 @@ namespace Quobject.EngineIoClientDotNet.Client
                 this.OnClose("forced close");
 
                 log.Info("socket closing - telling transport to close");
-                Transport.Close();
+                if (Transport != null)
+                {
+                    Transport.Close();
+                }
+                else
+                {
+                    log.Info("transport was null");
+                }
 
             }
             return this;
