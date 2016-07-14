@@ -401,7 +401,10 @@ namespace Quobject.EngineIoClientDotNet.Client
 
             //log.Info(string.Format("OnDrain2 PrevBufferLen={0} WriteBuffer.Count={1}", PrevBufferLen, WriteBuffer.Count));
 
-            WriteBuffer.RemoveRange(0, PrevBufferLen);
+            lock (WriteBuffer)
+            {
+                WriteBuffer.RemoveRange(0, PrevBufferLen);
+            }
             CallbackBuffer.RemoveRange(0, PrevBufferLen);
 
 
@@ -602,7 +605,10 @@ namespace Quobject.EngineIoClientDotNet.Client
             Emit(EVENT_PACKET_CREATE, packet);
             //var log = LogManager.GetLogger(Global.CallerName());
             //log.Info(string.Format("SendPacket WriteBuffer.Add(packet) packet ={0}",packet.Type));
-            WriteBuffer.Add(packet);
+            lock (WriteBuffer)
+            {
+                WriteBuffer.Add(packet);
+            }
             CallbackBuffer.Add(fn);
             Flush();
         }
@@ -1041,7 +1047,9 @@ namespace Quobject.EngineIoClientDotNet.Client
 
                 EasyTimer.SetTimeout(() =>
                 {
-                    WriteBuffer = new List<Packet>();
+					lock (WriteBuffer){
+						WriteBuffer.Clear();
+					}
                     CallbackBuffer = new List<Action>();
 
                     PrevBufferLen = 0;

@@ -628,6 +628,11 @@ namespace Quobject.EngineIoClientDotNet.Client
                 fn = () => { };
             }
 
+            if (Upgrading)
+            {
+                WaitForUpgrade().Wait();
+            }
+
             Emit(EVENT_PACKET_CREATE, packet);
             //var log = LogManager.GetLogger(Global.CallerName());
             //log.Info(string.Format("SendPacket WriteBuffer.Add(packet) packet ={0}",packet.Type));
@@ -636,6 +641,34 @@ namespace Quobject.EngineIoClientDotNet.Client
             Flush();
         }
 
+        private Task WaitForUpgrade()
+        {
+            var log = LogManager.GetLogger(Global.CallerName());
+
+            var tcs = new TaskCompletionSource<object>();
+            const int TIMEOUT = 1000;
+            var sw = new System.Diagnostics.Stopwatch();
+
+            try
+            {
+                sw.Start();
+                while (Upgrading)
+                {
+                    if (sw.ElapsedMilliseconds > TIMEOUT)
+                    {
+                        log.Info("Wait for upgrade timeout");
+                        break;
+                    }
+                }
+                tcs.SetResult(null);
+            }
+            finally
+            {
+                sw.Stop();
+            }
+            
+            return tcs.Task;
+        }
 
         private void OnOpen()
         {
