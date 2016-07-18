@@ -838,8 +838,8 @@ namespace Quobject.EngineIoClientDotNet.Client
                                 {
                                     _onTransportOpenListener.Parameters.Transport[0].Send(packetList);
 
-                                    _onTransportOpenListener.Parameters.Socket.Flush();
                                     _onTransportOpenListener.Parameters.Socket.Upgrading = false;
+                                    _onTransportOpenListener.Parameters.Socket.Flush();
 
                                     _onTransportOpenListener.Parameters.Socket.Emit(EVENT_UPGRADE,
                                         _onTransportOpenListener.Parameters.Transport[0]);
