@@ -27,7 +27,9 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             log.Info("Start");
             _manualResetEvent = new ManualResetEvent(false);
 
-            socket = new Socket(CreateOptions());
+            var options = CreateOptions();
+
+            socket = new Socket(options);
             socket.On(Socket.EVENT_OPEN, new TestListener());
             socket.On(Socket.EVENT_MESSAGE, new MessageListener(socket, this));
             socket.Open();
