@@ -39,7 +39,13 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             ws.EnableAutoSendPing = false;
             if (ServerCertificate.Ignore)
             {
-                ws.AllowUnstrustedCertificate = true;                            
+                var security = ws.Security;
+
+                if (security != null)
+                {
+                    security.AllowUnstrustedCertificate = true;
+                    security.AllowNameMismatchCertificate = true;
+                }
             }
             ws.Opened += ws_Opened;
             ws.Closed += ws_Closed;
