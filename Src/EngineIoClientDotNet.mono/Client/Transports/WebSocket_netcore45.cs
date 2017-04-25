@@ -76,10 +76,19 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             try
             {
+                // Instead of using args.GetDataReader, using args.GetDataStream. and create DataReader ourself.
+                // Because if there's no length to read then using GetDataReader would cause exception
+                var dataReader = new DataReader(args.GetDataStream());
+
                 if (args.MessageType == SocketMessageType.Utf8)
                 {
-                    using (var dataReader = args.GetDataReader())
+                    using (dataReader)
                     {
+                        // if there's no length to read then do nothing. preventing exception
+                        if (dataReader.UnconsumedBufferLength == 0)
+                        {
+                            return;
+                        }
 
                         // The encoding and byte order need to match the settings of the writer 
                         // we previously used.
@@ -92,8 +101,14 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                     }
                 }else if  (args.MessageType == SocketMessageType.Binary)
                 {
-                    using (var dataReader = args.GetDataReader())
+                    using (dataReader)
                     {
+                        // if there's no length to read then do nothing. preventing exception
+                        if (dataReader.UnconsumedBufferLength == 0)
+                        {
+                            return;
+                        }
+
                         dataReader.ByteOrder = Windows.Storage.Streams.ByteOrder.LittleEndian;
                         byte[] bytes = new byte[dataReader.UnconsumedBufferLength];
                         dataReader.ReadBytes(bytes);
