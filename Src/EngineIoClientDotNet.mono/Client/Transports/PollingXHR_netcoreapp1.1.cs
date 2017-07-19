@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Text;
 
 namespace Quobject.EngineIoClientDotNet.Client.Transports
 {
@@ -254,6 +255,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             public void Create()
             {
                 var httpMethod = Method == "POST" ? HttpMethod.Post : HttpMethod.Get;
+                var dataToSend = Data == null ? Encoding.UTF8.GetBytes("") : Data;
 
                 Task.Run(async() =>
                 {
@@ -268,7 +270,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
                             using (var client = new HttpClient(httpClientHandler))
                             {
-                                using (var httpContent = new ByteArrayContent(Data))
+                                using (var httpContent = new ByteArrayContent(dataToSend))
                                 {
                                     if (Method == "POST")
                                     {
@@ -280,7 +282,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                                         Content = httpContent
                                     };
 
-                                    if (CookieHeaderValue != null)
+                                    if (!string.IsNullOrEmpty(CookieHeaderValue))
                                     {
                                         httpContent.Headers.Add(@"Cookie", CookieHeaderValue);
                                     }
