@@ -2,41 +2,41 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>EngineIoClientDotNet</id>
-    <version>@VERSION@-beta2</version>
+    <version>@VERSION@</version>
     <title>EngineIoClientDotNet</title>
     <authors>Matthias Ludwig</authors>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <dependencies>	  
       <group targetFramework="net35">
-        <dependency id="WebSocket4Net" version="0.15.0-beta6" />
-        <dependency id="SuperSocket.ClientEngine.Core" version="0.8.0.6" />
-        <dependency id="Newtonsoft.Json" version="10.0.1" />
+        <dependency id="WebSocket4Net" version="0.15.0-beta9" />
+        <dependency id="SuperSocket.ClientEngine.Core" version="0.8.0.12" />
+        <dependency id="Newtonsoft.Json" version="9.0.1" />
         <dependency id="System.Threading.Tasks.Unofficial" version="3.1.0" />
       </group>
       <group targetFramework="net40">
-        <dependency id="WebSocket4Net" version="0.15.0-beta6" />
-        <dependency id="SuperSocket.ClientEngine.Core" version="0.8.0.6" />
-        <dependency id="Newtonsoft.Json" version="10.0.1" />
+        <dependency id="WebSocket4Net" version="0.15.0-beta9" />
+        <dependency id="SuperSocket.ClientEngine.Core" version="0.8.0.12" />
+        <dependency id="Newtonsoft.Json" version="9.0.1" />
       </group>
       <group targetFramework="net45">
-        <dependency id="WebSocket4Net" version="0.15.0-beta6" />
-        <dependency id="SuperSocket.ClientEngine.Core" version="0.8.0.6" />
-        <dependency id="Newtonsoft.Json" version="10.0.1" />
+        <dependency id="WebSocket4Net" version="0.15.0-beta9" />
+        <dependency id="SuperSocket.ClientEngine.Core" version="0.8.0.12" />
+        <dependency id="Newtonsoft.Json" version="9.0.1" />
       </group>
       <group targetFramework="windowsphone8">
-        <dependency id="WebSocket4Net" version="0.15.0-beta6" />
-        <dependency id="SuperSocket.ClientEngine.Core" version="0.8.0.6" />
-        <dependency id="Newtonsoft.Json" version="10.0.1" />
+        <dependency id="WebSocket4Net" version="0.15.0-beta9" />
+        <dependency id="SuperSocket.ClientEngine.Core" version="0.8.0.12" />
+        <dependency id="Newtonsoft.Json" version="9.0.1" />
       </group>
       <group targetFramework="netcore45">
-        <dependency id="Newtonsoft.Json" version="10.0.1" />
+        <dependency id="Newtonsoft.Json" version="9.0.1" />
       </group>
       <group targetFramework="portable-win81+wpa81">
-        <dependency id="Newtonsoft.Json" version="10.0.1" />
+        <dependency id="Newtonsoft.Json" version="9.0.1" />
       </group>
       <group targetFramework="portable-wpa81+wp81">
-        <dependency id="Newtonsoft.Json" version="10.0.1" />
+        <dependency id="Newtonsoft.Json" version="9.0.1" />
       </group>
     </dependencies>
     <projectUrl>https://github.com/Quobject/EngineIoClientDotNet/</projectUrl>

@@ -35,8 +35,10 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("DoOpen uri =" + this.Uri());
 
-            ws = new WebSocket4Net.WebSocket(this.Uri(), "", Cookies, MyExtraHeaders);
-            ws.EnableAutoSendPing = false;
+            ws = new WebSocket4Net.WebSocket(this.Uri(), "", Cookies, MyExtraHeaders)
+            {
+                EnableAutoSendPing = false
+            };
             if (ServerCertificate.Ignore)
             {
                 var security = ws.Security;
@@ -52,7 +54,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             ws.MessageReceived += ws_MessageReceived;
             ws.DataReceived += ws_DataReceived;
             ws.Error += ws_Error;
-            ws.Open();                            
+            ws.Open();
         }
 
         void ws_DataReceived(object sender, DataReceivedEventArgs e)
@@ -93,7 +95,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             this.OnError("websocket error", e.Exception);
         }
 
-        protected override void Write(Quobject.Collections.Immutable.ImmutableList<Parser.Packet> packets)
+        protected override void Write(System.Collections.Immutable.ImmutableList<Parser.Packet> packets)
         {
             Writable = false;
             foreach (var packet in packets)
@@ -171,15 +173,15 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
         {
             Dictionary<string, string> query = null;
             query = this.Query == null ? new Dictionary<string, string>() : new Dictionary<string, string>(this.Query);
-            string schema = this.Secure ? "wss" : "ws";
-            string portString = "";
+            var schema = this.Secure ? "wss" : "ws";
+            var portString = "";
 
             if (this.TimestampRequests)
             {
                 query.Add(this.TimestampParam, DateTime.Now.Ticks.ToString() + "-" + Transport.Timestamps++);
             }
 
-            string _query = ParseQS.Encode(query);
+            var _query = ParseQS.Encode(query);
 
             if (this.Port > 0 && (("wss" == schema && this.Port != 443)
                     || ("ws" == schema && this.Port != 80)))

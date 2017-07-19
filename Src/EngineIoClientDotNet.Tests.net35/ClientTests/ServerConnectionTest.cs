@@ -1,11 +1,8 @@
-﻿
-
-using System.Collections.Generic;
-using Quobject.EngineIoClientDotNet.Client;
+﻿using Quobject.EngineIoClientDotNet.Client;
 using Quobject.EngineIoClientDotNet.Client.Transports;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
 using Quobject.EngineIoClientDotNet.Modules;
-using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Threading;
 using Xunit;
 
@@ -13,13 +10,11 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 {
     public class ServerConnectionTest : Connection
     {
-
         private ManualResetEvent _manualResetEvent = null;
 
         [Fact]
         public void OpenAndClose()
         {
-
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
             _manualResetEvent = new ManualResetEvent(false);
@@ -32,7 +27,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                 log.Info("EVENT_OPEN");
                 events.Enqueue(Socket.EVENT_OPEN);
                 socket.Close();
-
             });
             socket.On(Socket.EVENT_CLOSE, () =>
             {
@@ -43,7 +37,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             socket.Open();
             _manualResetEvent.WaitOne();
-            socket.Close();	
+            socket.Close();
             string result;
             result = events.Dequeue();
             Assert.Equal(Socket.EVENT_OPEN, result);
@@ -51,11 +45,9 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             Assert.Equal(Socket.EVENT_CLOSE, result);
         }
 
-
         [Fact]
         public void Messages()
         {
-
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
             _manualResetEvent = new ManualResetEvent(false);
@@ -70,7 +62,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             });
             socket.On(Socket.EVENT_MESSAGE, (d) =>
             {
-                var data = (string) d;
+                var data = (string)d;
                 log.Info("EVENT_MESSAGE data = " + data);
                 events.Enqueue(data);
                 if (events.Count > 1)
@@ -92,7 +84,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void Handshake()
         {
-
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
             _manualResetEvent = new ManualResetEvent(false);
@@ -119,7 +110,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             Assert.True(handshake_data.PingTimeout > 0);
         }
 
-
         public class TestHandshakeListener : IListener
         {
             public HandshakeData HandshakeData;
@@ -130,11 +120,8 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                 this.serverConnectionTest = serverConnectionTest;
             }
 
-
-
             public void Call(params object[] args)
             {
-    
                 var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
                 log.Info(string.Format("open args[0]={0} args.Length={1}", args[0], args.Length));
                 HandshakeData = args[0] as HandshakeData;
@@ -150,14 +137,11 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             {
                 return 0;
             }
-
         }
 
         [Fact]
         public void Handshake2()
         {
-
-
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
             _manualResetEvent = new ManualResetEvent(false);
@@ -176,11 +160,9 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             Assert.True(testListener.HandshakeData.PingTimeout > 0);
         }
 
-
         [Fact]
         public void Upgrade()
         {
-
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
             _manualResetEvent = new ManualResetEvent(false);
@@ -211,15 +193,12 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             test = events.Dequeue();
             Assert.NotNull(test);
-            Assert.IsAssignableFrom<Transport>(test);    
+            Assert.IsAssignableFrom<Transport>(test);
         }
-
-
 
         [Fact]
         public void RememberWebsocket()
         {
-
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
             _manualResetEvent = new ManualResetEvent(false);
@@ -237,7 +216,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             socket1.On(Socket.EVENT_UPGRADE, (data) =>
             {
                 log.Info(Socket.EVENT_UPGRADE + string.Format(" data = {0}", data));
-                var transport = (Transport) data;
+                var transport = (Transport)data;
                 socket1.Close();
                 if (WebSocket.NAME == transport.Name)
                 {
@@ -257,12 +236,9 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             Assert.Equal(WebSocket.NAME, socket2TransportName);
         }
 
-
-
         [Fact]
         public void NotRememberWebsocket()
         {
-
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
             _manualResetEvent = new ManualResetEvent(false);
@@ -280,7 +256,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             socket1.On(Socket.EVENT_UPGRADE, (data) =>
             {
                 log.Info(Socket.EVENT_UPGRADE + string.Format(" data = {0}", data));
-                var transport = (Transport) data;
+                var transport = (Transport)data;
                 if (WebSocket.NAME == transport.Name)
                 {
                     socket1.Close();
@@ -304,11 +280,9 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             Assert.Equal(Polling.NAME, socket2TransportName);
         }
 
-
         [Fact]
         public void Cookie()
         {
-
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
             _manualResetEvent = new ManualResetEvent(false);
@@ -347,7 +321,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void UpgradeCookie()
         {
-
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
             _manualResetEvent = new ManualResetEvent(false);
@@ -368,12 +341,11 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             {
                 log.Info(Socket.EVENT_UPGRADE + string.Format(" data = {0}", data));
                 events.Enqueue(data);
-                socket.Send("cookie");                
+                socket.Send("cookie");
             });
 
             socket.On(Socket.EVENT_MESSAGE, (d) =>
             {
-                
                 if (events.Count > 1)
                 {
                     var data = (string)d;
@@ -397,8 +369,5 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             test = events.Dequeue();
             Assert.Equal("got cookie", test);
         }
- 
     }
-
 }
-

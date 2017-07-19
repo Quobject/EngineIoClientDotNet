@@ -1,13 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngineIoClientDotNet.net35", "EngineIoClientDotNet.net35.csproj", "{568D67D0-3253-4601-9B04-7730A9EC5CC0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngineIoClientDotNet.Tests.net35", "..\EngineIoClientDotNet.Tests.net35\EngineIoClientDotNet.Tests.net35.csproj", "{35791CEC-7945-4047-AB25-B252851D5131}"
-EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "grunt(1)", "http://localhost:8528", "{7F5CBDD0-5537-4B8B-AD7E-9F7E88600084}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "grunt(2)", "http://localhost:8528", "{7F5CBDD0-5537-4B8B-AD7E-9F7E88600084}"
 	ProjectSection(WebsiteProperties) = preProject
 		UseIISExpress = "true"
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
@@ -28,7 +26,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "grunt(1)", "http://localhos
 		SlnRelativePath = "..\..\grunt\"
 	EndProjectSection
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TestServer(1)", "http://localhost:48775", "{7E50397C-1221-49A9-A5F1-8254AC4BFBA4}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TestServer(2)", "http://localhost:48775", "{7E50397C-1221-49A9-A5F1-8254AC4BFBA4}"
 	ProjectSection(WebsiteProperties) = preProject
 		UseIISExpress = "true"
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
@@ -49,6 +47,8 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TestServer(1)", "http://loc
 		SlnRelativePath = "..\..\TestServer\"
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngineIoClientDotNet.Tests.net35", "..\EngineIoClientDotNet.Tests.net35\EngineIoClientDotNet.Tests.net35.csproj", "{BA788BBE-0FE8-4C2F-8A02-457A5E9E2703}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,10 +59,6 @@ Global
 		{568D67D0-3253-4601-9B04-7730A9EC5CC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{568D67D0-3253-4601-9B04-7730A9EC5CC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{568D67D0-3253-4601-9B04-7730A9EC5CC0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{35791CEC-7945-4047-AB25-B252851D5131}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{35791CEC-7945-4047-AB25-B252851D5131}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{35791CEC-7945-4047-AB25-B252851D5131}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{35791CEC-7945-4047-AB25-B252851D5131}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7F5CBDD0-5537-4B8B-AD7E-9F7E88600084}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7F5CBDD0-5537-4B8B-AD7E-9F7E88600084}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F5CBDD0-5537-4B8B-AD7E-9F7E88600084}.Release|Any CPU.ActiveCfg = Debug|Any CPU
@@ -71,6 +67,10 @@ Global
 		{7E50397C-1221-49A9-A5F1-8254AC4BFBA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E50397C-1221-49A9-A5F1-8254AC4BFBA4}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{7E50397C-1221-49A9-A5F1-8254AC4BFBA4}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{BA788BBE-0FE8-4C2F-8A02-457A5E9E2703}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA788BBE-0FE8-4C2F-8A02-457A5E9E2703}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA788BBE-0FE8-4C2F-8A02-457A5E9E2703}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA788BBE-0FE8-4C2F-8A02-457A5E9E2703}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

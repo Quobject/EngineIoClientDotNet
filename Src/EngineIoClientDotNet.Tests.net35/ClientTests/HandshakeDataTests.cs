@@ -21,7 +21,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             Assert.Equal(12, handshakeData.PingInterval);
             Assert.Equal(23, handshakeData.PingTimeout);
-
         }
     }
 }

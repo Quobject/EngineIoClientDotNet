@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>    
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\BinaryPollingTest.cs" Link="ClientTests\BinaryPollingTest.cs" />
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\BinaryWebSocketTest.cs" Link="ClientTests\BinaryWebSocketTest.cs" />
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\Connection.cs" Link="ClientTests\Connection.cs" />
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\ConnectionConstants.cs" Link="ClientTests\ConnectionConstants.cs" />
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\ConnectionTest.cs" Link="ClientTests\ConnectionTest.cs" />
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\HandshakeDataTests.cs" Link="ClientTests\HandshakeDataTests.cs" />
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\ServerConnectionTest.cs" Link="ClientTests\ServerConnectionTest.cs" />
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\SocketTest.cs" Link="ClientTests\SocketTest.cs" />
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\SSLServerConnectionTest.cs" Link="ClientTests\SSLServerConnectionTest.cs" />
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\TransportTest.cs" Link="ClientTests\TransportTest.cs" />
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\UsageTest.cs" Link="ClientTests\UsageTest.cs" />
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ComponentEmitterTests\EmitterTests.cs" Link="ComponentEmitterTests\EmitterTests.cs" />
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ModulesTests\ParseQSTests.cs" Link="ModulesTests\ParseQSTests.cs" />
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ModulesTests\UTF8Tests.cs" Link="ModulesTests\UTF8Tests.cs" />
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ParserTests\DecodeTests.cs" Link="ParserTests\DecodeTests.cs" />
+    <Compile Include="..\EngineIoClientDotNet.Tests.mono\ParserTests\TestsParser.cs" Link="ParserTests\TestsParser.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
+    <PackageReference Include="System.Collections.Immutable" Version="1.3.1" />
+    <PackageReference Include="xunit" Version="2.2.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ModulesTests\" />
+    <Folder Include="ThreadTests\" />
+    <Folder Include="ParserTests\" />
+    <Folder Include="ComponentEmitterTests\" />
+    <Folder Include="ClientTests\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EngineIoClientDotNet.netcoreapp1.1\EngineIoClientDotNet.netcoreapp1.1.csproj" />
+  </ItemGroup>
+
+</Project>

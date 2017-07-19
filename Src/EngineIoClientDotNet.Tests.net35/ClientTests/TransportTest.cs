@@ -1,6 +1,4 @@
-﻿
-
-using Quobject.EngineIoClientDotNet.Client;
+﻿using Quobject.EngineIoClientDotNet.Client;
 using Quobject.EngineIoClientDotNet.Client.Transports;
 using Quobject.EngineIoClientDotNet.Modules;
 using System;
@@ -17,7 +15,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void Constructors()
         {
-
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
@@ -33,7 +30,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void Uri()
         {
-
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
@@ -41,7 +37,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             options.Path = "/engine.io";
             options.Hostname = this.CreateOptions().Hostname;
             options.Secure = false;
-            options.Query = new Dictionary<string, string> {{"sid", "test"}};
+            options.Query = new Dictionary<string, string> { { "sid", "test" } };
             options.TimestampRequests = false;
             var polling = new Polling(options);
             var expected = string.Format("http://{0}/engine.io?sid=test&b64=1", options.Hostname);
@@ -51,53 +47,44 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void UriWithDefaultPort()
         {
-
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
-
 
             var options = new Transport.Options();
             options.Path = "/engine.io";
             options.Hostname = this.CreateOptions().Hostname;
             options.Secure = false;
-            options.Query = new Dictionary<string, string> {{"sid", "test"}};
+            options.Query = new Dictionary<string, string> { { "sid", "test" } };
             options.TimestampRequests = false;
             options.Port = 80;
             var polling = new Polling(options);
             //Assert.Contains("http://localhost/engine.io?sid=test&b64=1", polling.Uri());
             var expected = string.Format("http://{0}/engine.io?sid=test&b64=1", options.Hostname);
             Assert.Contains(expected, polling.Uri());
-
-
         }
 
         [Fact]
         public void UriWithPort()
         {
-
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
-
 
             var options = new Transport.Options();
             options.Path = "/engine.io";
             options.Hostname = this.CreateOptions().Hostname;
             options.Secure = false;
-            options.Query = new Dictionary<string, string> {{"sid", "test"}};
+            options.Query = new Dictionary<string, string> { { "sid", "test" } };
             options.TimestampRequests = false;
             options.Port = 3000;
             var polling = new Polling(options);
             //Assert.Contains("http://localhost:3000/engine.io?sid=test&b64=1", polling.Uri());
             var expected = string.Format("http://{0}:{1}/engine.io?sid=test&b64=1", options.Hostname, options.Port);
             Assert.Contains(expected, polling.Uri());
-
         }
-
 
         [Fact]
         public void HttpsUriWithDefaultPort()
         {
-
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
@@ -105,7 +92,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             options.Path = "/engine.io";
             options.Hostname = this.CreateOptions().Hostname;
             options.Secure = true;
-            options.Query = new Dictionary<string, string> {{"sid", "test"}};
+            options.Query = new Dictionary<string, string> { { "sid", "test" } };
             options.TimestampRequests = false;
             options.Port = 443;
             var polling = new Polling(options);
@@ -114,11 +101,9 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             Assert.Contains(expected, polling.Uri());
         }
 
-
         [Fact]
         public void TimestampedUri()
         {
-
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
@@ -126,7 +111,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             options.Path = "/engine.io";
             options.Hostname = "test";
             options.Secure = false;
-            options.Query = new Dictionary<string, string> {{"sid", "test"}};
+            options.Query = new Dictionary<string, string> { { "sid", "test" } };
             options.TimestampRequests = true;
             options.TimestampParam = "t";
             var polling = new Polling(options);
@@ -139,11 +124,9 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             Assert.True(m.Success);
         }
 
-
         [Fact]
         public void WsUri()
         {
-
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
@@ -151,7 +134,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             options.Path = "/engine.io";
             options.Hostname = "test";
             options.Secure = false;
-            options.Query = new Dictionary<string, string> {{"transport", "websocket"}};
+            options.Query = new Dictionary<string, string> { { "transport", "websocket" } };
             options.TimestampRequests = false;
             var ws = new WebSocket(options);
             Assert.Contains("ws://test/engine.io?transport=websocket", ws.Uri());
@@ -160,7 +143,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void WssUri()
         {
-
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
@@ -168,26 +150,23 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             options.Path = "/engine.io";
             options.Hostname = "test";
             options.Secure = true;
-            options.Query = new Dictionary<string, string> {{"transport", "websocket"}};
+            options.Query = new Dictionary<string, string> { { "transport", "websocket" } };
             options.TimestampRequests = false;
             var ws = new WebSocket(options);
             Assert.Contains("wss://test/engine.io?transport=websocket", ws.Uri());
         }
 
-
         [Fact]
         public void WsTimestampedUri()
         {
-
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
-
 
             var options = new Transport.Options();
             options.Path = "/engine.io";
             options.Hostname = "test";
             options.Secure = false;
-            options.Query = new Dictionary<string, string> {{"sid", "test"}};
+            options.Query = new Dictionary<string, string> { { "sid", "test" } };
             options.TimestampRequests = true;
             options.TimestampParam = "woot";
             var ws = new WebSocket(options);
@@ -199,6 +178,5 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             Match m = r.Match(test);
             Assert.True(m.Success);
         }
-
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using Quobject.Collections.Immutable;
+using System.Collections.Immutable;
 using Quobject.EngineIoClientDotNet.Client.Transports;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
 using Quobject.EngineIoClientDotNet.Modules;
@@ -203,21 +203,23 @@ namespace Quobject.EngineIoClientDotNet.Client
             {
                 query.Add("sid", Id);
             }
-            var options = new Transport.Options();
-            options.Hostname = Hostname;
-            options.Port = Port;
-            options.Secure = Secure;
-            options.Path = Path;
-            options.Query = query;
-            options.TimestampRequests = TimestampRequests;
-            options.TimestampParam = TimestampParam;
-            options.PolicyPort = PolicyPort;
-            options.Socket = this;
-            options.Agent = this.Agent;
-            options.ForceBase64 = this.ForceBase64;
-            options.ForceJsonp = this.ForceJsonp;
-            options.Cookies = this.Cookies;
-            options.ExtraHeaders = this.ExtraHeaders;
+            var options = new Transport.Options
+            {
+                Hostname = Hostname,
+                Port = Port,
+                Secure = Secure,
+                Path = Path,
+                Query = query,
+                TimestampRequests = TimestampRequests,
+                TimestampParam = TimestampParam,
+                PolicyPort = PolicyPort,
+                Socket = this,
+                Agent = this.Agent,
+                ForceBase64 = this.ForceBase64,
+                ForceJsonp = this.ForceJsonp,
+                Cookies = this.Cookies,
+                ExtraHeaders = this.ExtraHeaders
+            };
 
             if (name == WebSocket.NAME)
             {
@@ -480,8 +482,10 @@ namespace Quobject.EngineIoClientDotNet.Client
                 }
                 else if (packet.Type == Packet.ERROR)
                 {
-                    var err = new EngineIOException("server error");
-                    err.code = packet.Data;
+                    var err = new EngineIOException("server error")
+                    {
+                        code = packet.Data
+                    };
                     this.Emit(EVENT_ERROR, err);
                 }
                 else if (packet.Type == Packet.MESSAGE)
@@ -500,7 +504,7 @@ namespace Quobject.EngineIoClientDotNet.Client
         private void OnHandshake(HandshakeData handshakeData)
         {
             var log = LogManager.GetLogger(Global.CallerName());
-            log.Info("OnHandshake");
+            log.Info(nameof(OnHandshake));
             Emit(EVENT_HANDSHAKE, handshakeData);
             Id = handshakeData.Sid;
             Transport.Query.Add("sid", handshakeData.Sid);
@@ -832,7 +836,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
                                 _onTransportOpenListener.Parameters.Socket.SetTransport(
                                     _onTransportOpenListener.Parameters.Transport[0]);
-                                ImmutableList<Packet> packetList =
+                                var packetList =
                                     ImmutableList<Packet>.Empty.Add(new Packet(Packet.UPGRADE));
                                 try
                                 {
@@ -944,7 +948,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
             void IListener.Call(params object[] args)
             {
-                object err = args[0];
+                var err = args[0];
                 EngineIOException error;
                 if (err is Exception)
                 {

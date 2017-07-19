@@ -278,10 +278,10 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
 
             emitter.Once("tobi", listener5);
             emitter.Emit("tobi");
-            Assert.Equal(true, called[0]);
+            Assert.True(called[0]);
             called[0] = false;
             emitter.Emit("tobi");
-            Assert.Equal(false, called[0]);
+            Assert.False(called[0]);
         }
 
         [Fact]
@@ -377,11 +377,11 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
 
             var emitter = new Emitter();
             var calls = new List<object>();
-            Assert.Equal(false, emitter.HasListeners("foo"));
+            Assert.False(emitter.HasListeners("foo"));
 
             var listener3 = new TestListener3(calls);
             emitter.On("foo", listener3);
-            Assert.Equal(true, emitter.HasListeners("foo"));
+            Assert.True(emitter.HasListeners("foo"));
         }
 
         [Fact]
@@ -392,7 +392,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
             log.Info("Start");
 
             var emitter = new Emitter();
-            Assert.Equal(false, emitter.HasListeners("foo"));
+            Assert.False(emitter.HasListeners("foo"));
         }
 
     }

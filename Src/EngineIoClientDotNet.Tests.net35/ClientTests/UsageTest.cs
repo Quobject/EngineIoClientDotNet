@@ -1,6 +1,4 @@
-﻿
-
-using Quobject.EngineIoClientDotNet.Client;
+﻿using Quobject.EngineIoClientDotNet.Client;
 using Quobject.EngineIoClientDotNet.Modules;
 using System;
 using Xunit;
@@ -9,15 +7,11 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 {
     public class UsageTest : Connection
     {
-
-
         [Fact]
         public void Usage1()
         {
-
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
-
 
             var options = CreateOptions();
             var socket = new Socket(options);
@@ -37,10 +31,8 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void Usage2()
         {
-
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
-
 
             var options = CreateOptions();
             var socket = new Socket(options);
@@ -53,13 +45,8 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             });
             socket.Open();
 
-
             System.Threading.Thread.Sleep(TimeSpan.FromSeconds(2));
             socket.Close();
-
-            
         }
-
-
     }
 }

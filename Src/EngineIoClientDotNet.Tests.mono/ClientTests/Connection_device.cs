@@ -17,14 +17,14 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
         protected Socket.Options CreateOptions()
         {            
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+
 
 
             var config = ConfigBase.Load();
             var options = new Socket.Options();
             options.Port = config.server.port;
             options.Hostname = config.server.hostname;
-            log.Info("Please add to your hosts file: 127.0.0.1 " + options.Hostname);
+            //log.Info("Please add to your hosts file: 127.0.0.1 " + options.Hostname);
 
             return options;
         }
@@ -32,13 +32,13 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
         protected Socket.Options CreateOptionsSecure()
         {            
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
+
 
             var config = ConfigBase.Load();
             var options = new Socket.Options();
             options.Port = config.server.ssl_port;
             options.Hostname = config.server.hostname;
-            log.Info("Please add to your hosts file: 127.0.0.1 " + options.Hostname);
+            //log.Info("Please add to your hosts file: 127.0.0.1 " + options.Hostname);
             options.Secure = true;
             options.IgnoreServerCertificateValidation = true;
             return options;

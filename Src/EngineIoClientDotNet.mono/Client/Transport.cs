@@ -1,6 +1,6 @@
 ﻿
 using System.Text;
-using Quobject.Collections.Immutable;
+using System.Collections.Immutable;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
 using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Parser;

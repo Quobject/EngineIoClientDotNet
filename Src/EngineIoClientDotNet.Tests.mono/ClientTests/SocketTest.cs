@@ -1,8 +1,5 @@
-﻿
-
-using Quobject.Collections.Immutable;
-using Quobject.EngineIoClientDotNet.Client;
-using Quobject.EngineIoClientDotNet.Modules;
+﻿using Quobject.EngineIoClientDotNet.Client;
+using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -16,10 +13,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void FilterUpgrades()
         {
-
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
-            log.Info("Start");
-
             var options = CreateOptions();
             options.Transports = ImmutableList<string>.Empty.Add("polling");
 
@@ -34,10 +27,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public async Task SocketClosing()
         {
-
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
-            log.Info("Start");
-
             var closed = false;
             var error = false;
 
@@ -46,22 +35,18 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             socket = new Socket("ws://0.0.0.0:8080", options);
             socket.On(Socket.EVENT_OPEN, () =>
             {
-                log.Info("EVENT_OPEN");
                 //socket.Send("test send");
-
             });
             socket.On(Socket.EVENT_CLOSE, () =>
             {
-                log.Info("EVENT_CLOSE = ");
+                //log.Info("EVENT_CLOSE = ");
                 closed = true;
-
             });
 
             socket.Once(Socket.EVENT_ERROR, () =>
             {
-                log.Info("EVENT_ERROR = ");
+                //log.Info("EVENT_ERROR = ");
                 error = true;
-
             });
 
             socket.Open();
@@ -75,19 +60,15 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         public void SocketOptionCookies()
         {
             var options = new Socket.Options();
-            options.Cookies.Add("foo","bar");
+            options.Cookies.Add("foo", "bar");
             Assert.Equal("foo=bar", options.GetCookiesAsString());
-            options.Cookies.Add("name2","value2");
+            options.Cookies.Add("name2", "value2");
             Assert.Equal("foo=bar; name2=value2", options.GetCookiesAsString());
         }
 
         [Fact]
         public void DefaultProtocol()
         {
-
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
-            log.Info("Start");
-
             var socket = new Socket("testme.quobject.com");
             Assert.NotNull(socket);
         }

@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("EngineIoClientDotNet.Tests.net35")]
+[assembly: AssemblyTitle("EngineIoClientDotNet.Tests2.net35")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("EngineIoClientDotNet.Tests.net35")]
-[assembly: AssemblyCopyright("Copyright ©  2014")]
+[assembly: AssemblyProduct("EngineIoClientDotNet.Tests2.net35")]
+[assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("0b542069-039e-42a0-923e-c329b9df6d63")]
+[assembly: Guid("ba788bbe-0fe8-4c2f-8a02-457a5e9e2703")]
 
 // Version information for an assembly consists of the following four values:
 //

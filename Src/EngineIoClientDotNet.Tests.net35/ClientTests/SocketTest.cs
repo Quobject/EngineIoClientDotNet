@@ -1,11 +1,7 @@
-﻿
-
-
-using System;
-using Quobject.EngineIoClientDotNet.Client;
+﻿using Quobject.EngineIoClientDotNet.Client;
 using Quobject.EngineIoClientDotNet.Modules;
+using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
@@ -18,16 +14,15 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void FilterUpgrades()
         {
-
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
             var options = CreateOptions();
-            options.Transports = new List<string>(){"polling"};
+            options.Transports = new List<string>() { "polling" };
 
             socket = new Socket(options);
 
-            var List = socket.FilterUpgrades( new List<string>(){"polling","websocket"});
+            var List = socket.FilterUpgrades(new List<string>() { "polling", "websocket" });
 
             Assert.Equal("polling", List[0]);
             Assert.Equal(1, List.Count);
@@ -36,7 +31,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void SocketClosing()
         {
-
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
@@ -50,20 +44,17 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             {
                 log.Info("EVENT_OPEN");
                 //socket.Send("test send");
-
             });
             socket.On(Socket.EVENT_CLOSE, () =>
             {
                 log.Info("EVENT_CLOSE = ");
                 closed = true;
-
             });
 
             socket.Once(Socket.EVENT_ERROR, () =>
             {
                 log.Info("EVENT_ERROR = ");
                 error = true;
-
             });
 
             socket.Open();

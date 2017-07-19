@@ -31,18 +31,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SuperSocket.ClientEngine, Version=0.8.0.6, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\SuperSocket.ClientEngine.Core.0.8.0.6\lib\net45\SuperSocket.ClientEngine.dll</HintPath>
+    <Reference Include="SuperSocket.ClientEngine, Version=0.8.0.12, Culture=neutral, PublicKeyToken=ee9af13f57f00acc, processorArchitecture=MSIL">
+      <HintPath>packages\SuperSocket.ClientEngine.Core.0.8.0.12\lib\net45\SuperSocket.ClientEngine.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable, Version=1.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Collections.Immutable.1.3.1\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core" />
-    <Reference Include="WebSocket4Net, Version=0.15.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\WebSocket4Net.0.15.0-beta6\lib\net45\WebSocket4Net.dll</HintPath>
+    <Reference Include="WebSocket4Net, Version=0.15.0.9, Culture=neutral, PublicKeyToken=eb4e154b696bf72a, processorArchitecture=MSIL">
+      <HintPath>packages\WebSocket4Net.0.15.0-beta9\lib\net45\WebSocket4Net.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -109,36 +112,6 @@
     </Compile>
     <Compile Include="..\EngineIoClientDotNet.mono\Thread\EasyTimer.cs">
       <Link>Thread\EasyTimer.cs</Link>
-    </Compile>
-    <Compile Include="..\Quobject.Collections.Immutable\AvlNode.cs">
-      <Link>Quobject.Collections.Immutable\AvlNode.cs</Link>
-    </Compile>
-    <Compile Include="..\Quobject.Collections.Immutable\IImmutableDictionary.cs">
-      <Link>Quobject.Collections.Immutable\IImmutableDictionary.cs</Link>
-    </Compile>
-    <Compile Include="..\Quobject.Collections.Immutable\IImmutableList.cs">
-      <Link>Quobject.Collections.Immutable\IImmutableList.cs</Link>
-    </Compile>
-    <Compile Include="..\Quobject.Collections.Immutable\IImmutableQueue.cs">
-      <Link>Quobject.Collections.Immutable\IImmutableQueue.cs</Link>
-    </Compile>
-    <Compile Include="..\Quobject.Collections.Immutable\IImmutableSet.cs">
-      <Link>Quobject.Collections.Immutable\IImmutableSet.cs</Link>
-    </Compile>
-    <Compile Include="..\Quobject.Collections.Immutable\IImmutableStack.cs">
-      <Link>Quobject.Collections.Immutable\IImmutableStack.cs</Link>
-    </Compile>
-    <Compile Include="..\Quobject.Collections.Immutable\ImmutableDictionary.cs">
-      <Link>Quobject.Collections.Immutable\ImmutableDictionary.cs</Link>
-    </Compile>
-    <Compile Include="..\Quobject.Collections.Immutable\ImmutableList.cs">
-      <Link>Quobject.Collections.Immutable\ImmutableList.cs</Link>
-    </Compile>
-    <Compile Include="..\Quobject.Collections.Immutable\ImmutableQueue.cs">
-      <Link>Quobject.Collections.Immutable\ImmutableQueue.cs</Link>
-    </Compile>
-    <Compile Include="..\Quobject.Collections.Immutable\ImmutableStack.cs">
-      <Link>Quobject.Collections.Immutable\ImmutableStack.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

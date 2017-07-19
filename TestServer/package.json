@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
-    "engine.io": "^2.1.1",
-    "express": "^4.15.2",
+    "engine.io": "^3.1.0",
+    "express": "^4.15.3",
     "strip-json-comments": "^2.0.1"
   }
 }

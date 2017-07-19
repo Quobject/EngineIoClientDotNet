@@ -1,8 +1,5 @@
-﻿
-
-using Quobject.EngineIoClientDotNet.Client;
+﻿using Quobject.EngineIoClientDotNet.Client;
 using Quobject.EngineIoClientDotNet.Client.Transports;
-using Quobject.EngineIoClientDotNet.Modules;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -17,10 +14,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void Constructors()
         {
-
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
-            log.Info("Start");
-
             var socket = new Socket(CreateOptions());
 
             socket.Open();
@@ -33,16 +26,14 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void Uri()
         {
-
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
-            log.Info("Start");
-
-            var options = new Transport.Options();
-            options.Path = "/engine.io";
-            options.Hostname = this.CreateOptions().Hostname;
-            options.Secure = false;
-            options.Query = new Dictionary<string, string> {{"sid", "test"}};
-            options.TimestampRequests = false;
+            var options = new Transport.Options
+            {
+                Path = "/engine.io",
+                Hostname = Connection.CreateOptions().Hostname,
+                Secure = false,
+                Query = new Dictionary<string, string> { { "sid", "test" } },
+                TimestampRequests = false
+            };
             var polling = new Polling(options);
             var expected = string.Format("http://{0}/engine.io?sid=test&b64=1", options.Hostname);
             Assert.Contains(expected, polling.Uri());
@@ -51,108 +42,90 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void UriWithDefaultPort()
         {
-
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
-            log.Info("Start");
-
-
-            var options = new Transport.Options();
-            options.Path = "/engine.io";
-            options.Hostname = this.CreateOptions().Hostname;
-            options.Secure = false;
-            options.Query = new Dictionary<string, string> {{"sid", "test"}};
-            options.TimestampRequests = false;
-            options.Port = 80;
+            var options = new Transport.Options
+            {
+                Path = "/engine.io",
+                Hostname = Connection.CreateOptions().Hostname,
+                Secure = false,
+                Query = new Dictionary<string, string> { { "sid", "test" } },
+                TimestampRequests = false,
+                Port = 80
+            };
             var polling = new Polling(options);
             //Assert.Contains("http://localhost/engine.io?sid=test&b64=1", polling.Uri());
             var expected = string.Format("http://{0}/engine.io?sid=test&b64=1", options.Hostname);
             Assert.Contains(expected, polling.Uri());
-
-
         }
 
         [Fact]
         public void UriWithPort()
         {
-
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
-            log.Info("Start");
-
-
-            var options = new Transport.Options();
-            options.Path = "/engine.io";
-            options.Hostname = this.CreateOptions().Hostname;
-            options.Secure = false;
-            options.Query = new Dictionary<string, string> {{"sid", "test"}};
-            options.TimestampRequests = false;
-            options.Port = 3000;
+            var options = new Transport.Options
+            {
+                Path = "/engine.io",
+                Hostname = Connection.CreateOptions().Hostname,
+                Secure = false,
+                Query = new Dictionary<string, string> { { "sid", "test" } },
+                TimestampRequests = false,
+                Port = 3000
+            };
             var polling = new Polling(options);
             //Assert.Contains("http://localhost:3000/engine.io?sid=test&b64=1", polling.Uri());
             var expected = string.Format("http://{0}:{1}/engine.io?sid=test&b64=1", options.Hostname, options.Port);
             Assert.Contains(expected, polling.Uri());
-
         }
-
 
         [Fact]
         public void HttpsUriWithDefaultPort()
         {
-
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
-            log.Info("Start");
-
-            var options = new Transport.Options();
-            options.Path = "/engine.io";
-            options.Hostname = this.CreateOptions().Hostname;
-            options.Secure = true;
-            options.Query = new Dictionary<string, string> {{"sid", "test"}};
-            options.TimestampRequests = false;
-            options.Port = 443;
+            var options = new Transport.Options
+            {
+                Path = "/engine.io",
+                Hostname = Connection.CreateOptions().Hostname,
+                Secure = true,
+                Query = new Dictionary<string, string> { { "sid", "test" } },
+                TimestampRequests = false,
+                Port = 443
+            };
             var polling = new Polling(options);
             //Assert.Contains("https://localhost/engine.io?sid=test&b64=1", polling.Uri());
             var expected = string.Format("https://{0}/engine.io?sid=test&b64=1", options.Hostname);
             Assert.Contains(expected, polling.Uri());
         }
 
-
         [Fact]
         public void TimestampedUri()
         {
-
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
-            log.Info("Start");
-
-            var options = new Transport.Options();
-            options.Path = "/engine.io";
-            options.Hostname = "test";
-            options.Secure = false;
-            options.Query = new Dictionary<string, string> {{"sid", "test"}};
-            options.TimestampRequests = true;
-            options.TimestampParam = "t";
+            var options = new Transport.Options
+            {
+                Path = "/engine.io",
+                Hostname = "test",
+                Secure = false,
+                Query = new Dictionary<string, string> { { "sid", "test" } },
+                TimestampRequests = true,
+                TimestampParam = "t"
+            };
             var polling = new Polling(options);
 
-            string pat = @"http://test/engine.io\?sid=test&(t=[0-9]+-[0-9]+)";
+            var pat = @"http://test/engine.io\?sid=test&(t=[0-9]+-[0-9]+)";
             var r = new Regex(pat, RegexOptions.IgnoreCase);
             var test = polling.Uri();
-            log.Info(test);
-            Match m = r.Match(test);
+            //log.Info(test);
+            var m = r.Match(test);
             Assert.True(m.Success);
         }
-
 
         [Fact]
         public void WsUri()
         {
-
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
-            log.Info("Start");
-
-            var options = new Transport.Options();
-            options.Path = "/engine.io";
-            options.Hostname = "test";
-            options.Secure = false;
-            options.Query = new Dictionary<string, string> {{"transport", "websocket"}};
-            options.TimestampRequests = false;
+            var options = new Transport.Options
+            {
+                Path = "/engine.io",
+                Hostname = "test",
+                Secure = false,
+                Query = new Dictionary<string, string> { { "transport", "websocket" } },
+                TimestampRequests = false
+            };
             var ws = new WebSocket(options);
             Assert.Contains("ws://test/engine.io?transport=websocket", ws.Uri());
         }
@@ -160,45 +133,38 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void WssUri()
         {
-
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
-            log.Info("Start");
-
-            var options = new Transport.Options();
-            options.Path = "/engine.io";
-            options.Hostname = "test";
-            options.Secure = true;
-            options.Query = new Dictionary<string, string> {{"transport", "websocket"}};
-            options.TimestampRequests = false;
+            var options = new Transport.Options
+            {
+                Path = "/engine.io",
+                Hostname = "test",
+                Secure = true,
+                Query = new Dictionary<string, string> { { "transport", "websocket" } },
+                TimestampRequests = false
+            };
             var ws = new WebSocket(options);
             Assert.Contains("wss://test/engine.io?transport=websocket", ws.Uri());
         }
 
-
         [Fact]
         public void WsTimestampedUri()
         {
-
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
-            log.Info("Start");
-
-
-            var options = new Transport.Options();
-            options.Path = "/engine.io";
-            options.Hostname = "test";
-            options.Secure = false;
-            options.Query = new Dictionary<string, string> {{"sid", "test"}};
-            options.TimestampRequests = true;
-            options.TimestampParam = "woot";
+            var options = new Transport.Options
+            {
+                Path = "/engine.io",
+                Hostname = "test",
+                Secure = false,
+                Query = new Dictionary<string, string> { { "sid", "test" } },
+                TimestampRequests = true,
+                TimestampParam = "woot"
+            };
             var ws = new WebSocket(options);
 
-            string pat = @"ws://test/engine.io\?sid=test&(woot=[0-9]+-[0-9]+)";
+            var pat = @"ws://test/engine.io\?sid=test&(woot=[0-9]+-[0-9]+)";
             var r = new Regex(pat, RegexOptions.IgnoreCase);
             var test = ws.Uri();
-            log.Info(test);
-            Match m = r.Match(test);
+            //log.Info(test);
+            var m = r.Match(test);
             Assert.True(m.Success);
         }
-
     }
 }

@@ -61,8 +61,11 @@ namespace Quobject.EngineIoClientDotNet.Modules
 
             if (LogManager.file == null)
             {
-                LogManager.file = new System.IO.StreamWriter(myFileName, true);
-                LogManager.file.AutoFlush = true;
+                var logFile = System.IO.File.Create(myFileName);
+                file = new System.IO.StreamWriter(logFile)
+                {
+                    AutoFlush = true
+                };
             }
 
             msg = Global.StripInvalidUnicodeCharacters(msg);

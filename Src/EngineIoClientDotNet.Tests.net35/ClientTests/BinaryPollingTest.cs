@@ -1,24 +1,16 @@
-﻿
-
-
-using System.Collections.Generic;
-using Quobject.EngineIoClientDotNet.Client;
-using Quobject.EngineIoClientDotNet.Client.Transports;
+﻿using Quobject.EngineIoClientDotNet.Client;
 using Quobject.EngineIoClientDotNet.Modules;
-using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Threading;
 using Xunit;
 
 namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 {
-
     public class BinaryPollingTest : Connection
     {
-
         //[Fact]
         //public void PingTest()
         //{
-
         //    var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
         //    log.Info("Start");
 
@@ -30,15 +22,13 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
         //    var events = new Queue<object>();
 
-
         //    var options = CreateOptions();
-        //        options.Transports = new List<string>(){"polling"};	
+        //        options.Transports = new List<string>(){"polling"};
 
         //    var socket = new Socket(options);
 
         //    socket.On(Socket.EVENT_OPEN, () =>
         //    {
-
         //        log.Info("EVENT_OPEN");
 
         //        socket.Send(binaryData);
@@ -47,7 +37,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
         //    socket.On(Socket.EVENT_MESSAGE, (d) =>
         //    {
-
         //        var data = d as string;
         //        log.Info(string.Format("EVENT_MESSAGE data ={0} d = {1} ", data, d));
 
@@ -80,7 +69,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void ReceiveBinaryData()
         {
-
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
             _manualResetEvent = new ManualResetEvent(false);
@@ -90,29 +78,24 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             var binaryData = new byte[5];
             for (int i = 0; i < binaryData.Length; i++)
             {
-                binaryData[i] = (byte) i;
+                binaryData[i] = (byte)i;
             }
 
-
             var options = CreateOptions();
-            options.Transports = new List<string>() { "polling" };	
-
+            options.Transports = new List<string>() { "polling" };
 
             var socket = new Socket(options);
 
             socket.On(Socket.EVENT_OPEN, () =>
             {
-
                 log.Info("EVENT_OPEN");
-              
+
                 socket.Send(binaryData);
                 //socket.Send("cash money €€€");
-                
             });
 
             socket.On(Socket.EVENT_MESSAGE, (d) =>
             {
-
                 var data = d as string;
                 log.Info(string.Format("EVENT_MESSAGE data ={0} d = {1} ", data, d));
 
@@ -132,7 +115,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             var binaryData2 = new byte[5];
             for (int i = 0; i < binaryData2.Length; i++)
             {
-                binaryData2[i] = (byte) (i + 1);
+                binaryData2[i] = (byte)(i + 1);
             }
 
             object result;
@@ -140,11 +123,9 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             Assert.Equal(binaryData, result);
         }
 
-
         [Fact]
         public void ReceiveBinaryDataAndMultibyteUTF8String()
         {
-
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
             _manualResetEvent = new ManualResetEvent(false);
@@ -154,23 +135,20 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             var binaryData = new byte[5];
             for (int i = 0; i < binaryData.Length; i++)
             {
-                binaryData[i] = (byte) i;
+                binaryData[i] = (byte)i;
             }
             const string stringData = "cash money €€€";
 
             var options = CreateOptions();
-            options.Transports = new List<string>() { "polling" };	
-
+            options.Transports = new List<string>() { "polling" };
 
             var socket = new Socket(options);
 
             socket.On(Socket.EVENT_OPEN, () =>
             {
-
                 log.Info("EVENT_OPEN");
                 socket.On(Socket.EVENT_MESSAGE, (d) =>
                 {
-
                     var data = d as string;
                     log.Info(string.Format("EVENT_MESSAGE data ={0} d = {1} ", data, d));
 
@@ -194,18 +172,15 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             var binaryData2 = new byte[5];
             for (int i = 0; i < binaryData2.Length; i++)
             {
-                binaryData2[i] = (byte) (i + 1);
+                binaryData2[i] = (byte)(i + 1);
             }
 
             object result;
             result = events.Dequeue();
             Assert.Equal(binaryData, result);
             result = events.Dequeue();
-            Assert.Equal(stringData, (string) result);
+            Assert.Equal(stringData, (string)result);
             socket.Close();
-
         }
-
-
     }
 }

@@ -1,14 +1,9 @@
-﻿
-
-
-using System;
-using System.Collections.Generic;
-using Quobject.EngineIoClientDotNet.Client;
-using Quobject.EngineIoClientDotNet.Client.Transports;
+﻿using Quobject.EngineIoClientDotNet.Client;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
 using Quobject.EngineIoClientDotNet.Modules;
+using System;
+using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
@@ -22,7 +17,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void ConnectToLocalhost()
         {
-
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
             _manualResetEvent = new ManualResetEvent(false);
@@ -38,14 +32,10 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             Assert.Equal("hi", this.Message);
         }
 
-
         public class TestListener : IListener
         {
-
-
             public void Call(params object[] args)
             {
-    
                 var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
                 log.Info("open");
             }
@@ -66,9 +56,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             private Socket socket;
             private ConnectionTest connectionTest;
 
-
-
-
             public MessageListener(Socket socket)
             {
                 this.socket = socket;
@@ -80,13 +67,11 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                 this.connectionTest = connectionTest;
             }
 
-
             public void Call(params object[] args)
             {
-    
                 var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
                 log.Info("message = " + args[0]);
-                connectionTest.Message = (string) args[0];
+                connectionTest.Message = (string)args[0];
                 connectionTest._manualResetEvent.Set();
             }
 
@@ -99,21 +84,18 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             {
                 return 0;
             }
-
         }
-
 
         [Fact]
         public void ConnectToLocalhost2()
         {
-
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
             _manualResetEvent = new ManualResetEvent(false);
             this.Message = "";
 
             var options = CreateOptions();
-            options.Transports = new List<string>() { "polling" };	
+            options.Transports = new List<string>() { "polling" };
             socket = new Socket(options);
 
             //socket = new Socket(CreateOptions());
@@ -121,11 +103,10 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             {
                 log.Info("open");
                 //socket.Send("test send");
-
             });
             socket.On(Socket.EVENT_MESSAGE, (d) =>
             {
-                var data = (string) d;
+                var data = (string)d;
 
                 log.Info("message2 = " + data);
                 this.Message = data;
@@ -141,20 +122,17 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
         [Fact]
         public void TestmultibyteUtf8StringsWithPolling()
         {
-
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
             _manualResetEvent = new ManualResetEvent(false);
 
             const string SendMessage = "cash money €€€";
 
-
             socket = new Socket(CreateOptions());
             socket.On(Socket.EVENT_OPEN, () =>
             {
                 log.Info("open");
 
-               
                 socket.Send(SendMessage);
             });
             socket.On(Socket.EVENT_MESSAGE, (d) =>
@@ -179,12 +157,9 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             Assert.Equal(SendMessage, this.Message);
         }
 
-
-
         [Fact]
         public void Testemoji()
         {
-
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
             _manualResetEvent = new ManualResetEvent(false);
@@ -197,7 +172,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             {
                 log.Info("open");
 
-              
                 socket.Send(SendMessage);
             });
 
@@ -218,17 +192,14 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             socket.Open();
             _manualResetEvent.WaitOne();
-            socket.Close();	
-  
+            socket.Close();
+
             Assert.True(SendMessage == this.Message);
-
         }
-
 
         [Fact]
         public void NotSendPacketsIfSocketCloses()
         {
-
             var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
             log.Info("Start");
 
@@ -238,7 +209,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             socket.On(Socket.EVENT_OPEN, () =>
             {
                 noPacket = true;
-
             });
 
             socket.Open();
@@ -249,11 +219,9 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             });
             socket.Close();
             System.Threading.Thread.Sleep(TimeSpan.FromSeconds(1));
-            //await Task.Delay(1000);      
+            //await Task.Delay(1000);
             log.Info("NotSendPacketsIfSocketCloses end noPacket = " + noPacket);
             Assert.True(noPacket);
         }
-
-
     }
 }

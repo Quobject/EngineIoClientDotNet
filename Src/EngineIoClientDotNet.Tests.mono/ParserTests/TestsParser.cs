@@ -18,10 +18,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [Fact]
         public void EncodeTests()
         {
-            LogManager.SetupLogManager();
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
-            log.Info("Start");
-
             var testList = new List<IPacketTest>()
             {
                 new EncodeAsStringCallback(),
@@ -240,10 +236,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [Fact]
         public void EncodePayloads()
         {
-            LogManager.SetupLogManager();
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
-            log.Info("Start");
-
             var packets = new Packet[] {new Packet(Packet.PING), new Packet(Packet.PONG),};
             Parser.EncodePayload(packets, new EncodePayloadsCallback());
 
@@ -273,10 +265,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [Fact]
         public void EncodeAndDecodePayloads()
         {
-            LogManager.SetupLogManager();
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
-            log.Info("Start");
-
             var packets = new Packet[] {new Packet(Packet.MESSAGE, "a"),};
             Parser.EncodePayload(packets, new EncodeAndDecodePayloads_EncodeCallback());
 
@@ -305,10 +293,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [Fact]
         public void EncodeAndDecodePayloads2()
         {
-            LogManager.SetupLogManager();
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
-            log.Info("Start");
-
             var packets = new Packet[] {new Packet(Packet.MESSAGE, "a"), new Packet(Packet.PING),};
             Parser.EncodePayload(packets, new EncodeAndDecodePayloads_EncodeCallback2());
 
@@ -338,10 +322,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [Fact]
         public void EncodeAndDecodeEmptyPayloads()
         {
-            LogManager.SetupLogManager();
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
-            log.Info("Start");
-
             var packets = new Packet[] {};
             Parser.EncodePayload(packets, new EncodeAndDecodeEmptyPayloads_EncodeCallback());
 
@@ -379,10 +359,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [Fact]
         public void EncodeAndDecodeBinaryContents()
         {
-            LogManager.SetupLogManager();
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
-            log.Info("Start");
-
             var firstBuffer = FirstBuffer();
             var secondBuffer = SecondBuffer();
 
@@ -459,10 +435,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [Fact]
         public void EncodeMixedBinaryAndStringContents()
         {
-            LogManager.SetupLogManager();
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod());
-            log.Info("Start");
-
             var packets = new Packet[]
             {
                 new Packet(Packet.MESSAGE, ThirdBuffer()),
