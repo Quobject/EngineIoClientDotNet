@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>EngineIoClientDotNet</id>
-    <version>@VERSION@-beta0</version>
+    <version>@VERSION@-beta1</version>
     <title>EngineIoClientDotNet</title>
     <authors>Matthias Ludwig</authors>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
@@ -34,9 +34,6 @@
     <projectUrl>https://github.com/Quobject/EngineIoClientDotNet/</projectUrl>
     <description>This is the Engine.IO Client Library for C#.</description>
     <summary>This library supports all of the features the JS client does, including events, options and upgrading transport. EngineIoClientDotNet has a similar api to those of the JavaScript client.</summary>
-    <tags>engine.io.client</tags>
-    <frameworkAssemblies>
-      <frameworkAssembly assemblyName="System.Web" targetFramework="net45" />
-    </frameworkAssemblies>
+    <tags>engine.io.client</tags>  
   </metadata>
 </package>

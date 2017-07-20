@@ -5,9 +5,13 @@
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <Description>This is the Engine.IO Client Library for C#.</Description>
     <PackageProjectUrl>https://github.com/Quobject/EngineIoClientDotNet/</PackageProjectUrl>
-    <Version>1.0.0-beta0</Version>
+    <Version>1.0.0.1-beta1</Version>
     <Copyright>Copyright ©  2017</Copyright>
     <RepositoryUrl>https://github.com/Quobject/EngineIoClientDotNet/</RepositoryUrl>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <FileVersion>1.0.0.1</FileVersion>
+    <RootNamespace>Quobject.EngineIoClientDotNet</RootNamespace>
+    <AssemblyName>EngineIoClientDotNet</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -43,7 +47,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
     <PackageReference Include="System.Collections.Immutable" Version="1.3.1" />
     <PackageReference Include="WebSocket4Net" Version="0.15.0-beta9" />
   </ItemGroup>
