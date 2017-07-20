@@ -43,17 +43,14 @@
       fs.writeFileSync(string.format('{0}Properties/AssemblyInfo.cs', dir_path), template_file_content);
       if (!copyOnly) {
         tasks.push(clean);
-      }
-      //tasks.push(build);    
+      }      
     }
 
-    if (os === 'win') {
-      for (i = 0; i < nuget_builds.length; i++) {
+    for (i = 0; i < nuget_builds.length; i++) {
+      if (nuget_builds[i].Name !== 'EngineIoClientDotNet.netstandard1.3') {
         addBuildWithTitle(nuget_builds[i].Name, nuget_builds[i].NuGetDir, nuget_builds[i].copyOnly);
-      }      
-    } else {
-      addBuildWithTitle('EngineIoClientDotNet.mono');
-    }
+      }
+    }      
 
     grunt.log.writeln('tasks = %s', JSON.stringify(tasks));
     grunt.config('shell.exec.command', tasks.join('&&'));

@@ -69,13 +69,14 @@
 
 
 
-    function addBuildWithTitle(title, destsubdir, srcsubdir) {
-      var
-        src_path = string.format('{0}/../../Src/{1}/{2}{3}/', __dirname, title, output_path_base, srcsubdir),
-        dst_path = package_lib_path + destsubdir + '/',
-        //src_file = string.format('{0}EngineIoClientDotNet.dll', src_path),
-        src_file = string.format('{0}EngineIoClientDotNet.dll', src_path), 
-        dst_file = string.format('{0}EngineIoClientDotNet.dll', dst_path);
+    function addBuildWithTitle(title, destsubdir, srcsubdir, filename) {
+      var src_path = string.format('{0}/../../Src/{1}/{2}{3}/', __dirname, title, output_path_base, srcsubdir);
+      var dst_path = package_lib_path + destsubdir + '/';
+      if (!filename) {
+        filename = 'EngineIoClientDotNet.dll';
+      }
+      var src_file = string.format('{0}{1}', src_path, filename);
+      var dst_file = string.format('{0}EngineIoClientDotNet.dll', dst_path);
       
       grunt.log.writeln(string.format('src_file={0} dst_file={1}', src_file, dst_file));
       fs.writeFileSync(dst_file, fs.readFileSync(src_file));
@@ -87,7 +88,7 @@
     }
 
     for (i = 0; i < nuget_builds.length; i++) {
-      addBuildWithTitle(nuget_builds[i].Name, nuget_builds[i].NuGetDir, nuget_builds[i].SourceDir);
+      addBuildWithTitle(nuget_builds[i].Name, nuget_builds[i].NuGetDir, nuget_builds[i].SourceDir, nuget_builds[i].SourceFileName);
     }
     tasks.push('C:/WINDOWS/System32/WindowsPowerShell/v1.0/powershell.exe pwd');
     tasks.push(string.format('{0} pack EngineIoClientDotNet.nuspec', config.win.nuget));
