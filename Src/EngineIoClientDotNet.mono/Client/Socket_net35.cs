@@ -63,8 +63,8 @@ namespace Quobject.EngineIoClientDotNet.Client
         private Dictionary<string, string> Cookies = new Dictionary<string, string>();
         /*package*/
         public Transport Transport;
-        private EasyTimer PingTimeoutTimer;
-        private EasyTimer PingIntervalTimer;
+        private Heartbeat HeartbeatTimer;
+        private TriggeredLoopTimer PingIntervalTimer;
 
         private ReadyStateEnum ReadyState;
         private bool Agent = false;
@@ -474,7 +474,7 @@ namespace Quobject.EngineIoClientDotNet.Client
                 }
                 else if (packet.Type == Packet.PONG)
                 {
-                    this.SetPing();
+                    PingIntervalTimer.Trigger();
                 }
                 else if (packet.Type == Packet.ERROR)
                 {
@@ -529,7 +529,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
             void IListener.Call(params object[] args)
             {
-                socket.OnHeartbeat(args.Length > 0 ? (long)args[0] : 0);
+                socket.OnHeartbeat();
             }
 
             public int CompareTo(IListener other)
@@ -549,20 +549,16 @@ namespace Quobject.EngineIoClientDotNet.Client
         {
             //var log = LogManager.GetLogger(Global.CallerName());
 
-            if (this.PingIntervalTimer != null)
-            {
-                PingIntervalTimer.Stop();
-            }
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info(string.Format("writing ping packet - expecting pong within {0}ms", PingTimeout));
 
-            PingIntervalTimer = EasyTimer.SetTimeout(() =>
+            PingIntervalTimer = TriggeredLoopTimer.Start(() =>
             {
                 var log2 = LogManager.GetLogger(Global.CallerName());
                 log2.Info("EasyTimer SetPing start");
 
                 Ping();
-                OnHeartbeat(PingTimeout);
+                SetHeartbeat(PingTimeout);
                 log2.Info("EasyTimer SetPing finish");
             }, (int)PingInterval);
         }
@@ -1056,9 +1052,9 @@ namespace Quobject.EngineIoClientDotNet.Client
                 {
                     this.PingIntervalTimer.Stop();
                 }
-                if (this.PingTimeoutTimer != null)
+                if (this.HeartbeatTimer != null)
                 {
-                    this.PingTimeoutTimer.Stop();
+                    this.HeartbeatTimer.Stop();
                 }
                 
 
@@ -1113,22 +1109,22 @@ namespace Quobject.EngineIoClientDotNet.Client
             return filterUpgrades;
         }
 
-
-
-        internal void OnHeartbeat(long timeout)
+        internal void OnHeartbeat()
         {
-            if (this.PingTimeoutTimer != null)
+            if(this.HeartbeatTimer != null)
             {
-                PingTimeoutTimer.Stop();
-                PingTimeoutTimer = null;
+                this.HeartbeatTimer.OnHeartbeat();
             }
+        }
 
+        internal void SetHeartbeat(long timeout)
+        {
             if (timeout <= 0)
             {
                 timeout = this.PingInterval + this.PingTimeout;
             }
 
-            PingTimeoutTimer = EasyTimer.SetTimeout(() =>
+            HeartbeatTimer = Heartbeat.Start (() =>
             {
                 var log2 = LogManager.GetLogger(Global.CallerName());
                 log2.Info("EasyTimer OnHeartbeat start");

@@ -115,6 +115,12 @@
     <Compile Include="..\EngineIoClientDotNet.mono\Thread\EasyTimer_net35.cs">
       <Link>Thread\EasyTimer_net35.cs</Link>
     </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Thread\Heartbeat_net35.cs">
+      <Link>Thread\Heartbeat_net35.cs</Link>
+    </Compile>
+    <Compile Include="..\EngineIoClientDotNet.mono\Thread\TriggeredLoopTimer_net35.cs">
+      <Link>Thread\TriggeredLoopTimer_net35.cs</Link>
+    </Compile>
     <Compile Include="Parser\Packet_net35.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
