@@ -567,9 +567,18 @@ namespace Quobject.EngineIoClientDotNet.Client
                 var log2 = LogManager.GetLogger(Global.CallerName());
                 log2.Info("EasyTimer SetPing start");
 
-                Ping();
-                OnHeartbeat(PingTimeout);
-                log2.Info("EasyTimer SetPing finish");
+                if (Upgrading)
+                {
+                    // skip this ping during upgrade
+                    SetPing();
+                    log2.Info("skipping Ping during upgrade");
+                }
+                else
+                {
+                    Ping();
+                    OnHeartbeat(PingTimeout);
+                    log2.Info("EasyTimer SetPing finish");
+                }
             }, (int)PingInterval);
         }
 
@@ -662,6 +671,11 @@ namespace Quobject.EngineIoClientDotNet.Client
                     {
                         log.Info("Wait for upgrade timeout");
                         break;
+                    }
+                    else
+                    {
+                        // yield to another thread
+                        System.Threading.Thread.Yield();
                     }
                 }
                 tcs.SetResult(null);
