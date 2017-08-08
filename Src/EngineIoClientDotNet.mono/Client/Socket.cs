@@ -836,6 +836,10 @@ namespace Quobject.EngineIoClientDotNet.Client
                             {
                                 if (_onTransportOpenListener.Parameters.Failed[0])
                                 {
+                                    // reset upgrading flag and resume polling
+                                    ((Polling)_onTransportOpenListener.Parameters.Socket.Transport).Resume();
+                                    _onTransportOpenListener.Parameters.Socket.Upgrading = false;
+                                    _onTransportOpenListener.Parameters.Socket.Flush();
                                     return;
                                 }
                                 if (ReadyStateEnum.CLOSED == _onTransportOpenListener.Parameters.Socket.ReadyState ||

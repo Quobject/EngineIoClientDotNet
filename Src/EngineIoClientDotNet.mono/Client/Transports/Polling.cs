@@ -67,6 +67,12 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             }
         }
 
+        public void Resume()
+        {
+            if (ReadyState == ReadyStateEnum.PAUSED)
+                ReadyState = ReadyStateEnum.OPEN;
+        }
+
         private class PauseEventDrainListener : IListener
         {
             private int[] total;
