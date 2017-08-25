@@ -72,14 +72,14 @@
     <Compile Include="ComponentEmitterTests\EmitterTests.cs" />
     <Compile Include="ModulesTests\ParseQSTests.cs" />
     <Compile Include="ModulesTests\UTF8Tests.cs" />
+    <Compile Include="ParserTests\DecodeTests.cs" />
+    <Compile Include="ParserTests\TestsParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ParserTests\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\EngineIoClientDotNet.net35\EngineIoClientDotNet.net35.csproj">
       <Project>{568d67d0-3253-4601-9b04-7730a9ec5cc0}</Project>
