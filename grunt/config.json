@@ -1,5 +1,5 @@
 {
-  "version": "1.0.1-beta1",
+  "version": "1.0.2",
   "server": {
     "port": 80,
     "ssl_port": 443,
