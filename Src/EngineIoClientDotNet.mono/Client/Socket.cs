@@ -672,6 +672,11 @@ namespace Quobject.EngineIoClientDotNet.Client
                         log.Info("Wait for upgrade timeout");
                         break;
                     }
+                    else
+                    {
+                        // yield to another thread 
+                        System.Threading.Thread.Yield();
+                    }
                 }
                 tcs.SetResult(null);
             }

@@ -1,8 +1,10 @@
 ﻿using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Parser;
 using System;
+using System.Net;
 using System.Collections.Generic;
 using WebSocket4Net;
+using SuperSocket.ClientEngine.Proxy;
 
 namespace Quobject.EngineIoClientDotNet.Client.Transports
 {
@@ -54,6 +56,25 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             ws.MessageReceived += ws_MessageReceived;
             ws.DataReceived += ws_DataReceived;
             ws.Error += ws_Error;
+
+            var destUrl = new UriBuilder(this.Uri());
+            if (this.Secure)
+                destUrl.Scheme = "https";
+            else
+                destUrl.Scheme = "http";
+            var useProxy = !WebRequest.DefaultWebProxy.IsBypassed(destUrl.Uri);
+            if (useProxy)
+            {
+                var proxyUrl = WebRequest.DefaultWebProxy.GetProxy(destUrl.Uri);
+                var proxy = new HttpConnectProxy(new DnsEndPoint(proxyUrl.Host, proxyUrl.Port));
+                ws.Proxy = proxy;
+                // for not websocket has a bug where the cert is checked against
+                // the proxy name instead of the host name.  disable name check
+                ws.Security.AllowNameMismatchCertificate = true;
+                // ensure we only trusts certificates from trusted issuers
+                // to minimize security hole created by lack of name check
+                ws.Security.AllowUnstrustedCertificate = false;
+            }
             ws.Open();
         }
 
