@@ -37,7 +37,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("DoOpen uri =" + this.Uri());
 
-            ws = new WebSocket4Net.WebSocket(this.Uri(), "", Cookies, MyExtraHeaders)
+            ws = new WebSocket4Net.WebSocket(this.Uri(), String.Empty, Cookies, MyExtraHeaders)
             {
                 EnableAutoSendPing = false
             };
@@ -66,14 +66,8 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             if (useProxy)
             {
                 var proxyUrl = WebRequest.DefaultWebProxy.GetProxy(destUrl.Uri);
-                var proxy = new HttpConnectProxy(new DnsEndPoint(proxyUrl.Host, proxyUrl.Port));
+                var proxy = new HttpConnectProxy(new DnsEndPoint(proxyUrl.Host, proxyUrl.Port), destUrl.Host);
                 ws.Proxy = proxy;
-                // for not websocket has a bug where the cert is checked against
-                // the proxy name instead of the host name.  disable name check
-                ws.Security.AllowNameMismatchCertificate = true;
-                // ensure we only trusts certificates from trusted issuers
-                // to minimize security hole created by lack of name check
-                ws.Security.AllowUnstrustedCertificate = false;
             }
             ws.Open();
         }
