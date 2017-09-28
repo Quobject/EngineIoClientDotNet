@@ -7,6 +7,7 @@ using Quobject.EngineIoClientDotNet.Parser;
 using Quobject.EngineIoClientDotNet.Thread;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 
@@ -671,12 +672,7 @@ namespace Quobject.EngineIoClientDotNet.Client
                     {
                         log.Info("Wait for upgrade timeout");
                         break;
-                    }
-                    else
-                    {
-                        // yield to another thread 
-                        System.Threading.Thread.Yield();
-                    }
+                    }                   
                 }
                 tcs.SetResult(null);
             }

@@ -247,7 +247,7 @@ namespace Quobject.EngineIoClientDotNet.Parser
 
                     if (msg.Length != 0)
                     {
-                        Packet packet = DecodePacket(msg, false);
+                        Packet packet = DecodePacket(msg, true);
                         if (_err.Type == packet.Type && _err.Data == packet.Data)
                         {
                             callback.Call(_err, 0, 1);
