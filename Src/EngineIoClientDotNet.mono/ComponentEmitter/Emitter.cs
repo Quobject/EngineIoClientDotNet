@@ -34,11 +34,16 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
             //log.Info("Emitter emit event = " + eventString);
             if (this.callbacks.ContainsKey(eventString))
             {
-                ImmutableList<IListener> callbacksLocal = this.callbacks[eventString];                
-                foreach (var fn in callbacksLocal)
+                try
                 {
-                    fn.Call(args);
-                }                    
+                    //handle in try/catch the emit
+                    ImmutableList<IListener> callbacksLocal = this.callbacks[eventString];
+                    foreach (var fn in callbacksLocal)
+                    {
+                        fn.Call(args);
+                    }
+                }
+                catch { }
             }
             return this;            
         }
