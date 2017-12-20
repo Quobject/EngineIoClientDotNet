@@ -574,7 +574,7 @@ namespace Quobject.EngineIoClientDotNet.Client
                     SetPing();
                     log2.Info("skipping Ping during upgrade");
                 }
-                else
+                else if(ReadyState == ReadyStateEnum.CLOSED)
                 {
                     Ping();
                     OnHeartbeat(PingTimeout);
