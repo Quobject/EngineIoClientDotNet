@@ -269,6 +269,8 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             Assert.Equal(Polling.NAME, socket2TransportName);
         }
 
+
+        //Fails in .netstandard1.3 for EngineIoClientDotNet 1.0.4
         [Fact]
         public void Cookie()
         {
@@ -304,6 +306,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             Assert.Equal("got cookie", result);
         }
 
+        //Fails in .netstandard1.3 for EngineIoClientDotNet 1.0.4
         [Fact]
         public void UpgradeCookie()
         {
