@@ -557,9 +557,19 @@ namespace Quobject.EngineIoClientDotNet.Client
                 var log2 = LogManager.GetLogger(Global.CallerName());
                 log2.Info("EasyTimer SetPing start");
 
-                Ping();
-                SetHeartbeat(PingTimeout);
-                log2.Info("EasyTimer SetPing finish");
+                if (Upgrading)
+                {
+                    // skip this ping during upgrade
+                    SetPing();
+                    log2.Info("skipping Ping during upgrade");
+                }
+                else if (ReadyState == ReadyStateEnum.OPEN)
+                {
+                    Ping();
+                    SetHeartbeat(PingTimeout);
+                    log2.Info("EasyTimer SetPing finish");
+                }
+
             }, (int)PingInterval);
         }
 
