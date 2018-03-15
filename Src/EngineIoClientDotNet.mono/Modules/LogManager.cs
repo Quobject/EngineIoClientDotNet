@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
+using System.Reflection;
+using System.Text;
 
 namespace Quobject.EngineIoClientDotNet.Modules
 {
     public class LogManager
     {
-        private const string myFileName = "XunitTrace.txt";
-        private readonly string MyType;
+        private const string LogFilePath = "XunitTrace.log";
+
         private static readonly LogManager EmptyLogger = new LogManager(null);
 
-        private static System.IO.StreamWriter file;
+        private static StreamWriter writer;
 
-        public static bool Enabled;
+        private readonly string type;
 
         #region Statics
 
@@ -20,8 +23,7 @@ namespace Quobject.EngineIoClientDotNet.Modules
 
         public static LogManager GetLogger(string type)
         {
-            var result = new LogManager(type);
-            return result;
+            return new LogManager(type);
         }
 
         public static LogManager GetLogger(Type type)
@@ -29,12 +31,14 @@ namespace Quobject.EngineIoClientDotNet.Modules
             return GetLogger(type.ToString());
         }
 
-        public static LogManager GetLogger(System.Reflection.MethodBase methodBase)
+        public static LogManager GetLogger(MethodBase methodBase)
         {
 #if DEBUG
-            var type = methodBase.DeclaringType == null ? "" : methodBase.DeclaringType.ToString();
-            var type1 = $"{type}#{methodBase.Name}";
-            return GetLogger(type1);
+            string declaringType = methodBase.DeclaringType != null
+                ? methodBase.DeclaringType.ToString()
+                : string.Empty;
+            string fullType = string.Format("{0}#{1}", declaringType, methodBase.Name);
+            return GetLogger(fullType);
 #else
             return EmptyLogger;
 #endif
@@ -44,32 +48,42 @@ namespace Quobject.EngineIoClientDotNet.Modules
 
         public LogManager(string type)
         {
-            this.MyType = type;
+            this.type = type;
+        }
+
+        public static bool Enabled { get; set; }
+
+        private static StreamWriter Writer
+        {
+            get
+            {
+                if (writer == null)
+                {
+                    FileStream fs = new FileStream(
+                        LogFilePath, FileMode.Append, FileAccess.Write, FileShare.Read);
+                    writer = new StreamWriter(fs, Encoding.UTF8)
+                    {
+                        AutoFlush = true
+                    };
+                }
+
+                return writer;
+            }
         }
 
         [Conditional("DEBUG")]
         public void Info(string msg)
         {
-            //Trace.WriteLine(string.Format("{0} [{3}] {1} - {2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), MyType, msg, System.Threading.Thread.CurrentThread.ManagedThreadId));
             if (!Enabled)
             {
                 return;
             }
 
-            if (LogManager.file == null)
-            {
-                var logFile = System.IO.File.Create(myFileName);
-                file = new System.IO.StreamWriter(logFile)
-                {
-                    AutoFlush = true
-                };
-            }
-
-            msg = Global.StripInvalidUnicodeCharacters(msg);
-            var msg1 = $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff")} [{""}] {MyType} - {msg}";
-//            System.Threading.Thread.CurrentThread.ManagedThreadId);
-            LogManager.file.WriteLine(msg1);
-
+            Writer.WriteLine(
+                "{0:yyyy-MM-dd HH:mm:ss fff} [] {1} {2}",
+                DateTime.Now,
+                this.type,
+                Global.StripInvalidUnicodeCharacters(msg));
         }
 
         [Conditional("DEBUG")]
