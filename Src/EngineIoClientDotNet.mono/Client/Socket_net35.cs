@@ -566,11 +566,11 @@ namespace Quobject.EngineIoClientDotNet.Client
                 else if (ReadyState == ReadyStateEnum.OPEN)
                 {
                     Ping();
-                    SetHeartbeat(PingTimeout);
                     log2.Info("EasyTimer SetPing finish");
                 }
 
             }, (int)PingInterval);
+            SetHeartbeat(PingTimeout);
         }
 
         private void Ping()
