@@ -1,8 +1,17 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>    
-    <TargetFramework>netcoreapp1.1</TargetFramework>
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="ClientTests\.keep" />
+    <None Remove="ComponentEmitterTests\.keep" />
+    <None Remove="ModulesTests\.keep" />
+    <None Remove="ParserTests\.keep" />
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Include="..\EngineIoClientDotNet.Tests.mono\ClientTests\BinaryPollingTest.cs" Link="ClientTests\BinaryPollingTest.cs" />
@@ -21,23 +30,26 @@
     <Compile Include="..\EngineIoClientDotNet.Tests.mono\ModulesTests\UTF8Tests.cs" Link="ModulesTests\UTF8Tests.cs" />
     <Compile Include="..\EngineIoClientDotNet.Tests.mono\ParserTests\DecodeTests.cs" Link="ParserTests\DecodeTests.cs" />
     <Compile Include="..\EngineIoClientDotNet.Tests.mono\ParserTests\TestsParser.cs" Link="ParserTests\TestsParser.cs" />
+  </ItemGroup>  
+  
+  
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.6.0" />
+    <PackageReference Include="xunit" Version="2.3.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
+    <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
   </ItemGroup>
 
+  
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
-    <PackageReference Include="xunit" Version="2.2.0" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\EngineIoClientDotNet.netstandard1.3\EngineIoClientDotNet.netstandard1.3.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ModulesTests\" />
-    <Folder Include="ParserTests\" />
-    <Folder Include="ComponentEmitterTests\" />
+    <Folder Include="ClientTests\" />
     <Folder Include="ClientTests\" />
   </ItemGroup>
 
+  
+  <ItemGroup>
+    <ProjectReference Include="..\EngineIoClientDotNet.netstandard\EngineIoClientDotNet.netstandard.csproj" />
+  </ItemGroup>
+  
+  
 </Project>

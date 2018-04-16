@@ -11,7 +11,8 @@ module.exports = function (grunt) {
       { "Name": "EngineIoClientDotNet.net35", "NuGetDir": "net35", "SourceDir": "net35", copyOnly: true },
       { "Name": "EngineIoClientDotNet.net40", "NuGetDir": "net40", "SourceDir": "net40", copyOnly: true },
       { "Name": "EngineIoClientDotNet.net45", "NuGetDir": "net45", "SourceDir": "net45", copyOnly: true },
-      { "Name": "EngineIoClientDotNet.netstandard1.3", "NuGetDir": "netstandard1.3", "SourceDir": "netstandard1.3", copyOnly: true },
+     //  WebSocket4Net does not support netstandard 2 and netstandard1.3 is not in https://www.microsoft.com/net/download/visual-studio-sdks
+     //   { "Name": "EngineIoClientDotNet.netstandard1.3", "NuGetDir": "netstandard1.3", "SourceDir": "netstandard1.3", copyOnly: true },
     ];
 
   grunt.log.writeln(util.inspect(config));

@@ -7,7 +7,6 @@ using Quobject.EngineIoClientDotNet.Parser;
 using Quobject.EngineIoClientDotNet.Thread;
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 
 
@@ -644,7 +643,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
             if (Upgrading)
             {
-                WaitForUpgradeAsync().Wait();
+                WaitForUpgrade().Wait();
             }
 
             Emit(EVENT_PACKET_CREATE, packet);
@@ -655,16 +654,45 @@ namespace Quobject.EngineIoClientDotNet.Client
             Flush();
         }
 
-        private async Task WaitForUpgradeAsync()
-        {
-            const int TIMEOUT = 1000;
+        //private async Task WaitForUpgradeAsync()
+        //{
+        //    const int TIMEOUT = 1000;
 
-            await Task.Yield();
-            if (!SpinWait.SpinUntil(() => !Upgrading, TIMEOUT))
+        //    await Task.Yield();
+        //    if (!SpinWait.SpinUntil(() => !Upgrading, TIMEOUT))
+        //    {
+        //        var log = LogManager.GetLogger(Global.CallerName());
+        //        log.Info("Wait for upgrade timeout");
+        //    }
+        //}
+
+        private Task WaitForUpgrade()
+        {
+            var log = LogManager.GetLogger(Global.CallerName());
+
+            var tcs = new TaskCompletionSource<object>();
+            const int TIMEOUT = 1000;
+            var sw = new System.Diagnostics.Stopwatch();
+
+            try
             {
-                var log = LogManager.GetLogger(Global.CallerName());
-                log.Info("Wait for upgrade timeout");
+                sw.Start();
+                while (Upgrading)
+                {
+                    if (sw.ElapsedMilliseconds > TIMEOUT)
+                    {
+                        log.Info("Wait for upgrade timeout");
+                        break;
+                    }
+                }
+                tcs.SetResult(null);
             }
+            finally
+            {
+                sw.Stop();
+            }
+
+            return tcs.Task;
         }
 
         private void OnOpen()

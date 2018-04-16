@@ -22,38 +22,10 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             Name = NAME;
         }
 
-        private bool FirstTimePoll = true;
-        private bool OnDataReceived = false;
+
         protected override void DoOpen()
         {
-            var log = LogManager.GetLogger(Global.CallerName());
-            log.Info("DoOpen: Entry");
-
-            do
-            {
-                if (FirstTimePoll)
-                {
-                    log.Info("DoOpen: Initial Poll - ReadyState=" + ReadyState.ToString());
-                    FirstTimePoll = false;
-                    Poll();
-                    IsPolling = false;
-                    Emit(EVENT_POLL_COMPLETE);
-                }
-                else if (OnDataReceived && ReadyState == ReadyStateEnum.OPEN)
-                {
-                    log.Info("DoOpen: General Poll - ReadyState=" + ReadyState.ToString());
-                    OnDataReceived = false;// Don't poll again, unless signaled by _onData
-                    Poll();
-                    IsPolling = false;
-                    Emit(EVENT_POLL_COMPLETE);
-                }
-                else
-                {
-                    log.Info(string.Format("DoOpen: ignoring poll - transport state {0}", ReadyState));
-                }
-                System.Threading.Thread.Sleep(100);
-            }
-            while (ReadyState != ReadyStateEnum.CLOSED);
+            Poll();
         }
 
         public void Pause(Action onPause)
@@ -70,7 +42,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             if (IsPolling || !Writable)
             {
-                var total = new[] {0};
+                var total = new[] { 0 };
 
 
                 if (IsPolling)
@@ -145,7 +117,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 this.total = total;
                 this.pause = pause;
             }
-            
+
             public void Call(params object[] args)
             {
                 //var log = LogManager.GetLogger(Global.CallerName());
@@ -225,7 +197,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
         {
             var log = LogManager.GetLogger(Global.CallerName());
 
-            log.Info(string.Format("polling got data {0}",data));
+            log.Info(string.Format("polling got data {0}", data));
             var callback = new DecodePayloadCallback(this);
             if (data is string)
             {
@@ -233,11 +205,25 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             }
             else if (data is byte[])
             {
-                Parser.Parser.DecodePayload((byte[])data, callback);                
+                Parser.Parser.DecodePayload((byte[])data, callback);
             }
 
-            // Signal that data was received
-            OnDataReceived = true;
+            if (ReadyState != ReadyStateEnum.CLOSED)
+            {
+                IsPolling = false;
+                log.Info("ReadyState != ReadyStateEnum.CLOSED");
+                Emit(EVENT_POLL_COMPLETE);
+
+                if (ReadyState == ReadyStateEnum.OPEN)
+                {
+                    Poll();
+                }
+                else
+                {
+                    log.Info(string.Format("ignoring poll - transport state {0}", ReadyState));
+                }
+            }
+
         }
 
         private class CloseListener : IListener
@@ -277,7 +263,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             var closeListener = new CloseListener(this);
 
             if (ReadyState == ReadyStateEnum.OPEN)
-            {                      
+            {
                 log.Info("transport open - closing");
                 closeListener.Call();
             }
@@ -305,7 +291,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 //var log = LogManager.GetLogger(Global.CallerName());
                 //log.Info("SendEncodeCallback data = " + data);
 
-                var byteData = (byte[]) data;
+                var byteData = (byte[])data;
                 polling.DoWrite(byteData, () =>
                 {
                     polling.Writable = true;
@@ -365,12 +351,12 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         protected virtual void DoWrite(byte[] data, Action action)
         {
-            
+
         }
 
         protected virtual void DoPoll()
         {
-            
+
         }
 
 

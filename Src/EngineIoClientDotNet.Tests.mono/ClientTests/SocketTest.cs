@@ -21,7 +21,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             var immutablelist = socket.FilterUpgrades(ImmutableList<string>.Empty.Add("polling").Add("websocket"));
 
             Assert.Equal("polling", immutablelist[0]);
-            Assert.Equal(1, immutablelist.Count);
+            Assert.Single(immutablelist);
         }
 
         [Fact]

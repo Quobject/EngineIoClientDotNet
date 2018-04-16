@@ -1,20 +1,29 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.3</TargetFramework>
-    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <TargetFramework>netstandard2.0</TargetFramework>
+ <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <Description>This is the Engine.IO Client Library for C#.</Description>
     <PackageProjectUrl>https://github.com/Quobject/EngineIoClientDotNet/</PackageProjectUrl>
-    <Version>1.0.5</Version>
-    <Copyright>Copyright ©  2018</Copyright>
+    <Version>1.0.6</Version>
+    <Copyright>Copyright © 2018</Copyright>
     <RepositoryUrl>https://github.com/Quobject/EngineIoClientDotNet/</RepositoryUrl>
-    <AssemblyVersion>1.0.5.0</AssemblyVersion>
-    <FileVersion>1.0.5.0</FileVersion>
+    <AssemblyVersion>1.0.6.0</AssemblyVersion>
+    <FileVersion>1.0.6.0</FileVersion>
     <RootNamespace>Quobject.EngineIoClientDotNet</RootNamespace>
-    <AssemblyName>EngineIoClientDotNet</AssemblyName>
+    <AssemblyName>EngineIoClientDotNet</AssemblyName>	
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Client\.keep" />
+    <None Remove="Client\Transports\.keep" />
+    <None Remove="ComponentEmitter\.keep" />
+    <None Remove="Modules\.keep" />
+    <None Remove="Parser\.keep" />
+    <None Remove="Thread\.keep" />
+  </ItemGroup>
+
+   <ItemGroup>
     <Compile Include="..\EngineIoClientDotNet.mono\Client\EngineIOException.cs" Link="Client\EngineIOException.cs" />
     <Compile Include="..\EngineIoClientDotNet.mono\Client\HandshakeData.cs" Link="Client\HandshakeData.cs" />
     <Compile Include="..\EngineIoClientDotNet.mono\Client\Socket.cs" Link="Client\Socket.cs" />
@@ -37,16 +46,10 @@
     <Compile Include="..\EngineIoClientDotNet.mono\Thread\EasyTimer.cs" Link="Thread\EasyTimer.cs" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ComponentEmitter\" />
-    <Folder Include="Parser\" />
-    <Folder Include="Thread\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
     <PackageReference Include="System.Collections.Immutable" Version="1.4.0" />
-    <PackageReference Include="WebSocket4Net" Version="0.15.1" />
+    <PackageReference Include="WebSocket4Net" Version="0.15.2" />
   </ItemGroup>
-
+  
 </Project>

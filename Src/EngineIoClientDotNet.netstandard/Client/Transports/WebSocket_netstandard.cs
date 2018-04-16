@@ -1,8 +1,10 @@
 ﻿using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Parser;
 using System;
+using System.Net;
 using System.Collections.Generic;
 using WebSocket4Net;
+using SuperSocket.ClientEngine.Proxy;
 
 namespace Quobject.EngineIoClientDotNet.Client.Transports
 {
@@ -35,7 +37,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("DoOpen uri =" + this.Uri());
 
-            ws = new WebSocket4Net.WebSocket(this.Uri(), "", Cookies, MyExtraHeaders)
+            ws = new WebSocket4Net.WebSocket(this.Uri(), String.Empty, Cookies, MyExtraHeaders)
             {
                 EnableAutoSendPing = false
             };
@@ -54,6 +56,19 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             ws.MessageReceived += ws_MessageReceived;
             ws.DataReceived += ws_DataReceived;
             ws.Error += ws_Error;
+
+            var destUrl = new UriBuilder(this.Uri());
+            if (this.Secure)
+                destUrl.Scheme = "https";
+            else
+                destUrl.Scheme = "http";
+            var useProxy = !WebRequest.DefaultWebProxy.IsBypassed(destUrl.Uri);
+            if (useProxy)
+            {
+                var proxyUrl = WebRequest.DefaultWebProxy.GetProxy(destUrl.Uri);
+                var proxy = new HttpConnectProxy(new DnsEndPoint(proxyUrl.Host, proxyUrl.Port), destUrl.Host);
+                ws.Proxy = proxy;
+            }
             ws.Open();
         }
 
@@ -126,7 +141,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 //var log = LogManager.GetLogger(Global.CallerName());
 
                 if (data is string)
-                {
+                {                    
                     webSocket.ws.Send((string)data);
                 }
                 else if (data is byte[])
@@ -154,7 +169,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
         {
             if (ws != null)
             {
-
+          
                 try
                 {
                     ws.Close();

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2015
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EngineIoClientDotNet.netstandard", "EngineIoClientDotNet.netstandard.csproj", "{E25DDD5A-C5A6-4B5E-B1F1-2457BD11C635}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EngineIoClientDotNet.Tests.netstandard", "..\EngineIoClientDotNet.Tests.netstandard\EngineIoClientDotNet.Tests.netstandard.csproj", "{FD5BC014-5F33-41F1-A6CC-C7CE5D076384}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E25DDD5A-C5A6-4B5E-B1F1-2457BD11C635}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E25DDD5A-C5A6-4B5E-B1F1-2457BD11C635}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E25DDD5A-C5A6-4B5E-B1F1-2457BD11C635}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E25DDD5A-C5A6-4B5E-B1F1-2457BD11C635}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD5BC014-5F33-41F1-A6CC-C7CE5D076384}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD5BC014-5F33-41F1-A6CC-C7CE5D076384}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD5BC014-5F33-41F1-A6CC-C7CE5D076384}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD5BC014-5F33-41F1-A6CC-C7CE5D076384}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D7AFA865-C617-4DDF-B6F9-46CBB8A35EAE}
+	EndGlobalSection
+EndGlobal

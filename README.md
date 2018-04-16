@@ -67,7 +67,7 @@ In linux this will stop after starting test server. Start xunit tests within a n
 grunt testClient
 ```
 ## Framework Versions
-.NETFramework v3.5, .NETFramework v4.0, .NETFramework v4.4, .NETStandard v1.3,
+.NETFramework v3.5, .NETFramework v4.0, .NETFramework v4.5
 
 
 ## License

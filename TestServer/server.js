@@ -18,7 +18,9 @@ http,
 primus_server,
 ssl_server ;
 
-
+//ssl test server not working for latest nodejs use older version e.g.:
+//https://nodejs.org/download/release/v6.10.3/
+//https://github.com/nodejs/node/issues/20019
 console.log("https port = " + config.server.ssl_port);
 https = require('https').createServer(options, app);
 ssl_server = require('engine.io').attach(https, {'pingInterval': 500});
@@ -46,7 +48,9 @@ http.on('request', function(request, response) {
  
 });
 
-
+app.get('/testing', function (req, res) {
+    res.send("Hello world!");
+});
 
 
 server.on('connection', function(socket){
