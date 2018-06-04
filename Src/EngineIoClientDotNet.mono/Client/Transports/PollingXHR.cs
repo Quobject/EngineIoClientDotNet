@@ -104,7 +104,6 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             var opts = new XHRRequest.RequestOptions {Method = "POST", Data = data, CookieHeaderValue = Cookie};
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("DoWrite data = " + data);
-            Console.WriteLine("DoWrite data = " + data);
             //try
             //{
             //    var dataString = BitConverter.ToString(data);
