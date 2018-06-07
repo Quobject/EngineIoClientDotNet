@@ -47,7 +47,7 @@
     }
 
     for (i = 0; i < nuget_builds.length; i++) {
-      if (nuget_builds[i].Name !== 'EngineIoClientDotNet.netstandard1.3') {
+      if (nuget_builds[i].Name !== 'EngineIoClientDotNet.netstandard1.3' || nuget_builds[i].Name !== 'EngineIoClientDotNet.netstandard2.0') {
         addBuildWithTitle(nuget_builds[i].Name, nuget_builds[i].NuGetDir, nuget_builds[i].copyOnly);
       }
     }      

@@ -33,6 +33,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             }
             opts.Uri = Uri();
 
+            opts.ExtraHeaders = this.ExtraHeaders;
             var req = new XHRRequest(opts);
 
             req.On(EVENT_REQUEST_HEADERS, new EventRequestHeadersListener(this)).
@@ -286,13 +287,11 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                                     {
                                         httpContent.Headers.Add(@"Cookie", CookieHeaderValue);
                                     }
-                                    if (ExtraHeaders != null)
-                                    {
-                                        foreach (var header in ExtraHeaders)
-                                        {
-                                            httpContent.Headers.Add(header.Key, header.Value);
-                                        }
-                                    }
+									if (ExtraHeaders != null) {
+										foreach (var header in ExtraHeaders) {
+											client.DefaultRequestHeaders.Add(header.Key, header.Value);
+										}
+									}
 
 									if (Method == "GET")
 									{
