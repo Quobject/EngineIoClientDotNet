@@ -11,10 +11,8 @@ module.exports = function (grunt) {
       { "Name": "EngineIoClientDotNet.net35", "NuGetDir": "net35", "SourceDir": "net35", copyOnly: true },
       { "Name": "EngineIoClientDotNet.net40", "NuGetDir": "net40", "SourceDir": "net40", copyOnly: true },
       { "Name": "EngineIoClientDotNet.net45", "NuGetDir": "net45", "SourceDir": "net45", copyOnly: true },
-      // WebSocket4Net does not support netstandard 2 and netstandard1.3 is not in https://www.microsoft.com/net/download/visual-studio-sdks
-      // WebRequest is not supported until standard 2.0
-      //{ "Name": "EngineIoClientDotNet.netstandard1.3", "NuGetDir": "netstandard1.3", "SourceDir": "netstandard1.3", copyOnly: true },
-      { "Name": "EngineIoClientDotNet.netstandard2.0", "NuGetDir": "netstandard2.0", "SourceDir": "netstandard2.0", copyOnly: true },
+      // https://github.com/Quobject/EngineIoClientDotNet/commit/407402d9b5473dc51a820a89bb0ea4fc4d790a1c#comments
+      // { "Name": "EngineIoClientDotNet.netstandard2.0", "NuGetDir": "netstandard2.0", "SourceDir": "netstandard2.0", copyOnly: true },
     ];
 
   grunt.log.writeln(util.inspect(config));
