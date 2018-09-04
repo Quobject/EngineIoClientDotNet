@@ -68,8 +68,8 @@ namespace Quobject.EngineIoClientDotNet.Modules
             for (int i = 0; i < pairs.Length; i++)
             {
                 var pair = pairs[i].Split('=');
-
-                qry.Add(Global.DecodeURIComponent(pair[0]), Global.DecodeURIComponent(pair[1]));
+                //fix: query params used to contain leading questionmark, which resulted in wrong uri
+                qry.Add(Global.DecodeURIComponent(pair[0].TrimStart('?')), Global.DecodeURIComponent(pair[1]));
             }
             return qry;
         }
