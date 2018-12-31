@@ -5,6 +5,8 @@ using Quobject.EngineIoClientDotNet.Parser;
 using Quobject.EngineIoClientDotNet.Thread;
 using System;
 using System.Collections.Generic;
+using System.Security.Authentication;
+
 //using System.Threading.Tasks;
 
 
@@ -42,6 +44,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
 
         private bool Secure;
+        private SslProtocols SslProtocols;
         private bool Upgrade;
         private bool TimestampRequests = true;
         private bool Upgrading;
@@ -136,6 +139,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             }
 
             Secure = options.Secure;
+            SslProtocols = options.SslProtocols;
             Hostname = options.Hostname;
             Port = options.Port;
             Query = options.QueryString != null ? ParseQS.Decode(options.QueryString) : new Dictionary<string, string>();
@@ -196,6 +200,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             options.Hostname = Hostname;
             options.Port = Port;
             options.Secure = Secure;
+            options.SslProtocols = SslProtocols;
             options.Path = Path;
             options.Query = query;
             options.TimestampRequests = TimestampRequests;
