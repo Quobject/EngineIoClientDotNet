@@ -7,11 +7,11 @@ config = JSON.parse(strip_json(String(fs.readFileSync('./../grunt/config.json'))
 util =  require('util'),
 app = express(),
 fs = require('fs'),
-options = {
-  key: fs.readFileSync(__dirname + '/testme.quobject.com.key'),
-  cert: fs.readFileSync(__dirname + '/testme.quobject.com.cert'),
-  requestCert: true
-},
+  options = {
+    key: fs.readFileSync(__dirname + '/privkey.pem'),
+    cert: fs.readFileSync(__dirname + '/fullchain.pem'),
+    requestCert: false
+  },
 server,
 https,
 http,

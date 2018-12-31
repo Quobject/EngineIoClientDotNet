@@ -8,7 +8,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
     public static class ConnectionConstants
     {
         public static int PORT = 80;
-        public static string HOSTNAME = "testme.quobject.com";
+        public static string HOSTNAME = "testme.quobject.io";
         public static int SSL_PORT = 443;
         public static readonly int TIMEOUT = 300000;
     }
