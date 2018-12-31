@@ -7,6 +7,7 @@ using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Parser;
 using System;
 using System.Collections.Generic;
+using System.Security.Authentication;
 
 
 namespace Quobject.EngineIoClientDotNet.Client
@@ -56,6 +57,7 @@ namespace Quobject.EngineIoClientDotNet.Client
         public Dictionary<string, string> Query;
 
         protected bool Secure;
+        protected SslProtocols SslProtocols;
         protected bool TimestampRequests;
         protected int Port;
         protected string Path;
@@ -76,6 +78,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             this.Hostname = options.Hostname;
             this.Port = options.Port;
             this.Secure = options.Secure;
+            this.SslProtocols = options.SslProtocols;
             this.Query = options.Query;
             this.TimestampParam = options.TimestampParam;
             this.TimestampRequests = options.TimestampRequests;
@@ -181,6 +184,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             public string Path;
             public string TimestampParam;
             public bool Secure = false;
+            public SslProtocols SslProtocols;
             public bool TimestampRequests = true;
             public int Port;
             public int PolicyPort;
