@@ -1,10 +1,8 @@
-# THIS PROJECT IS DEPRECATED
-Component is not maintained anymore. See https://github.com/Quobject/EngineIoClientDotNet/issues/69 for more information.
-
-#### EngineIoClientDotNet
-====================
+# EngineIoClientDotNet
 
 Engine.IO Client Library for .Net
+
+Fork from [https://github.com/joewen/EngineIoClientDotNet](https://github.com/joewen/EngineIoClientDotNet).
 
 This is the Engine.IO Client Library for C#, which is ported from the [JavaScript client](https://github.com/Automattic/engine.io-client).
 
@@ -12,10 +10,10 @@ This is the Engine.IO Client Library for C#, which is ported from the [JavaScrip
 ##### Installation
 Nuget install:
 ```
-Install-Package EngineIoClientDotNet
+Install-Package EngineIoClientDotNet.Standard
 ```
 
-* NuGet Package: [![EngineIoClientDotNet](https://img.shields.io/nuget/v/EngineIoClientDotNet.svg?maxAge=2592000)](https://www.nuget.org/packages/EngineIoClientDotNet/)
+* NuGet Package: [![EngineIoClientDotNet.Standard](https://img.shields.io/nuget/v/EngineIoClientDotNet.Standard.svg?maxAge=2592000)](https://www.nuget.org/packages/EngineIoClientDotNet.Standard/)
 
 
 ##### Usage
@@ -51,11 +49,8 @@ socket.Open();
 #### Features
 This library supports all of the features the JS client does, including events, options and upgrading transport.
 
-
-
-## Framework Versions
-.NETFramework v3.5, .NETFramework v4.0, .NETFramework v4.5
-
+#### Framework Versions
+.Net Standard 2.0
 
 ## License
 
