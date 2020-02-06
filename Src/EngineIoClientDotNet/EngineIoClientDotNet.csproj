@@ -6,12 +6,13 @@
     <Version>0.0.2</Version>
     <PackageId>EngineIoClientDotNet.Standard</PackageId>
     <Company />
-    <Authors />
+    <Authors>Joe Wen</Authors>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression />
     <RepositoryUrl>https://github.com/joewen/EngineIoClientDotNet</RepositoryUrl>
     <Description>Engine.IO Client Library for .Net</Description>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <Copyright />
   </PropertyGroup>
 
   <ItemGroup>
