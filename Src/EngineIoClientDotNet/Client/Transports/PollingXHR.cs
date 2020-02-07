@@ -257,7 +257,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 var httpMethod = Method == "POST" ? HttpMethod.Post : HttpMethod.Get;
                 var dataToSend = Data == null ? Encoding.UTF8.GetBytes("") : Data;
 
-                Task.Run(async() =>
+                Task.Run(async () =>
                 {
                     try
                     {
@@ -294,27 +294,35 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                                         }
                                     }
 
-
-                                    using (HttpResponseMessage response = await client.SendAsync(request))
+                                    if (Method == "GET")
                                     {
-                                        response.EnsureSuccessStatusCode();
-                                        var contentType = response.Content.Headers.GetValues("Content-Type").Aggregate("", (acc, x) => acc + x).Trim();
-
-                                        if (contentType.Equals("application/octet-stream", StringComparison.OrdinalIgnoreCase))
-                                        {
-                                            var responseContent = await response.Content.ReadAsByteArrayAsync();
-                                            OnData(responseContent);
-                                        }
-                                        else
+                                        using (HttpResponseMessage response = await client.GetAsync(request.RequestUri))
                                         {
                                             var responseContent = await response.Content.ReadAsStringAsync();
                                             OnData(responseContent);
                                         }
+                                    }
+                                    else
+                                    {
+                                        using (HttpResponseMessage response = await client.SendAsync(request))
+                                        {
+                                            response.EnsureSuccessStatusCode();
+                                            var contentType = response.Content.Headers.GetValues("Content-Type").Aggregate("", (acc, x) => acc + x).Trim();
 
+                                            if (contentType.Equals("application/octet-stream", StringComparison.OrdinalIgnoreCase))
+                                            {
+                                                var responseContent = await response.Content.ReadAsByteArrayAsync();
+                                                OnData(responseContent);
+                                            }
+                                            else
+                                            {
+                                                var responseContent = await response.Content.ReadAsStringAsync();
+                                                OnData(responseContent);
+                                            }
+
+                                        }
                                     }
                                 }
-
-
                             }
                         }
                     }
@@ -325,8 +333,8 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
                 }).Wait();
 
-                   
-            }       
+
+            }
 
             private void OnSuccess()
             {

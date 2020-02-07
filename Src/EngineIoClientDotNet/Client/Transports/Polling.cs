@@ -22,10 +22,39 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             Name = NAME;
         }
 
+        private bool FirstTimePoll = true;
+        private bool OnDataReceived = false;
 
         protected override void DoOpen()
         {
-            Poll();
+            var log = LogManager.GetLogger(Global.CallerName());
+            log.Info("DoOpen: Entry");
+
+            do
+            {
+                if (FirstTimePoll)
+                {
+                    log.Info("DoOpen: Initial Poll - ReadyState=" + ReadyState.ToString());
+                    FirstTimePoll = false;
+                    Poll();
+                    IsPolling = false;
+                    Emit(EVENT_POLL_COMPLETE);
+                }
+                else if (OnDataReceived && ReadyState == ReadyStateEnum.OPEN)
+                {
+                    log.Info("DoOpen: General Poll - ReadyState=" + ReadyState.ToString());
+                    OnDataReceived = false;// Don't poll again, unless signaled by _onData
+                    Poll();
+                    IsPolling = false;
+                    Emit(EVENT_POLL_COMPLETE);
+                }
+                else
+                {
+                    log.Info(string.Format("DoOpen: ignoring poll - transport state {0}", ReadyState));
+                }
+                System.Threading.Thread.Sleep(100);
+            }
+            while (ReadyState != ReadyStateEnum.CLOSED);
         }
 
         public void Pause(Action onPause)
@@ -208,22 +237,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 Parser.Parser.DecodePayload((byte[])data, callback);                
             }
 
-            if (ReadyState != ReadyStateEnum.CLOSED)
-            {
-                IsPolling = false;
-                log.Info("ReadyState != ReadyStateEnum.CLOSED");
-                Emit(EVENT_POLL_COMPLETE);
-
-                if (ReadyState == ReadyStateEnum.OPEN)
-                {
-                    Poll();
-                }
-                else
-                {
-                    log.Info(string.Format("ignoring poll - transport state {0}", ReadyState));                    
-                }
-            }
-
+            OnDataReceived = true;
         }
 
         private class CloseListener : IListener

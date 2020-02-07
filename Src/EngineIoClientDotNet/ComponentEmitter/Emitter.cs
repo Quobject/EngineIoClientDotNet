@@ -32,9 +32,8 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
         {
             //var log = LogManager.GetLogger(Global.CallerName());
             //log.Info("Emitter emit event = " + eventString);
-            if (this.callbacks.ContainsKey(eventString))
-            {
-                ImmutableList<IListener> callbacksLocal = this.callbacks[eventString];                
+            if (this.callbacks.TryGetValue(eventString, out var callbacksLocal))
+            {         
                 foreach (var fn in callbacksLocal)
                 {
                     fn.Call(args);
@@ -51,12 +50,11 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
         /// <returns>a reference to this object</returns>
         public Emitter On(string eventString, IListener fn)
         {
-            if (!this.callbacks.ContainsKey(eventString))
+            if (!this.callbacks.TryGetValue(eventString, out var callbacksLocal))
             {
                 //this.callbacks[eventString] = ImmutableList<IListener>.Empty;
                 this.callbacks = this.callbacks.Add(eventString, ImmutableList<IListener>.Empty);
             }
-            ImmutableList<IListener> callbacksLocal = this.callbacks[eventString];
             callbacksLocal = callbacksLocal.Add(fn);
             //this.callbacks[eventString] = callbacksLocal;
             this.callbacks = this.callbacks.Remove(eventString).Add(eventString, callbacksLocal);
@@ -173,9 +171,8 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
         {
             try
             {
-                if (this.callbacks.ContainsKey(eventString))
+                if (this.callbacks.TryGetValue(eventString, out var callbacksLocal))
                 {
-                    ImmutableList<IListener> callbacksLocal = this.callbacks[eventString];
                     IListener offListener;
                     _onceCallbacks.TryGetValue(fn, out offListener);
                     _onceCallbacks = _onceCallbacks.Remove(fn);
@@ -189,7 +186,8 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
                     }
                 }
 
-            }catch(Exception)
+            }
+            catch(Exception)
             {
                 this.Off();
             }
@@ -204,9 +202,8 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
         /// <returns>a reference to this object</returns>
         public ImmutableList<IListener> Listeners(string eventString)
         {
-            if (this.callbacks.ContainsKey(eventString))
+            if (this.callbacks.TryGetValue(eventString, out var callbacksLocal))
             {
-                ImmutableList<IListener> callbacksLocal = this.callbacks[eventString];
                 return callbacksLocal ?? ImmutableList<IListener>.Empty;
             }
             return ImmutableList<IListener>.Empty;
@@ -221,7 +218,6 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
         {
             return this.Listeners(eventString).Count > 0;
         }
-
     }
 
     public interface IListener: System.IComparable<IListener>
@@ -262,9 +258,7 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
             {
                 fn1();
             }
-        }
-
-        
+        }        
 
         public int CompareTo(IListener other)
         {

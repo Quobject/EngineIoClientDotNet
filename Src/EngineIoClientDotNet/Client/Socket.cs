@@ -8,7 +8,7 @@ using Quobject.EngineIoClientDotNet.Thread;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
+using System.Threading;
 
 namespace Quobject.EngineIoClientDotNet.Client
 {
@@ -444,7 +444,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             var log = LogManager.GetLogger(Global.CallerName());
 
             log.Info(string.Format("ReadyState={0} Transport.Writeable={1} Upgrading={2} WriteBuffer.Count={3}",ReadyState,Transport.Writable,Upgrading, WriteBuffer.Count));
-            if (ReadyState != ReadyStateEnum.CLOSED && this.Transport.Writable && !Upgrading && WriteBuffer.Count != 0)
+            if (ReadyState == ReadyStateEnum.OPEN && this.Transport.Writable && !Upgrading && WriteBuffer.Count != 0)
             {
                 log.Info(string.Format("Flush {0} packets in socket", WriteBuffer.Count));
                 PrevBufferLen = WriteBuffer.Count;
@@ -555,10 +555,7 @@ namespace Quobject.EngineIoClientDotNet.Client
         {
             //var log = LogManager.GetLogger(Global.CallerName());
 
-            if (this.PingIntervalTimer != null)
-            {
-                PingIntervalTimer.Stop();
-            }
+            PingIntervalTimer?.Stop();
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info(string.Format("writing ping packet - expecting pong within {0}ms", PingTimeout));
 
@@ -573,7 +570,7 @@ namespace Quobject.EngineIoClientDotNet.Client
                     SetPing();
                     log2.Info("skipping Ping during upgrade");
                 }
-                else
+                else if(ReadyState == ReadyStateEnum.OPEN)
                 {
                     Ping();
                     OnHeartbeat(PingTimeout);
@@ -643,7 +640,7 @@ namespace Quobject.EngineIoClientDotNet.Client
 
             if (Upgrading)
             {
-                WaitForUpgrade().Wait();
+                WaitForUpgradeAsync().Wait();
             }
 
             Emit(EVENT_PACKET_CREATE, packet);
@@ -654,33 +651,15 @@ namespace Quobject.EngineIoClientDotNet.Client
             Flush();
         }
 
-        private Task WaitForUpgrade()
+        private async Task WaitForUpgradeAsync()
         {
-            var log = LogManager.GetLogger(Global.CallerName());
-
-            var tcs = new TaskCompletionSource<object>();
             const int TIMEOUT = 1000;
-            var sw = new System.Diagnostics.Stopwatch();
-
-            try
+            await Task.Yield();
+            if (!SpinWait.SpinUntil(() => !Upgrading, TIMEOUT))
             {
-                sw.Start();
-                while (Upgrading)
-                {
-                    if (sw.ElapsedMilliseconds > TIMEOUT)
-                    {
-                        log.Info("Wait for upgrade timeout");
-                        break;
-                    }
-                }
-                tcs.SetResult(null);
+                var log = LogManager.GetLogger(Global.CallerName());
+                log.Info("Wait for upgrade timeout");
             }
-            finally
-            {
-                sw.Stop();
-            }
-            
-            return tcs.Task;
         }
 
         private void OnOpen()
