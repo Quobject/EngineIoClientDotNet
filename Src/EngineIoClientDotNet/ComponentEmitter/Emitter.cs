@@ -50,11 +50,13 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
         /// <returns>a reference to this object</returns>
         public Emitter On(string eventString, IListener fn)
         {
-            if (!this.callbacks.TryGetValue(eventString, out var callbacksLocal))
+            if (!this.callbacks.ContainsKey(eventString))
             {
                 //this.callbacks[eventString] = ImmutableList<IListener>.Empty;
                 this.callbacks = this.callbacks.Add(eventString, ImmutableList<IListener>.Empty);
             }
+
+            ImmutableList<IListener> callbacksLocal = this.callbacks[eventString];
             callbacksLocal = callbacksLocal.Add(fn);
             //this.callbacks[eventString] = callbacksLocal;
             this.callbacks = this.callbacks.Remove(eventString).Add(eventString, callbacksLocal);
