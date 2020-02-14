@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>0.0.4</Version>
+    <Version>0.0.5</Version>
     <PackageId>EngineIoClientDotNet.Standard</PackageId>
     <Company />
     <Authors>Joe Wen</Authors>
@@ -13,6 +13,7 @@
     <Description>Engine.IO Client Library for .NET Standard</Description>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <Copyright />
+    <PackageProjectUrl>https://github.com/joewen/EngineIoClientDotNet</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
