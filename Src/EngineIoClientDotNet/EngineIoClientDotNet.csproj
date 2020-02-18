@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>0.0.5</Version>
+    <Version>0.0.6</Version>
     <PackageId>EngineIoClientDotNet.Standard</PackageId>
     <Company />
     <Authors>Joe Wen</Authors>

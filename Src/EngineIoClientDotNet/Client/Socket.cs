@@ -660,6 +660,11 @@ namespace Quobject.EngineIoClientDotNet.Client
                 var log = LogManager.GetLogger(Global.CallerName());
                 log.Info("Wait for upgrade timeout");
             }
+                    else
+                    {
+                        // yield to another thread 
+                        System.Threading.Thread.Yield();
+                    }
         }
 
         private void OnOpen()
