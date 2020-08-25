@@ -1104,9 +1104,11 @@ namespace Quobject.EngineIoClientDotNet.Client
                 log.Info("Start");                
                 this.OnClose("forced close");
 
-                log.Info("socket closing - telling transport to close");
-                Transport.Close();
-
+                if (Transport != null)
+                {
+                    log.Info("socket closing - telling transport to close");
+                    Transport.Close();    
+                }    
             }
             return this;
         }
