@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("EngineIoClientDotNet")]
-[assembly: AssemblyDescription("Engine.IO Client Library for .Net")]
+[assembly: AssemblyDescription("Forked Engine.IO Client Library for .Net (original by Quobject Software)")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Quobject Software")]
+[assembly: AssemblyCompany("Attelis Inc.")]
 [assembly: AssemblyProduct("EngineIoClientDotNet")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.2")]
-[assembly: AssemblyFileVersion("1.0.2")]
+[assembly: AssemblyVersion("1.0.3")]
+[assembly: AssemblyFileVersion("1.0.3")]

@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EngineIoClientDotNet</RootNamespace>
-    <AssemblyName>EngineIoClientDotNet</AssemblyName>
+    <AssemblyName>AtellisShared.EngineIoClientDotNet</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>1fcf80f3</NuGetPackageImportStamp>
