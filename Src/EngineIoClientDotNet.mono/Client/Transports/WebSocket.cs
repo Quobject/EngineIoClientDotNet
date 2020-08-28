@@ -2,6 +2,7 @@
 using Quobject.EngineIoClientDotNet.Parser;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using WebSocket4Net;
 
 namespace Quobject.EngineIoClientDotNet.Client.Transports
@@ -11,6 +12,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
         public static readonly string NAME = "websocket";
 
         private WebSocket4Net.WebSocket ws;
+        private IPEndPoint ProxyEndpoint = null;
         private List<KeyValuePair<string, string>> Cookies;
         private List<KeyValuePair<string, string>> MyExtraHeaders;
 
@@ -28,6 +30,21 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             {
                 MyExtraHeaders.Add(new KeyValuePair<string, string>(header.Key, header.Value));
             }
+            if (opts.ProxyAddress != null && opts.ProxyAddress.Length > 0)
+            {
+                int proxyPort = 0;
+                string[] proxyParts = opts.ProxyAddress.Split(':');
+
+                if (!IPAddress.TryParse(proxyParts[0], out IPAddress proxyIPAddress))
+                {
+                    proxyIPAddress = Dns.GetHostAddresses(proxyParts[0])[0];
+                }
+                if (proxyParts.Length > 0)
+                {
+                    proxyPort = int.Parse(proxyParts[1]);
+                }
+                ProxyEndpoint = new IPEndPoint(proxyIPAddress, proxyPort);
+            }
         }
 
         protected override void DoOpen()
@@ -35,7 +52,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("DoOpen uri =" + this.Uri());
 
-            ws = new WebSocket4Net.WebSocket(this.Uri(), "", Cookies, MyExtraHeaders)
+            ws = new WebSocket4Net.WebSocket(this.Uri(), "", Cookies, MyExtraHeaders, string.Empty, string.Empty, WebSocketVersion.None, ProxyEndpoint)
             {
                 EnableAutoSendPing = false
             };

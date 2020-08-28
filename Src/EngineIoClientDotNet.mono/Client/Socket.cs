@@ -8,7 +8,7 @@ using Quobject.EngineIoClientDotNet.Thread;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
+using System.Net;
 
 namespace Quobject.EngineIoClientDotNet.Client
 {
@@ -57,6 +57,7 @@ namespace Quobject.EngineIoClientDotNet.Client
         private string Hostname;
         private string Path;
         private string TimestampParam;
+        private string ProxyAddress;
         private ImmutableList<string> Transports;
         private ImmutableList<string> Upgrades;
         private Dictionary<string, string> Query;
@@ -166,7 +167,7 @@ namespace Quobject.EngineIoClientDotNet.Client
                 ServerCertificate.IgnoreServerCertificateValidation();
             }
             ExtraHeaders = options.ExtraHeaders;
-
+            ProxyAddress = options.ProxyAddress;
         }
 
         public Socket Open()
@@ -218,7 +219,8 @@ namespace Quobject.EngineIoClientDotNet.Client
                 ForceBase64 = this.ForceBase64,
                 ForceJsonp = this.ForceJsonp,
                 Cookies = this.Cookies,
-                ExtraHeaders = this.ExtraHeaders
+                ExtraHeaders = this.ExtraHeaders,
+                ProxyAddress = this.ProxyAddress
             };
 
             if (name == WebSocket.NAME)
@@ -383,9 +385,7 @@ namespace Quobject.EngineIoClientDotNet.Client
                 }
 
                 return opts;
-            }
-
-    
+            }   
         }
 
 

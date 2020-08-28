@@ -191,6 +191,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             internal Socket Socket;
             public Dictionary<string, string> Cookies = new Dictionary<string, string>();
             public Dictionary<string, string> ExtraHeaders = new Dictionary<string, string>();
+            public string ProxyAddress;
 
             public string GetCookiesAsString()
             {
