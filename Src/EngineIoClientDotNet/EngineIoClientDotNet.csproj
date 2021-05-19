@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>0.0.6</Version>
+    <PackageId>EngineIoClientDotNet.Standard</PackageId>
+    <Company />
+    <Authors>Joe Wen</Authors>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression />
+    <RepositoryUrl>https://github.com/joewen/EngineIoClientDotNet</RepositoryUrl>
+    <Description>Engine.IO Client Library for .NET Standard</Description>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <Copyright />
+    <PackageProjectUrl>https://github.com/joewen/EngineIoClientDotNet</PackageProjectUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    <PackageReference Include="System.Collections.Immutable" Version="1.7.0" />
+    <PackageReference Include="WebSocket4Net" Version="0.15.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
