@@ -66,8 +66,11 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             if (useProxy)
             {
                 var proxyUrl = WebRequest.DefaultWebProxy.GetProxy(destUrl.Uri);
-                var proxy = new HttpConnectProxy(new DnsEndPoint(proxyUrl.Host, proxyUrl.Port), destUrl.Host);
-                ws.Proxy = proxy;
+                if (proxyUrl != null)
+                {
+                    var proxy = new HttpConnectProxy(new DnsEndPoint(proxyUrl.Host, proxyUrl.Port), destUrl.Host);
+                    ws.Proxy = proxy;
+                }               
             }
             ws.Open();
         }
